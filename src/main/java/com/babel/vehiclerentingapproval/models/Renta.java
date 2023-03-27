@@ -1,10 +1,25 @@
 package com.babel.vehiclerentingapproval.models;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.Date;
 
 public class Renta {
+
+    @NotNull
+    @NotEmpty
+    @NotBlank
+    @Positive
     private int rentaId;
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private Persona persona;
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private Profesion profesion;
     private int anio;
     private int importe;
