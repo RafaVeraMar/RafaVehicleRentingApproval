@@ -1,13 +1,13 @@
-package com.babel.VehicleRentingApproval;
+package com.babel.vehiclerentingapproval;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class VehicleRentingApprovalApplication {
+public class VehicleRentingApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(VehicleRentingApprovalApplication.class, args);
+		SpringApplication.run(VehicleRentingApiApplication.class, args);
 	}
 
 }
