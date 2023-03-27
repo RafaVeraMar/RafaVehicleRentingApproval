@@ -1,20 +1,37 @@
 package com.babel.vehiclerentingapproval.models;
+import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.List;
 
 public class Persona {
+    @NotNull
     private int personaId;
+    @Size(max = 50)
+    @NotNull
     private String nombre;
+    @Size(max = 50)
+    @NotNull
     private String apellido1;
+    @Size(max = 50)
     private String apellido2;
+    @NotNull
     private Direccion direccionDomicilio;
+    @NotNull
     private Direccion direccionNotificacion;
     private boolean direccionDomicilioSameAsNotificacion = true;
+    @Size(max=10)
+    @NotNull
     private String nif;
+    @PastOrPresent
     private Date fechaNacimiento;
+    @NotNull
     private Pais nacionalidad;
+    
     private int scoring;
+    @PastOrPresent
     private Date fechaScoring;
+
+    @NotNull
     private List<TelefonoContacto> telefonos;
 
     public int getPersonaId() {
