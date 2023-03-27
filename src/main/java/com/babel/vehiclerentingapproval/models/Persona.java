@@ -1,5 +1,6 @@
 package com.babel.vehiclerentingapproval.models;
 import java.util.Date;
+import java.util.List;
 
 public class Persona {
     private int personaId;
@@ -8,15 +9,13 @@ public class Persona {
     private String apellido2;
     private Direccion direccionDomicilio;
     private Direccion direccionNotificacion;
-    private boolean direccionDomicilioSameAsNotificacion=true;
+    private boolean direccionDomicilioSameAsNotificacion = true;
     private String nif;
     private Date fechaNacimiento;
-    private String nacionalidad;
+    private Pais nacionalidad;
     private int scoring;
     private Date fechaScoring;
-
-    //getters y setters
-
+    private List<TelefonoContacto> telefonos;
 
     public int getPersonaId() {
         return personaId;
@@ -66,6 +65,14 @@ public class Persona {
         this.direccionNotificacion = direccionNotificacion;
     }
 
+    public boolean isDireccionDomicilioSameAsNotificacion() {
+        return direccionDomicilioSameAsNotificacion;
+    }
+
+    public void setDireccionDomicilioSameAsNotificacion(boolean direccionDomicilioSameAsNotificacion) {
+        this.direccionDomicilioSameAsNotificacion = direccionDomicilioSameAsNotificacion;
+    }
+
     public String getNif() {
         return nif;
     }
@@ -82,11 +89,11 @@ public class Persona {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getNacionalidad() {
+    public Pais getNacionalidad() {
         return nacionalidad;
     }
 
-    public void setNacionalidad(String nacionalidad) {
+    public void setNacionalidad(Pais nacionalidad) {
         this.nacionalidad = nacionalidad;
     }
 
@@ -106,12 +113,13 @@ public class Persona {
         this.fechaScoring = fechaScoring;
     }
 
-    public boolean isDireccionDomicilioSameAsNotificacion() {
-        return direccionDomicilioSameAsNotificacion;
+    public List<TelefonoContacto> getTelefonos() {
+        return telefonos;
     }
 
-    public void setDireccionDomicilioSameAsNotificacion(boolean direccionDomicilioSameAsNotificacion) {
-        this.direccionDomicilioSameAsNotificacion = direccionDomicilioSameAsNotificacion;
+    public void setTelefonos(List<TelefonoContacto> telefonos) {
+        this.telefonos = telefonos;
     }
-
 }
+    //getters y setters
+
