@@ -1,16 +1,36 @@
 package com.babel.vehiclerentingapproval.models;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class Direccion {
+    @NotNull
     private int direccionId;
+    @NotNull
     private TipoVia tipoViaId;
+    @NotNull
+    @Size(max=50)
     private String nombreCalle;
+    @NotNull
+    @Size(max=10)
     private String numero;
+    @Size(max=10)
     private String piso;
+    @Size(max=10)
     private String puerta;
+    @Size(max=10)
     private String escalera;
+    @Size(max=100)
     private String otroDato;
+    @NotNull
+    @Size(max=5)
     private String codPostal;
+    @NotNull
+    @Size(max=50)
     private String municipio;
+    @NotNull
+    @Size(max=2)
     private Provincia provinciaCod;
 
     public int getDireccionId() {

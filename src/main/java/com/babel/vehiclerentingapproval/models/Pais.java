@@ -1,10 +1,23 @@
 package com.babel.vehiclerentingapproval.models;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class Pais {
+    @NotNull
+    @Size(max=2)
     private String isoAlfa_2;
+    @NotNull
+    @Max(38)
     private Integer isoNum_3;
+    @NotNull
+    @Size(max=3)
     private String isoAlfa_3;
+    @NotNull
+    @Size(max=100)
     private String nombre;
+    @Max(38)
     private Integer orden;
 
     public Pais(String isoAlfa_2, Integer isoNum_3, String isoAlfa_3, String nombre, Integer orden) {
