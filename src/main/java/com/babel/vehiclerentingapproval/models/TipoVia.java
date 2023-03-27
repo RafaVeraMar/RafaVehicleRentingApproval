@@ -1,7 +1,13 @@
 package com.babel.vehiclerentingapproval.models;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class TipoVia {
+    @NotNull
     private Integer tipoVia;
+    @NotNull
+    @Size(max = 50)
     private String descripcion;
 
     public TipoVia(Integer tipoVia, String descripcion) {

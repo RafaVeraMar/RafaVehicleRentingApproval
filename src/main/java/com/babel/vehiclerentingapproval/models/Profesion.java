@@ -1,7 +1,19 @@
 package com.babel.vehiclerentingapproval.models;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class Profesion {
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private int profesionId;
+    @Size(max = 50)
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private String descripcion;
 
     public int getProfesionId() {
