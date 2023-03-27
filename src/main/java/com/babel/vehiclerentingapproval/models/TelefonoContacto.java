@@ -1,9 +1,16 @@
 package com.babel.vehiclerentingapproval.models;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class TelefonoContacto {
 
+    @NotNull
     private String telefonoID;
+    @NotNull
     private Integer personaID;
+    @NotNull
+    @Size(max = 50)
     private String telefono;
 
     public TelefonoContacto(String telefonoID, Integer personaID, String telefono) {
