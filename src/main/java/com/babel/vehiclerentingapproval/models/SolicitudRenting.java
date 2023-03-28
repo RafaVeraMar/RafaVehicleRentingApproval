@@ -1,16 +1,21 @@
 package com.babel.vehiclerentingapproval.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class SolicitudRenting {
     private int solicitudId;
     private Persona persona;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fechaSolicitud;
     private int numVehiculos;
     private float inversion;
     private float cuota;
     private Integer plazo;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fechaInicioVigor;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fechaResolucion;
     private TipoResultadoSolicitud tipoResultadoSolicitud;
 
