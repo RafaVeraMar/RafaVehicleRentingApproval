@@ -31,7 +31,7 @@ public class Direccion {
     private String municipio;
     @NotNull
     @Size(max=2)
-    private Provincia provinciaCod;
+    private Provincia provincia;
 
     public int getDireccionId() {
         return direccionId;
@@ -113,11 +113,11 @@ public class Direccion {
         this.municipio = municipio;
     }
 
-    public Provincia getProvinciaCod() {
-        return provinciaCod;
+    public Provincia getProvincia() {
+        return provincia;
     }
 
-    public void setProvinciaCod(Provincia provinciaCod) {
-        this.provinciaCod = provinciaCod;
+    public void setProvinciaCod(Provincia provincia) {
+        this.provincia = provincia;
     }
 }

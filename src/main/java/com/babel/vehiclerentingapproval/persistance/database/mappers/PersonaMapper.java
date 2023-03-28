@@ -1,10 +1,13 @@
 package com.babel.vehiclerentingapproval.persistance.database.mappers;
 
 import com.babel.vehiclerentingapproval.models.Persona;
+import com.babel.vehiclerentingapproval.models.ProductoContratado;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface PersonaMapper {
@@ -15,4 +18,8 @@ public interface PersonaMapper {
 
     @Select("SELECT COUNT(PERSONA_ID) FROM PERSONA WHERE PERSONA_ID = #{personaId}")
     int existePersona(int personaId);
+
+    @Select("SELECT p.PRODUCTO_CONTRATADO_ID, p.FECHA_ALTA, p.FECHA_BAJA, b.PERSONA_ID FROM PRODUCTO_CONTRATADO p " +
+            "INNER JOIN PERSONA b ON p.PRODUCTO_CONTRATADO_ID = b.") //TODO
+    List<ProductoContratado> verProductosContratados(Persona persona, ProductoContratado productoContratado);
 }

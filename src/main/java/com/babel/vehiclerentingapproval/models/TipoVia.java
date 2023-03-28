@@ -1,32 +1,27 @@
 package com.babel.vehiclerentingapproval.models;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class TipoVia {
     @NotNull
-    @NotEmpty
-    @NotBlank
-    private Integer tipoVia;
+    private Integer tipoViaId;
     @NotNull
-    @NotEmpty
-    @NotBlank
     @Size(max = 50)
     private String descripcion;
 
-    public TipoVia(Integer tipoVia, String descripcion) {
-        this.tipoVia = tipoVia;
+
+    public TipoVia(Integer tipoViaId, String descripcion) {
+        this.tipoViaId = tipoViaId;
         this.descripcion = descripcion;
     }
 
-    public Integer getTipoVia() {
-        return tipoVia;
+    public Integer getTipoViaId() {
+        return tipoViaId;
     }
 
-    public void setTipoVia(Integer tipoVia) {
-        this.tipoVia = tipoVia;
+    public void setTipoViaId(Integer tipoViaId) {
+        this.tipoViaId = tipoViaId;
     }
 
     public String getDescripcion() {
