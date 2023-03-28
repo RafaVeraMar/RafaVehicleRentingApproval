@@ -5,22 +5,23 @@ import javax.validation.constraints.Size;
 
 public class TipoVia {
     @NotNull
-    private Integer tipoVia;
+    private Integer tipoViaId;
     @NotNull
     @Size(max = 50)
     private String descripcion;
 
-    public TipoVia(Integer tipoVia, String descripcion) {
-        this.tipoVia = tipoVia;
+
+    public TipoVia(Integer tipoViaId, String descripcion) {
+        this.tipoViaId = tipoViaId;
         this.descripcion = descripcion;
     }
 
-    public Integer getTipoVia() {
-        return tipoVia;
+    public Integer getTipoViaId() {
+        return tipoViaId;
     }
 
-    public void setTipoVia(Integer tipoVia) {
-        this.tipoVia = tipoVia;
+    public void setTipoViaId(Integer tipoViaId) {
+        this.tipoViaId = tipoViaId;
     }
 
     public String getDescripcion() {

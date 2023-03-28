@@ -4,9 +4,11 @@ package com.babel.vehiclerentingapproval.services.impl;
 import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import com.babel.vehiclerentingapproval.exceptions.RequiredMissingFieldException;
 import com.babel.vehiclerentingapproval.exceptions.WrongLenghtFieldException;
+import com.babel.vehiclerentingapproval.models.Pais;
 import com.babel.vehiclerentingapproval.models.Persona;
-import com.babel.vehiclerentingapproval.persistance.database.mappers.DireccionMapper;
-import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
+import com.babel.vehiclerentingapproval.models.TelefonoContacto;
+import com.babel.vehiclerentingapproval.models.TipoVia;
+import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +18,18 @@ public class PersonaServiceImpl implements PersonaService {
 
     private DireccionMapper direccionMapper;
     private PersonaMapper personaMapper;
+    private TelefonoMapper telefonoMapper;
+    private TipoViaMapper tipoViaMapper;
+    private ProvinciaMapper provinciaMapper;
+    private PaisMapper paisMapper;
 
-    PersonaServiceImpl(PersonaMapper personaMapper, DireccionMapper direccionMapper){
-        this.personaMapper=personaMapper;
+    public PersonaServiceImpl(DireccionMapper direccionMapper, PersonaMapper personaMapper, TelefonoMapper telefonoMapper, TipoViaMapper tipoViaMapper, ProvinciaMapper provinciaMapper, PaisMapper paisMapper) {
         this.direccionMapper = direccionMapper;
+        this.personaMapper = personaMapper;
+        this.telefonoMapper = telefonoMapper;
+        this.tipoViaMapper = tipoViaMapper;
+        this.provinciaMapper = provinciaMapper;
+        this.paisMapper = paisMapper;
     }
 
     @Override
@@ -29,9 +39,16 @@ public class PersonaServiceImpl implements PersonaService {
         this.validatePersonData(persona);
 
         persona=this.addPersonaDireccion(persona);
+        this.addTelefonos(persona);
         this.personaMapper.insertPersona(persona);
 
         return persona;
+    }
+
+    private void addTelefonos(Persona persona) {
+        for (TelefonoContacto telefonoContacto:persona.getTelefonos()) {
+            this.telefonoMapper.addTelefono(telefonoContacto, persona);
+        }
     }
 
     @Override
@@ -43,11 +60,16 @@ public class PersonaServiceImpl implements PersonaService {
     }
 
     private Persona addPersonaDireccion(Persona persona){
+        this.paisMapper.insertPais(persona.getNacionalidad());
+        this.tipoViaMapper.insertTipoVia(persona.getDireccionDomicilio().getTipoViaId());
+        this.provinciaMapper.insertProvincia(persona.getDireccionDomicilio().getProvincia());
         this.direccionMapper.insertDireccion(persona.getDireccionDomicilio());
 
         if (persona.isDireccionDomicilioSameAsNotificacion()){
             persona.setDireccionNotificacion(persona.getDireccionDomicilio());
         }else{
+            this.provinciaMapper.insertProvincia(persona.getDireccionNotificacion().getProvincia());
+            this.tipoViaMapper.insertTipoVia(persona.getDireccionNotificacion().getTipoViaId());
             this.direccionMapper.insertDireccion(persona.getDireccionNotificacion());
         }
 

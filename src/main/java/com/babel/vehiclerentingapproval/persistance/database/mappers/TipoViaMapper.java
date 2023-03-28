@@ -1,13 +1,14 @@
 package com.babel.vehiclerentingapproval.persistance.database.mappers;
 
 import com.babel.vehiclerentingapproval.models.Direccion;
+import com.babel.vehiclerentingapproval.models.TipoVia;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 
 @Mapper
-public interface DireccionMapper {
-    @Insert("INSERT INTO DIRECCION (TIPO_VIA_ID, NOMBRE_CALLE, NUM, PISO, PUERTA, ESCALERA, OTRO_DATO, COD_POSTAL, MUNICIPIO, COD_PROVINCIA) VALUES (#{tipoViaId.tipoVia}, #{nombreCalle}, #{numero}, #{piso, jdbcType=VARCHAR}, null, null, null, #{codPostal}, #{municipio}, #{provinciaCod.codProvincia})")
-    @Options(useGeneratedKeys = true, keyProperty = "direccionId", keyColumn = "DIRECCION_ID")
-    void insertDireccion(Direccion direccion);
+public interface TipoViaMapper {
+    @Insert("INSERT INTO TIPO_VIA (TIPO_VIA_ID, DESCRIPCION) VALUES (#{tipoViaId}, #{descripcion})")
+    @Options(useGeneratedKeys = true, keyProperty = "tipoViaId", keyColumn = "DIRECCION_ID")
+    void insertTipoVia(TipoVia tipoVia);
 }
