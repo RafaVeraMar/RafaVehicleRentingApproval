@@ -1,46 +1,38 @@
 package com.babel.vehiclerentingapproval.models;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class TelefonoContacto {
 
     @NotNull
-    @NotEmpty
-    @NotBlank
-    private String telefonoID;
+    private String telefonoId;
     @NotNull
-    @NotEmpty
-    @NotBlank
-    private Integer personaID;
+    private Persona personaId;
     @NotNull
-    @NotEmpty
-    @NotBlank
     @Size(max = 50)
     private String telefono;
 
-    public TelefonoContacto(String telefonoID, Integer personaID, String telefono) {
-        this.telefonoID = telefonoID;
-        this.personaID = personaID;
+    public TelefonoContacto(String telefonoId, Persona personaId, String telefono) {
+        this.telefonoId = telefonoId;
+        this.personaId = personaId;
         this.telefono = telefono;
     }
 
-    public Integer getPersona() {
-        return personaID;
+    public String getTelefonoId() {
+        return telefonoId;
     }
 
-    public void setPersona(Integer persona) {
-        this.personaID = persona;
+    public void setTelefonoId(String telefonoId) {
+        this.telefonoId = telefonoId;
     }
 
-    public String getTelefonoID() {
-        return telefonoID;
+    public Persona getPersonaId() {
+        return personaId;
     }
 
-    public void setTelefonoID(String telefonoID) {
-        this.telefonoID = telefonoID;
+    public void setPersonaId(Persona personaId) {
+        this.personaId = personaId;
     }
 
     public String getTelefono() {
