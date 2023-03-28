@@ -7,4 +7,7 @@ public interface TipoResultadoSolicitudMapper {
 
     @Select("SELECT DESCRIPCION FROM TIPO_RESULTADO_SOLICITUD WHERE COD_RESULTADO=#{codSolicitud}")
     String getEstadoSolicitud(String codSolicitud);
+
+    @Select("SELECT DESCRIPCION FROM TIPO_RESULTADO_SOLICITUD WHERE COD_RESULTADO=#{codSolicitud}")
+    Integer existeCodigoResolucion(String codSolicitud);
 }
