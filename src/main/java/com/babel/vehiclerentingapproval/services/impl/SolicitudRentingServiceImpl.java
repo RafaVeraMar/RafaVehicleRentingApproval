@@ -22,4 +22,9 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     public void validateRentingRequest(SolicitudRenting solicitudRenting) {
 
     }
+
+    @Override
+    public String verEstadoSolicitud(int idSolicitud) {
+        return "Estado de la solicitud con id " + idSolicitud + ": Demo";
+    }
 }
