@@ -50,6 +50,7 @@ public class Persona {
     @NotEmpty
     @NotBlank
     private List<TelefonoContacto> telefonos;
+    private List<ProductoContratado> productosContratados;
 
     public int getPersonaId() {
         return personaId;
@@ -153,6 +154,14 @@ public class Persona {
 
     public void setTelefonos(List<TelefonoContacto> telefonos) {
         this.telefonos = telefonos;
+    }
+
+    public List<ProductoContratado> getProductosContratados() {
+        return productosContratados;
+    }
+
+    public void setProductosContratados(List<ProductoContratado> productosContratados) {
+        this.productosContratados = productosContratados;
     }
 }
     //getters y setters
