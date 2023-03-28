@@ -8,4 +8,5 @@ public interface SolicitudRentingService {
     public void validateRentingRequest(SolicitudRenting solicitudRenting);
 
     public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFound;
+    public SolicitudRenting getSolicitudById(int it);
 }

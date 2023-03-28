@@ -35,4 +35,9 @@ public class SolicitudRentingController {
 
         }
     }
+    @GetMapping("{id}")
+    ResponseEntity<SolicitudRenting> muestraSolicitudPorId(@PathVariable int id){
+       return ResponseEntity.ok(this.solicitud.getSolicitudById(id));
+
+    }
 }

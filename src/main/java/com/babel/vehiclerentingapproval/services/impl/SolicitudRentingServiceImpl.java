@@ -37,4 +37,8 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         String estado = tipoResultadoSolicitudMapper.getEstadoSolicitud("XX");
         return "Estado de la solicitud con id " + idSolicitud + ": " + estado;
     }
+    public SolicitudRenting getSolicitudById(int id) {
+        return this.solicitudRentingMapper.getSolicitudByID(id);
+    }
+
 }
