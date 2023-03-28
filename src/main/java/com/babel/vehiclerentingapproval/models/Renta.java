@@ -1,31 +1,28 @@
 package com.babel.vehiclerentingapproval.models;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.*;
 import java.util.Date;
 
 public class Renta {
-
-    @NotNull
-    @NotEmpty
-    @NotBlank
-    @Positive
+    @NotNull @NotEmpty @NotBlank @Positive
     private int rentaId;
-    @NotNull
-    @NotEmpty
-    @NotBlank
+    @NotNull @NotEmpty @NotBlank
     private Persona persona;
-    @NotNull
-    @NotEmpty
-    @NotBlank
+    @NotNull @NotEmpty @NotBlank
     private Profesion profesion;
+    @NotNull @NotEmpty @NotBlank @Positive
     private int anio;
-    private int importe;
+    @NotNull @NotEmpty @NotBlank
+    private float importeNeto;
+    @NotNull @NotEmpty @NotBlank
+    private float importeBruto;
+    @NotNull @NotEmpty @NotBlank
     private int isCuentaPropia;
+    @Size(max = 5) @NotNull @NotEmpty @NotBlank
     private String iae;
+    @Size(max = 10)
     private String cifEmpleador;
+    @PastOrPresent
     private Date fechaInicioEmpleo;
 
 
@@ -49,6 +46,22 @@ public class Renta {
         return profesion;
     }
 
+    public float getImporteNeto() {
+        return importeNeto;
+    }
+
+    public void setImporteNeto(int importeNeto) {
+        this.importeNeto = importeNeto;
+    }
+
+    public float getImporteBruto() {
+        return importeBruto;
+    }
+
+    public void setImporteBruto(int importeBruto) {
+        this.importeBruto = importeBruto;
+    }
+
     public void setProfesion(Profesion profesion) {
         this.profesion = profesion;
     }
@@ -59,14 +72,6 @@ public class Renta {
 
     public void setAnio(int anio) {
         this.anio = anio;
-    }
-
-    public int getImporte() {
-        return importe;
-    }
-
-    public void setImporte(int importe) {
-        this.importe = importe;
     }
 
     public int getIsCuentaPropia() {
