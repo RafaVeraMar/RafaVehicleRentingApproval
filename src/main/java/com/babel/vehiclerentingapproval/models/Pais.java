@@ -9,7 +9,7 @@ public class Pais {
     @Size(max=2)
     private String isoAlfa_2;
     @NotNull
-    @Max(38)
+    @Size(max=38)
     private Integer isoNum_3;
     @NotNull
     @Size(max=3)
@@ -17,7 +17,7 @@ public class Pais {
     @NotNull
     @Size(max=100)
     private String nombre;
-    @Max(38)
+    @Size(max=38)
     private Integer orden;
 
     public Pais(String isoAlfa_2, Integer isoNum_3, String isoAlfa_3, String nombre, Integer orden) {
