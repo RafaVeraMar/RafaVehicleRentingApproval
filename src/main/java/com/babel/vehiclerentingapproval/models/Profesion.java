@@ -16,6 +16,11 @@ public class Profesion {
     @NotBlank
     private String descripcion;
 
+    public Profesion(int profesionId, String descripcion) {
+        this.profesionId = profesionId;
+        this.descripcion = descripcion;
+    }
+
     public int getProfesionId() {
         return profesionId;
     }

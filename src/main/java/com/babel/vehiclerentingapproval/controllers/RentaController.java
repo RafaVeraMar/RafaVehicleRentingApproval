@@ -3,7 +3,6 @@ package com.babel.vehiclerentingapproval.controllers;
 import com.babel.vehiclerentingapproval.exceptions.PersonaNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.ProfesionNotFoundException;
 import com.babel.vehiclerentingapproval.models.Renta;
-import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.RentaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

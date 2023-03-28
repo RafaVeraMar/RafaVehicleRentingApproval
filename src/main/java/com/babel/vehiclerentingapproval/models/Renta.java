@@ -1,5 +1,7 @@
 package com.babel.vehiclerentingapproval.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.validation.constraints.*;
 import java.util.Date;
 
@@ -23,6 +25,7 @@ public class Renta {
     @Size(max = 10)
     private String cifEmpleador;
     @PastOrPresent
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date fechaInicioEmpleo;
 
 
@@ -46,22 +49,6 @@ public class Renta {
         return profesion;
     }
 
-    public float getImporteNeto() {
-        return importeNeto;
-    }
-
-    public void setImporteNeto(int importeNeto) {
-        this.importeNeto = importeNeto;
-    }
-
-    public float getImporteBruto() {
-        return importeBruto;
-    }
-
-    public void setImporteBruto(int importeBruto) {
-        this.importeBruto = importeBruto;
-    }
-
     public void setProfesion(Profesion profesion) {
         this.profesion = profesion;
     }
@@ -72,6 +59,22 @@ public class Renta {
 
     public void setAnio(int anio) {
         this.anio = anio;
+    }
+
+    public float getImporteNeto() {
+        return importeNeto;
+    }
+
+    public void setImporteNeto(float importeNeto) {
+        this.importeNeto = importeNeto;
+    }
+
+    public float getImporteBruto() {
+        return importeBruto;
+    }
+
+    public void setImporteBruto(float importeBruto) {
+        this.importeBruto = importeBruto;
     }
 
     public int getIsCuentaPropia() {
