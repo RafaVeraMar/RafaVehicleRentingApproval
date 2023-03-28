@@ -2,11 +2,9 @@ package com.babel.vehiclerentingapproval.controllers;
 
 
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
+import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/solicitud")
@@ -21,5 +19,11 @@ public class SolicitudRentingController {
     ResponseEntity<String> crearSolicitud(@RequestBody SolicitudRenting solicitudACrear){
         this.solicitud.createRentingRequest(solicitudACrear);
         return ResponseEntity.ok("Solicitud creada");
+    }
+
+    @GetMapping("{id}")
+    ResponseEntity<SolicitudRenting> muestraSolicitudPorId(@RequestParam int id){
+       return ResponseEntity.ok(this.solicitud.getSolicitudById(id));
+
     }
 }

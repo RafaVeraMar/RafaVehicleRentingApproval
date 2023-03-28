@@ -22,4 +22,10 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     public void validateRentingRequest(SolicitudRenting solicitudRenting) {
 
     }
+
+    @Override
+    public SolicitudRenting getSolicitudById(int id) {
+        return this.solicitudRentingMapper.getSolicitudByID(id);
+    }
+
 }
