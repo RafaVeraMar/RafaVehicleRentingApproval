@@ -4,6 +4,7 @@ import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
+import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +12,13 @@ import java.math.BigInteger;
 
 @Service
 public class SolicitudRentingServiceImpl implements SolicitudRentingService {
-    private final SolicitudRentingMapper solicitudRentingMapper;
+    private SolicitudRentingMapper solicitudRentingMapper;
+    private TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
     private final PersonaMapper personaMapper;
 
-    public SolicitudRentingServiceImpl (SolicitudRentingMapper solicitudRentingMapper, PersonaMapper personaMapper) {
+    public SolicitudRentingServiceImpl(SolicitudRentingMapper solicitudRentingMapper,TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaMapper personaMapper) {
         this.solicitudRentingMapper = solicitudRentingMapper;
+        this.tipoResultadoSolicitudMapper = tipoResultadoSolicitudMapper;
         this.personaMapper = personaMapper;
     }
 
@@ -36,6 +39,30 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         if (personaMapper.existePersona(idPersona) < 1){
             throw new PersonaNotFoundException();
         }
+    }
+
+    @Override
+    public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFoundException {
+        int codigoExiste = tipoResultadoSolicitudMapper.existeCodigoResolucion(idSolicitud);
+
+        if(codigoExiste == 0){
+            throw new EstadoSolicitudNotFoundException();
+        }
+        String estado = tipoResultadoSolicitudMapper.getEstadoSolicitud(idSolicitud);
+        return "Estado de la solicitud con id " + idSolicitud + ": " + estado;
+    }
+    public SolicitudRenting getSolicitudById(int id) throws SolicitudRentingNotFoundException {
+        SolicitudRenting solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
+
+        if (solicitudRenting == null){
+            throw new SolicitudRentingNotFoundException();
+        }
+        return solicitudRenting;
+    }
+
+    @Override
+    public void modificaSolicitud(Integer solicitudId, SolicitudRenting nuevoRenting) {
+        this.solicitudRentingMapper.modificaSolicitud(solicitudId,nuevoRenting);
     }
 
      private int lenghtNumber(BigInteger number){
