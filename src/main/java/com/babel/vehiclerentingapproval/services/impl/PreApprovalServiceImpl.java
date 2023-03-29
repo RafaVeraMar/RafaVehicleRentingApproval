@@ -1,9 +1,6 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
-import com.babel.vehiclerentingapproval.persistance.database.mappers.InversionIngresosMapper;
-import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
-import com.babel.vehiclerentingapproval.persistance.database.mappers.RentaMapper;
-import com.babel.vehiclerentingapproval.persistance.database.mappers.ScoringRatingMapper;
+import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PreApprovalService;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +12,14 @@ public class PreApprovalServiceImpl implements PreApprovalService {
     private InversionIngresosMapper inversionIngresosMapper;
     private PersonaMapper personaMapper;
     private RentaMapper rentaMapper;
+    private ImpagosCuotaMapper impagosCuotaMapper;
 
-    public PreApprovalServiceImpl(ScoringRatingMapper scoringRatingMapper, InversionIngresosMapper inversionIngresosMapper, PersonaMapper personaMapper, RentaMapper rentaMapper) {
+    public PreApprovalServiceImpl(ScoringRatingMapper scoringRatingMapper, InversionIngresosMapper inversionIngresosMapper, PersonaMapper personaMapper, RentaMapper rentaMapper, ImpagosCuotaMapper impagosCuotaMapper) {
         this.scoringRatingMapper = scoringRatingMapper;
         this.inversionIngresosMapper = inversionIngresosMapper;
         this.personaMapper = personaMapper;
         this.rentaMapper = rentaMapper;
+        this.impagosCuotaMapper = impagosCuotaMapper;
     }
 
     @Override
@@ -45,6 +44,20 @@ public class PreApprovalServiceImpl implements PreApprovalService {
             return false;
         }
     }
+
+    @Override
+    public Boolean validateImpagoCuota(int solicitudId) {
+        if(this.impagosCuotaMapper.obtenerImporteImpagoSolicitud(solicitudId)
+                <= impagosCuotaMapper.obtenerCuotaSolicitud(solicitudId)){
+
+            return true;
+
+        }else{
+            return false;
+        }
+    }
+
+
 
 
 }

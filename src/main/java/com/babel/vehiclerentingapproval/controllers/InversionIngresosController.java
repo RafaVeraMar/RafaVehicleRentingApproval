@@ -21,10 +21,12 @@ public class InversionIngresosController {
     ResponseEntity makeProofs(@RequestParam int solicitudId){
         boolean t = this.approvalService.validateInversionIngresos(solicitudId);
         boolean t1 = this.approvalService.validateScoringPersona(solicitudId);
+        boolean t2= this.approvalService.validateImpagoCuota(solicitudId);
         ArrayList<Boolean> lista =  new ArrayList<Boolean>();
 
         lista.add(t);
         lista.add(t1);
+        lista.add(t2);
         return ResponseEntity.ok((lista));
     }
 
