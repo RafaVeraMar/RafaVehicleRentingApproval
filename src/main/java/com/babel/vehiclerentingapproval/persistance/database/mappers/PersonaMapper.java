@@ -2,10 +2,7 @@ package com.babel.vehiclerentingapproval.persistance.database.mappers;
 
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.ProductoContratado;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -19,7 +16,16 @@ public interface PersonaMapper {
     @Select("SELECT COUNT(PERSONA_ID) FROM PERSONA WHERE PERSONA_ID = #{personaId}")
     int existePersona(int personaId);
 
-    @Select("SELECT p.PERSONA_ID , pc.* FROM PERSONA p  INNER JOIN PRODUCTO_CONTRATADO_PERSONA pcp ON p.PERSONA_ID =pcp.PERSONA_ID " +
-            "INNER JOIN PRODUCTO_CONTRATADO pc ON pc.PRODUCTO_CONTRATADO_ID = pcp.PRODUCTO_CONTRATADO_ID WHERE p.PERSONA_ID = 100")
-    List<ProductoContratado> verProductosContratados(String nif);
+    @Select("SELECT pc.PRODUCTO_CONTRATADO_ID, pc.PRODUCTO_ID, pc.ALIAS, pc.IMPORTE_NOMINAL, pc.FECHA_ALTA, pc.FECHA_BAJA " +
+            "FROM PERSONA p INNER JOIN PRODUCTO_CONTRATADO_PERSONA pcp ON p.PERSONA_ID =pcp.PERSONA_ID " +
+            "INNER JOIN PRODUCTO_CONTRATADO pc ON pc.PRODUCTO_CONTRATADO_ID = pcp.PRODUCTO_CONTRATADO_ID WHERE p.PERSONA_ID = #{id}")
+    @Results({
+            @Result(property = "idProductoContratado", column = "PRODUCTO_CONTRATADO_ID"),
+            @Result(property = "idProducto", column = "PRODUCTO_ID"),
+            @Result(property = "alias", column = "ALIAS"),
+            @Result(property = "importeNominal", column = "IMPORTE_NOMINAL"),
+            @Result(property = "fechaAlta", column = "FECHA_ALTA"),
+            @Result(property = "fechaBaja", column = "FECHA_BAJA")
+    })
+    List<ProductoContratado> verProductosContratados(int id);
 }

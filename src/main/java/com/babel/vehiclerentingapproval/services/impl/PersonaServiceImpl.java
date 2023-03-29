@@ -4,14 +4,13 @@ package com.babel.vehiclerentingapproval.services.impl;
 import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import com.babel.vehiclerentingapproval.exceptions.RequiredMissingFieldException;
 import com.babel.vehiclerentingapproval.exceptions.WrongLenghtFieldException;
-import com.babel.vehiclerentingapproval.models.Pais;
-import com.babel.vehiclerentingapproval.models.Persona;
-import com.babel.vehiclerentingapproval.models.TelefonoContacto;
-import com.babel.vehiclerentingapproval.models.TipoVia;
+import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class PersonaServiceImpl implements PersonaService {
@@ -57,6 +56,11 @@ public class PersonaServiceImpl implements PersonaService {
             throw new RequestApiValidationException();
         }
         return null;
+    }
+
+    @Override
+    public List<ProductoContratado> viewPersonaProducto(int id) {
+        return this.personaMapper.verProductosContratados(id);
     }
 
     private Persona addPersonaDireccion(Persona persona){
