@@ -2,6 +2,7 @@ package com.babel.vehiclerentingapproval.services.impl;
 
 import com.babel.vehiclerentingapproval.exceptions.PersonaNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.ProfesionNotFoundException;
+import com.babel.vehiclerentingapproval.exceptions.RentaFoundException;
 import com.babel.vehiclerentingapproval.models.Renta;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.ProfesionMapper;
@@ -23,9 +24,10 @@ public class RentaServiceImpl implements RentaService {
     }
 
     @Override
-    public Renta addRenta(Renta renta) throws ProfesionNotFoundException, PersonaNotFoundException {
+    public Renta addRenta(Renta renta) throws ProfesionNotFoundException, PersonaNotFoundException, RentaFoundException {
         this.existeProfesion(renta.getProfesion().getProfesionId());
         this.existePersona(renta.getPersona().getPersonaId());
+        this.existeRenta(renta.getRentaId());
         this.rentaMapper.addRenta(renta);
         return renta;
     }
@@ -39,6 +41,12 @@ public class RentaServiceImpl implements RentaService {
     private void existePersona(int personaId) throws PersonaNotFoundException{
         if(this.personaMapper.existePersona(personaId)==0){
             throw new PersonaNotFoundException();
+        }
+    }
+
+    private void existeRenta(int rentaId) throws RentaFoundException {
+        if(this.rentaMapper.existeRenta(rentaId)!=0){
+            throw new RentaFoundException();
         }
     }
 

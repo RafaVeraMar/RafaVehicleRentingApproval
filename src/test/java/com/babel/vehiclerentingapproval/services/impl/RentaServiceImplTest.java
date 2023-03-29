@@ -1,6 +1,8 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
-import com.babel.vehiclerentingapproval.exceptions.RequiredMissingFieldException;
+import com.babel.vehiclerentingapproval.exceptions.PersonaNotFoundException;
+import com.babel.vehiclerentingapproval.exceptions.ProfesionNotFoundException;
+import com.babel.vehiclerentingapproval.exceptions.RentaFoundException;
 import com.babel.vehiclerentingapproval.models.Direccion;
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.Profesion;
@@ -9,7 +11,6 @@ import com.babel.vehiclerentingapproval.persistance.database.mappers.DireccionMa
 import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.ProfesionMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.RentaMapper;
-import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.RentaService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class RentaServiceImplTest {
@@ -32,25 +35,71 @@ public class RentaServiceImplTest {
     @BeforeEach
     void setUpAll(){
         personaMapper = Mockito.mock(PersonaMapper.class);
+        when(personaMapper.existePersona(100)).thenReturn(0);
+        when(personaMapper.existePersona(1)).thenReturn(1);
+
         direccionMapper = Mockito.mock(DireccionMapper.class);
+
         profesionMapper = Mockito.mock(ProfesionMapper.class);
+        when(profesionMapper.existeProfesion(100)).thenReturn(0);
+        when(profesionMapper.existeProfesion(1)).thenReturn(1);
+
+
         rentaMapper = Mockito.mock(RentaMapper.class);
+        when(rentaMapper.existeRenta(1)).thenReturn(1);
+        when(rentaMapper.existeRenta(100)).thenReturn(0);
+
         rentaService = new RentaServiceImpl(rentaMapper,profesionMapper,personaMapper);
     }
 
     @Test
     public void addRenta_should_throwProfesionNotFoundException_when_profesionIdNoExiste(){
-        Assertions.assertThrows(Exception.class,() ->{
+        Assertions.assertThrows(ProfesionNotFoundException.class,() ->{
             Renta renta = createRenta();
 
             Profesion profesion = createProfesion();
-            profesion.setProfesionId(9999);
+            profesion.setProfesionId(100);
             renta.setProfesion(profesion);
 
 
             this.rentaService.addRenta(renta);
         });
     }
+
+
+    @Test
+    public void addRenta_should_throwPersonaNotFoundException_when_personaIdNoExiste(){
+        Assertions.assertThrows(PersonaNotFoundException.class,() ->{
+            Renta renta = createRenta();
+            Persona persona = createPersona();
+
+            Profesion profesion = createProfesion();
+            renta.setProfesion(profesion);
+            persona.setPersonaId(100);
+
+
+            this.rentaService.addRenta(renta);
+        });
+    }
+
+    @Test
+    public void addRenta_should_throwRentaFoundException_when_rentaIdExiste(){
+        Assertions.assertThrows(RentaFoundException.class,() ->{
+            Renta renta = createRenta();
+            Persona persona = createPersona();
+            Profesion profesion = createProfesion();
+
+            renta.setProfesion(profesion);
+            persona.setPersonaId(1);
+            renta.setPersona(persona);
+            renta.setRentaId(1);
+
+
+            this.rentaService.addRenta(renta);
+        });
+    }
+
+
 
     private Renta createRenta() throws ParseException {
         Renta renta = new Renta();
@@ -71,7 +120,7 @@ public class RentaServiceImplTest {
 
 
     private Profesion createProfesion(){
-        Profesion profesion = new Profesion(1,"Informatico");
+        Profesion profesion = new Profesion(1,null);
         return profesion;
     }
 

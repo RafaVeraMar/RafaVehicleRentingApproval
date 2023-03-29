@@ -6,33 +6,22 @@ import javax.validation.constraints.Size;
 public class TelefonoContacto {
 
     @NotNull
-    private String telefonoId;
-    @NotNull
-    private Persona personaId;
+    private int telefonoId;
     @NotNull
     @Size(max = 50)
     private String telefono;
 
-    public TelefonoContacto(String telefonoId, Persona personaId, String telefono) {
+    public TelefonoContacto(int telefonoId, String telefono) {
         this.telefonoId = telefonoId;
-        this.personaId = personaId;
         this.telefono = telefono;
     }
 
-    public String getTelefonoId() {
+    public int getTelefonoId() {
         return telefonoId;
     }
 
-    public void setTelefonoId(String telefonoId) {
+    public void setTelefonoId(int telefonoId) {
         this.telefonoId = telefonoId;
-    }
-
-    public Persona getPersonaId() {
-        return personaId;
-    }
-
-    public void setPersonaId(Persona personaId) {
-        this.personaId = personaId;
     }
 
     public String getTelefono() {
