@@ -34,7 +34,6 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     }
 
 
-
     private void existIdPersona (int idPersona) throws PersonaNotFoundException {
         if (personaMapper.existePersona(idPersona) < 1){
             throw new PersonaNotFoundException();

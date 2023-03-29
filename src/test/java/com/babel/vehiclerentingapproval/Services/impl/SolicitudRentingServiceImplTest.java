@@ -2,6 +2,7 @@ package com.babel.vehiclerentingapproval.Services.impl;
 
 import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundException;
+import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
@@ -17,11 +18,14 @@ public class SolicitudRentingServiceImplTest {
     TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
     SolicitudRentingMapper solicitudRentingMapper;
 
+    PersonaMapper personaMapper;
+
     @BeforeEach
     void setUpAll(){
         tipoResultadoSolicitudMapper = Mockito.mock(TipoResultadoSolicitudMapper.class);
         solicitudRentingMapper = Mockito.mock(SolicitudRentingMapper.class);
-        solicitudService = new SolicitudRentingServiceImpl(solicitudRentingMapper,tipoResultadoSolicitudMapper);
+        personaMapper = Mockito.mock(PersonaMapper.class);
+        solicitudService = new SolicitudRentingServiceImpl(solicitudRentingMapper,tipoResultadoSolicitudMapper, personaMapper);
 
     }
 
