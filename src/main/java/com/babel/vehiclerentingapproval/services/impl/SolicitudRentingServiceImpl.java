@@ -41,4 +41,9 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         return this.solicitudRentingMapper.getSolicitudByID(id);
     }
 
+    @Override
+    public void modificaSolicitud(Integer solicitudId, SolicitudRenting nuevoRenting) {
+        this.solicitudRentingMapper.modificaSolicitud(solicitudId,nuevoRenting);
+    }
+
 }

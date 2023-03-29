@@ -44,4 +44,14 @@ public class SolicitudRentingController {
        return ResponseEntity.ok(this.solicitud.getSolicitudById(id));
 
     }
+
+    @PutMapping("/estado/{solicitudId}")
+    ResponseEntity<String> updateSolicitud(@PathVariable Integer solicitudId, @RequestBody SolicitudRenting nuevoRenting){
+        try{
+            this.solicitud.modificaSolicitud(solicitudId,nuevoRenting);
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(String.format("Solicitud con id de solicitud: "+ solicitudId+ ", actualizada"));
+    }
 }
