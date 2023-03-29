@@ -12,4 +12,5 @@ public interface PersonaService {
     Persona addPersona(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException;
 
     Persona getPerson(int idPersona) throws RequestApiValidationException;
+
 }

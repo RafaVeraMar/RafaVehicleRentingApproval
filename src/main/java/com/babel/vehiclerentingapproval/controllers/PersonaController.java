@@ -24,9 +24,11 @@ public class PersonaController {
             this.personaService.addPersona(persona);
         } catch (RequiredMissingFieldException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Comprueba los datos de entrada");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
+
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-        return ResponseEntity.ok(String.format("Persona añadida. Id: %d", persona.getPersonaId()));
+        return ResponseEntity.ok(persona);
     }
 }
