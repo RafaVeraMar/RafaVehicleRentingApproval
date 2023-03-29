@@ -7,5 +7,7 @@ public interface PreApprovalService {
 
     Boolean validateScoringPersona(int solicitudId);
 
+    Boolean validateCIFCliente(int solicitudId);
+
 
 }
