@@ -29,13 +29,12 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
     @Override
     public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFound {
-        SolicitudRenting solicitud = getSolicitudById(idSolicitud);
-        Integer codigoExiste = tipoResultadoSolicitudMapper.existeCodigoResolucion(solicitud.getTipoResultadoSolicitud().getCodResultado());
+        Integer codigoExiste = tipoResultadoSolicitudMapper.existeCodigoResolucion(idSolicitud);
 
         if(codigoExiste == null){
             throw new EstadoSolicitudNotFound();
         }
-        String estado = tipoResultadoSolicitudMapper.getEstadoSolicitud("XX");
+        String estado = tipoResultadoSolicitudMapper.getEstadoSolicitud(idSolicitud);
         return "Estado de la solicitud con id " + idSolicitud + ": " + estado;
     }
     public SolicitudRenting getSolicitudById(int id) {
