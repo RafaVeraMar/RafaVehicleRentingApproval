@@ -5,6 +5,7 @@ import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 @RestController
@@ -26,7 +27,12 @@ public class SolicitudRentingController {
     }
     @PatchMapping("/{id}")
     ResponseEntity<String> cancelarSolicitud(@PathVariable int id){
-        this.solicitud.cancelarSolicitud(this.solicitud.getSolicitudById(id));
+        try {
+            this.solicitud.cancelarSolicitud(this.solicitud.getSolicitudById(id));
+        }catch(Exception e){//TODO cuando haga el merge meter la excepcion creada por Alavaro
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("no es correcto el id");
+        }
+
         return ResponseEntity.ok("Solicitud Renting actualizado");
     }
 }
