@@ -19,7 +19,8 @@ public interface PersonaMapper {
     @Select("SELECT COUNT(PERSONA_ID) FROM PERSONA WHERE PERSONA_ID = #{personaId}")
     int existePersona(int personaId);
 
-    @Select("SELECT p.PRODUCTO_CONTRATADO_ID, p.FECHA_ALTA, p.FECHA_BAJA, b.PERSONA_ID FROM PRODUCTO_CONTRATADO p " +
-            "INNER JOIN PERSONA b ON p.PRODUCTO_CONTRATADO_ID = b.") //TODO
-    List<ProductoContratado> verProductosContratados(Persona persona, ProductoContratado productoContratado);
+    @Select("SELECT PCP.PERSONA_ID, PC.PRODUCTO_CONTRATADO_ID, PC.FECHA_ALTA, PC.FECHA_BAJA FROM SCORING.PRODUCTO_CONTRATADO PC " +
+    " JOIN SCORING.PRODUCTO_CONTRATADO_PERSONA PCP ON PCP.PRODUCTO_CONTRATADO_ID = PC.PRODUCTO_CONTRATADO_ID" +
+    " JOIN SCORING.PERSONA P ON P.PERSONA_ID = PCP.PERSONA_ID WHERE P.NIF = #{nif}")
+    List<ProductoContratado> verProductosContratados(String nif);
 }
