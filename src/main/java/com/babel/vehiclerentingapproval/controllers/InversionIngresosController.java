@@ -1,21 +1,31 @@
 package com.babel.vehiclerentingapproval.controllers;
 
-import com.babel.vehiclerentingapproval.models.Renta;
-import com.babel.vehiclerentingapproval.models.SolicitudRenting;
-import com.babel.vehiclerentingapproval.services.InversionIngresos;
+import com.babel.vehiclerentingapproval.services.PreApprovalService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RestController("/validaciones")
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping("/validaciones")
 public class InversionIngresosController {
 
-    InversionIngresos inversionIngresos;
+    private PreApprovalService approvalService;
 
-    public InversionIngresosController(InversionIngresos inversionIngresos) {
-        this.inversionIngresos = inversionIngresos;
+    public InversionIngresosController(PreApprovalService approvalService) {
+        this.approvalService = approvalService;
     }
 
+    @GetMapping("")
+    ResponseEntity makeProofs(@RequestParam int solicitudId){
+        boolean t = this.approvalService.validateInversionIngresos(solicitudId);
+        boolean t1 = this.approvalService.validateScoringPersona(solicitudId);
+        ArrayList<Boolean> lista =  new ArrayList<Boolean>();
+
+        lista.add(t);
+        lista.add(t1);
+        return ResponseEntity.ok((lista));
+    }
 
 }

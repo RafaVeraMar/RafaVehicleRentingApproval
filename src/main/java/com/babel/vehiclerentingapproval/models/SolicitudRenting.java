@@ -12,6 +12,20 @@ public class SolicitudRenting {
     private float cuota;
     private Integer plazo;
     private Date fechaInicioVigor;
+
+    public SolicitudRenting(int solicitudId, Persona persona, Date fechaSolicitud, int numVehiculos, float inversion, float cuota, Integer plazo, Date fechaInicioVigor, Date fechaResolucion, TipoResultadoSolicitud tipoResultadoSolicitud) {
+        this.solicitudId = solicitudId;
+        this.persona = persona;
+        this.fechaSolicitud = fechaSolicitud;
+        this.numVehiculos = numVehiculos;
+        this.inversion = inversion;
+        this.cuota = cuota;
+        this.plazo = plazo;
+        this.fechaInicioVigor = fechaInicioVigor;
+        this.fechaResolucion = fechaResolucion;
+        this.tipoResultadoSolicitud = tipoResultadoSolicitud;
+    }
+
     private Date fechaResolucion;
     private TipoResultadoSolicitud tipoResultadoSolicitud;
 
