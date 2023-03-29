@@ -86,6 +86,19 @@ public class PreApprovalServiceImpl implements PreApprovalService {
     }
 
     @Override
+    public Boolean validateNationality(int personaId) {
+        String nacionalidad = this.personaMapper.getNationality(personaId);
+        boolean espanol = false;
+
+        if (nacionalidad.equalsIgnoreCase("ES")) {
+            espanol = true;
+        }
+
+        return espanol;
+    }
+
+
+    @Override
     public Boolean validateYearsExperience(int solicitudId) {
         float yearsEmployment = this.employmentSeniorityMapper.obtenerFechaInicioEmpleoSolicitud(solicitudId);
         if (yearsEmployment >= 3) {

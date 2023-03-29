@@ -27,6 +27,7 @@ public class InversionIngresosController {
         boolean t4 = this.approvalService.validateInversion(solicitudId);
 
         ArrayList<Boolean> lista =  new ArrayList<Boolean>();
+        boolean t5 = this.approvalService.validateNationality(102);
 
         lista.add(t);
         lista.add(t1);
