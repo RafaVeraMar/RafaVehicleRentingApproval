@@ -2,6 +2,7 @@ package com.babel.vehiclerentingapproval.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.math.BigInteger;
 import java.util.Date;
 
 public class SolicitudRenting {
@@ -9,10 +10,10 @@ public class SolicitudRenting {
     private Persona persona;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fechaSolicitud;
-    private Long numVehiculos;
+    private BigInteger numVehiculos;
     private Float inversion;
     private Float cuota;
-    private Long plazo;
+    private BigInteger plazo;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fechaInicioVigor;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
@@ -43,11 +44,11 @@ public class SolicitudRenting {
         this.fechaSolicitud = fechaSolicitud;
     }
 
-    public Long getNumVehiculos ( ) {
+    public BigInteger getNumVehiculos ( ) {
         return numVehiculos;
     }
 
-    public void setNumVehiculos (long numVehiculos) {
+    public void setNumVehiculos (BigInteger numVehiculos) {
         this.numVehiculos = numVehiculos;
     }
 
@@ -67,11 +68,11 @@ public class SolicitudRenting {
         this.cuota = cuota;
     }
 
-    public Long getPlazo ( ) {
+    public BigInteger getPlazo ( ) {
         return plazo;
     }
 
-    public void setPlazo (Long plazo) {
+    public void setPlazo (BigInteger plazo) {
         this.plazo = plazo;
     }
 
