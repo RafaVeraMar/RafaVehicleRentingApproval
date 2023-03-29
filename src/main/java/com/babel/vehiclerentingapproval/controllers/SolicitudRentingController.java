@@ -1,7 +1,7 @@
 package com.babel.vehiclerentingapproval.controllers;
 
 
-import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFound;
+import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundException;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import org.springframework.http.HttpStatus;
@@ -24,14 +24,14 @@ public class SolicitudRentingController {
     }
 
     @GetMapping("/estado/{id}")
-    ResponseEntity<String> verEstadoSolicitud(@PathVariable String id) throws EstadoSolicitudNotFound {
+    ResponseEntity<String> verEstadoSolicitud(@PathVariable String id) throws EstadoSolicitudNotFoundException {
 
         try{
             int idSolicitud = Integer.parseInt(id);
             String estado = this.solicitud.verEstadoSolicitud(idSolicitud);
             return ResponseEntity.ok(estado);
         }
-        catch (EstadoSolicitudNotFound e){
+        catch (EstadoSolicitudNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: No existe ninguna codigo de resolución válido asociado a esa solicitud ");
 
         }

@@ -1,4 +1,4 @@
 package com.babel.vehiclerentingapproval.exceptions;
 
-public class EstadoSolicitudNotFound extends Exception{
+public class EstadoSolicitudNotFoundException extends Exception{
 }

@@ -1,6 +1,6 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
-import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFound;
+import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundException;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
@@ -28,11 +28,11 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     }
 
     @Override
-    public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFound {
+    public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFoundException {
         int codigoExiste = tipoResultadoSolicitudMapper.existeCodigoResolucion(idSolicitud);
 
         if(codigoExiste == 0){
-            throw new EstadoSolicitudNotFound();
+            throw new EstadoSolicitudNotFoundException();
         }
         String estado = tipoResultadoSolicitudMapper.getEstadoSolicitud(idSolicitud);
         return "Estado de la solicitud con id " + idSolicitud + ": " + estado;
