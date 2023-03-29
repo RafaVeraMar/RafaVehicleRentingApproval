@@ -44,17 +44,18 @@ public class SolicitudRentingController {
         }
     }
     @GetMapping("{id}")
-    ResponseEntity<SolicitudRenting> muestraSolicitudPorId(@PathVariable int id){
-       return ResponseEntity.ok(this.solicitud.getSolicitudById(id));
-
+    ResponseEntity<SolicitudRenting> muestraSolicitudPorId(@PathVariable int id) {
+        return ResponseEntity.ok(this.solicitud.getSolicitudById(id));
+    }
     @PatchMapping("/{id}")
-    ResponseEntity<String> cancelarSolicitud(@PathVariable int id){
+    ResponseEntity cancelarSolicitud(@PathVariable int id){
         try {
             this.solicitud.cancelarSolicitud(this.solicitud.getSolicitudById(id));
         }catch(Exception e){//TODO cuando haga el merge meter la excepcion creada por Alavaro
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("no es correcto el id");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("no es correcto el id");
         }
 
-        return ResponseEntity.ok("Solicitud Renting actualizado");
+        return ResponseEntity.ok(String.format("Solicitud cancelada id: %d",id));
     }
 }
+

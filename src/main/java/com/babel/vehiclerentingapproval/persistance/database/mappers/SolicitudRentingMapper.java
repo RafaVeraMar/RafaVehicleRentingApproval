@@ -1,14 +1,11 @@
 package com.babel.vehiclerentingapproval.persistance.database.mappers;
 
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface SolicitudRentingMapper {
-    @Update("UPDATE SOLICITUD_RENTING SET FECHA_RESOLUCION=#{fechaResolucion,jdbcType=DATE}, " +
+    @Update("UPDATE SOLICITUD_RENTING SET FECHA_RESOLUCION=SYSDATE, " +
             "COD_RESOLUCION='CA' where SOLICITUD_ID=#{solicitudId}")
     @Options(useGeneratedKeys = true, keyProperty = "solicitudId", keyColumn = "SOLICITUD_ID")
     void cancelarSolicitud(SolicitudRenting solicitudRenting);
@@ -25,7 +22,7 @@ public interface SolicitudRentingMapper {
             @Result(property = "plazo", column = "PLAZO"),
             @Result(property = "fechaInicioVigor", column = "FECHA_INICIO_VIGOR"),
             @Result(property = "fechaResolucion", column = "FECHA_RESOLUCION"),
-            @Result(property = "conResolucion", column = "COD_RESOLUCION"),
+            @Result(property = "tipoResultadoSolicitud.codResultado", column = "COD_RESOLUCION"),
     })
     SolicitudRenting getSolicitudByID(int solicitudId);
 }
