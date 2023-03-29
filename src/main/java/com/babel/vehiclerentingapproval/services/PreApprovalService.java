@@ -10,4 +10,5 @@ public interface PreApprovalService {
     Boolean validateCIFCliente(int solicitudId);
 
 
+    Boolean validateYearsExperience(int solicitudId);
 }

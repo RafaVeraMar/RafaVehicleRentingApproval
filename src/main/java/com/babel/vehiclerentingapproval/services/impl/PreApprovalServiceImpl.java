@@ -10,14 +10,15 @@ import java.util.List;
 public class PreApprovalServiceImpl implements PreApprovalService {
 
     private ScoringRatingMapper scoringRatingMapper;
-
+    private EmploymentSeniorityMapper employmentSeniorityMapper;
     private InversionIngresosMapper inversionIngresosMapper;
     private PersonaMapper personaMapper;
     private RentaMapper rentaMapper;
     private SalariedMapper salariedMapper;
 
-    public PreApprovalServiceImpl(ScoringRatingMapper scoringRatingMapper, InversionIngresosMapper inversionIngresosMapper, PersonaMapper personaMapper, RentaMapper rentaMapper, SalariedMapper salariedMapper) {
+    public PreApprovalServiceImpl(ScoringRatingMapper scoringRatingMapper, EmploymentSeniorityMapper employmentSeniorityMapper, InversionIngresosMapper inversionIngresosMapper, PersonaMapper personaMapper, RentaMapper rentaMapper, SalariedMapper salariedMapper) {
         this.scoringRatingMapper = scoringRatingMapper;
+        this.employmentSeniorityMapper = employmentSeniorityMapper;
         this.inversionIngresosMapper = inversionIngresosMapper;
         this.personaMapper = personaMapper;
         this.rentaMapper = rentaMapper;
@@ -61,6 +62,15 @@ public class PreApprovalServiceImpl implements PreApprovalService {
             }
             return encontrado;
         } else {
+            return false;
+        }
+    }
+    @Override
+    public Boolean validateYearsExperience(int solicitudId){
+        float yearsEmployment = this.employmentSeniorityMapper.obtenerFechaInicioEmpleoSolicitud(solicitudId);
+        if(yearsEmployment>= 3){
+            return true;
+        }else{
             return false;
         }
     }
