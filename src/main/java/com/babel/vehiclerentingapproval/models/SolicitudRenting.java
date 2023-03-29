@@ -9,10 +9,10 @@ public class SolicitudRenting {
     private Persona persona;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fechaSolicitud;
-    private int numVehiculos;
-    private float inversion;
-    private float cuota;
-    private Integer plazo;
+    private Long numVehiculos;
+    private Float inversion;
+    private Float cuota;
+    private Long plazo;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fechaInicioVigor;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
@@ -43,35 +43,35 @@ public class SolicitudRenting {
         this.fechaSolicitud = fechaSolicitud;
     }
 
-    public int getNumVehiculos ( ) {
+    public Long getNumVehiculos ( ) {
         return numVehiculos;
     }
 
-    public void setNumVehiculos (int numVehiculos) {
+    public void setNumVehiculos (long numVehiculos) {
         this.numVehiculos = numVehiculos;
     }
 
-    public float getInversion ( ) {
+    public Float getInversion ( ) {
         return inversion;
     }
 
-    public void setInversion (float inversion) {
+    public void setInversion (Float inversion) {
         this.inversion = inversion;
     }
 
-    public float getCuota ( ) {
+    public Float getCuota ( ) {
         return cuota;
     }
 
-    public void setCuota (float cuota) {
+    public void setCuota (Float cuota) {
         this.cuota = cuota;
     }
 
-    public Integer getPlazo ( ) {
+    public Long getPlazo ( ) {
         return plazo;
     }
 
-    public void setPlazo (Integer plazo) {
+    public void setPlazo (Long plazo) {
         this.plazo = plazo;
     }
 
