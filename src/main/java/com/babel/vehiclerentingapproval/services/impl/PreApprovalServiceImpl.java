@@ -64,5 +64,10 @@ public class PreApprovalServiceImpl implements PreApprovalService {
             return false;
         }
     }
+
+    @Override
+    public Boolean validateInversion(int solicitudId) {
+        return this.inversionIngresosMapper.obtenerInversionSolicitud(solicitudId) > 80000;
+    }
 }
 
