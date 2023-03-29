@@ -20,7 +20,7 @@ public interface SolicitudRentingMapper {
             @Result(property = "plazo", column = "PLAZO"),
             @Result(property = "fechaInicioVigor", column = "FECHA_INICIO_VIGOR"),
             @Result(property = "fechaResolucion", column = "FECHA_RESOLUCION"),
-            @Result(property = "conResolucion", column = "COD_RESOLUCION"),
+            @Result(property = "tipoResultadoSolicitud.codResultado", column = "COD_RESOLUCION"),
     })
     SolicitudRenting getSolicitudByID(int solicitudId);
 
