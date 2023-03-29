@@ -1,14 +1,13 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
-import com.babel.vehiclerentingapproval.exceptions.PersonaNotFoundException;
-import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
-import com.babel.vehiclerentingapproval.exceptions.RequiredMissingFieldException;
-import com.babel.vehiclerentingapproval.exceptions.WrongLenghtFieldException;
+import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import org.springframework.stereotype.Service;
+
+import java.math.BigInteger;
 
 @Service
 public class SolicitudRentingServiceImpl implements SolicitudRentingService {
@@ -21,7 +20,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     }
 
     @Override
-    public SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) throws RequestApiValidationException, PersonaNotFoundException {
+    public SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) throws PersonaNotFoundException, WrongLenghtFieldException, InputIsNull {
         validatePersona(solicitudRenting.getPersona().getPersonaId());
         validateNumber(solicitudRenting);
         validateNotNull(solicitudRenting);
@@ -31,9 +30,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
          return solicitudRenting;
     }
 
-    private void validatePersona(int idPersona) throws RequestApiValidationException, PersonaNotFoundException {
-        existIdPersona(idPersona);
-    }
+
 
     private void existIdPersona (int idPersona) throws PersonaNotFoundException {
         if (personaMapper.existePersona(idPersona) < 1){
@@ -41,20 +38,24 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         }
     }
 
-     private int lenghtNumber(Long number){
-        String numeroString = Long.toString(number);
-        return numeroString.length();
+     private int lenghtNumber(BigInteger number){
+        String numeroString = number.toString();
+         return numeroString.length();
      }
 
+    private void validatePersona(int idPersona) throws PersonaNotFoundException {
+        existIdPersona(idPersona);
+    }
+
      private void validateNumber(SolicitudRenting solicitudRenting) throws WrongLenghtFieldException {
-        if(lenghtNumber(solicitudRenting.getNumVehiculos()) > 38 || solicitudRenting.getPlazo() > 38){
+        if(lenghtNumber(solicitudRenting.getNumVehiculos()) > 38 || lenghtNumber(solicitudRenting.getPlazo()) > 38){
             throw new WrongLenghtFieldException();
         }
      }
 
-     private void validateNotNull(SolicitudRenting solicitudRenting) throws RequiredMissingFieldException {
+     private void validateNotNull(SolicitudRenting solicitudRenting) throws InputIsNull {
         if(solicitudRenting.getInversion() == null || solicitudRenting.getCuota() == null || solicitudRenting.getNumVehiculos() == null){
-            throw new RequiredMissingFieldException();
+            throw new InputIsNull();
         }
      }
 }
