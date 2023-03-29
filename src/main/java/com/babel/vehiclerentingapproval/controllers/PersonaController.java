@@ -3,7 +3,6 @@ package com.babel.vehiclerentingapproval.controllers;
 import com.babel.vehiclerentingapproval.exceptions.RequiredMissingFieldException;
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.services.PersonaService;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
