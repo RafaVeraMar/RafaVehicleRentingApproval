@@ -54,9 +54,9 @@ public class PreApprovalServiceImpl implements PreApprovalService {
         String cifSol = this.salariedMapper.obtenerCIFSolicitud(solicitudId);
         List<String> listaCIF = this.salariedMapper.obtenerCIFInforma();
         if (!cifSol.isEmpty() && cifSol != null) {
-            for ( String cif:listaCIF) {
+            for (String cif : listaCIF) {
                 cadena = cif.trim();
-                if( cadena.equals(cifSol)){
+                if (cadena.equals(cifSol)) {
                     encontrado = true;
                 }
             }
@@ -69,14 +69,16 @@ public class PreApprovalServiceImpl implements PreApprovalService {
     @Override
     public Boolean validateInversion(int solicitudId) {
         return this.inversionIngresosMapper.obtenerInversionSolicitud(solicitudId) > 80000;
+    }
+
     @Override
-    public Boolean validateYearsExperience(int solicitudId){
+    public Boolean validateYearsExperience(int solicitudId) {
         float yearsEmployment = this.employmentSeniorityMapper.obtenerFechaInicioEmpleoSolicitud(solicitudId);
-        if(yearsEmployment>= 3){
+        if (yearsEmployment >= 3) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
-}
 
+}

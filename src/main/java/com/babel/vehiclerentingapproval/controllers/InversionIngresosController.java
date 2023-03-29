@@ -23,14 +23,14 @@ public class InversionIngresosController {
         boolean t1 = this.approvalService.validateScoringPersona(solicitudId);
         boolean t2 = this.approvalService.validateCIFCliente(solicitudId);
         boolean t3 = this.approvalService.validateYearsExperience(solicitudId);
-        boolean t3 = this.approvalService.validateInversion(solicitudId);
+        boolean t4 = this.approvalService.validateInversion(solicitudId);
         ArrayList<Boolean> lista =  new ArrayList<Boolean>();
 
-        ArrayList<Boolean> lista =  new ArrayList<Boolean>();
         lista.add(t);
         lista.add(t1);
         lista.add(t2);
         lista.add(t3);
+        lista.add(t4);
         return ResponseEntity.ok((lista));
     }
 
