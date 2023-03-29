@@ -29,9 +29,9 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
     @Override
     public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFound {
-        Integer codigoExiste = tipoResultadoSolicitudMapper.existeCodigoResolucion(idSolicitud);
+        int codigoExiste = tipoResultadoSolicitudMapper.existeCodigoResolucion(idSolicitud);
 
-        if(codigoExiste == null){
+        if(codigoExiste == 0){
             throw new EstadoSolicitudNotFound();
         }
         String estado = tipoResultadoSolicitudMapper.getEstadoSolicitud(idSolicitud);

@@ -25,14 +25,18 @@ public class SolicitudRentingController {
 
     @GetMapping("/estado/{id}")
     ResponseEntity<String> verEstadoSolicitud(@PathVariable String id) throws EstadoSolicitudNotFound {
-        int idSolicitud = Integer.parseInt(id);
+
         try{
+            int idSolicitud = Integer.parseInt(id);
             String estado = this.solicitud.verEstadoSolicitud(idSolicitud);
             return ResponseEntity.ok(estado);
         }
         catch (EstadoSolicitudNotFound e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: No existe ninguna codigo de resolución válido asociado a esa solicitud ");
 
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: Debe de pasar un número como id ");
         }
     }
     @GetMapping("{id}")

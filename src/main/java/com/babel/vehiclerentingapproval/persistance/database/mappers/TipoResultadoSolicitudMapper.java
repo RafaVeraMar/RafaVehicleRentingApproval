@@ -9,5 +9,5 @@ public interface TipoResultadoSolicitudMapper {
     String getEstadoSolicitud(int idSolicitud);
 
     @Select("SELECT COUNT (DESCRIPCION) FROM TIPO_RESULTADO_SOLICITUD tresultado INNER JOIN SOLICITUD_RENTING tSolicitud ON tSolicitud.COD_RESOLUCION = tresultado.COD_RESULTADO  WHERE tSolicitud.SOLICITUD_ID=#{idSolicitud}")
-    Integer existeCodigoResolucion(int idSolicitud);
+    int existeCodigoResolucion(int idSolicitud);
 }
