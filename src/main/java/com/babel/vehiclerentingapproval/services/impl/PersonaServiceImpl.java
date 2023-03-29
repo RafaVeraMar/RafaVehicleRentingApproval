@@ -4,10 +4,7 @@ package com.babel.vehiclerentingapproval.services.impl;
 import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import com.babel.vehiclerentingapproval.exceptions.RequiredMissingFieldException;
 import com.babel.vehiclerentingapproval.exceptions.WrongLenghtFieldException;
-import com.babel.vehiclerentingapproval.models.Pais;
-import com.babel.vehiclerentingapproval.models.Persona;
-import com.babel.vehiclerentingapproval.models.TelefonoContacto;
-import com.babel.vehiclerentingapproval.models.TipoVia;
+import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import org.springframework.stereotype.Service;
@@ -22,14 +19,16 @@ public class PersonaServiceImpl implements PersonaService {
     private TipoViaMapper tipoViaMapper;
     private ProvinciaMapper provinciaMapper;
     private PaisMapper paisMapper;
+    private ProductoContratadoMapper productoContratadoMapper;
 
-    public PersonaServiceImpl(DireccionMapper direccionMapper, PersonaMapper personaMapper, TelefonoMapper telefonoMapper, TipoViaMapper tipoViaMapper, ProvinciaMapper provinciaMapper, PaisMapper paisMapper) {
+    public PersonaServiceImpl(DireccionMapper direccionMapper, PersonaMapper personaMapper, TelefonoMapper telefonoMapper, TipoViaMapper tipoViaMapper, ProvinciaMapper provinciaMapper, PaisMapper paisMapper, ProductoContratadoMapper productoContratadoMapper) {
         this.direccionMapper = direccionMapper;
         this.personaMapper = personaMapper;
         this.telefonoMapper = telefonoMapper;
         this.tipoViaMapper = tipoViaMapper;
         this.provinciaMapper = provinciaMapper;
         this.paisMapper = paisMapper;
+        this.productoContratadoMapper = productoContratadoMapper;
     }
 
     @Override
@@ -39,10 +38,18 @@ public class PersonaServiceImpl implements PersonaService {
         this.validatePersonData(persona);
 
         persona=this.addPersonaDireccion(persona);
-        this.addTelefonos(persona);
+        Pais pais = this.paisMapper.getPais(persona.getNacionalidad().getIsoAlfa_2());
+        persona.setNacionalidad(pais);
+        this.addProductosContratados(persona);
         this.personaMapper.insertPersona(persona);
-
+        this.addTelefonos(persona);
         return persona;
+    }
+
+    private void addProductosContratados(Persona persona) {
+        for(ProductoContratado productoContratado:persona.getProductosContratados()){
+            productoContratadoMapper.insertProductoContratado(productoContratado);
+        }
     }
 
     private void addTelefonos(Persona persona) {
@@ -60,16 +67,20 @@ public class PersonaServiceImpl implements PersonaService {
     }
 
     private Persona addPersonaDireccion(Persona persona){
-        this.paisMapper.insertPais(persona.getNacionalidad());
-        this.tipoViaMapper.insertTipoVia(persona.getDireccionDomicilio().getTipoViaId());
-        this.provinciaMapper.insertProvincia(persona.getDireccionDomicilio().getProvincia());
+
+        TipoVia tipoVia=this.tipoViaMapper.getTipoVia(persona.getDireccionDomicilio().getTipoViaId().getTipoViaId());
+        persona.getDireccionDomicilio().setTipoViaId(tipoVia);
+        Provincia provincia = this.provinciaMapper.getProvincia(persona.getDireccionDomicilio().getProvincia().getCodProvincia());
+        persona.getDireccionDomicilio().setProvinciaCod(provincia);
         this.direccionMapper.insertDireccion(persona.getDireccionDomicilio());
 
         if (persona.isDireccionDomicilioSameAsNotificacion()){
             persona.setDireccionNotificacion(persona.getDireccionDomicilio());
         }else{
-            this.provinciaMapper.insertProvincia(persona.getDireccionNotificacion().getProvincia());
-            this.tipoViaMapper.insertTipoVia(persona.getDireccionNotificacion().getTipoViaId());
+            provincia = this.provinciaMapper.getProvincia(persona.getDireccionNotificacion().getProvincia().getCodProvincia());
+            persona.getDireccionNotificacion().setProvinciaCod(provincia);
+            tipoVia=this.tipoViaMapper.getTipoVia(persona.getDireccionNotificacion().getTipoViaId().getTipoViaId());
+            persona.getDireccionNotificacion().setTipoViaId(tipoVia);
             this.direccionMapper.insertDireccion(persona.getDireccionNotificacion());
         }
 

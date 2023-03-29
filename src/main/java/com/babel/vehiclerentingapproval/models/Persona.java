@@ -41,14 +41,9 @@ public class Persona {
     @NotEmpty
     @NotBlank
     private Pais nacionalidad;
-
     private int scoring;
     @PastOrPresent
     private Date fechaScoring;
-
-    @NotNull
-    @NotEmpty
-    @NotBlank
     private List<TelefonoContacto> telefonos;
     private List<ProductoContratado> productosContratados;
 

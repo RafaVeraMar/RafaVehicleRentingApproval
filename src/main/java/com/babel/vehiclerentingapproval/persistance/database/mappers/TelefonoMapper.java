@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface TelefonoMapper {
-    @Insert("INSERT INTO TELEFONO_CONTACTO (PERSONA_ID,TELEFONO_ID, TELEFONO) VALUES(#{persona.personaId},#{telefonoId},#{telefono})")
-    @Options(useGeneratedKeys = true, keyProperty = "telefonoId", keyColumn = "TELEFONO_ID")
+    @Insert("INSERT INTO TELEFONO_CONTACTO (PERSONA_ID,TELEFONO_ID, TELEFONO) VALUES(#{persona.personaId},#{telefono.telefonoId},#{telefono.telefono})")
+    @Options(useGeneratedKeys = true, keyProperty = "telefono.telefonoId", keyColumn = "TELEFONO_ID")
     void addTelefono(TelefonoContacto telefono, Persona persona);
 }
