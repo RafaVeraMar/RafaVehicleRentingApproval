@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/solicitud")
 public class SolicitudRentingController {
@@ -18,26 +21,31 @@ public class SolicitudRentingController {
         this.solicitud = solicitud;
     }
 
-    @PostMapping("")
-    ResponseEntity<String> crearSolicitud(@RequestBody SolicitudRenting solicitudACrear){
-        this.solicitud.createRentingRequest(solicitudACrear);
-        return ResponseEntity.ok("Solicitud creada");
-    }
 
     @GetMapping("/estado/{id}")
-    ResponseEntity<String> verEstadoSolicitud(@PathVariable String id) throws EstadoSolicitudNotFoundException {
-
+    ResponseEntity<Object> verEstadoSolicitud(@PathVariable String id) throws EstadoSolicitudNotFoundException {
+        Map<String,Object> respuesta = new HashMap<String,Object>();
         try{
             int idSolicitud = Integer.parseInt(id);
             String estado = this.solicitud.verEstadoSolicitud(idSolicitud);
-            return ResponseEntity.ok(estado);
+
+            respuesta.put("Status",HttpStatus.OK);
+            respuesta.put("Id",id);
+            respuesta.put("Descripcion",estado);
+            return new ResponseEntity<Object>(respuesta,HttpStatus.OK);
         }
         catch (EstadoSolicitudNotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: No existe ninguna codigo de resolución válido asociado a esa solicitud ");
+            respuesta.put("Status",HttpStatus.NOT_FOUND);
+            respuesta.put("Id",id);
+            respuesta.put("Descripcion","Error: No existe ninguna codigo de resolución válido asociado a esa solicitud ");
+            return new ResponseEntity<Object>(respuesta,HttpStatus.NOT_FOUND);
 
         }
         catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: Debe de pasar un número como id ");
+            respuesta.put("Status",HttpStatus.BAD_REQUEST);
+            respuesta.put("Id",id);
+            respuesta.put("Descripcion","Error: No ha introducido una id valida ");
+            return new ResponseEntity<Object>(respuesta,HttpStatus.NOT_FOUND);
         }
     }
     @GetMapping("{id}")
