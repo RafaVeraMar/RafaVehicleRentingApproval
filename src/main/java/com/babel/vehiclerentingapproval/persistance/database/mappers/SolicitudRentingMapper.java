@@ -1,7 +1,10 @@
 package com.babel.vehiclerentingapproval.persistance.database.mappers;
 
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface SolicitudRentingMapper {
