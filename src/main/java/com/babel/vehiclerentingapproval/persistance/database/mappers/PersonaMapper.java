@@ -15,4 +15,7 @@ public interface PersonaMapper {
 
     @Select("SELECT COUNT(PERSONA_ID) FROM PERSONA WHERE PERSONA_ID = #{personaId}")
     int existePersona(int personaId);
+
+    @Select("SELECT NACIONALIDAD FROM PERSONA WHERE PERSONA_ID = #{personaId}")
+    String getNationality(int personaId);
 }

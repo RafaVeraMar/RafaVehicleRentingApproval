@@ -10,6 +10,8 @@ public interface PreApprovalService {
     Boolean validateCIFCliente(int solicitudId);
 
     Boolean validateInversion(int solicitudId);
+    Boolean validateNationality(int personaId);
+
 
 
     Boolean validateYearsExperience(int solicitudId);

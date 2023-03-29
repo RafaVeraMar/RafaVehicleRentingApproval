@@ -25,12 +25,14 @@ public class InversionIngresosController {
         boolean t3 = this.approvalService.validateYearsExperience(solicitudId);
         boolean t4 = this.approvalService.validateInversion(solicitudId);
         ArrayList<Boolean> lista =  new ArrayList<Boolean>();
+        boolean t5 = this.approvalService.validateNationality(102);
 
         lista.add(t);
         lista.add(t1);
         lista.add(t2);
         lista.add(t3);
         lista.add(t4);
+        lista.add(t5);
         return ResponseEntity.ok((lista));
     }
 
