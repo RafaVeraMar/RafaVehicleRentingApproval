@@ -24,7 +24,7 @@ public class SolicitudRentingServiceImplTest {
     }
 
     @Test
-    public void verEstadoSolicitud_should_throwEstadoSolicitudNotFoundException_when_codSolicitudNull(){
+    public void verEstadoSolicitud_should_throwEstadoSolicitudNotFoundException_when_codSolicitudNull_or_idNotExists(){
         Assertions.assertThrows(EstadoSolicitudNotFoundException.class,() ->{
             int id = -43;
             String estado = solicitudService.verEstadoSolicitud(id);
