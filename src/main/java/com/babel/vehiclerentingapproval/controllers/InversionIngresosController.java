@@ -21,13 +21,13 @@ public class InversionIngresosController {
     ResponseEntity makeProofs(@RequestParam int solicitudId){
         boolean t = this.approvalService.validateInversionIngresos(solicitudId);
         boolean t1 = this.approvalService.validateScoringPersona(solicitudId);
-        boolean t5= this.approvalService.validateImpagoCuota(solicitudId);
         boolean t2 = this.approvalService.validateCIFCliente(solicitudId);
         boolean t3 = this.approvalService.validateYearsExperience(solicitudId);
         boolean t4 = this.approvalService.validateInversion(solicitudId);
-
+        boolean t5= this.approvalService.validateImpagoCuota(solicitudId);
+        boolean t6 = this.approvalService.validateNationality(102);
         ArrayList<Boolean> lista =  new ArrayList<Boolean>();
-        boolean t5 = this.approvalService.validateNationality(102);
+
 
         lista.add(t);
         lista.add(t1);
@@ -35,6 +35,8 @@ public class InversionIngresosController {
         lista.add(t3);
         lista.add(t4);
         lista.add(t5);
+        lista.add(t6);
+
         return ResponseEntity.ok((lista));
     }
 
