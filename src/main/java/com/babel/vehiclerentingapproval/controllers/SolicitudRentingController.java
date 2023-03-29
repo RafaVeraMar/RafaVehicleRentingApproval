@@ -4,6 +4,7 @@ package com.babel.vehiclerentingapproval.controllers;
 import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundException;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
+import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,9 +54,11 @@ public class SolicitudRentingController {
     }
 
     @PutMapping("/estado/{solicitudId}")
-    ResponseEntity<String> updateSolicitud(@PathVariable Integer solicitudId, @RequestBody SolicitudRenting nuevoRenting){
+    ResponseEntity<String> updateEstadoSolicitud(@PathVariable Integer solicitudId, @RequestBody TipoResultadoSolicitud nuevoEstado){
         try{
-            this.solicitud.modificaSolicitud(solicitudId,nuevoRenting);
+            this.solicitud.modificaEstadoSolicitud(solicitudId,nuevoEstado);
+        }catch (SolicitudRentingNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El id de solicitud no es válido");
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
