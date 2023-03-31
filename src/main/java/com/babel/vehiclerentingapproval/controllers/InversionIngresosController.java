@@ -1,31 +1,31 @@
 package com.babel.vehiclerentingapproval.controllers;
 
-import com.babel.vehiclerentingapproval.services.PreApprovalService;
+import com.babel.vehiclerentingapproval.models.SolicitudRenting;
+import com.babel.vehiclerentingapproval.services.preautomaticresults.ApprovalRulesService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/validaciones")
 public class InversionIngresosController {
 
-    private PreApprovalService approvalService;
+    private ApprovalRulesService approvalService;
 
-    public InversionIngresosController(PreApprovalService approvalService) {
+    public InversionIngresosController(ApprovalRulesService approvalService) {
         this.approvalService = approvalService;
     }
 
     @GetMapping("")
-    ResponseEntity makeProofs(@RequestParam int solicitudId){
-        boolean t = this.approvalService.validateInversionIngresos(solicitudId);
-        boolean t1 = this.approvalService.validateScoringPersona(solicitudId);
-        boolean t2 = this.approvalService.validateCIFCliente(solicitudId);
-        boolean t3 = this.approvalService.validateYearsExperience(solicitudId);
-        boolean t4 = this.approvalService.validateInversion(solicitudId);
-        boolean t5= this.approvalService.validateImpagoCuota(solicitudId);
-        boolean t6 = this.approvalService.validateNationality(102);
+    ResponseEntity makeProofs(@RequestParam SolicitudRenting solicitudRentingl){
+        boolean t = this.approvalService.validateInversionIngresos(solicitudRentingl);
+        boolean t1 = this.approvalService.validateScoringPersona(solicitudRentingl);
+        boolean t2 = this.approvalService.validateCIFCliente(solicitudRentingl);
+        boolean t3 = this.approvalService.validateYearsExperience(solicitudRentingl);
+        boolean t4 = this.approvalService.validateInversion(solicitudRentingl);
+        boolean t5= this.approvalService.validateImpagoCuota(solicitudRentingl);
+        boolean t6 = this.approvalService.validateNationality(solicitudRentingl);
         ArrayList<Boolean> lista =  new ArrayList<Boolean>();
 
 

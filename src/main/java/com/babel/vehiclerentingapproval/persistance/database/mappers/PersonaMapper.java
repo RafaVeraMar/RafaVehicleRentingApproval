@@ -1,6 +1,7 @@
 package com.babel.vehiclerentingapproval.persistance.database.mappers;
 
 import com.babel.vehiclerentingapproval.models.Persona;
+import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -17,5 +18,5 @@ public interface PersonaMapper {
     int existePersona(int personaId);
 
     @Select("SELECT NACIONALIDAD FROM PERSONA WHERE PERSONA_ID = #{personaId}")
-    String getNationality(int personaId);
+    String getNationality(SolicitudRenting solicitudRenting);
 }
