@@ -58,7 +58,7 @@ public class SolicitudRentingController {
             respuesta.put("Status",HttpStatus.BAD_REQUEST);
             respuesta.put("Id",id);
             respuesta.put("Descripcion","Error: No ha introducido una id valida ");
-            return new ResponseEntity<Object>(respuesta,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Object>(respuesta,HttpStatus.BAD_REQUEST);
         }
     }
     @GetMapping("{id}")
