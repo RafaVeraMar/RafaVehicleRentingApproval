@@ -1,5 +1,4 @@
-package com.babel.vehiclerentingapproval.services.impl;
-package com.babel.vehiclerentingapproval.services.impl;
+package com.babel.vehiclerentingapproval.services;
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.InversionIngresosMapper;
@@ -86,3 +85,4 @@ public class ApprovalRulesServiceTests {
 
         return solicitud;
     }
+
