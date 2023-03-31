@@ -11,6 +11,8 @@ import com.babel.vehiclerentingapproval.persistance.database.mappers.DireccionMa
 import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.ProfesionMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.RentaMapper;
+import com.babel.vehiclerentingapproval.services.PersonaService;
+import com.babel.vehiclerentingapproval.services.ProfesionService;
 import com.babel.vehiclerentingapproval.services.RentaService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,36 +22,37 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class RentaServiceImplTest {
     RentaService rentaService;
-    PersonaMapper personaMapper;
     RentaMapper rentaMapper;
-    ProfesionMapper profesionMapper;
+    ProfesionService profesionService;
+    PersonaService personaService;
 
-    DireccionMapper direccionMapper;
+
+
     @BeforeEach
-    void setUpAll(){
-        personaMapper = Mockito.mock(PersonaMapper.class);
-        when(personaMapper.existePersona(100)).thenReturn(0);
-        when(personaMapper.existePersona(1)).thenReturn(1);
+    void setUpAll() throws ProfesionNotFoundException {
 
-        direccionMapper = Mockito.mock(DireccionMapper.class);
-
-        profesionMapper = Mockito.mock(ProfesionMapper.class);
-        when(profesionMapper.existeProfesion(100)).thenReturn(0);
-        when(profesionMapper.existeProfesion(1)).thenReturn(1);
+        profesionService = Mockito.mock(ProfesionService.class);
+        when(profesionService.existeProfesion(100)).thenReturn(false);
+        when(profesionService.existeProfesion(1)).thenReturn(true);
 
 
         rentaMapper = Mockito.mock(RentaMapper.class);
         when(rentaMapper.existeRenta(1)).thenReturn(1);
         when(rentaMapper.existeRenta(100)).thenReturn(0);
 
-        rentaService = new RentaServiceImpl(rentaMapper,profesionMapper,personaMapper);
+        personaService = Mockito.mock(PersonaService.class);
+        when(personaService.existePersona(100)).thenReturn(false);
+        when(personaService.existePersona(1)).thenReturn(true);
+
+
+        rentaService = new RentaServiceImpl(rentaMapper,personaService, profesionService);
     }
 
     @Test
@@ -83,7 +86,7 @@ public class RentaServiceImplTest {
     }
 
     @Test
-    public void addRenta_should_throwRentaFoundException_when_rentaIdExiste(){
+    public void addRenta_should_returnFalse_when_rentaIdExiste(){
         Assertions.assertThrows(RentaFoundException.class,() ->{
             Renta renta = createRenta();
             Persona persona = createPersona();
