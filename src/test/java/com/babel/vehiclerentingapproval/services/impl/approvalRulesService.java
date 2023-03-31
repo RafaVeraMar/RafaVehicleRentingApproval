@@ -1,4 +1,5 @@
 package com.babel.vehiclerentingapproval.services.impl;
+package com.babel.vehiclerentingapproval.services.impl;
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.InversionIngresosMapper;
@@ -17,17 +18,12 @@ import java.text.ParseException;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
-
-
 @SpringBootTest
 public class ApprovalRulesServiceTests {
     SolicitudRenting solicitud;
     InversionIngresosMapper solicitudMapper;
     PersonaMapper personaMapper;
     ApprovalRulesService rules;
-
-
 
     @BeforeEach
     void setUpAll(){
