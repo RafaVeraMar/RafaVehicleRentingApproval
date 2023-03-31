@@ -1,5 +1,6 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
+import com.babel.vehiclerentingapproval.exceptions.PersonaNotFoundException;
 import com.babel.vehiclerentingapproval.models.Direccion;
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.Profesion;
@@ -15,6 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class PersonaServiceImplTest {
@@ -43,6 +46,30 @@ public class PersonaServiceImplTest {
 
             persona.setNombre(null);
             this.personaService.addPersona(persona);
+        });
+    }
+
+    @Test
+    public void viewPersonaProducto_should_throwPersonaNotFoundException_when_personaIdNoExiste(){
+        personaService = Mockito.mock(PersonaService.class);
+        when(personaService.existePersona(100)).thenReturn(false);
+
+        Assertions.assertThrows(Exception.class,() ->{
+            Persona persona = new Persona();
+            persona.setPersonaId(100);
+            this.personaService.viewPersonaProducto(persona.getPersonaId());
+        });
+    }
+
+    @Test
+    public void viewPersonaProducto_should_throwPersonaNotFoundException_when_personaIdExiste(){
+        personaService = Mockito.mock(PersonaService.class);
+        when(personaService.existePersona(1)).thenReturn(true);
+
+        Assertions.assertThrows(Exception.class,() ->{
+            Persona persona = new Persona();
+            persona.setPersonaId(1);
+            this.personaService.viewPersonaProducto(persona.getPersonaId());
         });
     }
 
