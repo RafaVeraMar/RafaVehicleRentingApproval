@@ -17,3 +17,4 @@ public interface ApprovalRulesService {
 
     Boolean validateYearsExperience(SolicitudRenting solicitudRenting);
 }
+
