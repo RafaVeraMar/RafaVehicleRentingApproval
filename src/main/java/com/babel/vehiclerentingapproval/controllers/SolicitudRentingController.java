@@ -5,6 +5,12 @@ import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundExcept
 import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundException;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +29,13 @@ public class SolicitudRentingController {
 
 
     @GetMapping("/estado/{id}")
+    @Operation(summary = "Ver estado de solicitud por ID", description = "Devuelve el estado de una solicitud a partir de su ID")
+    @ApiResponses( value = {
+            @ApiResponse(responseCode = "200", description = "Estado de la solicitud", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Error de formato en el ID", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "404", description = "ID de solicitud no encontrado", content = @Content(mediaType = "application/json"))
+    })
+    @Parameter(name = "id",description = "ID de la solicitud a consultar",required = true)
     ResponseEntity<Object> verEstadoSolicitud(@PathVariable String id) throws EstadoSolicitudNotFoundException {
         Map<String,Object> respuesta = new HashMap<String,Object>();
         try{
