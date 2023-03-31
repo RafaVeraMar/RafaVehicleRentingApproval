@@ -190,9 +190,18 @@ public class SolicitudRentingServiceImplTest {
     class TestsCancelarSolicitudRenting {
         @Test
         public void cancelarSolicitudRenting_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists() {
-            Assertions.assertThrows(SolicitudRentingNotFoundException.class, () -> {
-                int id = -10;
-                solicitudService.cancelarSolicitud(id);
+            Mockito.when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(0);
+
+            Assertions.assertThrows(SolicitudRentingNotFoundException.class, ()->{
+                solicitudService.getSolicitudById(0);
+            });
+        }
+        @Test
+        public void cancelarSolicitudRenting_shouldNotThrow_SolicitudRentingNotFoundException_when_solicitudIdExists() {
+            Mockito.when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(1);
+
+            Assertions.assertDoesNotThrow(()->{
+                solicitudService.getSolicitudById(0);
             });
         }
     }
