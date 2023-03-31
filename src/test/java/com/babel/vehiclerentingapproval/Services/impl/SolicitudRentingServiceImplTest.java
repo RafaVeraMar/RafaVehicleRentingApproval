@@ -31,9 +31,17 @@ public class SolicitudRentingServiceImplTest {
     class TestsVerEstadoSolicitud{
         @Test
         public void verEstadoSolicitud_shouldThrow_EstadoSolicitudNotFoundException_when_codSolicitudNull_or_idNotExists(){
+            Mockito.when(tipoResultadoSolicitudMapper.existeCodigoResolucion(anyInt())).thenReturn(0);
             Assertions.assertThrows(EstadoSolicitudNotFoundException.class,() ->{
-                int id = -43;
-                String estado = solicitudService.verEstadoSolicitud(id);
+                String estado = solicitudService.verEstadoSolicitud(anyInt());
+            });
+        }
+        @Test
+        public void verEstadoSolicitud_shouldNotThrow_EstadoSolicitudNotFoundException_when_codSolicitudNull_and_idNotExists(){
+            Mockito.when(tipoResultadoSolicitudMapper.existeCodigoResolucion(anyInt())).thenReturn(1);
+
+            Assertions.assertDoesNotThrow(()->{
+                String estado = solicitudService.verEstadoSolicitud(anyInt());
             });
         }
     }
