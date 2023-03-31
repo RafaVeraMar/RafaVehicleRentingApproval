@@ -17,6 +17,8 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     private RentaMapper rentaMapper;
     private SalariedMapper salariedMapper;
     private ImpagosCuotaMapper impagosCuotaMapper;
+    private static final int inversionMayor = 80000;
+    private static final int scoringRating = 5;
 
     public ApprovalRulesServiceImpl(ScoringRatingMapper scoringRatingMapper, EmploymentSeniorityMapper employmentSeniorityMapper, InversionIngresosMapper inversionIngresosMapper, PersonaMapper personaMapper, RentaMapper rentaMapper, SalariedMapper salariedMapper, ImpagosCuotaMapper impagosCuotaMapper) {
         this.scoringRatingMapper = scoringRatingMapper;
@@ -40,12 +42,12 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     }
     @Override
     public Boolean validateInversion(SolicitudRenting solicitudRenting) {
-        return this.inversionIngresosMapper.obtenerInversionSolicitud(solicitudRenting) > 80000;
+        return this.inversionIngresosMapper.obtenerInversionSolicitud(solicitudRenting) > inversionMayor;
     }
 
     @Override
     public Boolean validateScoringPersona(SolicitudRenting solicitudRenting) {
-        if (this.scoringRatingMapper.obtenercScoringPersona(solicitudRenting) < 5) {
+        if (this.scoringRatingMapper.obtenercScoringPersona(solicitudRenting) < scoringRating) {
 
             return true;
 

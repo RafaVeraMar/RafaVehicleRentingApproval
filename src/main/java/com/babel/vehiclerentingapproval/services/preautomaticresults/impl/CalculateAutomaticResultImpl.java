@@ -1,4 +1,11 @@
 package com.babel.vehiclerentingapproval.services.preautomaticresults.impl;
 
-public class CalculateAutomaticResultImpl {
+import com.babel.vehiclerentingapproval.services.preautomaticresults.CalculateAutomaticResult;
+
+public class CalculateAutomaticResultImpl implements CalculateAutomaticResult {
+
+
+    
+
+
 }
