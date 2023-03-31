@@ -46,4 +46,13 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         this.solicitudRentingMapper.modificaSolicitud(solicitudId,nuevoRenting);
     }
 
+    public void cancelarSolicitud(int id) throws SolicitudRentingNotFoundException{
+        SolicitudRenting solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
+        if(solicitudRenting==null){
+            throw new SolicitudRentingNotFoundException();
+        }
+        solicitudRentingMapper.cancelarSolicitud(solicitudRenting);
+
+    }
+   
 }

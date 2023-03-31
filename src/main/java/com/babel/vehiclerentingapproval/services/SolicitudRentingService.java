@@ -9,4 +9,5 @@ public interface SolicitudRentingService {
     public SolicitudRenting getSolicitudById(int it);
 
     void modificaSolicitud(Integer solicitudId, SolicitudRenting nuevoRenting);
+    void cancelarSolicitud(int id);
 }

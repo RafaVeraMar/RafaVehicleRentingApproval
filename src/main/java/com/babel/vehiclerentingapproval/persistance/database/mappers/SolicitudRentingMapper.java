@@ -5,6 +5,11 @@ import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface SolicitudRentingMapper {
+    @Update("UPDATE SOLICITUD_RENTING SET FECHA_RESOLUCION=SYSDATE, " +
+            "COD_RESOLUCION='CA' where SOLICITUD_ID=#{solicitudId}")
+    @Options(useGeneratedKeys = true, keyProperty = "solicitudId", keyColumn = "SOLICITUD_ID")
+    void cancelarSolicitud(SolicitudRenting solicitudRenting);
+
     @Select("Select SOLICITUD_ID,PERSONA_ID,FECHA_SOLICITUD,NUM_VEHICULOS,INVERSION,CUOTA,PLAZO," +
             "FECHA_INICIO_VIGOR,FECHA_RESOLUCION,COD_RESOLUCION from SCORING.SOLICITUD_RENTING where SOLICITUD_ID = #{solicitudId}")
     @Results({
