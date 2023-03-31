@@ -18,10 +18,10 @@ public class SolicitudRentingServiceImplTest {
     SolicitudRentingMapper solicitudRentingMapper;
 
     @BeforeEach
-    void setUpAll(){
+    void setUpAll() {
         tipoResultadoSolicitudMapper = Mockito.mock(TipoResultadoSolicitudMapper.class);
         solicitudRentingMapper = Mockito.mock(SolicitudRentingMapper.class);
-        solicitudService = new SolicitudRentingServiceImpl(solicitudRentingMapper,tipoResultadoSolicitudMapper);
+        solicitudService = new SolicitudRentingServiceImpl(solicitudRentingMapper, tipoResultadoSolicitudMapper);
 
     }
 
@@ -47,4 +47,15 @@ public class SolicitudRentingServiceImplTest {
         }
     }
 
+    
+    @Nested
+    class TestsCancelarSolicitudRenting {
+        @Test
+        public void cancelarSolicitudRenting_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists() {
+            Assertions.assertThrows(SolicitudRentingNotFoundException.class, () -> {
+                int id = -10;
+                solicitudService.cancelarSolicitud(id);
+            });
+        }
+    }
 }

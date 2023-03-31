@@ -10,4 +10,5 @@ class VehicleRentingApprovalApplicationTests {
 	void contextLoads() {
 	}
 
+
 }

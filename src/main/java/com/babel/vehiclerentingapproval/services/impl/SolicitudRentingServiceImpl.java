@@ -18,15 +18,6 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         this.tipoResultadoSolicitudMapper = tipoResultadoSolicitudMapper;
     }
 
-    @Override
-    public void createRentingRequest(SolicitudRenting solicitudRenting) {
-        
-    }
-
-    @Override
-    public void validateRentingRequest(SolicitudRenting solicitudRenting) {
-
-    }
 
     @Override
     public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFoundException {
@@ -47,4 +38,13 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         return solicitudRenting;
     }
 
+    public void cancelarSolicitud(int id) throws SolicitudRentingNotFoundException{
+        SolicitudRenting solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
+        if(solicitudRenting==null){
+            throw new SolicitudRentingNotFoundException();
+        }
+        solicitudRentingMapper.cancelarSolicitud(solicitudRenting);
+
+    }
+   
 }
