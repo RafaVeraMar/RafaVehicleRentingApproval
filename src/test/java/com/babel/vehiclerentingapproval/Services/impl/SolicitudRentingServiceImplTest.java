@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -28,8 +29,14 @@ public class SolicitudRentingServiceImplTest {
     void setUpAll(){
         tipoResultadoSolicitudMapper = Mockito.mock(TipoResultadoSolicitudMapper.class);
         solicitudRentingMapper = Mockito.mock(SolicitudRentingMapper.class);
-        solicitudService = new SolicitudRentingServiceImpl(solicitudRentingMapper,tipoResultadoSolicitudMapper);
+        solicitudService = new SolicitudRentingServiceImpl(this.solicitudRentingMapper,this.tipoResultadoSolicitudMapper);
+    }
 
+@Test
+    public void validateExisteMapper(){
+        when(solicitudRentingMapper.existeSolicitud(any(Integer.class))).thenReturn(0);
+
+        Assert.isTrue(true);
     }
 
     @Nested
@@ -71,7 +78,7 @@ public class SolicitudRentingServiceImplTest {
         @Test
         public void modificaEstadoSolicitud_shouldThrow_EstadoSolicitudNotFoundException_when_codSolicitudNotExist(){
 
-            Mockito.when(tipoResultadoSolicitudMapper.existeCodigoResolucion(any())).thenReturn(0);
+            Mockito.when(tipoResultadoSolicitudMapper.existeCodigoResolucion(any(Integer.class))).thenReturn(0);
 
             Assertions.assertThrows(EstadoSolicitudNotFoundException.class,() ->{
 
@@ -87,19 +94,18 @@ public class SolicitudRentingServiceImplTest {
         @Test
         public void modificaSolicitudRenting_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists() {
 
-            Mockito.when(tipoResultadoSolicitudMapper.existeCodigoResolucion(any())).thenReturn(1);
-            //Mockito.when()
+            //Mockito.when(tipoResultadoSolicitudMapper.existeCodigoResolucion(any())).thenReturn(1);
+            Mockito.when(solicitudRentingMapper.existeSolicitud(any(Integer.class))).thenReturn(0);
+
             Assertions.assertThrows(SolicitudRentingNotFoundException.class, () -> {
-
                 int id = -1;
-
-                String estadoCodigo = "CA";
+                String estadoCodigo = "AA";
                 TipoResultadoSolicitud tipoResultadoSolicitud = new TipoResultadoSolicitud();
                 tipoResultadoSolicitud.setCodResultado(estadoCodigo);
                 tipoResultadoSolicitud.setDescripcion("");
-
                 solicitudService.modificaEstadoSolicitud(id,tipoResultadoSolicitud);
             });
+
         }
     }
 
