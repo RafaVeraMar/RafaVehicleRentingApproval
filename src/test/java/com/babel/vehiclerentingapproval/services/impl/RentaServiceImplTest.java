@@ -7,10 +7,7 @@ import com.babel.vehiclerentingapproval.models.Direccion;
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.Profesion;
 import com.babel.vehiclerentingapproval.models.Renta;
-import com.babel.vehiclerentingapproval.persistance.database.mappers.DireccionMapper;
-import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
-import com.babel.vehiclerentingapproval.persistance.database.mappers.ProfesionMapper;
-import com.babel.vehiclerentingapproval.persistance.database.mappers.RentaMapper;
+import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.ProfesionService;
 import com.babel.vehiclerentingapproval.services.RentaService;
@@ -38,18 +35,28 @@ public class RentaServiceImplTest {
     @BeforeEach
     void setUpAll() throws ProfesionNotFoundException {
 
-        profesionService = Mockito.mock(ProfesionService.class);
-        when(profesionService.existeProfesion(100)).thenReturn(false);
-        when(profesionService.existeProfesion(1)).thenReturn(true);
+        ProfesionMapper profesionMapper = Mockito.mock(ProfesionMapper.class);
+        when(profesionMapper.existeProfesion(100)).thenReturn(0);
+        when(profesionMapper.existeProfesion(1)).thenReturn(1);
+
 
 
         rentaMapper = Mockito.mock(RentaMapper.class);
         when(rentaMapper.existeRenta(1)).thenReturn(1);
         when(rentaMapper.existeRenta(100)).thenReturn(0);
 
-        personaService = Mockito.mock(PersonaService.class);
-        when(personaService.existePersona(100)).thenReturn(false);
-        when(personaService.existePersona(1)).thenReturn(true);
+        PersonaMapper personaMapper = Mockito.mock(PersonaMapper.class);
+        when(personaMapper.existePersona(100)).thenReturn(0);
+
+        DireccionMapper direccionMapper = Mockito.mock(DireccionMapper.class);
+        TelefonoMapper telefonoMapper = Mockito.mock(TelefonoMapper.class);
+        TipoViaMapper tipoViaMapper = Mockito.mock(TipoViaMapper.class);
+        ProvinciaMapper provinciaMapper = Mockito.mock(ProvinciaMapper.class);
+        PaisMapper paisMapper = Mockito.mock(PaisMapper.class);
+
+
+        personaService = new PersonaServiceImpl(direccionMapper,personaMapper,telefonoMapper,tipoViaMapper,provinciaMapper,paisMapper);
+        profesionService = new ProfesionServiceImpl(profesionMapper);
 
 
         rentaService = new RentaServiceImpl(rentaMapper,personaService, profesionService);
@@ -86,7 +93,7 @@ public class RentaServiceImplTest {
     }
 
     @Test
-    public void addRenta_should_returnFalse_when_rentaIdExiste(){
+    public void addRenta_should_throwRentaFoundException_when_rentaIdExiste(){
         Assertions.assertThrows(RentaFoundException.class,() ->{
             Renta renta = createRenta();
             Persona persona = createPersona();
