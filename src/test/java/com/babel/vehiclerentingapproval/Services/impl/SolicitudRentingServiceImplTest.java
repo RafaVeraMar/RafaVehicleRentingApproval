@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import static org.mockito.ArgumentMatchers.anyInt;
+
 public class SolicitudRentingServiceImplTest {
     SolicitudRentingService solicitudService;
     TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
@@ -40,10 +42,21 @@ public class SolicitudRentingServiceImplTest {
     class TestsVerSolicitudRenting{
         @Test
         public void verSolicitudRenting_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists(){
-            Assertions.assertThrows(SolicitudRentingNotFoundException.class,()->{
-                int id = -10;
-                solicitudService.getSolicitudById(id);
+            Mockito.when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(0);
+
+            Assertions.assertThrows(SolicitudRentingNotFoundException.class, ()->{
+                solicitudService.getSolicitudById(0);
             });
+
+        }
+        @Test
+        public void verSolicitudRenting_shouldNotThrow_SolicitudRentingNotFoundException_when_solicitudIdExists(){
+            Mockito.when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(1);
+
+            Assertions.assertDoesNotThrow(()->{
+                solicitudService.getSolicitudById(0);
+            });
+
         }
     }
 
