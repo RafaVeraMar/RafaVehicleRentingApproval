@@ -22,16 +22,14 @@ public class PersonaServiceImpl implements PersonaService {
     private TipoViaMapper tipoViaMapper;
     private ProvinciaMapper provinciaMapper;
     private PaisMapper paisMapper;
-    private ProductoContratadoMapper productoContratadoMapper;
 
-    public PersonaServiceImpl(DireccionMapper direccionMapper, PersonaMapper personaMapper, TelefonoMapper telefonoMapper, TipoViaMapper tipoViaMapper, ProvinciaMapper provinciaMapper, PaisMapper paisMapper, ProductoContratadoMapper productoContratadoMapper) {
+    public PersonaServiceImpl(DireccionMapper direccionMapper, PersonaMapper personaMapper, TelefonoMapper telefonoMapper, TipoViaMapper tipoViaMapper, ProvinciaMapper provinciaMapper, PaisMapper paisMapper) {
         this.direccionMapper = direccionMapper;
         this.personaMapper = personaMapper;
         this.telefonoMapper = telefonoMapper;
         this.tipoViaMapper = tipoViaMapper;
         this.provinciaMapper = provinciaMapper;
         this.paisMapper = paisMapper;
-        this.productoContratadoMapper = productoContratadoMapper;
     }
 
     @Override
@@ -43,17 +41,11 @@ public class PersonaServiceImpl implements PersonaService {
         persona=this.addPersonaDireccion(persona);
         Pais pais = this.paisMapper.getPais(persona.getNacionalidad().getIsoAlfa_2());
         persona.setNacionalidad(pais);
-        this.addProductosContratados(persona);
         this.personaMapper.insertPersona(persona);
         this.addTelefonos(persona);
         return persona;
     }
 
-    private void addProductosContratados(Persona persona) {
-        for(ProductoContratado productoContratado:persona.getProductosContratados()){
-            productoContratadoMapper.insertProductoContratado(productoContratado);
-        }
-    }
 
     private void addTelefonos(Persona persona) {
         for (TelefonoContacto telefonoContacto:persona.getTelefonos()) {

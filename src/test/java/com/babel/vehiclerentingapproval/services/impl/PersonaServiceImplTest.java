@@ -25,7 +25,6 @@ public class PersonaServiceImplTest {
     TipoViaMapper tipoViaMapper;
     ProvinciaMapper provinciaMapper;
     PaisMapper paisMapper;
-    ProductoContratadoMapper productoContratadoMapper;
     @BeforeEach
     void setUpAll(){
         personaMapper = Mockito.mock(PersonaMapper.class);
@@ -34,8 +33,7 @@ public class PersonaServiceImplTest {
         provinciaMapper = Mockito.mock(ProvinciaMapper.class);
         telefonoMapper = Mockito.mock(TelefonoMapper.class);
         paisMapper = Mockito.mock(PaisMapper.class);
-        productoContratadoMapper = Mockito.mock(ProductoContratadoMapper.class);
-        personaService = new PersonaServiceImpl(direccionMapper,personaMapper,telefonoMapper,tipoViaMapper,provinciaMapper,paisMapper,productoContratadoMapper);
+        personaService = new PersonaServiceImpl(direccionMapper,personaMapper,telefonoMapper,tipoViaMapper,provinciaMapper,paisMapper);
     }
 
     @Test
