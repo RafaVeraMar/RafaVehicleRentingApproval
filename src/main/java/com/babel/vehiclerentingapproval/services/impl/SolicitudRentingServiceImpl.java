@@ -27,15 +27,23 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
             throw new EstadoSolicitudNotFoundException();
         }
         String estado = tipoResultadoSolicitudMapper.getEstadoSolicitud(idSolicitud);
-        return "Estado de la solicitud con id " + idSolicitud + ": " + estado;
+        return estado;
     }
     public SolicitudRenting getSolicitudById(int id) throws SolicitudRentingNotFoundException {
-        SolicitudRenting solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
-
-        if (solicitudRenting == null){
+        int existe = this.solicitudRentingMapper.existeSolicitud(id);
+        SolicitudRenting solicitudRenting;
+        if (existe == 1) {
+            solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
+        }else{
             throw new SolicitudRentingNotFoundException();
         }
+
         return solicitudRenting;
+    }
+
+    @Override
+    public void modificaSolicitud(Integer solicitudId, SolicitudRenting nuevoRenting) {
+        this.solicitudRentingMapper.modificaSolicitud(solicitudId,nuevoRenting);
     }
 
     public void cancelarSolicitud(int id) throws SolicitudRentingNotFoundException{

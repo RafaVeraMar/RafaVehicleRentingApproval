@@ -25,4 +25,19 @@ public interface SolicitudRentingMapper {
             @Result(property = "tipoResultadoSolicitud.codResultado", column = "COD_RESOLUCION"),
     })
     SolicitudRenting getSolicitudByID(int solicitudId);
+
+    @Update("Update SOLICITUD_RENTING SET " +
+            "NUM_VEHICULOS = #{nuevoRenting.numVehiculos}, " +
+            "INVERSION = #{nuevoRenting.inversion}," +
+            "CUOTA = #{nuevoRenting.cuota}," +
+            "PLAZO = #{nuevoRenting.plazo, jdbcType=FLOAT}," +
+            "FECHA_INICIO_VIGOR = #{nuevoRenting.fechaInicioVigor,jdbcType=DATE}," +
+            "FECHA_RESOLUCION = #{nuevoRenting.fechaResolucion,jdbcType=DATE}, " +
+            "COD_RESOLUCION = #{nuevoRenting.tipoResultadoSolicitud.codResultado,jdbcType=CHAR}" +
+            "Where SOLICITUD_ID=#{solicitudId}")
+    void modificaSolicitud(Integer solicitudId, SolicitudRenting nuevoRenting);
+
+    @Select("SELECT COUNT(SOLICITUD_ID) FROM SOLICITUD_RENTING WHERE SOLICITUD_ID = #{solicitudId}")
+    int existeSolicitud(int solicitudId);
+
 }

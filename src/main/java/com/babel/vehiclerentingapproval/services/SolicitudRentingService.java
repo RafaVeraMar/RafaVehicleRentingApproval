@@ -7,5 +7,7 @@ public interface SolicitudRentingService {
 
     public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFoundException;
     public SolicitudRenting getSolicitudById(int it);
+
+    void modificaSolicitud(Integer solicitudId, SolicitudRenting nuevoRenting);
     void cancelarSolicitud(int id);
 }
