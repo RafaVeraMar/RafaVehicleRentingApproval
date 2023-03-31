@@ -1,6 +1,7 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
 
+import com.babel.vehiclerentingapproval.exceptions.PersonaNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import com.babel.vehiclerentingapproval.exceptions.RequiredMissingFieldException;
 import com.babel.vehiclerentingapproval.exceptions.WrongLenghtFieldException;
@@ -69,8 +70,9 @@ public class PersonaServiceImpl implements PersonaService {
     }
 
     @Override
-    public List<ProductoContratado> viewPersonaProducto(int id) {
-        return this.personaMapper.verProductosContratados(id);
+    public List<ProductoContratado> viewPersonaProducto(int idPersona) throws PersonaNotFoundException {
+        this.existePersona(idPersona);
+        return this.personaMapper.verProductosContratadosPersona(idPersona);
     }
 
     private Persona addPersonaDireccion(Persona persona){
@@ -108,6 +110,9 @@ public class PersonaServiceImpl implements PersonaService {
         }
     }
 
-
-
+    private void existePersona(int personaId) throws PersonaNotFoundException {
+        if(this.personaMapper.existePersona(personaId)==0){
+            throw new PersonaNotFoundException();
+        }
+    }
 }

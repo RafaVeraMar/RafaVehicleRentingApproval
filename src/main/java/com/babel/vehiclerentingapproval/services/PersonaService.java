@@ -1,5 +1,6 @@
 package com.babel.vehiclerentingapproval.services;
 
+import com.babel.vehiclerentingapproval.exceptions.PersonaNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import com.babel.vehiclerentingapproval.exceptions.RequiredMissingFieldException;
 import com.babel.vehiclerentingapproval.exceptions.WrongLenghtFieldException;
@@ -16,5 +17,5 @@ public interface PersonaService {
 
     Persona getPerson(int idPersona) throws RequestApiValidationException;
 
-    List<ProductoContratado> viewPersonaProducto(int id);
+    List<ProductoContratado> viewPersonaProducto(int id) throws PersonaNotFoundException;
 }

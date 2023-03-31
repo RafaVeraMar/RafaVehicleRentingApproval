@@ -27,5 +27,5 @@ public interface PersonaMapper {
             @Result(property = "fechaAlta", column = "FECHA_ALTA"),
             @Result(property = "fechaBaja", column = "FECHA_BAJA")
     })
-    List<ProductoContratado> verProductosContratados(int id);
+    List<ProductoContratado> verProductosContratadosPersona(int id);
 }
