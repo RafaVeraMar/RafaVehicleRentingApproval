@@ -59,7 +59,9 @@ public class SolicitudRentingController {
             this.solicitud.modificaEstadoSolicitud(solicitudId,nuevoEstado);
         }catch (SolicitudRentingNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El id de solicitud no es válido");
-        }catch (Exception e) {
+        }catch (EstadoSolicitudNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El estado "+nuevoEstado.getCodResultado()+" de solicitud no es válido");
+        }catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(String.format("Solicitud con id de solicitud: "+ solicitudId+ ", actualizada"));

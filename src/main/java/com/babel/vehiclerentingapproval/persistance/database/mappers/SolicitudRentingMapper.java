@@ -27,4 +27,5 @@ public interface SolicitudRentingMapper {
             "Where SOLICITUD_ID=#{solicitudId}")
     void modificaEstadoSolicitud(Integer solicitudId, TipoResultadoSolicitud nuevoEstado);
 
+    void existeSolicitud();
 }

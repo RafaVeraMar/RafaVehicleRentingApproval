@@ -9,6 +9,8 @@ import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResulta
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private SolicitudRentingMapper solicitudRentingMapper;
@@ -39,6 +41,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         String estado = tipoResultadoSolicitudMapper.getEstadoSolicitud(idSolicitud);
         return "Estado de la solicitud con id " + idSolicitud + ": " + estado;
     }
+
     public SolicitudRenting getSolicitudById(int id) throws SolicitudRentingNotFoundException {
         SolicitudRenting solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
 
@@ -49,9 +52,20 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     }
 
     @Override
-    public void modificaEstadoSolicitud(Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws EstadoSolicitudNotFoundException  {
-        this.solicitudRentingMapper.modificaEstadoSolicitud(solicitudId,nuevoEstado);
+    public void modificaEstadoSolicitud(Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws EstadoSolicitudNotFoundException, SolicitudRentingNotFoundException {
 
+        getSolicitudById(solicitudId);
+
+        List<String> listaEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
+        if(!listaEstados.contains(nuevoEstado.getCodResultado())){
+                throw new EstadoSolicitudNotFoundException();
+        }
+        this.solicitudRentingMapper.modificaEstadoSolicitud(solicitudId,nuevoEstado);
+    }
+    @Override
+    public List<String> getListaEstados() {
+        List<String> listaEstados =  this.tipoResultadoSolicitudMapper.getListaEstados();
+        return listaEstados;
     }
 
 }
