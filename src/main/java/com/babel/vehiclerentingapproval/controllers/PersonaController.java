@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Tag(name="Operaciones con persona",description = "Endpoint para operar con una persona a la base de datos a partir de unos datos de entrada.")
 @RestController
 public class PersonaController {
 
@@ -28,17 +30,31 @@ public class PersonaController {
     }
 
     @PostMapping("/persona")
+
+    @ApiResponses( value = { @ApiResponse( responseCode = "200", description = "La persona se ha añadido con éxito a la base de datos.", content = { @Content( mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "Comprueba tus datos de entrada.", content = { @Content( mediaType = "application/json")}),
+            @ApiResponse(responseCode = "500", description = "Error del servidor.", content = { @Content( mediaType = "application/json")})
+    })
+
     ResponseEntity addPersona(@RequestBody Persona persona){
+        Persona personaCreada;
+        Map<String, Object> map = new HashMap<String, Object>();
         try {
-            this.personaService.addPersona(persona);
+            personaCreada=this.personaService.addPersona(persona);
         } catch (RequiredMissingFieldException e) {
+            map.put("status", HttpStatus.BAD_REQUEST);
+            map.put("descripcion", "Comprueba los datos de entrada");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Comprueba los datos de entrada");
         }
         catch (Exception e) {
-
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            map.put("status", HttpStatus.NOT_FOUND);
+            map.put("description", "Error del sistema");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
-        return ResponseEntity.ok(persona);
+        map.put("status", HttpStatus.OK);
+        map.put("description", "Persona añadida.");
+        map.put("id", personaCreada.getPersonaId());
+        return ResponseEntity.ok(personaCreada);
     }
 
     @GetMapping("/mostrarProductosPersona/{id}")
