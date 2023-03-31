@@ -2,6 +2,11 @@ package com.babel.vehiclerentingapproval.controllers;
 
 import com.babel.vehiclerentingapproval.exceptions.ResolucionSolicitudesNotFoundException;
 import com.babel.vehiclerentingapproval.services.ResolucionSolicitudesService;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.http.HttpStatus;
@@ -11,7 +16,7 @@ import java.util.HashMap;
 
 import java.util.Map;
 
-
+@Tag(name="Listar tipos de solicitudes",description = "Endpoint que devuelve una lista de los tipos de solicitudes existentes en la base de datos.")
 @RestController
 public class ResolucionSolicitudesController {
 
@@ -22,6 +27,10 @@ public class ResolucionSolicitudesController {
     }
 
     @GetMapping("/listarTiposResolucion")
+    @ApiResponses( value = { @ApiResponse( responseCode = "200", description = "Existen datos en la base de datos y se devuelven.", content = { @Content( mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "No existen tipos de solicitudes en la base de datos.", content = { @Content( mediaType = "application/json")})
+    })
+
     ResponseEntity listarTiposResolucion() {
         Map<String, Object> map = new HashMap<String, Object>();
         try {

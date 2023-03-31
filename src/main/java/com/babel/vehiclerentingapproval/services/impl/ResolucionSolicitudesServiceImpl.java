@@ -22,11 +22,11 @@ public class ResolucionSolicitudesServiceImpl implements ResolucionSolicitudesSe
     public List<ResolucionSolicitud> listar() throws ResolucionSolicitudesNotFoundException {
         List<ResolucionSolicitud> lista = new ArrayList<ResolucionSolicitud>();
         lista=resolucionSolicitudesMapper.listar();
-        comprobarListaNoEstaVacia(lista);
+        existenSolicitudes(lista);
         return lista;
     }
 
-    private void comprobarListaNoEstaVacia(List<ResolucionSolicitud> lista) throws ResolucionSolicitudesNotFoundException {
+    public void existenSolicitudes(List<ResolucionSolicitud> lista) throws ResolucionSolicitudesNotFoundException {
         if (lista.isEmpty()){
             throw new ResolucionSolicitudesNotFoundException();
         }
