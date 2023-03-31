@@ -1,16 +1,22 @@
 package com.babel.vehiclerentingapproval.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.math.BigInteger;
 import java.util.Date;
 
 public class SolicitudRenting {
     private int solicitudId;
     private Persona persona;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fechaSolicitud;
-    private int numVehiculos;
-    private float inversion;
-    private float cuota;
-    private Integer plazo;
+    private BigInteger numVehiculos;
+    private Float inversion;
+    private Float cuota;
+    private BigInteger plazo;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fechaInicioVigor;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fechaResolucion;
     private TipoResultadoSolicitud tipoResultadoSolicitud;
 
@@ -38,35 +44,35 @@ public class SolicitudRenting {
         this.fechaSolicitud = fechaSolicitud;
     }
 
-    public int getNumVehiculos ( ) {
+    public BigInteger getNumVehiculos ( ) {
         return numVehiculos;
     }
 
-    public void setNumVehiculos (int numVehiculos) {
+    public void setNumVehiculos (BigInteger numVehiculos) {
         this.numVehiculos = numVehiculos;
     }
 
-    public float getInversion ( ) {
+    public Float getInversion ( ) {
         return inversion;
     }
 
-    public void setInversion (float inversion) {
+    public void setInversion (Float inversion) {
         this.inversion = inversion;
     }
 
-    public float getCuota ( ) {
+    public Float getCuota ( ) {
         return cuota;
     }
 
-    public void setCuota (float cuota) {
+    public void setCuota (Float cuota) {
         this.cuota = cuota;
     }
 
-    public Integer getPlazo ( ) {
+    public BigInteger getPlazo ( ) {
         return plazo;
     }
 
-    public void setPlazo (Integer plazo) {
+    public void setPlazo (BigInteger plazo) {
         this.plazo = plazo;
     }
 

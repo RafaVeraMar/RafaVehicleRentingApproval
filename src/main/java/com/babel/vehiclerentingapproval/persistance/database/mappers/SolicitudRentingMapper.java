@@ -36,6 +36,11 @@ public interface SolicitudRentingMapper {
             "COD_RESOLUCION = #{nuevoRenting.tipoResultadoSolicitud.codResultado,jdbcType=CHAR}" +
             "Where SOLICITUD_ID=#{solicitudId}")
     void modificaSolicitud(Integer solicitudId, SolicitudRenting nuevoRenting);
+    @Insert("INSERT INTO SOLICITUD_RENTING (PERSONA_ID, FECHA_SOLICITUD, NUM_VEHICULOS, INVERSION, CUOTA, PLAZO, FECHA_INICIO_VIGOR, FECHA_RESOLUCION, " +
+            "COD_RESOLUCION) VALUES (#{persona.personaId}, SYSDATE, #{numVehiculos}, #{inversion}, #{cuota}, #{plazo, jdbcType=INTEGER}, " +
+            "#{fechaInicioVigor, jdbcType=DATE}, #{fechaResolucion,jdbcType=DATE}, #{tipoResultadoSolicitud.codResultado, jdbcType=CHAR})")
+    @Options(useGeneratedKeys = true, keyProperty = "solicitudId", keyColumn = "SOLICITUD_ID")
+    void insertSolicitudRenting(SolicitudRenting solicitudRenting);
 
     @Select("SELECT COUNT(SOLICITUD_ID) FROM SOLICITUD_RENTING WHERE SOLICITUD_ID = #{solicitudId}")
     int existeSolicitud(int solicitudId);
