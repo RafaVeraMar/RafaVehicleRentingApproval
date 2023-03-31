@@ -1,8 +1,8 @@
 package com.babel.vehiclerentingapproval.controllers;
 
 import com.babel.vehiclerentingapproval.exceptions.ResolucionSolicitudesNotFoundException;
+import com.babel.vehiclerentingapproval.models.ResolucionSolicitud;
 import com.babel.vehiclerentingapproval.services.ResolucionSolicitudesService;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -30,8 +30,7 @@ public class ResolucionSolicitudesController {
     @ApiResponses( value = { @ApiResponse( responseCode = "200", description = "Existen datos en la base de datos y se devuelven.", content = { @Content( mediaType = "application/json")}),
             @ApiResponse(responseCode = "404", description = "No existen tipos de solicitudes en la base de datos.", content = { @Content( mediaType = "application/json")})
     })
-
-    ResponseEntity listarTiposResolucion() {
+    ResponseEntity listarTiposResolucion(ResolucionSolicitud resolucionSolicitud) {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             return ResponseEntity.ok(this.resolucionSolicitudesService.listar());
