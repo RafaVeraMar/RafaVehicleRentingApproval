@@ -6,6 +6,7 @@ import com.babel.vehiclerentingapproval.persistance.database.mappers.ResolucionS
 import com.babel.vehiclerentingapproval.services.ResolucionSolicitudesService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,7 +20,7 @@ public class ResolucionSolicitudesServiceImpl implements ResolucionSolicitudesSe
 
     @Override
     public List<ResolucionSolicitud> listar() throws ResolucionSolicitudesNotFoundException {
-        List<ResolucionSolicitud> lista;
+        List<ResolucionSolicitud> lista = new ArrayList<ResolucionSolicitud>();
         lista=resolucionSolicitudesMapper.listar();
         comprobarListaNoEstaVacia(lista);
         return lista;
