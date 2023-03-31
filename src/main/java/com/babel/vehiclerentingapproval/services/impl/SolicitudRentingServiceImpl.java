@@ -1,6 +1,7 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
 import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundException;
+import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundException;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
@@ -17,15 +18,6 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         this.tipoResultadoSolicitudMapper = tipoResultadoSolicitudMapper;
     }
 
-    @Override
-    public void createRentingRequest(SolicitudRenting solicitudRenting) {
-        
-    }
-
-    @Override
-    public void validateRentingRequest(SolicitudRenting solicitudRenting) {
-
-    }
 
     @Override
     public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFoundException {
@@ -41,8 +33,13 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         return this.solicitudRentingMapper.getSolicitudByID(id);
     }
 
-    public void cancelarSolicitud(SolicitudRenting solicitudRenting) {
+    public void cancelarSolicitud(int id) throws SolicitudRentingNotFoundException{
+        SolicitudRenting solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
+        if(solicitudRenting==null){
+            throw new SolicitudRentingNotFoundException();
+        }
         solicitudRentingMapper.cancelarSolicitud(solicitudRenting);
+
     }
    
 }

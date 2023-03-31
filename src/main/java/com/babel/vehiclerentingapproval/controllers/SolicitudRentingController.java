@@ -21,12 +21,6 @@ public class SolicitudRentingController {
         this.solicitudRentingMapper = solicitudRentingMapper;
     }
 
-    @PostMapping("")
-    ResponseEntity<String> crearSolicitud(@RequestBody SolicitudRenting solicitudACrear){
-        this.solicitud.createRentingRequest(solicitudACrear);
-        return ResponseEntity.ok("Solicitud creada");
-    }
-
     @GetMapping("/estado/{id}")
     ResponseEntity<String> verEstadoSolicitud(@PathVariable String id) throws EstadoSolicitudNotFoundException {
 
@@ -50,7 +44,7 @@ public class SolicitudRentingController {
     @PatchMapping("/{id}")
     ResponseEntity cancelarSolicitud(@PathVariable int id){
         try {
-            this.solicitud.cancelarSolicitud(this.solicitud.getSolicitudById(id));
+            this.solicitud.cancelarSolicitud(id);
         }catch(Exception e){//TODO cuando haga el merge meter la excepcion creada por Alavaro
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("no es correcto el id");
         }
