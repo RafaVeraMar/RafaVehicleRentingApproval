@@ -28,4 +28,7 @@ public interface SolicitudRentingMapper {
     void modificaEstadoSolicitud(Integer solicitudId, TipoResultadoSolicitud nuevoEstado);
 
     void existeSolicitud();
+    @Select("SELECT COUNT(SOLICITUD_ID) FROM SOLICITUD_RENTING WHERE SOLICITUD_ID = #{solicitudId}")
+    int existeSolicitud(int solicitudId);
+
 }

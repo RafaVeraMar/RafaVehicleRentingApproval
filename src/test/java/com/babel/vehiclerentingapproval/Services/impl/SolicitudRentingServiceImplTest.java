@@ -17,6 +17,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyInt;
 
 public class SolicitudRentingServiceImplTest {
     SolicitudRentingService solicitudService;
@@ -46,10 +47,21 @@ public class SolicitudRentingServiceImplTest {
     class TestsVerSolicitudRenting{
         @Test
         public void verSolicitudRenting_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists(){
-            Assertions.assertThrows(SolicitudRentingNotFoundException.class,()->{
-                int id = -10;
-                solicitudService.getSolicitudById(id);
+            Mockito.when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(0);
+
+            Assertions.assertThrows(SolicitudRentingNotFoundException.class, ()->{
+                solicitudService.getSolicitudById(0);
             });
+
+        }
+        @Test
+        public void verSolicitudRenting_shouldNotThrow_SolicitudRentingNotFoundException_when_solicitudIdExists(){
+            Mockito.when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(1);
+
+            Assertions.assertDoesNotThrow(()->{
+                solicitudService.getSolicitudById(0);
+            });
+
         }
     }
 
@@ -76,7 +88,7 @@ public class SolicitudRentingServiceImplTest {
         public void modificaSolicitudRenting_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists() {
 
             Mockito.when(tipoResultadoSolicitudMapper.existeCodigoResolucion(any())).thenReturn(1);
-            Mockito.when()
+            //Mockito.when()
             Assertions.assertThrows(SolicitudRentingNotFoundException.class, () -> {
 
                 int id = -1;

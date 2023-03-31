@@ -8,8 +8,6 @@ import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 import java.util.List;
 
 public interface SolicitudRentingService {
-    public void createRentingRequest(SolicitudRenting solicitudRenting);
-    public void validateRentingRequest(SolicitudRenting solicitudRenting);
 
     public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFoundException;
     public SolicitudRenting getSolicitudById(int it);
