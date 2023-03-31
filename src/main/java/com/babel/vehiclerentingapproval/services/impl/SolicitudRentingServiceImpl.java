@@ -41,7 +41,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     public SolicitudRenting getSolicitudById(int id) throws SolicitudRentingNotFoundException {
         SolicitudRenting solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
 
-        if (solicitudRenting == null){
+        if (solicitudRenting == null || id < 1){
             throw new SolicitudRentingNotFoundException();
         }
         return solicitudRenting;
