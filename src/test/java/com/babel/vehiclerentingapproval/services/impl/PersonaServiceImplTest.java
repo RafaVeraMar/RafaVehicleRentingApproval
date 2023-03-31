@@ -31,6 +31,7 @@ public class PersonaServiceImplTest {
     @BeforeEach
     void setUpAll(){
         personaMapper = Mockito.mock(PersonaMapper.class);
+        when(personaMapper.existePersona(100)).thenReturn(0);
         direccionMapper = Mockito.mock(DireccionMapper.class);
         tipoViaMapper = Mockito.mock(TipoViaMapper.class);
         provinciaMapper = Mockito.mock(ProvinciaMapper.class);
@@ -51,27 +52,11 @@ public class PersonaServiceImplTest {
 
     @Test
     public void viewPersonaProducto_should_throwPersonaNotFoundException_when_personaIdNoExiste(){
-        personaService = Mockito.mock(PersonaService.class);
-        when(personaService.existePersona(100)).thenReturn(false);
-
-        Assertions.assertThrows(Exception.class,() ->{
+        Assertions.assertThrows(PersonaNotFoundException.class,() ->{
             Persona persona = new Persona();
             persona.setPersonaId(100);
             this.personaService.viewPersonaProducto(persona.getPersonaId());
         });
     }
-
-    @Test
-    public void viewPersonaProducto_should_throwPersonaNotFoundException_when_personaIdExiste(){
-        personaService = Mockito.mock(PersonaService.class);
-        when(personaService.existePersona(1)).thenReturn(true);
-
-        Assertions.assertThrows(Exception.class,() ->{
-            Persona persona = new Persona();
-            persona.setPersonaId(1);
-            this.personaService.viewPersonaProducto(persona.getPersonaId());
-        });
-    }
-
 
 }
