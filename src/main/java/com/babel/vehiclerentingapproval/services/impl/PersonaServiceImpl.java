@@ -71,7 +71,7 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     public List<ProductoContratado> viewPersonaProducto(int idPersona) throws PersonaNotFoundException {
-        this.existePersona(idPersona);
+        this.validatePersona(idPersona);
         return this.personaMapper.verProductosContratadosPersona(idPersona);
     }
 
@@ -110,9 +110,16 @@ public class PersonaServiceImpl implements PersonaService {
         }
     }
 
-    private void existePersona(int personaId) throws PersonaNotFoundException {
-        if(this.personaMapper.existePersona(personaId)==0){
+    public void validatePersona(int personaId) throws PersonaNotFoundException {
+        if(existePersona(personaId)){
             throw new PersonaNotFoundException();
         }
+    }
+
+    public boolean existePersona(int personaId){
+        if(this.personaMapper.existePersona(personaId)==0){
+            return false;
+        }
+        return true;
     }
 }
