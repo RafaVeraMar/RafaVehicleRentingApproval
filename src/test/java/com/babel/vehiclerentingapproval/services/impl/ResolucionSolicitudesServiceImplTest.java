@@ -24,13 +24,10 @@ public class ResolucionSolicitudesServiceImplTest {
     @BeforeEach
     void setupAll() {
 
-
-        solicitudesService = Mockito.mock(ResolucionSolicitudesServiceImpl.class);
-
-
-
         solicitudesMapper = Mockito.mock(ResolucionSolicitudesMapper.class);
-        when(solicitudesMapper.listar()).thenReturn(crearListaSinElementos());
+        when(solicitudesMapper.listar()).thenReturn(crearListaVacia());
+
+        solicitudesService = new ResolucionSolicitudesServiceImpl(solicitudesMapper);
     }
 
     @Test
@@ -46,7 +43,7 @@ public class ResolucionSolicitudesServiceImplTest {
         return lista;
     }
 
-    private List<ResolucionSolicitud> crearListaSinElementos(){
+    private List<ResolucionSolicitud> crearListaVacia(){
         List<ResolucionSolicitud> lista=new ArrayList<ResolucionSolicitud>();
         return lista;
     }
