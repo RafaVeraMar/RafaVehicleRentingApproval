@@ -30,11 +30,14 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         return estado;
     }
     public SolicitudRenting getSolicitudById(int id) throws SolicitudRentingNotFoundException {
-        SolicitudRenting solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
-
-        if (solicitudRenting == null || id < 1){
+        int existe = this.solicitudRentingMapper.existeSolicitud(id);
+        SolicitudRenting solicitudRenting;
+        if (existe == 1) {
+            solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
+        }else{
             throw new SolicitudRentingNotFoundException();
         }
+
         return solicitudRenting;
     }
 

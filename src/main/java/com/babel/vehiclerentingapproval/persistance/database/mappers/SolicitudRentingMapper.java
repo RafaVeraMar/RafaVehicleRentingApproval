@@ -32,4 +32,7 @@ public interface SolicitudRentingMapper {
             "Where SOLICITUD_ID=#{solicitudId}")
     void modificaSolicitud(Integer solicitudId, SolicitudRenting nuevoRenting);
 
+    @Select("SELECT COUNT(SOLICITUD_ID) FROM SOLICITUD_RENTING WHERE SOLICITUD_ID = #{solicitudId}")
+    int existeSolicitud(int solicitudId);
+
 }
