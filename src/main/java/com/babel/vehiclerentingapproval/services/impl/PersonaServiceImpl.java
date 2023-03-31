@@ -89,11 +89,11 @@ public class PersonaServiceImpl implements PersonaService {
         return persona;
     }
 
-    private void validatePersonData(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
+    public void validatePersonData(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
         this.validateNombre(persona);
     }
 
-    private void validateNombre(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
+    public void validateNombre(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
         if ((persona.getNombre() == null) || persona.getNombre().isEmpty()) {
             throw new RequiredMissingFieldException();
         }
@@ -103,7 +103,7 @@ public class PersonaServiceImpl implements PersonaService {
     }
 
     public void validatePersona(int personaId) throws PersonaNotFoundException {
-        if(existePersona(personaId)){
+        if (!existePersona(personaId)){
             throw new PersonaNotFoundException();
         }
     }

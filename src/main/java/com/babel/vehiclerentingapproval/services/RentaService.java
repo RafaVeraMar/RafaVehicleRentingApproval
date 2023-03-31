@@ -7,4 +7,6 @@ import com.babel.vehiclerentingapproval.models.Renta;
 
 public interface RentaService {
     Renta addRenta(Renta renta) throws ProfesionNotFoundException, PersonaNotFoundException, RentaFoundException;
+    public boolean existeRenta(int rentaId);
+    public void validateRenta(int rentaId) throws RentaFoundException;
 }

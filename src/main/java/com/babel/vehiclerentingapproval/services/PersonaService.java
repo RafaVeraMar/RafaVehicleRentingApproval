@@ -18,4 +18,12 @@ public interface PersonaService {
     Persona getPerson(int idPersona) throws RequestApiValidationException;
 
     List<ProductoContratado> viewPersonaProducto(int id) throws PersonaNotFoundException;
+
+    public void validatePersonData(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException;
+
+    public void validateNombre(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException;
+
+    public void validatePersona(int personaId) throws PersonaNotFoundException;
+
+    public boolean existePersona(int personaId);
 }
