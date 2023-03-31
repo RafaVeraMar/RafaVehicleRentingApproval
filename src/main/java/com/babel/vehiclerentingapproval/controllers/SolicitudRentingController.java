@@ -47,9 +47,24 @@ public class SolicitudRentingController {
     }
 
     @GetMapping("{id}")
-    ResponseEntity<SolicitudRenting> muestraSolicitudPorId(@PathVariable int id) {
+    @Operation(summary = "Mostrar solicitud por ID", description = "Devuelve una solicitud de renting, si existe una solicitud por su ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Solicitud por ID", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Petición de solicitud mal formada", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "404", description = "ID de solicitud no encontrado", content = @Content(mediaType = "application/json"))
+    })
+    @Parameter(name = "id", description = "ID para comprobar si existe la solicitud", required = true)
+    ResponseEntity muestraSolicitudPorId(@PathVariable int id) {
+        try {
+            this.solicitud.getSolicitudById(id);
+        } catch (SolicitudRentingNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El id de solicitud no es válido");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
         return ResponseEntity.ok(this.solicitud.getSolicitudById(id));
     }
+
 
     @Operation(summary = "Ver estado de solicitud por ID", description = "Devuelve el estado de una solicitud a partir de su ID")
     @ApiResponses(value = {

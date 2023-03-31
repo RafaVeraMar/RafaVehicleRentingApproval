@@ -25,14 +25,29 @@ public class SolicitudRentingServiceImplTest {
 
     }
 
-    @Test
-    public void verEstadoSolicitud_should_throwEstadoSolicitudNotFoundException_when_codSolicitudNull_or_idNotExists() {
-        Assertions.assertThrows(EstadoSolicitudNotFoundException.class, () -> {
-            int id = -43;
-            String estado = solicitudService.verEstadoSolicitud(id);
-        });
+    @Nested
+    class TestsVerEstadoSolicitud{
+        @Test
+        public void verEstadoSolicitud_shouldThrow_EstadoSolicitudNotFoundException_when_codSolicitudNull_or_idNotExists(){
+            Assertions.assertThrows(EstadoSolicitudNotFoundException.class,() ->{
+                int id = -43;
+                String estado = solicitudService.verEstadoSolicitud(id);
+            });
+        }
     }
 
+    @Nested
+    class TestsVerSolicitudRenting{
+        @Test
+        public void verSolicitudRenting_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists(){
+            Assertions.assertThrows(SolicitudRentingNotFoundException.class,()->{
+                int id = -10;
+                solicitudService.getSolicitudById(id);
+            });
+        }
+    }
+
+    
     @Nested
     class TestsCancelarSolicitudRenting {
         @Test
