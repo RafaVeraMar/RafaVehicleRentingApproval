@@ -12,8 +12,8 @@ import java.math.BigInteger;
 
 @Service
 public class SolicitudRentingServiceImpl implements SolicitudRentingService {
-    private SolicitudRentingMapper solicitudRentingMapper;
-    private TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
+    private final SolicitudRentingMapper solicitudRentingMapper;
+    private final TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
     private final PersonaMapper personaMapper;
 
     public SolicitudRentingServiceImpl(SolicitudRentingMapper solicitudRentingMapper,TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaMapper personaMapper) {
@@ -23,13 +23,12 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     }
 
     @Override
-    public SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) throws PersonaNotFoundException, WrongLenghtFieldException, InputIsNull {
+    public SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) throws PersonaNotFoundException, WrongLenghtFieldException, InputIsNullOrIsEmpty, DateIsBeforeException {
         validatePersona(solicitudRenting.getPersona().getPersonaId());
         validateNumber(solicitudRenting);
-        validateNotNull(solicitudRenting);
-        //TODO: falta validaciones de fechas
+        validateNotNullOrIsEmpty(solicitudRenting);
+        validateFecha(solicitudRenting);
          solicitudRentingMapper.insertSolicitudRenting(solicitudRenting);
-         //TODO: introducir el estado de la resolucion
          return solicitudRenting;
     }
 
@@ -65,8 +64,11 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     }
 
      private int lenghtNumber(BigInteger number){
-        String numeroString = number.toString();
-         return numeroString.length();
+        if(number != null){
+            String numeroString = number.toString();
+            return numeroString.length();
+        }
+        return 0;
      }
 
     private void validatePersona(int idPersona) throws PersonaNotFoundException {
@@ -79,9 +81,19 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         }
      }
 
-     private void validateNotNull(SolicitudRenting solicitudRenting) throws InputIsNull {
-        if(solicitudRenting.getInversion() == null || solicitudRenting.getCuota() == null || solicitudRenting.getNumVehiculos() == null){
-            throw new InputIsNull();
+     private void validateNotNullOrIsEmpty (SolicitudRenting solicitudRenting) throws InputIsNullOrIsEmpty {
+        if(solicitudRenting.getNumVehiculos() == null || solicitudRenting.getNumVehiculos().toString().isEmpty()
+                || solicitudRenting.getInversion() == null || solicitudRenting.getInversion().toString().isEmpty()
+                    || solicitudRenting.getCuota() == null || solicitudRenting.getCuota().toString().isEmpty()){
+            throw new InputIsNullOrIsEmpty();
         }
+     }
+
+     private void validateFecha(SolicitudRenting solicitudRenting) throws DateIsBeforeException {
+            if(solicitudRenting.getFechaInicioVigor() != null && solicitudRenting.getFechaResolucion() != null){
+                if(solicitudRenting.getFechaInicioVigor().before(solicitudRenting.getFechaResolucion())){
+                    throw new DateIsBeforeException();
+                }
+            }
      }
 }

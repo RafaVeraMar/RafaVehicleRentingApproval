@@ -1,4 +1,4 @@
 package com.babel.vehiclerentingapproval.exceptions;
 
-public class InputIsNull extends Exception{
+public class InputIsNullOrIsEmpty extends Exception{
 }
