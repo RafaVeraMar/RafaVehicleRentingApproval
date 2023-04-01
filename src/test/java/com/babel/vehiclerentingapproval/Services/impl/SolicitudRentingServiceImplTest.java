@@ -59,7 +59,6 @@ public class SolicitudRentingServiceImplTest {
             Assertions.assertThrows(SolicitudRentingNotFoundException.class, ()->{
                 solicitudService.getSolicitudById(0);
             });
-
         }
         @Test
         public void verSolicitudRenting_shouldNotThrow_SolicitudRentingNotFoundException_when_solicitudIdExists(){
@@ -79,24 +78,20 @@ public class SolicitudRentingServiceImplTest {
         public void modificaEstadoSolicitud_shouldThrow_EstadoSolicitudNotFoundException_when_codSolicitudNotExist(){
 
             Mockito.when(tipoResultadoSolicitudMapper.existeCodigoResolucion(any(Integer.class))).thenReturn(0);
-
             Assertions.assertThrows(EstadoSolicitudNotFoundException.class,() ->{
-
                 int id = 1;
                 String estadoCodigo = "WW";
                 TipoResultadoSolicitud tipoResultadoSolicitud = new TipoResultadoSolicitud();
                 tipoResultadoSolicitud.setCodResultado(estadoCodigo);
                 tipoResultadoSolicitud.setDescripcion("");
-
+                solicitudService.modificaEstadoSolicitud(id,tipoResultadoSolicitud);
             });
         }
 
         @Test
-        public void modificaSolicitudRenting_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists() {
+        public void modificaEstadoSolicitud_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists() {
 
-            //Mockito.when(tipoResultadoSolicitudMapper.existeCodigoResolucion(any())).thenReturn(1);
             Mockito.when(solicitudRentingMapper.existeSolicitud(any(Integer.class))).thenReturn(0);
-
             Assertions.assertThrows(SolicitudRentingNotFoundException.class, () -> {
                 int id = -1;
                 String estadoCodigo = "AA";
