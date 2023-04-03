@@ -11,9 +11,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -77,12 +79,11 @@ public class SolicitudRentingServiceImplTest {
         @Test
         public void modificaEstadoSolicitud_shouldThrow_EstadoSolicitudNotFoundException_when_codSolicitudNotExist(){
 
-            Mockito.when(tipoResultadoSolicitudMapper.existeCodigoResolucion(any(Integer.class))).thenReturn(0);
+            when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(0);
             Assertions.assertThrows(EstadoSolicitudNotFoundException.class,() ->{
                 int id = 1;
-                String estadoCodigo = "WW";
                 TipoResultadoSolicitud tipoResultadoSolicitud = new TipoResultadoSolicitud();
-                tipoResultadoSolicitud.setCodResultado(estadoCodigo);
+                tipoResultadoSolicitud.setCodResultado("WW");
                 tipoResultadoSolicitud.setDescripcion("");
                 solicitudService.modificaEstadoSolicitud(id,tipoResultadoSolicitud);
             });
@@ -91,14 +92,10 @@ public class SolicitudRentingServiceImplTest {
         @Test
         public void modificaEstadoSolicitud_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists() {
 
-            Mockito.when(solicitudRentingMapper.existeSolicitud(any(Integer.class))).thenReturn(0);
+            when(tipoResultadoSolicitudMapper.existeCodigoResolucion(anyInt())).thenReturn(0);
             Assertions.assertThrows(SolicitudRentingNotFoundException.class, () -> {
                 int id = -1;
-                String estadoCodigo = "AA";
-                TipoResultadoSolicitud tipoResultadoSolicitud = new TipoResultadoSolicitud();
-                tipoResultadoSolicitud.setCodResultado(estadoCodigo);
-                tipoResultadoSolicitud.setDescripcion("");
-                solicitudService.modificaEstadoSolicitud(id,tipoResultadoSolicitud);
+                solicitudService.getSolicitudById(id);
             });
 
         }
