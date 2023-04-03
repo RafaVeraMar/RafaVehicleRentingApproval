@@ -82,16 +82,35 @@ public class SolicitudRentingController {
     }
 
     @PutMapping("/estado/{solicitudId}")
-    ResponseEntity<String> updateEstadoSolicitud(@PathVariable Integer solicitudId, @RequestBody TipoResultadoSolicitud nuevoEstado){
+    ResponseEntity<Object> updateEstadoSolicitud(@PathVariable Integer solicitudId, @RequestBody TipoResultadoSolicitud nuevoEstado){
+        Map<String,Object> respuestaJson = new HashMap<String,Object>();
         try{
             this.solicitud.modificaEstadoSolicitud(solicitudId,nuevoEstado);
+            respuestaJson.put("Status",HttpStatus.OK);
+            respuestaJson.put("Id",solicitudId);
+            respuestaJson.put("Descripcion",nuevoEstado.getDescripcion());
+
+            return new ResponseEntity<Object>(respuestaJson,HttpStatus.OK);
         }catch (SolicitudRentingNotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El id de solicitud no es válido");
+            respuestaJson.put("Status",HttpStatus.NOT_FOUND);
+            respuestaJson.put("Id",solicitudId);
+            respuestaJson.put("Descripcion","Error: No se encuentra la solicitud buscada, intentelo mas tarde");
+
+            return new ResponseEntity<Object>(respuestaJson,HttpStatus.NOT_FOUND);
         }catch (EstadoSolicitudNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El estado "+nuevoEstado.getCodResultado()+" de solicitud no es válido");
+            respuestaJson.put("Status",HttpStatus.NOT_FOUND);
+            respuestaJson.put("Id",solicitudId);
+            respuestaJson.put("CodigoResolucion",nuevoEstado.getCodResultado());
+            respuestaJson.put("CodigoDescripcion",nuevoEstado.getDescripcion());
+            respuestaJson.put("Descripcion","Error: Estado de solicitud no valido");
+
+            return new ResponseEntity<Object>(respuestaJson,HttpStatus.NOT_FOUND);
         }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            respuestaJson.put("Status",HttpStatus.BAD_REQUEST);
+            respuestaJson.put("Id",solicitudId);
+            respuestaJson.put("Descripcion","Error: Fallo interno en el servidor, disculpad las molestias");
+
+            return new ResponseEntity<Object>(respuestaJson,HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(String.format("Solicitud con id de solicitud: "+ solicitudId+ ", actualizada"));
     }
 }
