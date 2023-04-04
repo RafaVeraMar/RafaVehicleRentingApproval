@@ -127,7 +127,7 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     @Override
     public Optional<Persona> validatefindPersonasByCodResultado(SolicitudRenting solicitudRenting) {
         return this.personaMapper.validatefindPersonasByCodResultado(solicitudRenting);
-        if ()
+
     }
 
 }
