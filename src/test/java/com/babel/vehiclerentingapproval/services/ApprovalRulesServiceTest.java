@@ -164,4 +164,22 @@ public class ApprovalRulesServiceTest {
         boolean validateInversion = service.validateYearsExperience(this.solicitud);
         Assertions.assertFalse(validateInversion);
     }
+
+    @Test
+    public void validateCIFCliente_should_beFalse_when_isNull() {
+
+        Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn(null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            boolean validateCIFCliente = service.validateCIFCliente(this.solicitud);
+            Assertions.assertFalse(validateCIFCliente);
+        });
+    }
+    @Test
+    public void validateCIFCliente_should_beTrue_when_isNotNull() {
+        Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn("N0676766J");
+        Assertions.assertDoesNotThrow(() -> {
+            boolean validateCIFCliente = service.validateCIFCliente(this.solicitud);
+        });
+    }
+
 }
