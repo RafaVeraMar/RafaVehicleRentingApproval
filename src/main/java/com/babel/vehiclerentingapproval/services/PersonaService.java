@@ -18,6 +18,7 @@ public interface PersonaService {
     Persona getPerson(int idPersona) throws RequestApiValidationException;
 
     List<ProductoContratado> viewPersonaProducto(int id) throws PersonaNotFoundException;
+    void updateEstadoPersonaProducto(List<ProductoContratado> listaProductoPersona);
 
     public void validatePersonData(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException;
 

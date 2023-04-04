@@ -67,6 +67,7 @@ public class PersonaController {
 
         try {
             lista = this.personaService.viewPersonaProducto(id);
+            this.personaService.updateEstadoPersonaProducto(lista);
         } catch (PersonaNotFoundException e) {
             map.put("status", HttpStatus.NOT_FOUND);
             map.put("description", "Persona no encontrada en la base de datos");

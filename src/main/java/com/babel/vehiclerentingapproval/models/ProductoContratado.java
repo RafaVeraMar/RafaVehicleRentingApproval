@@ -26,6 +26,8 @@ public class ProductoContratado {
     @PastOrPresent
     private Date fechaAlta;
     private Date fechaBaja;
+    private EstadoProductoContratado estado;
+
 
     public ProductoContratado(int idProductoContratado, int idProducto, String alias, int importeNominal, Date fechaAlta) {
         this.idProductoContratado = idProductoContratado;
@@ -81,5 +83,13 @@ public class ProductoContratado {
 
     public void setFechaBaja(Date fechaBaja) {
         this.fechaBaja = fechaBaja;
+    }
+
+    public EstadoProductoContratado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoProductoContratado estado) {
+        this.estado = estado;
     }
 }

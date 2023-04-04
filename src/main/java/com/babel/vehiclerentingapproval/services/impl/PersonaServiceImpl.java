@@ -67,6 +67,16 @@ public class PersonaServiceImpl implements PersonaService {
         return this.personaMapper.verProductosContratadosPersona(idPersona);
     }
 
+    public void updateEstadoPersonaProducto(List<ProductoContratado> listaProductoPersona){
+        for(ProductoContratado productoContratado : listaProductoPersona){
+            if(productoContratado.getFechaBaja() == null){
+                productoContratado.setEstado(EstadoProductoContratado.VIGENTE);
+            }else{
+                productoContratado.setEstado(EstadoProductoContratado.VENCIDO);
+            }
+        }
+    }
+
     private Persona addPersonaDireccion(Persona persona){
 
         TipoVia tipoVia=this.tipoViaMapper.getTipoVia(persona.getDireccionDomicilio().getTipoViaId().getTipoViaId());
