@@ -6,7 +6,7 @@ import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 public interface SolicitudRentingService {
 	SolicitudRenting addSolicitudRenting(SolicitudRenting solicitudRenting) throws WrongLenghtFieldException, PersonaNotFoundException, InputIsNullOrIsEmpty, DateIsBeforeException;
 
-    public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFoundException;
+    public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFoundException, EstadoSolicitudInvalidException;
     public SolicitudRenting getSolicitudById(int it);
 
     void modificaSolicitud(Integer solicitudId, SolicitudRenting nuevoRenting);

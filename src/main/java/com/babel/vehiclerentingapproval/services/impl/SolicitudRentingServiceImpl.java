@@ -2,9 +2,11 @@ package com.babel.vehiclerentingapproval.services.impl;
 
 import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
+import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
+import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +17,13 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private final SolicitudRentingMapper solicitudRentingMapper;
     private final TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
     private final PersonaMapper personaMapper;
+    private final CodigoResolucionValidator codigoResolucionValidator;
 
-    public SolicitudRentingServiceImpl(SolicitudRentingMapper solicitudRentingMapper,TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaMapper personaMapper) {
+    public SolicitudRentingServiceImpl(SolicitudRentingMapper solicitudRentingMapper,TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaMapper personaMapper,CodigoResolucionValidator codigoResolucionValidator) {
         this.solicitudRentingMapper = solicitudRentingMapper;
         this.tipoResultadoSolicitudMapper = tipoResultadoSolicitudMapper;
         this.personaMapper = personaMapper;
+        this.codigoResolucionValidator = codigoResolucionValidator;
     }
 
     @Override
@@ -40,13 +44,19 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     }
 
     @Override
-    public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFoundException {
+    public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFoundException, EstadoSolicitudInvalidException {
         int codigoExiste = tipoResultadoSolicitudMapper.existeCodigoResolucion(idSolicitud);
 
         if(codigoExiste == 0){
             throw new EstadoSolicitudNotFoundException();
         }
-        return tipoResultadoSolicitudMapper.getEstadoSolicitud(idSolicitud);
+
+        TipoResultadoSolicitud resultadoSolicitud = this.tipoResultadoSolicitudMapper.getResultadoSolicitud(idSolicitud);
+        this.codigoResolucionValidator.validarCodResolucion(resultadoSolicitud.getCodResultado());
+
+        return resultadoSolicitud.getDescripcion();
+
+
     }
     public SolicitudRenting getSolicitudById(int id) throws SolicitudRentingNotFoundException {
         int existe = this.solicitudRentingMapper.existeSolicitud(id);
