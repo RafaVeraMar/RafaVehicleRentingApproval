@@ -38,6 +38,7 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "400", description = "Alguno de los datos son nulos o no se han rellenado.", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "400", description = "La fecha de inici de vigor, no puede ser anterior a la fecha de resolucion", content = @Content(mediaType = "application/json"))
     })
+
     ResponseEntity addSolicitudRenting(@RequestBody SolicitudRenting solicitudRenting){
         Map<String, Object> respuesta = new HashMap<String, Object>();
         try {
