@@ -46,8 +46,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         if(codigoExiste == 0){
             throw new EstadoSolicitudNotFoundException();
         }
-        String estado = tipoResultadoSolicitudMapper.getEstadoSolicitud(idSolicitud);
-        return estado;
+        return tipoResultadoSolicitudMapper.getEstadoSolicitud(idSolicitud);
     }
     public SolicitudRenting getSolicitudById(int id) throws SolicitudRentingNotFoundException {
         int existe = this.solicitudRentingMapper.existeSolicitud(id);
