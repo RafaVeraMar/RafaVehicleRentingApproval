@@ -19,15 +19,19 @@ public class ResolucionSolicitudesServiceImpl implements ResolucionSolicitudesSe
     }
 
     @Override
-    public List<ResolucionSolicitud> listar() throws ResolucionSolicitudesNotFoundException {
+    public List<ResolucionSolicitud> getTipoResolucionesSolicitudes() throws ResolucionSolicitudesNotFoundException {
         List<ResolucionSolicitud> lista = new ArrayList<ResolucionSolicitud>();
-        lista=resolucionSolicitudesMapper.listar();
-        existenSolicitudes(lista);
+
+        this.existenSolicitudes();
+
+        lista=resolucionSolicitudesMapper.getTipoResolucionesSolicitudes();
+
+
         return lista;
     }
 
-    public void existenSolicitudes(List<ResolucionSolicitud> lista) throws ResolucionSolicitudesNotFoundException {
-        if (lista.isEmpty()){
+    private void existenSolicitudes() throws ResolucionSolicitudesNotFoundException {
+        if (resolucionSolicitudesMapper.getTipoResolucionesSolicitudes().size() == 0) {
             throw new ResolucionSolicitudesNotFoundException();
         }
     }

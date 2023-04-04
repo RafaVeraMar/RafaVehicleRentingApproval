@@ -1,9 +1,10 @@
-package com.babel.vehiclerentingapproval.services.impl;
+package com.babel.vehiclerentingapproval.Services.impl;
 
 import com.babel.vehiclerentingapproval.exceptions.ResolucionSolicitudesNotFoundException;
 import com.babel.vehiclerentingapproval.models.ResolucionSolicitud;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.ResolucionSolicitudesMapper;
 import com.babel.vehiclerentingapproval.services.ResolucionSolicitudesService;
+import com.babel.vehiclerentingapproval.services.impl.ResolucionSolicitudesServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ public class ResolucionSolicitudesServiceImplTest {
     void setupAll() {
 
         solicitudesMapper = Mockito.mock(ResolucionSolicitudesMapper.class);
-        when(solicitudesMapper.listar()).thenReturn(crearListaVacia());
+        when(solicitudesMapper.getTipoResolucionesSolicitudes()).thenReturn(crearListaVacia());
 
         solicitudesService = new ResolucionSolicitudesServiceImpl(solicitudesMapper);
     }
@@ -33,7 +34,7 @@ public class ResolucionSolicitudesServiceImplTest {
     @Test
     public void listar_should_throwResolucionSolicitudesNotFoundException_when_noHayDatosEnBaseDeDatos(){
         Assertions.assertThrows(ResolucionSolicitudesNotFoundException.class, () -> {
-            solicitudesService.listar();
+            solicitudesService.getTipoResolucionesSolicitudes();
         });
     }
 

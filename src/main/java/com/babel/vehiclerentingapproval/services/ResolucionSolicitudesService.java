@@ -6,6 +6,5 @@ import com.babel.vehiclerentingapproval.models.ResolucionSolicitud;
 import java.util.List;
 
 public interface ResolucionSolicitudesService {
-    public List<ResolucionSolicitud> listar() throws ResolucionSolicitudesNotFoundException;
-    public void existenSolicitudes(List<ResolucionSolicitud> lista) throws ResolucionSolicitudesNotFoundException;
+    public List<ResolucionSolicitud> getTipoResolucionesSolicitudes() throws ResolucionSolicitudesNotFoundException;
 }
