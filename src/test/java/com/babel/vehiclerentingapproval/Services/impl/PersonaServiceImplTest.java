@@ -2,8 +2,7 @@ package com.babel.vehiclerentingapproval.Services.impl;
 
 import com.babel.vehiclerentingapproval.exceptions.PersonaNotFoundException;
 import com.babel.vehiclerentingapproval.models.Persona;
-import com.babel.vehiclerentingapproval.persistance.database.mappers.DireccionMapper;
-import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
+import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.impl.PersonaServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -28,7 +27,15 @@ public class PersonaServiceImplTest {
 
         direccionMapper = Mockito.mock(DireccionMapper.class);
 
-        personaService = new PersonaServiceImpl(personaMapper,direccionMapper);
+
+        TelefonoMapper telefonoMapper = Mockito.mock(TelefonoMapper.class);
+        TipoViaMapper tipoViaMapper = Mockito.mock(TipoViaMapper.class);
+        ProvinciaMapper provinciaMapper = Mockito.mock(ProvinciaMapper.class);
+        PaisMapper paisMapper = Mockito.mock(PaisMapper.class);
+
+
+        personaService = new PersonaServiceImpl(direccionMapper,personaMapper,telefonoMapper,tipoViaMapper,provinciaMapper,paisMapper);
+
     }
 
     @Test
