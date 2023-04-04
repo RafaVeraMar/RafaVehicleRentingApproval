@@ -18,6 +18,8 @@ import org.mockito.Mockito;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 
 public class SolicitudRentingServiceImplTest {
@@ -192,17 +194,21 @@ public class SolicitudRentingServiceImplTest {
         public void cancelarSolicitudRenting_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists() {
             Mockito.when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(0);
 
-            Assertions.assertThrows(SolicitudRentingNotFoundException.class, ()->{
-                solicitudService.getSolicitudById(0);
+            Assertions.assertThrows(SolicitudRentingNotFoundException.class, () -> {
+                solicitudService.cancelarSolicitud(0);
             });
         }
+
         @Test
-        public void cancelarSolicitudRenting_shouldNotThrow_SolicitudRentingNotFoundException_when_solicitudIdExists() {
+        public void cancelarSolicitudRenting_shouldNotThrow_SolicitudRentingNotFoundException_when_solicitudIdExists() throws ParseException {
+            SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+            Mockito.when(solicitudRentingMapper.getSolicitudByID(anyInt())).thenReturn(solicitudRenting);
             Mockito.when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(1);
 
-            Assertions.assertDoesNotThrow(()->{
-                solicitudService.getSolicitudById(0);
+            Assertions.assertDoesNotThrow(() -> {
+                solicitudService.cancelarSolicitud(1);
             });
+
         }
     }
 }
