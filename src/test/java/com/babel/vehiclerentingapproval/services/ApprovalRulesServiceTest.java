@@ -73,7 +73,7 @@ public class ApprovalRulesServiceTest {
         persona.setApellido2("Doe");
         persona.setNacionalidad("ES");
         persona.setScoring(750);
-        renta.setImporte(100000);
+        renta.setImporte(10000);
         renta.setFechaInicioEmpleo(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2016"));
         return renta;
     }
@@ -183,24 +183,24 @@ public class ApprovalRulesServiceTest {
     }
 
     @Test
-    public void validateInvestmentIncome_should_beTrue_when_Investment_smallerThan_Income(){
-        Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(10000.F);
+    public void validateInvestmentIncome_should_beTrue_when_Investment_smallerThan_Neto(){
+        Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(11000F);
         boolean  validateInvestmentIncome = service.validateInversionIngresos(this.solicitud);
         Assertions.assertTrue(validateInvestmentIncome);
     }
 
     @Test
-    public void validateInvestmentIncome_should_beTrue_when_Investment_Equals_Income(){
+    public void validateInvestmentIncome_should_beTrue_when_Investment_Equals_Neto(){
+        Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(10000F);
+        boolean  validateInvestmentIncome = service.validateInversionIngresos(this.solicitud);
+        Assertions.assertTrue(validateInvestmentIncome);
+
+    }
+    @Test
+    public void validateInvestmentIncome_should_beTrue_when_Investment_biggerThan_Neto(){
         Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(9000F);
         boolean  validateInvestmentIncome = service.validateInversionIngresos(this.solicitud);
-        Assertions.assertTrue(validateInvestmentIncome);
-
-    }
-    @Test
-    public void validateInvestmentIncome_should_beTrue_when_Investment_biggerThan_Income(){
-        Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(12000F);
-        boolean  validateInvestmentIncome = service.validateInversionIngresos(this.solicitud);
-        Assertions.assertTrue(validateInvestmentIncome);
+        Assertions.assertFalse(validateInvestmentIncome);
 
     }
     @Test
