@@ -115,7 +115,7 @@ public class ApprovalRulesServiceTest {
 
     //test validateInversion
     @Test
-    public void validateInversion_should_beTrue_when_BiggerThan80000(){
+    public void validateInversion_should_beTrue_when_BiggerThan80000() {
         Mockito.when(inversionIngresosMapper.obtenerInversionSolicitud(solicitud)).thenReturn(90000f);
 
         boolean validateInversion = service.validateInversion(this.solicitud);
@@ -123,7 +123,7 @@ public class ApprovalRulesServiceTest {
     }
 
     @Test
-    public void validateInversion_should_beFalse_when_NotBiggerThan80000(){
+    public void validateInversion_should_beFalse_when_NotBiggerThan80000() {
         Mockito.when(inversionIngresosMapper.obtenerInversionSolicitud(solicitud)).thenReturn(10000f);
         boolean validateInversion = service.validateInversion(this.solicitud);
         Assertions.assertFalse(validateInversion);
@@ -157,10 +157,28 @@ public class ApprovalRulesServiceTest {
     }
 
     @Test
-    public void validateYearsExperience_should_beTrue_when_yearsEmploymentNotBiggerThan3YearsExperience(){
+    public void validateYearsExperience_should_beTrue_when_yearsEmploymentNotBiggerThan3YearsExperience() {
         Mockito.when(employmentSeniorityMapper.obtenerFechaInicioEmpleoSolicitud(solicitud)).thenReturn(1f);
         //this.renta.setFechaInicioEmpleo(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2016"));
         boolean validateInversion = service.validateYearsExperience(this.solicitud);
         Assertions.assertFalse(validateInversion);
     }
+
+    @Test
+    public void validateCIFCliente_should_beFalse_when_isNull() {
+
+        Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn(null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            boolean validateCIFCliente = service.validateCIFCliente(this.solicitud);
+            Assertions.assertFalse(validateCIFCliente);
+        });
+    }
+    @Test
+    public void validateCIFCliente_should_beTrue_when_isNotNull() {
+        Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn("N0676766J");
+        Assertions.assertDoesNotThrow(() -> {
+            boolean validateCIFCliente = service.validateCIFCliente(this.solicitud);
+        });
+    }
+
 }
