@@ -1,4 +1,4 @@
-package com.babel.vehiclerentingapproval.services.impl;
+package com.babel.vehiclerentingapproval.services;
 
 
 import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
