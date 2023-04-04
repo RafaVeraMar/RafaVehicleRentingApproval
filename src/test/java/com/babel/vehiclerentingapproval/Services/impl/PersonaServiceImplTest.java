@@ -1,4 +1,4 @@
-package com.babel.vehiclerentingapproval.Services.impl;
+package com.babel.vehiclerentingapproval.services.impl;
 
 import com.babel.vehiclerentingapproval.exceptions.PersonaNotFoundException;
 import com.babel.vehiclerentingapproval.models.Persona;
@@ -36,6 +36,16 @@ public class PersonaServiceImplTest {
 
         personaService = new PersonaServiceImpl(direccionMapper,personaMapper,telefonoMapper,tipoViaMapper,provinciaMapper,paisMapper);
 
+    }
+
+    @Test
+    public void addPersona_should_throwRequiredMissingFieldException_when_nombreIsNull(){
+        Assertions.assertThrows(Exception.class,() ->{
+            Persona persona = new Persona();
+
+            persona.setNombre(null);
+            this.personaService.addPersona(persona);
+        });
     }
 
     @Test
