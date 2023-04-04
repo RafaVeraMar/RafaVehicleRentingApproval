@@ -25,5 +25,5 @@ public interface PersonaMapper {
     String getNationality(SolicitudRenting solicitudRenting);
 
 @Select("SELECT p.PERSONA_ID, pcp.PRODUCTO_CONTRATADO_ID, sr.COD_RESOLUCION FROM Persona LEFT JOIN PRODUCTO_CONTRATADO_PERSONA pcp ON p.persona_ID = pcp.persona_ID AND PRODUCTO_CONTRATADO_ID IS NULL LEFT JOIN SOLICITUD_RENTING sr ON p.persona_ID = sr.PERSONA_ID AND sr.COD_RESOLUCION != 'AG' WHERE PERSONA_ID = #{personaId}")
-Optional<Persona> validatefindPersonasByCodResultado(SolicitudRenting solicitudRenting);
+boolean validatefindPersonasByCodResultado(SolicitudRenting solicitudRenting);
 }
