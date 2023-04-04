@@ -10,6 +10,6 @@ public interface ImpagosCuotaMapper {
     float obtenerCuotaSolicitud(SolicitudRenting solicitudRenting);
 
     @Select("SELECT ii.IMPORTE FROM SCORING.SOLICITUD_RENTING sr INNER JOIN SCORING.IMPAGO_INTERNO ii ON sr.PERSONA_ID = ii.PERSONA_ID  WHERE sr.SOLICITUD_ID = #{solicittudId}")
-    float obtenerImporteImpagoSolicitud(SolicitudRenting solicitudRenting);
+    float obtenerImporteImpagoInterno(SolicitudRenting solicitudRenting);
 
 }

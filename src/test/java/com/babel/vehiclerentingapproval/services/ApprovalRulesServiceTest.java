@@ -182,4 +182,45 @@ public class ApprovalRulesServiceTest {
         });
     }
 
+    @Test
+    public void validateInvestmentIncome_should_beTrue_when_Investment_smallerThan_Income(){
+        Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(10000.F);
+        boolean  validateInvestmentIncome = service.validateInversionIngresos(this.solicitud);
+        Assertions.assertTrue(validateInvestmentIncome);
+    }
+
+    @Test
+    public void validateInvestmentIncome_should_beTrue_when_Investment_Equals_Income(){
+        Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(9000F);
+        boolean  validateInvestmentIncome = service.validateInversionIngresos(this.solicitud);
+        Assertions.assertTrue(validateInvestmentIncome);
+
+    }
+    @Test
+    public void validateInvestmentIncome_should_beTrue_when_Investment_biggerThan_Income(){
+        Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(12000F);
+        boolean  validateInvestmentIncome = service.validateInversionIngresos(this.solicitud);
+        Assertions.assertTrue(validateInvestmentIncome);
+
+    }
+    @Test
+    public void validateNonPaymentFee_should_beFalse_when_nonPayment_smallerThan_Fee(){
+        Mockito.when(impagosCuotaMapper.obtenerImporteImpagoInterno(solicitud)).thenReturn(300F);
+        boolean  validateNonPaymentFee= service.validateImpagoCuota(this.solicitud);
+        Assertions.assertTrue(validateNonPaymentFee);
+    }
+
+    @Test
+    public void validateNonPaymentFee_should_beFalse_when_nonPayment_EqualsThan_Fee(){
+        Mockito.when(impagosCuotaMapper.obtenerImporteImpagoInterno(solicitud)).thenReturn(500F);
+        boolean  validateNonPaymentFee= service.validateImpagoCuota(this.solicitud);
+        Assertions.assertTrue(validateNonPaymentFee);
+    }
+    @Test
+    public void validateNonPaymentFee_should_beFalse_when_nonPayment_biggerThan_Fee(){
+        Mockito.when(impagosCuotaMapper.obtenerImporteImpagoInterno(solicitud)).thenReturn(600F);
+        boolean  validateNonPaymentFee= service.validateImpagoCuota(this.solicitud);
+        Assertions.assertFalse(validateNonPaymentFee);
+    }
+
 }
