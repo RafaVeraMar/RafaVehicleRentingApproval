@@ -9,7 +9,6 @@ import com.babel.vehiclerentingapproval.services.preautomaticresults.impl.Approv
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.text.ParseException;
@@ -26,6 +25,7 @@ public class ApprovalRulesServiceTest {
     private RentaMapper rentaMapper;
     private SalariedMapper salariedMapper;
     private ImpagosCuotaMapper impagosCuotaMapper;
+    private ApprovalGarantiaMapper garantiaMapper;
 
     SolicitudRenting solicitud;
 
@@ -41,10 +41,11 @@ public class ApprovalRulesServiceTest {
         this.rentaMapper = Mockito.mock((RentaMapper.class));
         this.salariedMapper = Mockito.mock((SalariedMapper.class));
         this.impagosCuotaMapper = Mockito.mock((ImpagosCuotaMapper.class));
+        this.garantiaMapper = Mockito.mock((ApprovalGarantiaMapper.class));
 
         this.solicitud = this.createSolicitudMock();
         this.renta = this.createRentaMock();
-        this.service = new ApprovalRulesServiceImpl(this.scoringRatingMapper, this.employmentSeniorityMapper, this.inversionIngresosMapper, this.personaMapper, this.rentaMapper, this.salariedMapper, this.impagosCuotaMapper);
+        this.service = new ApprovalRulesServiceImpl(this.scoringRatingMapper, this.employmentSeniorityMapper, this.inversionIngresosMapper, this.personaMapper, this.rentaMapper, this.salariedMapper, this.impagosCuotaMapper, this.garantiaMapper);
     }
 
     private SolicitudRenting createSolicitudMock() {

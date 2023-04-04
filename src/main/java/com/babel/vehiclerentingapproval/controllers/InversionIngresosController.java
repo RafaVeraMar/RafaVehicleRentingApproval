@@ -3,7 +3,10 @@ package com.babel.vehiclerentingapproval.controllers;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.services.preautomaticresults.ApprovalRulesService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 
@@ -18,15 +21,16 @@ public class InversionIngresosController {
     }
 
     @GetMapping("")
-    ResponseEntity makeProofs(@RequestParam SolicitudRenting solicitudRentingl){
+    ResponseEntity makeProofs(@RequestParam SolicitudRenting solicitudRentingl) {
         boolean t = this.approvalService.validateInversionIngresos(solicitudRentingl);
         boolean t1 = this.approvalService.validateScoringPersona(solicitudRentingl);
         boolean t2 = this.approvalService.validateCIFCliente(solicitudRentingl);
         boolean t3 = this.approvalService.validateYearsExperience(solicitudRentingl);
         boolean t4 = this.approvalService.validateInversion(solicitudRentingl);
-        boolean t5= this.approvalService.validateImpagoCuota(solicitudRentingl);
+        boolean t5 = this.approvalService.validateImpagoCuota(solicitudRentingl);
         boolean t6 = this.approvalService.validateNationality(solicitudRentingl);
-        ArrayList<Boolean> lista =  new ArrayList<Boolean>();
+        boolean t7 = this.approvalService.validateClienteNoAprobadoConGarantias(solicitudRentingl);
+        ArrayList<Boolean> lista = new ArrayList<Boolean>();
 
 
         lista.add(t);
@@ -36,6 +40,7 @@ public class InversionIngresosController {
         lista.add(t4);
         lista.add(t5);
         lista.add(t6);
+        lista.add(t7);
 
         return ResponseEntity.ok((lista));
     }
