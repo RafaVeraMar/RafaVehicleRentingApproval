@@ -1,19 +1,18 @@
 package com.babel.vehiclerentingapproval.persistance.database.mappers;
 
-import com.babel.vehiclerentingapproval.models.Direccion;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface AutomaticResultMapper {
-    @Insert("INSERT INTO SOLICITUD_RENTING (COD_RESOLUCION) VALUES (AA)")
-    void insertApproval(SolicitudRenting solicitudRenting);
+    @Update("UPDATE SOLICITUD_RENTING SET (COD_RESOLUCION) VALUES (AA) WHERE SOLICITUD_ID = #{solicitudId}")
+    void setApproval(SolicitudRenting solicitudRenting);
 
-    @Insert("INSERT INTO SOLICITUD_RENTING (COD_RESOLUCION) VALUES (PA)")
-    void insertPendingResult(SolicitudRenting solicitudRenting);
+    @Update("UPDATE SOLICITUD_RENTING SET (COD_RESOLUCION) VALUES (PA) WHERE SOLICITUD_ID = #{solicitudId}")
+    void setPendingResult(SolicitudRenting solicitudRenting);
 
-    @Insert("INSERT INTO SOLICITUD_RENTING (COD_RESOLUCION) VALUES (DM)")
-    void insertDeny(SolicitudRenting solicitudRenting);
+    @Update("UPDATE SOLICITUD_RENTING SET (COD_RESOLUCION) VALUES (DM) WHERE SOLICITUD_ID = #{solicitudId}")
+    void setDeny(SolicitudRenting solicitudRenting);
 
 }

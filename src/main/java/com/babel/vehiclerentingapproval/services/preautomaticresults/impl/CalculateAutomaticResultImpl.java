@@ -67,15 +67,15 @@ public class CalculateAutomaticResultImpl implements CalculateAutomaticResult {
 
         if(this.findAnyDeny(solicitudRenting)) {
             if(this.findAllApproval(solicitudRenting)) {
-                this.automaticResultMapper.insertApproval(solicitudRenting);
+                this.automaticResultMapper.setApproval(solicitudRenting);
 
             }else if (this.findAnyApproval(solicitudRenting)) {
-                this.automaticResultMapper.insertPendingResult(solicitudRenting);
+                this.automaticResultMapper.setPendingResult(solicitudRenting);
             }else {
-                this.automaticResultMapper.insertDeny(solicitudRenting);
+                this.automaticResultMapper.setDeny(solicitudRenting);
             }
         }else {
-            this.automaticResultMapper.insertDeny(solicitudRenting);
+            this.automaticResultMapper.setDeny(solicitudRenting);
 
         }
     }
