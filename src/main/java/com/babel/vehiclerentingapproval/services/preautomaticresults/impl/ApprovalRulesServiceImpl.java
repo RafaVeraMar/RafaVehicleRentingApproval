@@ -1,11 +1,13 @@
 package com.babel.vehiclerentingapproval.services.preautomaticresults.impl;
 
+import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.preautomaticresults.ApprovalRulesService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ApprovalRulesServiceImpl implements ApprovalRulesService {
@@ -106,6 +108,12 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public Optional<Persona> validatefindPersonasByCodResultado(SolicitudRenting solicitudRenting) {
+        return this.personaMapper.validatefindPersonasByCodResultado(solicitudRenting);
+        if ()
     }
 
 }
