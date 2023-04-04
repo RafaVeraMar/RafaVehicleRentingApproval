@@ -47,10 +47,9 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
 
     @Override
     public Boolean validateScoringPersona(SolicitudRenting solicitudRenting) {
-        if (this.scoringRatingMapper.obtenercScoringPersona(solicitudRenting) < scoringRating) {
-
+        float valorScoring = this.scoringRatingMapper.obtenercScoringPersona(solicitudRenting);
+        if ( valorScoring< scoringRating) {
             return true;
-
         } else {
             return false;
         }
