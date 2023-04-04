@@ -65,7 +65,7 @@ public class ApprovalRulesServiceTest {
     }
 
     @Test
-    public void validateNationality_should_beTrue_when_NotES(){
+    public void validateNationality_should_beFalse_when_NotES(){
 
         this.solicitud.getPersona().setNacionalidad("IT");
         boolean validationNationality = service.validateNationality(this.solicitud);
@@ -74,7 +74,7 @@ public class ApprovalRulesServiceTest {
     }
 
     @Test
-    public void validateNationality_should_beTrue_when_Empty(){
+    public void validateNationality_should_beFalse_when_Empty(){
 
         this.solicitud.getPersona().setNacionalidad("");
         boolean validationNationality = service.validateNationality(this.solicitud);
@@ -83,12 +83,32 @@ public class ApprovalRulesServiceTest {
     }
 
     @Test
-    public void validateNationality_should_beTrue_when_Null(){
+    public void validateNationality_should_beFalse_when_Null(){
 
         this.solicitud.getPersona().setNacionalidad(null);
         boolean validationNationality = service.validateNationality(this.solicitud);
 
         Assertions.assertFalse(validationNationality);
     }
+
+
+    //test validateInversion
+    @Test
+    public void validateInversion_should_beTrue_when_80000(){
+        this.solicitud.setInversion(90000);
+        boolean validateInversion = service.validateNationality(this.solicitud);
+        Assertions.assertTrue(validateInversion);
+    }
+
+    @Test
+    public void validateInversion_should_beFalse_when_Not80000(){
+        this.solicitud.setInversion(10000);
+        boolean validateInversion = service.validateNationality(this.solicitud);
+        Assertions.assertFalse(validateInversion);
+
+    }
+
+    //test validateYearsExperience
+
 
 }
