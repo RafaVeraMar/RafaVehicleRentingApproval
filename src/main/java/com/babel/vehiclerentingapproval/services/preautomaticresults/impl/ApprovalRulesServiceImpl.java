@@ -50,7 +50,6 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
         float valorScoring = this.scoringRatingMapper.obtenercScoringPersona(solicitudRenting);
         if ( valorScoring< scoringRating) {
             return true;
-
         } else {
             return false;
         }

@@ -9,6 +9,7 @@ import com.babel.vehiclerentingapproval.services.preautomaticresults.impl.Approv
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.text.ParseException;
@@ -49,6 +50,7 @@ public class ApprovalRulesServiceTest {
     private SolicitudRenting createSolicitudMock(){
         SolicitudRenting solicitud = new SolicitudRenting();
         Persona persona = new Persona();
+        persona.setPersonaId(104);
         persona.setNombre("John");
         persona.setApellido1("Doe");
         persona.setApellido2("Doe");
@@ -126,6 +128,66 @@ public class ApprovalRulesServiceTest {
         Assertions.assertFalse(validateInversion);
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @Test
+    public void validateScoring_should_beTrue_when_minor5(){
+        Mockito.when(scoringRatingMapper.obtenercScoringPersona(solicitud)).thenReturn(1f);
+        boolean validateScoring = service.validateScoringPersona(this.solicitud);
+        Assertions.assertTrue(validateScoring);
+    }
+    @Test
+    public void validateScoring_should_beFalse_when_major5(){
+        Mockito.when(scoringRatingMapper.obtenercScoringPersona(solicitud)).thenReturn(10f);
+        boolean validateScoring = service.validateScoringPersona(this.solicitud);
+        Assertions.assertFalse(validateScoring);
+    }
+
 
     //test validateYearsExperience
 
