@@ -31,7 +31,7 @@ public class ApprovalRulesServiceTest {
     Renta renta;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() throws ParseException {
 
         this.scoringRatingMapper = Mockito.mock((ScoringRatingMapper.class));
         this.employmentSeniorityMapper = Mockito.mock((EmploymentSeniorityMapper.class));
@@ -113,14 +113,15 @@ public class ApprovalRulesServiceTest {
     //test validateInversion
     @Test
     public void validateInversion_should_beTrue_when_BiggerThan80000(){
-        this.solicitud.setInversion(90000);
+        Mockito.when(inversionIngresosMapper.obtenerInversionSolicitud(solicitud)).thenReturn(90000f);
+
         boolean validateInversion = service.validateInversion(this.solicitud);
         Assertions.assertTrue(validateInversion);
     }
 
     @Test
     public void validateInversion_should_beFalse_when_NotBiggerThan80000(){
-        this.solicitud.setInversion(10000);
+        Mockito.when(inversionIngresosMapper.obtenerInversionSolicitud(solicitud)).thenReturn(10000f);
         boolean validateInversion = service.validateInversion(this.solicitud);
         Assertions.assertFalse(validateInversion);
 
@@ -129,17 +130,19 @@ public class ApprovalRulesServiceTest {
     //test validateYearsExperience
 
     @Test
-    public void validateYearsExperience_should_beTrue_when_yearsEmploymentBiggerThan3YearsExperience(){
+    public void validateYearsExperience_should_beTrue_when_yearsEmploymentBiggerThan3YearsExperience() throws ParseException {
         //(TO_DATE(CURRENT_DATE) - ra.FECHA_INICIO_EMPLEO)/365
-        this.renta.setFechaInicioEmpleo();
-        boolean validateInversion = service.validateNationality(this.solicitud);
+        Mockito.when(employmentSeniorityMapper.obtenerFechaInicioEmpleoSolicitud(solicitud)).thenReturn(10f);
+        //this.renta.setFechaInicioEmpleo(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2016"));
+        boolean validateInversion = service.validateYearsExperience(this.solicitud);
         Assertions.assertTrue(validateInversion);
     }
 
     @Test
     public void validateYearsExperience_should_beTrue_when_yearsEmploymentNotBiggerThan3YearsExperience(){
-        this.renta.setInversion(90000);
-        boolean validateInversion = service.validateNationality(this.solicitud);
+        Mockito.when(employmentSeniorityMapper.obtenerFechaInicioEmpleoSolicitud(solicitud)).thenReturn(1f);
+        //this.renta.setFechaInicioEmpleo(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2016"));
+        boolean validateInversion = service.validateYearsExperience(this.solicitud);
         Assertions.assertFalse(validateInversion);
     }
 }
