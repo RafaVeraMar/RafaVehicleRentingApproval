@@ -105,7 +105,6 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
             throw new SolicitudRentingNotFoundException();
         }
         solicitudRentingMapper.cancelarSolicitud(solicitudRenting);
-
     }
-   
+
 }

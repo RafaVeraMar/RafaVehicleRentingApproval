@@ -5,9 +5,9 @@ import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface SolicitudRentingMapper {
+    final static String cancelar = "CA";
     @Update("UPDATE SOLICITUD_RENTING SET FECHA_RESOLUCION=SYSDATE, " +
-            "COD_RESOLUCION='CA' where SOLICITUD_ID=#{solicitudId}")
-    @Options(useGeneratedKeys = true, keyProperty = "solicitudId", keyColumn = "SOLICITUD_ID")
+            "COD_RESOLUCION=cancelar where SOLICITUD_ID=#{solicitudId}")
     void cancelarSolicitud(SolicitudRenting solicitudRenting);
 
     @Select("Select SOLICITUD_ID,PERSONA_ID,FECHA_SOLICITUD,NUM_VEHICULOS,INVERSION,CUOTA,PLAZO," +
