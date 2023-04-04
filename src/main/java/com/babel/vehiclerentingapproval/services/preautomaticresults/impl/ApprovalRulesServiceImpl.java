@@ -123,7 +123,7 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
         } else {
             return true;
         }
-       } 
+    }
 
     @Override
     public Boolean validatefindPersonasByCodResultado(SolicitudRenting solicitudRenting) {
