@@ -7,6 +7,7 @@ import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
+import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import com.babel.vehiclerentingapproval.services.impl.SolicitudRentingServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -25,13 +26,15 @@ public class SolicitudRentingServiceImplTest {
     TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
     SolicitudRentingMapper solicitudRentingMapper;
     PersonaMapper personaMapper;
+    CodigoResolucionValidator codigoResolucionValidator;
 
     @BeforeEach
     void setUpAll() {
         tipoResultadoSolicitudMapper = Mockito.mock(TipoResultadoSolicitudMapper.class);
         solicitudRentingMapper = Mockito.mock(SolicitudRentingMapper.class);
         personaMapper = Mockito.mock(PersonaMapper.class);
-        solicitudService = new SolicitudRentingServiceImpl(solicitudRentingMapper,tipoResultadoSolicitudMapper, personaMapper);
+        codigoResolucionValidator = Mockito.mock(CodigoResolucionValidator.class);
+        solicitudService = new SolicitudRentingServiceImpl(solicitudRentingMapper,tipoResultadoSolicitudMapper, personaMapper,codigoResolucionValidator);
 
     }
 
