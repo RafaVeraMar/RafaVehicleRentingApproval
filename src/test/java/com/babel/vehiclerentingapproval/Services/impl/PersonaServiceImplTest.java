@@ -39,6 +39,16 @@ public class PersonaServiceImplTest {
     }
 
     @Test
+    public void addPersona_should_throwRequiredMissingFieldException_when_nombreIsNull(){
+        Assertions.assertThrows(Exception.class,() ->{
+            Persona persona = new Persona();
+
+            persona.setNombre(null);
+            this.personaService.addPersona(persona);
+        });
+    }
+
+    @Test
     public void modificarPersona_should_throwPersonaNotFoundException_when_personaNoExisteEnBaseDeDatos(){
         Assertions.assertThrows(PersonaNotFoundException.class,() ->{
             Persona persona = new Persona();
