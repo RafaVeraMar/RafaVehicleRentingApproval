@@ -47,15 +47,19 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFoundException, EstadoSolicitudInvalidException {
         int codigoExiste = tipoResultadoSolicitudMapper.existeCodigoResolucion(idSolicitud);
 
-        if(codigoExiste == 0){
+        if(codigoExiste == 0){ //idSolicitud or codResolucion null
             throw new EstadoSolicitudNotFoundException();
         }
 
         TipoResultadoSolicitud resultadoSolicitud = this.tipoResultadoSolicitudMapper.getResultadoSolicitud(idSolicitud);
-        this.codigoResolucionValidator.validarCodResolucion(resultadoSolicitud.getCodResultado());
+        this.validarCodigoResolucion(resultadoSolicitud.getCodResultado());
 
         return resultadoSolicitud.getDescripcion();
 
+
+    }
+    private void validarCodigoResolucion(String CodResolucion) throws EstadoSolicitudInvalidException{
+        this.codigoResolucionValidator.validarCodResolucion(CodResolucion);
 
     }
     public SolicitudRenting getSolicitudById(int id) throws SolicitudRentingNotFoundException {

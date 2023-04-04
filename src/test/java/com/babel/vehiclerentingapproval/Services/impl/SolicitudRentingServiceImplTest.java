@@ -4,11 +4,13 @@ import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.Direccion;
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
+import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
 import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
+import com.babel.vehiclerentingapproval.services.impl.CodigoResolucionValidatorImpl;
 import com.babel.vehiclerentingapproval.services.impl.SolicitudRentingServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +22,7 @@ import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 
 public class SolicitudRentingServiceImplTest {
     SolicitudRentingService solicitudService;
@@ -33,9 +36,15 @@ public class SolicitudRentingServiceImplTest {
         tipoResultadoSolicitudMapper = Mockito.mock(TipoResultadoSolicitudMapper.class);
         solicitudRentingMapper = Mockito.mock(SolicitudRentingMapper.class);
         personaMapper = Mockito.mock(PersonaMapper.class);
-        codigoResolucionValidator = Mockito.mock(CodigoResolucionValidator.class);
+        codigoResolucionValidator = new CodigoResolucionValidatorImpl(tipoResultadoSolicitudMapper);
         solicitudService = new SolicitudRentingServiceImpl(solicitudRentingMapper,tipoResultadoSolicitudMapper, personaMapper,codigoResolucionValidator);
 
+    }
+    private TipoResultadoSolicitud creaTipoResultadoFicticia(){
+        TipoResultadoSolicitud tipoResultadoSolicitud = new TipoResultadoSolicitud();
+        tipoResultadoSolicitud.setCodResultado("AA");
+        tipoResultadoSolicitud.setCodResultado("Aprobada");
+        return tipoResultadoSolicitud;
     }
 
     private SolicitudRenting creaSolicitudFicticia() throws ParseException {
@@ -81,11 +90,29 @@ public class SolicitudRentingServiceImplTest {
         @Test
         public void verEstadoSolicitud_shouldNotThrow_EstadoSolicitudNotFoundException_when_codSolicitudNull_and_idNotExists(){
             Mockito.when(tipoResultadoSolicitudMapper.existeCodigoResolucion(anyInt())).thenReturn(1);
+            Mockito.when(tipoResultadoSolicitudMapper.codigoValido(anyString())).thenReturn(1);
+            Mockito.when(tipoResultadoSolicitudMapper.getResultadoSolicitud(anyInt())).thenReturn(creaTipoResultadoFicticia());
 
             Assertions.assertDoesNotThrow(()->{
                 String estado = solicitudService.verEstadoSolicitud(anyInt());
             });
         }
+        @Test
+        public void verEstadoSolicitud_shouldThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid(){
+            Mockito.when(tipoResultadoSolicitudMapper.codigoValido(anyString())).thenReturn(0);
+            Assertions.assertThrows(EstadoSolicitudInvalidException.class,() ->{
+                codigoResolucionValidator.validarCodResolucion(anyString());
+            });
+        }
+        @Test
+        public void verEstadoSolicitud_shouldNotThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid(){
+            Mockito.when(tipoResultadoSolicitudMapper.codigoValido(anyString())).thenReturn(1);
+
+            Assertions.assertDoesNotThrow(()->{
+                codigoResolucionValidator.validarCodResolucion(anyString());
+            });
+        }
+
     }
 
     @Nested
