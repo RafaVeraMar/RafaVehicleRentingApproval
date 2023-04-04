@@ -6,6 +6,7 @@ public class Persona {
     private String nombre;
     private String apellido1;
     private String apellido2;
+    private String email;
     private Direccion direccionDomicilio;
     private Direccion direccionNotificacion;
     private boolean direccionDomicilioSameAsNotificacion=true;
@@ -114,4 +115,11 @@ public class Persona {
         this.direccionDomicilioSameAsNotificacion = direccionDomicilioSameAsNotificacion;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

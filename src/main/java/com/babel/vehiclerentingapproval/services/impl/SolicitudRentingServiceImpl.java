@@ -15,6 +15,7 @@ import java.util.List;
 public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private SolicitudRentingMapper solicitudRentingMapper;
     private TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
+    private EmailServiceImpl emailService;
 
     public SolicitudRentingServiceImpl(SolicitudRentingMapper solicitudRentingMapper,TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper) {
         this.solicitudRentingMapper = solicitudRentingMapper;
@@ -51,13 +52,19 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         List<String> posiblesEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
         int existeEstado = this.solicitudRentingMapper.existeSolicitud(solicitudId);
 
+        SolicitudRenting solicitud = getSolicitudById(solicitudId);
+
+
         if(!posiblesEstados.contains(nuevoEstado.getCodResultado())){
             throw new EstadoSolicitudNotFoundException();
         }
         if (existeEstado == 0) {
             throw new SolicitudRentingNotFoundException();
         }
+
         this.solicitudRentingMapper.modificaEstadoSolicitud(solicitudId,nuevoEstado);
+        this.emailService.sendSimpleMessage(solicitud.getPersona().getEmail(),"Cambios en tu solicitud", "Su solicitud se encuentra: " + nuevoEstado.getDescripcion());
+
     }
     @Override
     public List<String> getListaEstados() {
