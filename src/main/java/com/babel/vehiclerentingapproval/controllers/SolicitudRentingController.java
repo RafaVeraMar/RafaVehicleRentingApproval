@@ -3,6 +3,7 @@ package com.babel.vehiclerentingapproval.controllers;
 
 import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
+import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -154,13 +155,38 @@ public class SolicitudRentingController {
     }
 
     @PutMapping("/estado/{solicitudId}")
-    ResponseEntity<String> updateSolicitud(@PathVariable Integer solicitudId, @RequestBody SolicitudRenting nuevoRenting){
+    @Operation(summary = "Modificar estado de solicitud por ID", description = "Modifica el estado de una solicitud a partir de su ID")
+    @ApiResponses( value = {
+            @ApiResponse( responseCode = "200", description = "Estado solicitud correcto.", content = { @Content( mediaType = "application/json")}),
+            @ApiResponse(responseCode = "407", description = "No se encuentra la solicitud buscada.", content = { @Content( mediaType = "application/json")}),
+            @ApiResponse(responseCode = "408", description = "Estado de solicitud no valido.", content = { @Content( mediaType = "application/json")})
+    })
+    ResponseEntity<Object> updateEstadoSolicitud(@PathVariable Integer solicitudId, @RequestBody TipoResultadoSolicitud nuevoEstado){
+        Map<String,Object> respuestaJson = new HashMap<String,Object>();
         try{
-            this.solicitud.modificaSolicitud(solicitudId,nuevoRenting);
-        }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            this.solicitud.modificaEstadoSolicitud(solicitudId,nuevoEstado);
+            respuestaJson.put("Status",HttpStatus.OK);
+            respuestaJson.put("Id",solicitudId);
+            respuestaJson.put("Descripcion",nuevoEstado.getDescripcion());
+            return new ResponseEntity<Object>(respuestaJson,HttpStatus.OK);
+        }catch (SolicitudRentingNotFoundException e){
+            respuestaJson.put("Status",407);
+            respuestaJson.put("Id",solicitudId);
+            respuestaJson.put("Descripcion","Error: No se encuentra la solicitud buscada, intentelo mas tarde");
+            return new ResponseEntity<Object>(respuestaJson,HttpStatus.NOT_FOUND);
+        }catch (EstadoSolicitudNotFoundException e) {
+            respuestaJson.put("Status",408);
+            respuestaJson.put("Descripcion","Error: Estado de solicitud: "+nuevoEstado.getCodResultado() +", no valido");
+            respuestaJson.put("Id",solicitudId);
+            respuestaJson.put("CodigoResolucion",nuevoEstado.getCodResultado());
+            respuestaJson.put("CodigoDescripcion",nuevoEstado.getDescripcion());
+            return new ResponseEntity<Object>(respuestaJson,HttpStatus.NOT_FOUND);
+        }catch(Exception e){
+            respuestaJson.put("Status",HttpStatus.INTERNAL_SERVER_ERROR);
+            respuestaJson.put("Id",solicitudId);
+            respuestaJson.put("Descripcion","Error: Fallo interno en el servidor, disculpad las molestias");
+            return new ResponseEntity<Object>(respuestaJson,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(String.format("Solicitud con id de solicitud: "+ solicitudId+ ", actualizada"));
     }
 }
 
