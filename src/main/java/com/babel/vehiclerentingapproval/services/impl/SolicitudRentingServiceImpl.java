@@ -73,7 +73,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
         SolicitudRenting solicitud = getSolicitudById(solicitudId);
 
-
+        this.emailService.sendSimpleMessage(solicitud.getPersona().getEmail(),"Cambios en tu solicitud", "Su solicitud se encuentra: " + nuevoEstado.getDescripcion());
         if(!posiblesEstados.contains(nuevoEstado.getCodResultado())){
             throw new EstadoSolicitudNotFoundException();
         }

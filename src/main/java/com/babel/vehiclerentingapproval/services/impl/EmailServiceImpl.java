@@ -25,6 +25,7 @@ public class EmailServiceImpl implements EmailService {
             message.setText(text);
 
             emailSender.send(message);
+            System.out.println(message);
         } catch (MailException exception) {
             exception.printStackTrace();
         }
