@@ -9,7 +9,6 @@ import com.babel.vehiclerentingapproval.services.preautomaticresults.impl.Approv
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.text.ParseException;
@@ -26,6 +25,7 @@ public class ApprovalRulesServiceTest {
     private RentaMapper rentaMapper;
     private SalariedMapper salariedMapper;
     private ImpagosCuotaMapper impagosCuotaMapper;
+    private ApprovalGarantiaMapper garantiaMapper;
 
     SolicitudRenting solicitud;
 
@@ -41,10 +41,11 @@ public class ApprovalRulesServiceTest {
         this.rentaMapper = Mockito.mock((RentaMapper.class));
         this.salariedMapper = Mockito.mock((SalariedMapper.class));
         this.impagosCuotaMapper = Mockito.mock((ImpagosCuotaMapper.class));
+        this.garantiaMapper = Mockito.mock((ApprovalGarantiaMapper.class));
 
         this.solicitud = this.createSolicitudMock();
         this.renta = this.createRentaMock();
-        this.service = new ApprovalRulesServiceImpl(this.scoringRatingMapper, this.employmentSeniorityMapper, this.inversionIngresosMapper, this.personaMapper, this.rentaMapper, this.salariedMapper, this.impagosCuotaMapper);
+        this.service = new ApprovalRulesServiceImpl(this.scoringRatingMapper, this.employmentSeniorityMapper, this.inversionIngresosMapper, this.personaMapper, this.rentaMapper, this.salariedMapper, this.impagosCuotaMapper, this.garantiaMapper);
     }
 
     private SolicitudRenting createSolicitudMock() {
@@ -115,7 +116,7 @@ public class ApprovalRulesServiceTest {
 
     //test validateInversion
     @Test
-    public void validateInversion_should_beTrue_when_BiggerThan80000(){
+    public void validateInversion_should_beTrue_when_BiggerThan80000() {
         Mockito.when(inversionIngresosMapper.obtenerInversionSolicitud(solicitud)).thenReturn(90000f);
 
         boolean validateInversion = service.validateInversion(this.solicitud);
@@ -123,7 +124,7 @@ public class ApprovalRulesServiceTest {
     }
 
     @Test
-    public void validateInversion_should_beFalse_when_NotBiggerThan80000(){
+    public void validateInversion_should_beFalse_when_NotBiggerThan80000() {
         Mockito.when(inversionIngresosMapper.obtenerInversionSolicitud(solicitud)).thenReturn(10000f);
         boolean validateInversion = service.validateInversion(this.solicitud);
         Assertions.assertFalse(validateInversion);
@@ -157,7 +158,7 @@ public class ApprovalRulesServiceTest {
     }
 
     @Test
-    public void validateYearsExperience_should_beTrue_when_yearsEmploymentNotBiggerThan3YearsExperience(){
+    public void validateYearsExperience_should_beTrue_when_yearsEmploymentNotBiggerThan3YearsExperience() {
         Mockito.when(employmentSeniorityMapper.obtenerFechaInicioEmpleoSolicitud(solicitud)).thenReturn(1f);
         //this.renta.setFechaInicioEmpleo(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2016"));
         boolean validateInversion = service.validateYearsExperience(this.solicitud);

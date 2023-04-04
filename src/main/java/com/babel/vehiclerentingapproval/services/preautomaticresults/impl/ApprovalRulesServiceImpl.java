@@ -1,5 +1,6 @@
 package com.babel.vehiclerentingapproval.services.preautomaticresults.impl;
 
+import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.preautomaticresults.ApprovalRulesService;
@@ -17,10 +18,11 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     private RentaMapper rentaMapper;
     private SalariedMapper salariedMapper;
     private ImpagosCuotaMapper impagosCuotaMapper;
+    private ApprovalGarantiaMapper approvalGarantiaMapper;
     private static final int inversionMayor = 80000;
     private static final int scoringRating = 5;
 
-    public ApprovalRulesServiceImpl(ScoringRatingMapper scoringRatingMapper, EmploymentSeniorityMapper employmentSeniorityMapper, InversionIngresosMapper inversionIngresosMapper, PersonaMapper personaMapper, RentaMapper rentaMapper, SalariedMapper salariedMapper, ImpagosCuotaMapper impagosCuotaMapper) {
+    public ApprovalRulesServiceImpl(ScoringRatingMapper scoringRatingMapper, EmploymentSeniorityMapper employmentSeniorityMapper, InversionIngresosMapper inversionIngresosMapper, PersonaMapper personaMapper, RentaMapper rentaMapper, SalariedMapper salariedMapper, ImpagosCuotaMapper impagosCuotaMapper, ApprovalGarantiaMapper approvalGarantiaMapper) {
         this.scoringRatingMapper = scoringRatingMapper;
         this.employmentSeniorityMapper = employmentSeniorityMapper;
         this.inversionIngresosMapper = inversionIngresosMapper;
@@ -28,6 +30,7 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
         this.rentaMapper = rentaMapper;
         this.salariedMapper = salariedMapper;
         this.impagosCuotaMapper = impagosCuotaMapper;
+        this.approvalGarantiaMapper = approvalGarantiaMapper;
     }
 
     @Override
@@ -40,6 +43,7 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
             return false;
         }
     }
+
     @Override
     public Boolean validateInversion(SolicitudRenting solicitudRenting) {
         return this.inversionIngresosMapper.obtenerInversionSolicitud(solicitudRenting) > inversionMayor;
@@ -48,23 +52,25 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     @Override
     public Boolean validateScoringPersona(SolicitudRenting solicitudRenting) {
         float valorScoring = this.scoringRatingMapper.obtenercScoringPersona(solicitudRenting);
-        if ( valorScoring< scoringRating) {
+        if (valorScoring < scoringRating) {
             return true;
         } else {
             return false;
         }
     }
+
     @Override
     public Boolean validateImpagoCuota(SolicitudRenting solicitudRenting) {
-        if(this.impagosCuotaMapper.obtenerImporteImpagoSolicitud(solicitudRenting)
-                <= impagosCuotaMapper.obtenerCuotaSolicitud(solicitudRenting)){
+        if (this.impagosCuotaMapper.obtenerImporteImpagoSolicitud(solicitudRenting)
+                <= impagosCuotaMapper.obtenerCuotaSolicitud(solicitudRenting)) {
 
             return true;
 
-        }else{
+        } else {
             return false;
         }
     }
+
     @Override
     public Boolean validateCIFCliente(SolicitudRenting solicitudRenting) {
         boolean encontrado = false;
@@ -105,6 +111,17 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
         } else {
             return false;
         }
+    }
+
+    public Boolean validateClienteNoAprobadoConGarantias(SolicitudRenting solicitudRenting) {
+        Persona persona = solicitudRenting.getPersona();
+        int aprobado = this.approvalGarantiaMapper.existeClienteAprobadoConGarantias(persona.getPersonaId());
+        if (aprobado == 0) {
+            return false;
+        } else {
+            return true;
+        }
+
     }
 
 }

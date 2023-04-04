@@ -16,5 +16,7 @@ public interface ApprovalRulesService {
     Boolean validateNationality(SolicitudRenting solicitudRenting);
 
     Boolean validateYearsExperience(SolicitudRenting solicitudRenting);
+
+    Boolean validateClienteNoAprobadoConGarantias(SolicitudRenting solicitudRenting);
 }
 
