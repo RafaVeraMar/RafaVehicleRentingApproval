@@ -52,7 +52,7 @@ public class ApprovalRulesServiceTest {
         this.service = new ApprovalRulesServiceImpl(this.scoringRatingMapper, this.employmentSeniorityMapper, this.inversionIngresosMapper, this.personaMapper, this.rentaMapper, this.salariedMapper, this.impagosCuotaMapper, this.garantiaMapper);
     }
 
-    private SolicitudRenting createSolicitudMock() {
+    private SolicitudRenting createSolicitudMock() throws ParseException {
         SolicitudRenting solicitud = new SolicitudRenting();
         Persona persona = new Persona();
         persona.setPersonaId(104);
@@ -66,6 +66,7 @@ public class ApprovalRulesServiceTest {
         solicitud.setCuota(500);
         solicitud.setNumVehiculos(1);
         solicitud.setPlazo(36);
+        solicitud.setFechaResolucion(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2020"));
         return solicitud;
     }
 
@@ -259,5 +260,61 @@ public class ApprovalRulesServiceTest {
         Assertions.assertDoesNotThrow(() -> {
             boolean validateCIFCliente = service.validateCIFCliente(this.solicitud);
         });
+    }
+
+    @Test
+    public void validateInvestmentIncome_should_beTrue_when_Investment_smallerThan_Income(){
+        Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(10000.F);
+        boolean  validateInvestmentIncome = service.validateInversionIngresos(this.solicitud);
+        Assertions.assertTrue(validateInvestmentIncome);
+    }
+
+    @Test
+    public void validateInvestmentIncome_should_beTrue_when_Investment_Equals_Income(){
+        Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(9000F);
+        boolean  validateInvestmentIncome = service.validateInversionIngresos(this.solicitud);
+        Assertions.assertTrue(validateInvestmentIncome);
+
+    }
+    @Test
+    public void validateInvestmentIncome_should_beTrue_when_Investment_biggerThan_Income(){
+        Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(12000F);
+        boolean  validateInvestmentIncome = service.validateInversionIngresos(this.solicitud);
+        Assertions.assertTrue(validateInvestmentIncome);
+
+    }
+    @Test
+    public void validateNonPaymentFee_should_beFalse_when_nonPayment_smallerThan_Fee(){
+        Mockito.when(impagosCuotaMapper.obtenerImporteImpagoInterno(solicitud)).thenReturn(300F);
+        boolean  validateNonPaymentFee= service.validateImpagoCuota(this.solicitud);
+        Assertions.assertTrue(validateNonPaymentFee);
+    }
+
+    @Test
+    public void validateNonPaymentFee_should_beFalse_when_nonPayment_EqualsThan_Fee(){
+        Mockito.when(impagosCuotaMapper.obtenerImporteImpagoInterno(solicitud)).thenReturn(500F);
+        boolean  validateNonPaymentFee= service.validateImpagoCuota(this.solicitud);
+        Assertions.assertTrue(validateNonPaymentFee);
+    }
+    @Test
+    public void validateNonPaymentFee_should_beFalse_when_nonPayment_biggerThan_Fee(){
+        Mockito.when(impagosCuotaMapper.obtenerImporteImpagoInterno(solicitud)).thenReturn(600F);
+        boolean  validateNonPaymentFee= service.validateImpagoCuota(this.solicitud);
+        Assertions.assertFalse(validateNonPaymentFee);
+    }
+
+    //test validateClienteNoAprobadoConGarantia
+    @Test
+    public void validateClienteNoAprobadoConGarantia_should_beFalse_when_codResolucionIsNotAG_or_lessThan2YearsSinceFechaResolucion() {
+        Mockito.when(garantiaMapper.existeClienteAprobadoConGarantias(solicitud.getSolicitudId())).thenReturn(0);
+        boolean validateClienteNoAprobadoConGarantia = service.validateClienteNoAprobadoConGarantias(this.solicitud);
+        Assertions.assertFalse(validateClienteNoAprobadoConGarantia);
+    }
+
+    @Test
+    public void validateClienteNoAprobadoConGarantia_should_beTrue_when_codResolucionNotAG_or_moreThan2YearsSinceFechaResolucion() {
+        Mockito.when(garantiaMapper.existeClienteAprobadoConGarantias(solicitud.getSolicitudId())).thenReturn(1);
+        boolean validateClienteNoAprobadoConGarantia = service.validateClienteNoAprobadoConGarantias(this.solicitud);
+        Assertions.assertTrue(validateClienteNoAprobadoConGarantia);
     }
 }
