@@ -26,7 +26,7 @@ public class ResolucionSolicitudesServiceImplTest {
     void setupAll() {
 
         solicitudesMapper = Mockito.mock(ResolucionSolicitudesMapper.class);
-        when(solicitudesMapper.listar()).thenReturn(crearListaVacia());
+        when(solicitudesMapper.getTipoResolucionesSolicitudes()).thenReturn(crearListaVacia());
 
         solicitudesService = new ResolucionSolicitudesServiceImpl(solicitudesMapper);
     }
@@ -34,7 +34,7 @@ public class ResolucionSolicitudesServiceImplTest {
     @Test
     public void listar_should_throwResolucionSolicitudesNotFoundException_when_noHayDatosEnBaseDeDatos(){
         Assertions.assertThrows(ResolucionSolicitudesNotFoundException.class, () -> {
-            solicitudesService.listar();
+            solicitudesService.getTipoResolucionesSolicitudes();
         });
     }
 

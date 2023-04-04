@@ -16,7 +16,7 @@ public interface ResolucionSolicitudesMapper {
             @Result(property = "codigoResultado" , column = "COD_RESULTADO"),
             @Result(property = "descripcion" , column = "DESCRIPCION")
     })
-    List<ResolucionSolicitud> listar();
+    List<ResolucionSolicitud> getTipoResolucionesSolicitudes();
 
 
 }
