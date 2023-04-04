@@ -79,8 +79,8 @@ public class SolicitudRentingServiceImplTest {
         @Test
         public void modificaEstadoSolicitud_shouldThrow_EstadoSolicitudNotFoundException_when_codSolicitudNotExist(){
 
-            //when(tipoResultadoSolicitudMapper.existeCodigoResolucion(anyInt())).thenReturn(0);
             Mockito.when(tipoResultadoSolicitudMapper.getListaEstados()).thenReturn(creaListaMock());
+            when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(1);
             Assertions.assertThrows(EstadoSolicitudNotFoundException.class,() ->{
                 int id = 1;
                 TipoResultadoSolicitud tipoResultadoSolicitud = new TipoResultadoSolicitud();

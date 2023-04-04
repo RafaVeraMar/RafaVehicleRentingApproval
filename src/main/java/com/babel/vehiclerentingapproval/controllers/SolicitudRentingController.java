@@ -62,6 +62,8 @@ public class SolicitudRentingController {
             return new ResponseEntity<Object>(respuesta,HttpStatus.BAD_REQUEST);
         }
     }
+
+
     @GetMapping("{id}")
     @Operation(summary = "Mostrar solicitud por ID", description = "Devuelve una solicitud de renting, si existe una solicitud por su ID")
     @ApiResponses( value = {
@@ -82,6 +84,12 @@ public class SolicitudRentingController {
     }
 
     @PutMapping("/estado/{solicitudId}")
+    @Operation(summary = "Modificar estado de solicitud por ID", description = "Modifica el estado de una solicitud a partir de su ID")
+    @ApiResponses( value = {
+            @ApiResponse( responseCode = "200", description = "Estado solicitud correcto.", content = { @Content( mediaType = "application/json")}),
+            @ApiResponse(responseCode = "407", description = "No se encuentra la solicitud buscada.", content = { @Content( mediaType = "application/json")}),
+            @ApiResponse(responseCode = "408", description = "Estado de solicitud no valido.", content = { @Content( mediaType = "application/json")})
+    })
     ResponseEntity<Object> updateEstadoSolicitud(@PathVariable Integer solicitudId, @RequestBody TipoResultadoSolicitud nuevoEstado){
         Map<String,Object> respuestaJson = new HashMap<String,Object>();
         try{
@@ -91,12 +99,12 @@ public class SolicitudRentingController {
             respuestaJson.put("Descripcion",nuevoEstado.getDescripcion());
             return new ResponseEntity<Object>(respuestaJson,HttpStatus.OK);
         }catch (SolicitudRentingNotFoundException e){
-            respuestaJson.put("Status",HttpStatus.NOT_FOUND);
+            respuestaJson.put("Status",407);
             respuestaJson.put("Id",solicitudId);
             respuestaJson.put("Descripcion","Error: No se encuentra la solicitud buscada, intentelo mas tarde");
             return new ResponseEntity<Object>(respuestaJson,HttpStatus.NOT_FOUND);
         }catch (EstadoSolicitudNotFoundException e) {
-            respuestaJson.put("Status",HttpStatus.NOT_FOUND);
+            respuestaJson.put("Status",408);
             respuestaJson.put("Descripcion","Error: Estado de solicitud: "+nuevoEstado.getCodResultado() +", no valido");
             respuestaJson.put("Id",solicitudId);
             respuestaJson.put("CodigoResolucion",nuevoEstado.getCodResultado());
