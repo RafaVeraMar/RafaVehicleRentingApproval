@@ -76,10 +76,11 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "200", description = "Estado de la solicitud", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "400", description = "Error de formato en el ID", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "ID de solicitud no encontrado", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor: el cod de resolución no es válido", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(mediaType = "application/json"))
     })
     @Parameter(name = "id",description = "ID de la solicitud a consultar",required = true)
-    ResponseEntity<Object> verEstadoSolicitud(@PathVariable String id) throws EstadoSolicitudNotFoundException {
+    ResponseEntity<Object> verEstadoSolicitud(@PathVariable String id){
         Map<String,Object> respuesta = new HashMap<String,Object>();
         try{
             int idSolicitud = Integer.parseInt(id);
@@ -99,9 +100,15 @@ public class SolicitudRentingController {
         catch (EstadoSolicitudNotFoundException e){
             respuesta.put("Status",HttpStatus.NOT_FOUND);
             respuesta.put("Id",id);
-            respuesta.put("Descripcion","Error: No existe ninguna codigo de resolución válido asociado a esa solicitud ");
+            respuesta.put("Descripcion","Error: No existe ninguna codigo de resolución asociado a esa solicitud ");
             return new ResponseEntity<Object>(respuesta,HttpStatus.NOT_FOUND);
 
+        }
+        catch (EstadoSolicitudInvalidException e){
+            respuesta.put("Status",HttpStatus.INTERNAL_SERVER_ERROR);
+            respuesta.put("Id",id);
+            respuesta.put("Descripcion","Error: El codigo de resolución no es válido ");
+            return new ResponseEntity<Object>(respuesta,HttpStatus.INTERNAL_SERVER_ERROR);
         }
         catch (Exception e){
             respuesta.put("Status",HttpStatus.INTERNAL_SERVER_ERROR);
