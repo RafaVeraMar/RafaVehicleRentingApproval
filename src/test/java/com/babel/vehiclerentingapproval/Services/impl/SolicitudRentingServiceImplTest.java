@@ -18,6 +18,7 @@ import org.mockito.Mockito;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import static org.mockito.ArgumentMatchers.anyInt;
 
 public class SolicitudRentingServiceImplTest {
@@ -27,15 +28,15 @@ public class SolicitudRentingServiceImplTest {
     PersonaMapper personaMapper;
 
     @BeforeEach
-    void setUpAll() {
+    void setUpAll ( ) {
         tipoResultadoSolicitudMapper = Mockito.mock(TipoResultadoSolicitudMapper.class);
         solicitudRentingMapper = Mockito.mock(SolicitudRentingMapper.class);
         personaMapper = Mockito.mock(PersonaMapper.class);
-        solicitudService = new SolicitudRentingServiceImpl(solicitudRentingMapper,tipoResultadoSolicitudMapper, personaMapper);
+        solicitudService = new SolicitudRentingServiceImpl(solicitudRentingMapper, tipoResultadoSolicitudMapper, personaMapper);
 
     }
 
-    private SolicitudRenting creaSolicitudFicticia() throws ParseException {
+    private SolicitudRenting creaSolicitudFicticia ( ) throws ParseException {
         SolicitudRenting solicitudFicticia = new SolicitudRenting();
         Persona personaFicticia = new Persona();
         Direccion direccionFicticia = new Direccion();
@@ -67,40 +68,42 @@ public class SolicitudRentingServiceImplTest {
     }
 
     @Nested
-    class TestsVerEstadoSolicitud{
+    class TestsVerEstadoSolicitud {
         @Test
-        public void verEstadoSolicitud_shouldThrow_EstadoSolicitudNotFoundException_when_codSolicitudNull_or_idNotExists(){
+        public void verEstadoSolicitud_shouldThrow_EstadoSolicitudNotFoundException_when_codSolicitudNull_or_idNotExists ( ) {
             Mockito.when(tipoResultadoSolicitudMapper.existeCodigoResolucion(anyInt())).thenReturn(0);
-            Assertions.assertThrows(EstadoSolicitudNotFoundException.class,() ->{
+            Assertions.assertThrows(EstadoSolicitudNotFoundException.class, ( ) -> {
                 String estado = solicitudService.verEstadoSolicitud(anyInt());
             });
         }
+
         @Test
-        public void verEstadoSolicitud_shouldNotThrow_EstadoSolicitudNotFoundException_when_codSolicitudNull_and_idNotExists(){
+        public void verEstadoSolicitud_shouldNotThrow_EstadoSolicitudNotFoundException_when_codSolicitudNull_and_idNotExists ( ) {
             Mockito.when(tipoResultadoSolicitudMapper.existeCodigoResolucion(anyInt())).thenReturn(1);
 
-            Assertions.assertDoesNotThrow(()->{
+            Assertions.assertDoesNotThrow(( ) -> {
                 String estado = solicitudService.verEstadoSolicitud(anyInt());
             });
         }
     }
 
     @Nested
-    class TestsVerSolicitudRenting{
+    class TestsVerSolicitudRenting {
         @Test
-        public void verSolicitudRenting_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists(){
+        public void verSolicitudRenting_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists ( ) {
             Mockito.when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(0);
 
-            Assertions.assertThrows(SolicitudRentingNotFoundException.class, ()->{
+            Assertions.assertThrows(SolicitudRentingNotFoundException.class, ( ) -> {
                 solicitudService.getSolicitudById(0);
             });
 
         }
+
         @Test
-        public void verSolicitudRenting_shouldNotThrow_SolicitudRentingNotFoundException_when_solicitudIdExists(){
+        public void verSolicitudRenting_shouldNotThrow_SolicitudRentingNotFoundException_when_solicitudIdExists ( ) {
             Mockito.when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(1);
 
-            Assertions.assertDoesNotThrow(()->{
+            Assertions.assertDoesNotThrow(( ) -> {
                 solicitudService.getSolicitudById(0);
             });
 
@@ -108,62 +111,21 @@ public class SolicitudRentingServiceImplTest {
     }
 
     @Nested
-    class TestInsertSolicitudRenting{
-
-
-        @Test
-        public void addSolicitudRenting_shouldThrow_InputIsNullException_when_Inversion_IsNull(){
-            Mockito.when(personaMapper.existePersona(1)).thenReturn(1);
-            Assertions.assertThrows(InputIsNullOrIsEmpty.class, ()->{
-                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
-                solicitudRenting.setInversion(null);
-                solicitudService.addSolicitudRenting(solicitudRenting);
-            });
-        }
+    class TestInsertSolicitudRenting {
 
         @Test
-        public void insertarSolicitudRenting_shouldThrow_InputIsNullException_when_Cuota_IsNull(){
-            Mockito.when(personaMapper.existePersona(1)).thenReturn(1);
-            Assertions.assertThrows(InputIsNullOrIsEmpty.class, ()->{
-                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
-                solicitudRenting.setCuota(null);
-                solicitudService.addSolicitudRenting(solicitudRenting);
-            });
-        }
-        @Test
-        public void insertarSolicitudRenting_shouldThrow_InputIsNullException_when_Vehiculos_IsNull(){
-            Mockito.when(personaMapper.existePersona(1)).thenReturn(1);
-            Assertions.assertThrows(InputIsNullOrIsEmpty.class, ()->{
-                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
-                solicitudRenting.setNumVehiculos(null);
-                solicitudService.addSolicitudRenting(solicitudRenting);
-            });
-        }
-
-        @Test
-        public void insertarSolicitudRenting_shouldThrow_DateIsBeforeException_when_FechaInicio_IsBefore_with_FechaResolucion(){
-            Mockito.when(personaMapper.existePersona(1)).thenReturn(1);
-            Assertions.assertThrows(DateIsBeforeException.class, ()->{
-                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
-                solicitudRenting.setFechaInicioVigor(new SimpleDateFormat("dd-MM-yyyy").parse("27-12-2023"));
-                solicitudRenting.setFechaResolucion(new SimpleDateFormat("dd-MM-yyyy").parse("28-12-2023"));
-                solicitudService.addSolicitudRenting(solicitudRenting);
-            });
-        }
-
-        @Test
-        public void insertarSolicitudRenting_shouldThrow_PersonaNotFoundException_when_PersonaId_NotExist(){
-            Mockito.when(personaMapper.existePersona(1)).thenReturn(0);
-            Assertions.assertThrows(PersonaNotFoundException.class, ()->{
+        public void insertarSolicitudRenting_shouldThrow_PersonaNotFoundException_when_PersonaId_NotExist ( ) {
+            Mockito.when(personaMapper.existePersona(anyInt())).thenReturn(0);
+            Assertions.assertThrows(PersonaNotFoundException.class, ( ) -> {
                 SolicitudRenting solicitudRenting = creaSolicitudFicticia();
                 solicitudService.addSolicitudRenting(solicitudRenting);
             });
         }
 
         @Test
-        public void insertarSolicitudRenting_shouldThrow_WrongLenghtFieldException_when_NumberVehiculosIsTooBig(){
-            Mockito.when(personaMapper.existePersona(1)).thenReturn(1);
-            Assertions.assertThrows(WrongLenghtFieldException.class, ()->{
+        public void insertarSolicitudRenting_shouldThrow_WrongLenghtFieldException_when_NumberVehiculosIsTooBig ( ) {
+            Mockito.when(personaMapper.existePersona(anyInt())).thenReturn(1);
+            Assertions.assertThrows(WrongLenghtFieldException.class, ( ) -> {
                 SolicitudRenting solicitudRenting = creaSolicitudFicticia();
                 String numberString = "123456789012345678901234567890123456789";
                 BigInteger bigInteger = new BigInteger(numberString);
@@ -173,9 +135,103 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        public void insertarSolicitudRenting_shouldThrow_WrongLenghtFieldException_when_NumberPlazoIsTooBig(){
-            Mockito.when(personaMapper.existePersona(1)).thenReturn(1);
-            Assertions.assertThrows(WrongLenghtFieldException.class, ()->{
+        public void insertarSolicitudRenting_shouldThrow_InputIsNullOrIsEmpty_when_NumberVehiculosIsNull ( ) {
+            Mockito.when(personaMapper.existePersona(anyInt())).thenReturn(1);
+            Assertions.assertThrows(InputIsNullOrIsEmpty.class, ( ) -> {
+                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+                solicitudRenting.setNumVehiculos(null);
+                solicitudService.addSolicitudRenting(solicitudRenting);
+            });
+        }
+
+        @Test
+        public void insertarSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_NumberVehiculosIsNegative ( ) {
+            Mockito.when(personaMapper.existePersona(anyInt())).thenReturn(1);
+            Assertions.assertThrows(InputIsNegativeOrZeroException.class, ( ) -> {
+                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+                String numberString = "-123456789012345";
+                BigInteger bigInteger = new BigInteger(numberString);
+                solicitudRenting.setNumVehiculos(bigInteger);
+                solicitudService.addSolicitudRenting(solicitudRenting);
+            });
+        }
+
+        @Test
+        public void insertarSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_NumberVehiculosIsZero ( ) {
+            Mockito.when(personaMapper.existePersona(anyInt())).thenReturn(1);
+            Assertions.assertThrows(InputIsNegativeOrZeroException.class, ( ) -> {
+                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+                BigInteger bigInteger = BigInteger.ZERO;
+                solicitudRenting.setNumVehiculos(bigInteger);
+                solicitudService.addSolicitudRenting(solicitudRenting);
+            });
+        }
+
+
+        @Test
+        public void addSolicitudRenting_shouldThrow_InputIsNullException_when_Inversion_IsNull ( ) {
+            Mockito.when(personaMapper.existePersona(anyInt())).thenReturn(1);
+            Assertions.assertThrows(InputIsNullOrIsEmpty.class, ( ) -> {
+                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+                solicitudRenting.setInversion(null);
+                solicitudService.addSolicitudRenting(solicitudRenting);
+            });
+        }
+
+        @Test
+        public void addSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_Inversion_IsNegative ( ) {
+            Mockito.when(personaMapper.existePersona(anyInt())).thenReturn(1);
+            Assertions.assertThrows(InputIsNegativeOrZeroException.class, ( ) -> {
+                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+                solicitudRenting.setInversion(-14f);
+                solicitudService.addSolicitudRenting(solicitudRenting);
+            });
+        }
+
+        @Test
+        public void addSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_Inversion_IsZero ( ) {
+            Mockito.when(personaMapper.existePersona(anyInt())).thenReturn(1);
+            Assertions.assertThrows(InputIsNegativeOrZeroException.class, ( ) -> {
+                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+                solicitudRenting.setInversion(0f);
+                solicitudService.addSolicitudRenting(solicitudRenting);
+            });
+        }
+
+        @Test
+        public void insertarSolicitudRenting_shouldThrow_InputIsNullException_when_Cuota_IsNull ( ) {
+            Mockito.when(personaMapper.existePersona(anyInt())).thenReturn(1);
+            Assertions.assertThrows(InputIsNullOrIsEmpty.class, ( ) -> {
+                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+                solicitudRenting.setCuota(null);
+                solicitudService.addSolicitudRenting(solicitudRenting);
+            });
+        }
+
+        @Test
+        public void insertarSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_Cuota_IsNegative ( ) {
+            Mockito.when(personaMapper.existePersona(anyInt())).thenReturn(1);
+            Assertions.assertThrows(InputIsNegativeOrZeroException.class, ( ) -> {
+                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+                solicitudRenting.setCuota(-15f);
+                solicitudService.addSolicitudRenting(solicitudRenting);
+            });
+        }
+
+        @Test
+        public void insertarSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_Cuota_IsZero ( ) {
+            Mockito.when(personaMapper.existePersona(anyInt())).thenReturn(1);
+            Assertions.assertThrows(InputIsNegativeOrZeroException.class, ( ) -> {
+                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+                solicitudRenting.setCuota(0f);
+                solicitudService.addSolicitudRenting(solicitudRenting);
+            });
+        }
+
+        @Test
+        public void insertarSolicitudRenting_shouldThrow_WrongLenghtFieldException_when_NumberPlazoIsTooBig ( ) {
+            Mockito.when(personaMapper.existePersona(anyInt())).thenReturn(1);
+            Assertions.assertThrows(WrongLenghtFieldException.class, ( ) -> {
                 SolicitudRenting solicitudRenting = creaSolicitudFicticia();
                 String numberString = "123456789012345678901234567890123456789";
                 BigInteger bigInteger = new BigInteger(numberString);
@@ -183,24 +239,59 @@ public class SolicitudRentingServiceImplTest {
                 solicitudService.addSolicitudRenting(solicitudRenting);
             });
         }
+
+        @Test
+        public void insertarSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_PlazoIsNegative ( ) {
+            Mockito.when(personaMapper.existePersona(anyInt())).thenReturn(1);
+            Assertions.assertThrows(InputIsNegativeOrZeroException.class, ( ) -> {
+                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+                String numberString = "-12345678901234567890123456";
+                BigInteger bigInteger = new BigInteger(numberString);
+                solicitudRenting.setPlazo(bigInteger);
+                solicitudService.addSolicitudRenting(solicitudRenting);
+            });
+        }
+
+        @Test
+        public void insertarSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_PlazoIsZero ( ) {
+            Mockito.when(personaMapper.existePersona(anyInt())).thenReturn(1);
+            Assertions.assertThrows(InputIsNegativeOrZeroException.class, ( ) -> {
+                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+                BigInteger bigInteger = BigInteger.ZERO;
+                solicitudRenting.setPlazo(bigInteger);
+                solicitudService.addSolicitudRenting(solicitudRenting);
+            });
+        }
+
+
+        @Test
+        public void insertarSolicitudRenting_shouldThrow_DateIsBeforeException_when_FechaInicio_IsBefore_with_FechaResolucion ( ) {
+            Mockito.when(personaMapper.existePersona(anyInt())).thenReturn(1);
+            Assertions.assertThrows(DateIsBeforeException.class, ( ) -> {
+                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+                solicitudRenting.setFechaInicioVigor(new SimpleDateFormat("dd-MM-yyyy").parse("27-12-2023"));
+                solicitudRenting.setFechaResolucion(new SimpleDateFormat("dd-MM-yyyy").parse("28-12-2023"));
+                solicitudService.addSolicitudRenting(solicitudRenting);
+            });
+        }
     }
 
-    
     @Nested
     class TestsCancelarSolicitudRenting {
         @Test
-        public void cancelarSolicitudRenting_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists() {
+        public void cancelarSolicitudRenting_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists ( ) {
             Mockito.when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(0);
 
-            Assertions.assertThrows(SolicitudRentingNotFoundException.class, ()->{
+            Assertions.assertThrows(SolicitudRentingNotFoundException.class, ( ) -> {
                 solicitudService.getSolicitudById(0);
             });
         }
+
         @Test
-        public void cancelarSolicitudRenting_shouldNotThrow_SolicitudRentingNotFoundException_when_solicitudIdExists() {
+        public void cancelarSolicitudRenting_shouldNotThrow_SolicitudRentingNotFoundException_when_solicitudIdExists ( ) {
             Mockito.when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(1);
 
-            Assertions.assertDoesNotThrow(()->{
+            Assertions.assertDoesNotThrow(( ) -> {
                 solicitudService.getSolicitudById(0);
             });
         }
