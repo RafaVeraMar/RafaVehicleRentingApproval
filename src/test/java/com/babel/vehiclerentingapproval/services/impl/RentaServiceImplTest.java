@@ -47,6 +47,7 @@ public class RentaServiceImplTest {
 
         PersonaMapper personaMapper = Mockito.mock(PersonaMapper.class);
         when(personaMapper.existePersona(100)).thenReturn(0);
+        when(personaMapper.existePersona(1)).thenReturn(1);
 
         DireccionMapper direccionMapper = Mockito.mock(DireccionMapper.class);
         TelefonoMapper telefonoMapper = Mockito.mock(TelefonoMapper.class);
