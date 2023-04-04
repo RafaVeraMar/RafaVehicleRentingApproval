@@ -4,6 +4,7 @@ import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.Direccion;
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
+import com.babel.vehiclerentingapproval.models.TipoVia;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
@@ -42,7 +43,7 @@ public class SolicitudRentingServiceImplTest {
         Persona personaFicticia = new Persona();
         Direccion direccionFicticia = new Direccion();
         direccionFicticia.setDireccionId(1);
-        direccionFicticia.setTipoViaId(2);
+        direccionFicticia.setTipoViaId(new TipoVia(1,"Alameda"));
         direccionFicticia.setNombreCalle("Alosno");
         direccionFicticia.setNumero("5");
         direccionFicticia.setCodPostal("21006");

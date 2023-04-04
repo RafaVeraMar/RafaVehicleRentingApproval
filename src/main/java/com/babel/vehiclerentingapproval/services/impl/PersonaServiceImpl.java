@@ -112,7 +112,7 @@ public class PersonaServiceImpl implements PersonaService {
         }
     }
 
-    private void validatePersonData(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
+    public void validatePersonData(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
         this.validateNombre(persona);
     }
 

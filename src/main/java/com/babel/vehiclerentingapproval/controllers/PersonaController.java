@@ -99,10 +99,6 @@ public class PersonaController {
             map.put("status", HttpStatus.NOT_FOUND);
             map.put("descripcion", "La persona que se intenta modificar no existe en la base de datos");
             return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
-        }catch (Exception e){
-            map.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
-            map.put("descripcion", "Ha ocurrido un error interno del servidor. La operación no se ha podido realizar.");
-            return new ResponseEntity<Object>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

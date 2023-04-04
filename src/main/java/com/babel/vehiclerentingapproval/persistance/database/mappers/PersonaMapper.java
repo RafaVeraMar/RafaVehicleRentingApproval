@@ -36,7 +36,7 @@ public interface PersonaMapper {
 
     @Update("UPDATE PERSONA SET NOMBRE=#{nombre}, APELLIDO1=#{apellido1}, APELLIDO2=#{apellido2},"+
             "DIRECCION_DOMICILIO_ID=#{direccionDomicilio.direccionId}, DIRECCION_NOTIFICACION_ID=#{direccionNotificacion.direccionId},"+
-            "NIF=#{nif},FECHA_NACIMIENTO=#{fechaNacimiento,jdbcType=DATE},NACIONALIDAD=#{nacionalidad},"+
+            "NIF=#{nif},FECHA_NACIMIENTO=#{fechaNacimiento,jdbcType=DATE},NACIONALIDAD=#{nacionalidad.isoAlfa_2},"+
             "SCORING=#{scoring}, FECHA_SCORING=#{fechaScoring, jdbcType=DATE}"+
             "WHERE PERSONA_ID=#{personaId}")
     void updatePersona(Persona persona);
