@@ -7,6 +7,7 @@ import com.babel.vehiclerentingapproval.services.preautomaticresults.ApprovalRul
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ApprovalRulesServiceImpl implements ApprovalRulesService {
@@ -121,7 +122,12 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
         } else {
             return true;
         }
+       } 
 
+    @Override
+    public Optional<Persona> validatefindPersonasByCodResultado(SolicitudRenting solicitudRenting) {
+        return this.personaMapper.validatefindPersonasByCodResultado(solicitudRenting);
+        if ()
     }
 
 }
