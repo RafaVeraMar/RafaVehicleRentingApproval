@@ -48,11 +48,15 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     @Override
     public void modificaEstadoSolicitud(Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException{
 
-        int booleanExisteCodigo = this.tipoResultadoSolicitudMapper.existeCodigoResolucion(solicitudId);
-        if(booleanExisteCodigo == 0){
+        List<String> posiblesEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
+        int existeEstado = this.solicitudRentingMapper.existeSolicitud(solicitudId);
+
+        if(!posiblesEstados.contains(nuevoEstado.getCodResultado())){
             throw new EstadoSolicitudNotFoundException();
         }
-        SolicitudRenting solicitudRenting = getSolicitudById(solicitudId);
+        if (existeEstado == 0) {
+            throw new SolicitudRentingNotFoundException();
+        }
         this.solicitudRentingMapper.modificaEstadoSolicitud(solicitudId,nuevoEstado);
     }
     @Override

@@ -89,27 +89,23 @@ public class SolicitudRentingController {
             respuestaJson.put("Status",HttpStatus.OK);
             respuestaJson.put("Id",solicitudId);
             respuestaJson.put("Descripcion",nuevoEstado.getDescripcion());
-
             return new ResponseEntity<Object>(respuestaJson,HttpStatus.OK);
         }catch (SolicitudRentingNotFoundException e){
             respuestaJson.put("Status",HttpStatus.NOT_FOUND);
             respuestaJson.put("Id",solicitudId);
             respuestaJson.put("Descripcion","Error: No se encuentra la solicitud buscada, intentelo mas tarde");
-
             return new ResponseEntity<Object>(respuestaJson,HttpStatus.NOT_FOUND);
         }catch (EstadoSolicitudNotFoundException e) {
             respuestaJson.put("Status",HttpStatus.NOT_FOUND);
+            respuestaJson.put("Descripcion","Error: Estado de solicitud: "+nuevoEstado.getCodResultado() +", no valido");
             respuestaJson.put("Id",solicitudId);
             respuestaJson.put("CodigoResolucion",nuevoEstado.getCodResultado());
             respuestaJson.put("CodigoDescripcion",nuevoEstado.getDescripcion());
-            respuestaJson.put("Descripcion","Error: Estado de solicitud no valido");
-
             return new ResponseEntity<Object>(respuestaJson,HttpStatus.NOT_FOUND);
         }catch(Exception e){
             respuestaJson.put("Status",HttpStatus.BAD_REQUEST);
             respuestaJson.put("Id",solicitudId);
             respuestaJson.put("Descripcion","Error: Fallo interno en el servidor, disculpad las molestias");
-
             return new ResponseEntity<Object>(respuestaJson,HttpStatus.BAD_REQUEST);
         }
     }

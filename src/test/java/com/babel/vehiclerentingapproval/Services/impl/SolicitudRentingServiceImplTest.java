@@ -79,7 +79,8 @@ public class SolicitudRentingServiceImplTest {
         @Test
         public void modificaEstadoSolicitud_shouldThrow_EstadoSolicitudNotFoundException_when_codSolicitudNotExist(){
 
-            when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(0);
+            //when(tipoResultadoSolicitudMapper.existeCodigoResolucion(anyInt())).thenReturn(0);
+            Mockito.when(tipoResultadoSolicitudMapper.getListaEstados()).thenReturn(creaListaMock());
             Assertions.assertThrows(EstadoSolicitudNotFoundException.class,() ->{
                 int id = 1;
                 TipoResultadoSolicitud tipoResultadoSolicitud = new TipoResultadoSolicitud();
@@ -91,14 +92,21 @@ public class SolicitudRentingServiceImplTest {
 
         @Test
         public void modificaEstadoSolicitud_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists() {
-
-            when(tipoResultadoSolicitudMapper.existeCodigoResolucion(anyInt())).thenReturn(0);
+            Mockito.when(tipoResultadoSolicitudMapper.getListaEstados()).thenReturn(creaListaMock());
+            when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(0);
             Assertions.assertThrows(SolicitudRentingNotFoundException.class, () -> {
                 int id = -1;
-                solicitudService.getSolicitudById(id);
+                TipoResultadoSolicitud tipoResultadoSolicitud = new TipoResultadoSolicitud();
+                tipoResultadoSolicitud.setCodResultado("AA");
+                tipoResultadoSolicitud.setDescripcion("");
+                solicitudService.modificaEstadoSolicitud(id,tipoResultadoSolicitud);
             });
-
         }
     }
 
+    private List<String> creaListaMock(){
+        List<String> listaMock = new ArrayList<>();
+        listaMock.add("AA");
+        return listaMock;
+    }
 }
