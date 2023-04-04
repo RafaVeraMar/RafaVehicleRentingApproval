@@ -9,7 +9,6 @@ import com.babel.vehiclerentingapproval.services.preautomaticresults.impl.Approv
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.text.ParseException;
@@ -29,6 +28,7 @@ public class ApprovalRulesServiceTest {
     private RentaMapper rentaMapper;
     private SalariedMapper salariedMapper;
     private ImpagosCuotaMapper impagosCuotaMapper;
+    private ApprovalGarantiaMapper garantiaMapper;
 
     SolicitudRenting solicitud;
 
@@ -44,10 +44,12 @@ public class ApprovalRulesServiceTest {
         this.rentaMapper = Mockito.mock((RentaMapper.class));
         this.salariedMapper = Mockito.mock((SalariedMapper.class));
         this.impagosCuotaMapper = Mockito.mock((ImpagosCuotaMapper.class));
+        this.garantiaMapper = Mockito.mock((ApprovalGarantiaMapper.class));
 
         this.solicitud = this.createSolicitudMock();
         this.renta = this.createRentaMock();
-        this.service = new ApprovalRulesServiceImpl(this.scoringRatingMapper, this.employmentSeniorityMapper, this.inversionIngresosMapper, this.personaMapper, this.rentaMapper, this.salariedMapper, this.impagosCuotaMapper);
+
+        this.service = new ApprovalRulesServiceImpl(this.scoringRatingMapper, this.employmentSeniorityMapper, this.inversionIngresosMapper, this.personaMapper, this.rentaMapper, this.salariedMapper, this.impagosCuotaMapper, this.garantiaMapper);
     }
 
     private SolicitudRenting createSolicitudMock() {
@@ -178,6 +180,7 @@ public class ApprovalRulesServiceTest {
         Assertions.assertFalse(validateCIFCliente);
 
     }
+
     @Test
     public void validateCIFCliente_should_beTrue_when_cifSolIsNotEmpty() {
         Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn("45442L");
@@ -186,6 +189,17 @@ public class ApprovalRulesServiceTest {
             boolean validateCIFCliente = service.validateCIFCliente(this.solicitud);
         });
     }
+
+    @Test
+    public void validateCIFCliente_should_beFalse_when_isNull() {
+
+        Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn(null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            boolean validateCIFCliente = service.validateCIFCliente(this.solicitud);
+            Assertions.assertFalse(validateCIFCliente);
+        });
+    }
+
     @Test
     public void validateCIFCliente_should_beTrue_when_listaCifisEmpty() {
         Mockito.when(salariedMapper.obtenerCIFInforma()).thenReturn(new ArrayList<>());
@@ -195,9 +209,10 @@ public class ApprovalRulesServiceTest {
             Assertions.assertFalse(validateCIFCliente);
         });
     }
+
     @Test
     public void validateCIFCliente_should_beTrue_when_listaCifisNotEmpty() {
-        List<String>listaValores =  new ArrayList<>();
+        List<String> listaValores = new ArrayList<>();
         listaValores.add("45442L");
         listaValores.add("45442L");
         listaValores.add("45442L");
@@ -210,10 +225,11 @@ public class ApprovalRulesServiceTest {
         });
 
     }
+
     @Test
     public void validateCIFCliente_should_beTrue_when_valorListaCifEqualsCif() {
         Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn("45442L");
-        List<String>listaValores =  new ArrayList<>();
+        List<String> listaValores = new ArrayList<>();
         listaValores.add("45442L");
         listaValores.add("45442L");
         listaValores.add("45442L");
@@ -227,7 +243,7 @@ public class ApprovalRulesServiceTest {
     @Test
     public void validateCIFCliente_should_beTrue_when_valorListaCifNotEqualsCif() {
         Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn("45442L");
-        List<String>listaValores =  new ArrayList<>();
+        List<String> listaValores = new ArrayList<>();
         listaValores.add("44442L");
         listaValores.add("42442L");
         listaValores.add("41442L");
@@ -237,5 +253,11 @@ public class ApprovalRulesServiceTest {
         boolean validateCIFCliente = service.validateCIFCliente(this.solicitud);
         Assertions.assertFalse(validateCIFCliente);
     }
-
+    @Test
+    public void validateCIFCliente_should_beTrue_when_isNotNull() {
+        Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn("N0676766J");
+        Assertions.assertDoesNotThrow(() -> {
+            boolean validateCIFCliente = service.validateCIFCliente(this.solicitud);
+        });
+    }
 }
