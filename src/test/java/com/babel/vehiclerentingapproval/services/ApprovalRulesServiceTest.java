@@ -48,7 +48,7 @@ public class ApprovalRulesServiceTest {
         this.service = new ApprovalRulesServiceImpl(this.scoringRatingMapper, this.employmentSeniorityMapper, this.inversionIngresosMapper, this.personaMapper, this.rentaMapper, this.salariedMapper, this.impagosCuotaMapper, this.garantiaMapper);
     }
 
-    private SolicitudRenting createSolicitudMock() {
+    private SolicitudRenting createSolicitudMock() throws ParseException {
         SolicitudRenting solicitud = new SolicitudRenting();
         Persona persona = new Persona();
         persona.setPersonaId(104);
@@ -62,6 +62,7 @@ public class ApprovalRulesServiceTest {
         solicitud.setCuota(500);
         solicitud.setNumVehiculos(1);
         solicitud.setPlazo(36);
+        solicitud.setFechaResolucion(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2020"));
         return solicitud;
     }
 
@@ -163,5 +164,20 @@ public class ApprovalRulesServiceTest {
         //this.renta.setFechaInicioEmpleo(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2016"));
         boolean validateInversion = service.validateYearsExperience(this.solicitud);
         Assertions.assertFalse(validateInversion);
+    }
+
+    //test validateClienteNoAprobadoConGarantia
+    @Test
+    public void validateClienteNoAprobadoConGarantia_should_beFalse_when_codResolucionIsNotAG_or_lessThan2YearsSinceFechaResolucion() {
+        Mockito.when(garantiaMapper.existeClienteAprobadoConGarantias(solicitud.getSolicitudId())).thenReturn(0);
+        boolean validateClienteNoAprobadoConGarantia = service.validateClienteNoAprobadoConGarantias(this.solicitud);
+        Assertions.assertFalse(validateClienteNoAprobadoConGarantia);
+    }
+
+    @Test
+    public void validateClienteNoAprobadoConGarantia_should_beTrue_when_codResolucionNotAG_or_moreThan2YearsSinceFechaResolucion() {
+        Mockito.when(garantiaMapper.existeClienteAprobadoConGarantias(solicitud.getSolicitudId())).thenReturn(1);
+        boolean validateClienteNoAprobadoConGarantia = service.validateClienteNoAprobadoConGarantias(this.solicitud);
+        Assertions.assertTrue(validateClienteNoAprobadoConGarantia);
     }
 }

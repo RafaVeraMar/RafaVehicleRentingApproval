@@ -122,12 +122,12 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
         } else {
             return true;
         }
-       } 
+    }
 
     @Override
     public Optional<Persona> validatefindPersonasByCodResultado(SolicitudRenting solicitudRenting) {
         return this.personaMapper.validatefindPersonasByCodResultado(solicitudRenting);
-        if ()
+        //if ()
     }
 
 }
