@@ -111,10 +111,10 @@ public class SolicitudRentingController {
             respuestaJson.put("CodigoDescripcion",nuevoEstado.getDescripcion());
             return new ResponseEntity<Object>(respuestaJson,HttpStatus.NOT_FOUND);
         }catch(Exception e){
-            respuestaJson.put("Status",HttpStatus.BAD_REQUEST);
+            respuestaJson.put("Status",HttpStatus.INTERNAL_SERVER_ERROR);
             respuestaJson.put("Id",solicitudId);
             respuestaJson.put("Descripcion","Error: Fallo interno en el servidor, disculpad las molestias");
-            return new ResponseEntity<Object>(respuestaJson,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Object>(respuestaJson,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
