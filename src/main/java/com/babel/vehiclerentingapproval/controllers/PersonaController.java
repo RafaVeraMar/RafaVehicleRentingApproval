@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -78,5 +79,30 @@ public class PersonaController {
         map.put("description", "Productos contratados por una persona.");
         map.put("Lista de productos contratados por una persona",lista);
         return new ResponseEntity<Object>(map,HttpStatus.OK);
+    }
+
+    @Tag(name="Modificar datos persona",description = "Endpoint que permite modificar los datos de una persona existente en la base de datos.")
+    @ApiResponses( value = { @ApiResponse( responseCode = "200", description = "Los datos de la persona se han modificado correctamente.", content = { @Content( mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "La persona que se ha intentado modificar no se ha encontrado en la base de datos.", content = { @Content( mediaType = "application/json")}),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor. No se ha podido realizar la operación.", content = { @Content( mediaType = "application/json")})})
+    @Parameter(name = "persona", description = "JSON de la persona con datos a modificar", required = true)
+
+    @PostMapping("/modificarPersona")
+    ResponseEntity modificarPersona(@RequestBody Persona persona){
+        Map<String, Object> map = new HashMap<String, Object>();
+        try{
+            this.personaService.modificarPersona(persona);
+            map.put("status", HttpStatus.OK);
+            map.put("descripcion", "La persona se ha modificado correctamente en la base de datos");
+            return new ResponseEntity<Object>(map, HttpStatus.OK);
+        }catch(PersonaNotFoundException e){
+            map.put("status", HttpStatus.NOT_FOUND);
+            map.put("descripcion", "La persona que se intenta modificar no existe en la base de datos");
+            return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            map.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+            map.put("descripcion", "Ha ocurrido un error interno del servidor. La operación no se ha podido realizar.");
+            return new ResponseEntity<Object>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

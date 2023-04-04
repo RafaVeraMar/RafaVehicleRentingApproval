@@ -27,4 +27,6 @@ public interface PersonaService {
     public void validatePersona(int personaId) throws PersonaNotFoundException;
 
     public boolean existePersona(int personaId);
+
+    void modificarPersona(Persona persona) throws PersonaNotFoundException;
 }

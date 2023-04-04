@@ -13,6 +13,8 @@ public interface PersonaMapper {
     @Options(useGeneratedKeys = true, keyProperty = "personaId", keyColumn = "PERSONA_ID")
     void insertPersona(Persona persona);
 
+
+
     @Select("SELECT COUNT(PERSONA_ID) FROM PERSONA WHERE PERSONA_ID = #{personaId}")
     int existePersona(int personaId);
 
@@ -28,4 +30,14 @@ public interface PersonaMapper {
             @Result(property = "fechaBaja", column = "FECHA_BAJA")
     })
     List<ProductoContratado> verProductosContratadosPersona(int id);
+
+
+
+
+    @Update("UPDATE PERSONA SET NOMBRE=#{nombre}, APELLIDO1=#{apellido1}, APELLIDO2=#{apellido2},"+
+            "DIRECCION_DOMICILIO_ID=#{direccionDomicilio.direccionId}, DIRECCION_NOTIFICACION_ID=#{direccionNotificacion.direccionId},"+
+            "NIF=#{nif},FECHA_NACIMIENTO=#{fechaNacimiento,jdbcType=DATE},NACIONALIDAD=#{nacionalidad},"+
+            "SCORING=#{scoring}, FECHA_SCORING=#{fechaScoring, jdbcType=DATE}"+
+            "WHERE PERSONA_ID=#{personaId}")
+    void updatePersona(Persona persona);
 }

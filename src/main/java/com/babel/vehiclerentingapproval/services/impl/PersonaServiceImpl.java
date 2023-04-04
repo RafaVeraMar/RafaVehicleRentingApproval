@@ -99,7 +99,20 @@ public class PersonaServiceImpl implements PersonaService {
         return persona;
     }
 
-    public void validatePersonData(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
+    @Override
+    public void modificarPersona(Persona persona) throws PersonaNotFoundException {
+
+        this.validatePersonaExistente(persona);
+
+        if (persona.isDireccionDomicilioSameAsNotificacion()){
+            persona.setDireccionNotificacion(persona.getDireccionDomicilio());
+            this.personaMapper.updatePersona(persona);
+        }else{
+            this.personaMapper.updatePersona(persona);
+        }
+    }
+
+    private void validatePersonData(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
         this.validateNombre(persona);
     }
 
@@ -117,9 +130,14 @@ public class PersonaServiceImpl implements PersonaService {
             throw new PersonaNotFoundException();
         }
     }
+    private void validatePersonaExistente(Persona persona) throws PersonaNotFoundException {
+        if (!existePersona(persona.getPersonaId())){
+            throw new PersonaNotFoundException();
+        }
+    }
 
     public boolean existePersona(int personaId){
-        if(this.personaMapper.existePersona(personaId)==0){
+        if(personaMapper.existePersona(personaId)==0){
             return false;
         }
         return true;
