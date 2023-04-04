@@ -20,7 +20,7 @@ public interface ApprovalRulesService {
 
     Boolean validateYearsExperience(SolicitudRenting solicitudRenting);
 
-     Optional<Persona> validatefindPersonasByCodResultado(SolicitudRenting solicitudRenting);
+     Boolean validatefindPersonasByCodResultado(SolicitudRenting solicitudRenting);
 
     Boolean validateClienteNoAprobadoConGarantias(SolicitudRenting solicitudRenting);
 }

@@ -36,7 +36,8 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
 
     @Override
     public Boolean validateInversionIngresos(SolicitudRenting solicitudRenting) {
-        if (this.inversionIngresosMapper.obtenerInversionSolicitud(solicitudRenting) <= this.inversionIngresosMapper.obtenerImporteSolicitud(solicitudRenting)) {
+        if (this.inversionIngresosMapper.obtenerInversionSolicitud(solicitudRenting)
+                <= this.inversionIngresosMapper.obtenerImporteNetoRenta(solicitudRenting)) {
 
             return true;
 
@@ -62,7 +63,7 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
 
     @Override
     public Boolean validateImpagoCuota(SolicitudRenting solicitudRenting) {
-        if (this.impagosCuotaMapper.obtenerImporteImpagoSolicitud(solicitudRenting)
+        if (this.impagosCuotaMapper.obtenerImporteImpagoInterno(solicitudRenting)
                 <= impagosCuotaMapper.obtenerCuotaSolicitud(solicitudRenting)) {
 
             return true;
@@ -125,9 +126,9 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     }
 
     @Override
-    public Optional<Persona> validatefindPersonasByCodResultado(SolicitudRenting solicitudRenting) {
+    public Boolean validatefindPersonasByCodResultado(SolicitudRenting solicitudRenting) {
         return this.personaMapper.validatefindPersonasByCodResultado(solicitudRenting);
-        //if ()
+
     }
 
 }
