@@ -9,6 +9,7 @@ import com.babel.vehiclerentingapproval.services.preautomaticresults.impl.Approv
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.text.ParseException;
@@ -31,7 +32,7 @@ public class ApprovalRulesServiceTest {
     Renta renta;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() throws ParseException {
 
         this.scoringRatingMapper = Mockito.mock((ScoringRatingMapper.class));
         this.employmentSeniorityMapper = Mockito.mock((EmploymentSeniorityMapper.class));
@@ -43,12 +44,13 @@ public class ApprovalRulesServiceTest {
 
         this.solicitud = this.createSolicitudMock();
         this.renta = this.createRentaMock();
-        this.service = new ApprovalRulesServiceImpl(this.scoringRatingMapper, this.employmentSeniorityMapper, this.inversionIngresosMapper, this.personaMapper, this.rentaMapper,this.salariedMapper, this.impagosCuotaMapper);
+        this.service = new ApprovalRulesServiceImpl(this.scoringRatingMapper, this.employmentSeniorityMapper, this.inversionIngresosMapper, this.personaMapper, this.rentaMapper, this.salariedMapper, this.impagosCuotaMapper);
     }
 
-    private SolicitudRenting createSolicitudMock(){
+    private SolicitudRenting createSolicitudMock() {
         SolicitudRenting solicitud = new SolicitudRenting();
         Persona persona = new Persona();
+        persona.setPersonaId(104);
         persona.setNombre("John");
         persona.setApellido1("Doe");
         persona.setApellido2("Doe");
@@ -61,6 +63,7 @@ public class ApprovalRulesServiceTest {
         solicitud.setPlazo(36);
         return solicitud;
     }
+
     private Renta createRentaMock() throws ParseException {
         Renta renta = new Renta();
         Persona persona = new Persona();
@@ -75,7 +78,7 @@ public class ApprovalRulesServiceTest {
     }
 
     @Test
-    public void validateNationality_should_beTrue_when_ES(){
+    public void validateNationality_should_beTrue_when_ES() {
 
         boolean validationNationality = service.validateNationality(this.solicitud);
 
@@ -83,7 +86,7 @@ public class ApprovalRulesServiceTest {
     }
 
     @Test
-    public void validateNationality_should_beFalse_when_NotES(){
+    public void validateNationality_should_beFalse_when_NotES() {
 
         this.solicitud.getPersona().setNacionalidad("IT");
         boolean validationNationality = service.validateNationality(this.solicitud);
@@ -92,7 +95,7 @@ public class ApprovalRulesServiceTest {
     }
 
     @Test
-    public void validateNationality_should_beFalse_when_Empty(){
+    public void validateNationality_should_beFalse_when_Empty() {
 
         this.solicitud.getPersona().setNacionalidad("");
         boolean validationNationality = service.validateNationality(this.solicitud);
@@ -101,7 +104,7 @@ public class ApprovalRulesServiceTest {
     }
 
     @Test
-    public void validateNationality_should_beFalse_when_Null(){
+    public void validateNationality_should_beFalse_when_Null() {
 
         this.solicitud.getPersona().setNacionalidad(null);
         boolean validationNationality = service.validateNationality(this.solicitud);
@@ -113,33 +116,51 @@ public class ApprovalRulesServiceTest {
     //test validateInversion
     @Test
     public void validateInversion_should_beTrue_when_BiggerThan80000(){
-        this.solicitud.setInversion(90000);
+        Mockito.when(inversionIngresosMapper.obtenerInversionSolicitud(solicitud)).thenReturn(90000f);
+
         boolean validateInversion = service.validateInversion(this.solicitud);
         Assertions.assertTrue(validateInversion);
     }
 
     @Test
     public void validateInversion_should_beFalse_when_NotBiggerThan80000(){
-        this.solicitud.setInversion(10000);
+        Mockito.when(inversionIngresosMapper.obtenerInversionSolicitud(solicitud)).thenReturn(10000f);
         boolean validateInversion = service.validateInversion(this.solicitud);
         Assertions.assertFalse(validateInversion);
 
     }
 
+    @Test
+    public void validateScoring_should_beTrue_when_minor5() {
+        Mockito.when(scoringRatingMapper.obtenercScoringPersona(solicitud)).thenReturn(1f);
+        boolean validateScoring = service.validateScoringPersona(this.solicitud);
+        Assertions.assertTrue(validateScoring);
+    }
+
+    @Test
+    public void validateScoring_should_beFalse_when_major5() {
+        Mockito.when(scoringRatingMapper.obtenercScoringPersona(solicitud)).thenReturn(10f);
+        boolean validateScoring = service.validateScoringPersona(this.solicitud);
+        Assertions.assertFalse(validateScoring);
+    }
+
+
     //test validateYearsExperience
 
     @Test
-    public void validateYearsExperience_should_beTrue_when_yearsEmploymentBiggerThan3YearsExperience(){
+    public void validateYearsExperience_should_beTrue_when_yearsEmploymentBiggerThan3YearsExperience() throws ParseException {
         //(TO_DATE(CURRENT_DATE) - ra.FECHA_INICIO_EMPLEO)/365
-        this.renta.setFechaInicioEmpleo();
-        boolean validateInversion = service.validateNationality(this.solicitud);
+        Mockito.when(employmentSeniorityMapper.obtenerFechaInicioEmpleoSolicitud(solicitud)).thenReturn(10f);
+        //this.renta.setFechaInicioEmpleo(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2016"));
+        boolean validateInversion = service.validateYearsExperience(this.solicitud);
         Assertions.assertTrue(validateInversion);
     }
 
     @Test
     public void validateYearsExperience_should_beTrue_when_yearsEmploymentNotBiggerThan3YearsExperience(){
-        this.renta.setInversion(90000);
-        boolean validateInversion = service.validateNationality(this.solicitud);
+        Mockito.when(employmentSeniorityMapper.obtenerFechaInicioEmpleoSolicitud(solicitud)).thenReturn(1f);
+        //this.renta.setFechaInicioEmpleo(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2016"));
+        boolean validateInversion = service.validateYearsExperience(this.solicitud);
         Assertions.assertFalse(validateInversion);
     }
 }
