@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.math.BigInteger;
 
+import static com.babel.vehiclerentingapproval.services.impl.EmailServiceImpl.SendMail;
+
 @Service
 public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private SolicitudRentingMapper solicitudRentingMapper;
@@ -92,7 +94,15 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         }
 
         this.solicitudRentingMapper.modificaEstadoSolicitud(solicitudId,nuevoEstado);
-        System.out.println("\n\nCambios en tu solicitud.\nSu solicitud se encuentra: " + this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId));
+
+        //Notificaciones por email
+
+        SolicitudRenting solicitudRenting=this.solicitudRentingMapper.getSolicitudByID(solicitudId);
+
+        String mensaje= "Su solicitud con ID: "+ solicitudId + ", se encuentra: " + this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId);
+        String asunto="Cambios en tu solicitud";
+        String destinatario = personaMapper.getEmail(solicitudRenting.getPersona().getPersonaId());
+        SendMail(mensaje,destinatario,asunto);
 
     }
     @Override

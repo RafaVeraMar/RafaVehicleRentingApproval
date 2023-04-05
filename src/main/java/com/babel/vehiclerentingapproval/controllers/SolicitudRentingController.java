@@ -160,7 +160,7 @@ public class SolicitudRentingController {
     }
 
     @PutMapping("/estado/{solicitudId}")
-    @Operation(summary = "Modificar estado de solicitud por ID", description = "Modifica el estado de una solicitud a partir de su ID")
+    @Operation(summary = "Modificar estado de solicitud por ID", description = "Modifica el estado de una solicitud a partir de su ID y notifica al usuario enviando un correo electronico")
     @ApiResponses( value = {
             @ApiResponse( responseCode = "200", description = "Estado solicitud correcto.", content = { @Content( mediaType = "application/json")}),
             @ApiResponse(responseCode = "407", description = "No se encuentra la solicitud buscada.", content = { @Content( mediaType = "application/json")}),
@@ -172,7 +172,7 @@ public class SolicitudRentingController {
             this.solicitud.modificaEstadoSolicitud(solicitudId,nuevoEstado);
             respuestaJson.put("Status",HttpStatus.OK);
             respuestaJson.put("Id",solicitudId);
-            respuestaJson.put("Descripcion",nuevoEstado.getDescripcion());
+            respuestaJson.put("Descripcion","La solicitud ha sido modificada y se ha notificado al usuario");
             return new ResponseEntity<Object>(respuestaJson,HttpStatus.OK);
         }catch (SolicitudRentingNotFoundException e){
             respuestaJson.put("Status",407);
