@@ -3,29 +3,29 @@ package com.babel.vehiclerentingapproval.services.impl;
 import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
-import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
+import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.math.BigInteger;
+import java.util.List;
 
 @Service
 public class SolicitudRentingServiceImpl implements SolicitudRentingService {
-    private SolicitudRentingMapper solicitudRentingMapper;
-    private TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
-    private final PersonaMapper personaMapper;
+    private final SolicitudRentingMapper solicitudRentingMapper;
+    private final TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
+    private final PersonaService personaService;
 
-    public SolicitudRentingServiceImpl (SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaMapper personaMapper) {
+    public SolicitudRentingServiceImpl (SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaService personaService) {
         this.solicitudRentingMapper = solicitudRentingMapper;
         this.tipoResultadoSolicitudMapper = tipoResultadoSolicitudMapper;
-        this.personaMapper = personaMapper;
+        this.personaService = personaService;
     }
 
     @Override
-    public SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) throws PersonaNotFoundException, WrongLenghtFieldException, InputIsNullOrIsEmpty, DateIsBeforeException, InputIsNegativeOrZeroException {
+    public SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) throws RequestApiValidationException {
         validatePersona(solicitudRenting.getPersona().getPersonaId());
         validateNumVehiculos(solicitudRenting);
         validateInversion(solicitudRenting);
@@ -33,12 +33,13 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         validatePlazo(solicitudRenting);
         validateFecha(solicitudRenting);
         solicitudRentingMapper.insertSolicitudRenting(solicitudRenting);
+        solicitudRenting.setPersona(personaService.getPerson(solicitudRenting.getPersona().getPersonaId()));
         return solicitudRenting;
     }
 
 
     private void existIdPersona (int idPersona) throws PersonaNotFoundException {
-        if (personaMapper.existePersona(idPersona) < 1) {
+        if (!personaService.existePersona(idPersona)) {
             throw new PersonaNotFoundException(idPersona);
         }
     }
@@ -67,25 +68,26 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     }
 
     @Override
-    public void modificaEstadoSolicitud(Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException{
+    public void modificaEstadoSolicitud (Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException {
 
         List<String> posiblesEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
         int existeEstado = this.solicitudRentingMapper.existeSolicitud(solicitudId);
 
-        if(!posiblesEstados.contains(nuevoEstado.getCodResultado())){
+        if (!posiblesEstados.contains(nuevoEstado.getCodResultado())) {
             throw new EstadoSolicitudNotFoundException();
         }
         if (existeEstado == 0) {
             throw new SolicitudRentingNotFoundException();
         }
 
-        this.solicitudRentingMapper.modificaEstadoSolicitud(solicitudId,nuevoEstado);
+        this.solicitudRentingMapper.modificaEstadoSolicitud(solicitudId, nuevoEstado);
         System.out.println("\n\nCambios en tu solicitud.\nSu solicitud se encuentra: " + this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId));
 
     }
+
     @Override
-    public List<String> getListaEstados() {
-        List<String> listaEstados =  this.tipoResultadoSolicitudMapper.getListaEstados();
+    public List<String> getListaEstados ( ) {
+        List<String> listaEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
         return listaEstados;
     }
 
