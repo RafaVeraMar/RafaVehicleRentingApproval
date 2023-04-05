@@ -5,7 +5,5 @@ import java.util.Map;
 
 
 public interface EmailService {
-    void sendSimpleMessage(String to,
-                           String subject,
-                           String text);
+    public void SendMail(String mensaje,String destino, String asunto);
 }

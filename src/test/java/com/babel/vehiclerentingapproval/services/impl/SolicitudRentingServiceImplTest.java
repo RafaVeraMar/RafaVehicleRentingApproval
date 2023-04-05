@@ -1,11 +1,14 @@
-package com.babel.vehiclerentingapproval.services.impl;
+package com.babel.vehiclerentingapproval.Services.impl;
 
 import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
 import com.babel.vehiclerentingapproval.services.PersonaService;
+import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
+import com.babel.vehiclerentingapproval.services.impl.CodigoResolucionValidatorImpl;
+import com.babel.vehiclerentingapproval.services.impl.SolicitudRentingServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -19,20 +22,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class SolicitudRentingServiceImplTest {
     SolicitudRentingService solicitudService;
     TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
     SolicitudRentingMapper solicitudRentingMapper;
+    CodigoResolucionValidator codigoResolucionValidator;
     PersonaService personaService;
+
 
     @BeforeEach
     void setUpAll ( ) {
         tipoResultadoSolicitudMapper = Mockito.mock(TipoResultadoSolicitudMapper.class);
         solicitudRentingMapper = Mockito.mock(SolicitudRentingMapper.class);
-        personaService = Mockito.mock(PersonaService.class);
-        solicitudService = new SolicitudRentingServiceImpl(solicitudRentingMapper, tipoResultadoSolicitudMapper, personaService);
+        personaMapper = Mockito.mock(PersonaMapper.class);
+        codigoResolucionValidator = new CodigoResolucionValidatorImpl(tipoResultadoSolicitudMapper);
+        solicitudService = new SolicitudRentingServiceImpl(solicitudRentingMapper,tipoResultadoSolicitudMapper, personaMapper,codigoResolucionValidator);
+
+        
+    }
+    private TipoResultadoSolicitud creaTipoResultadoFicticia(){
+        TipoResultadoSolicitud tipoResultadoSolicitud = new TipoResultadoSolicitud();
+        tipoResultadoSolicitud.setCodResultado("AA");
+        tipoResultadoSolicitud.setCodResultado("Aprobada");
+        return tipoResultadoSolicitud;
     }
 
     private SolicitudRenting creaSolicitudFicticia ( ) throws ParseException {
@@ -79,11 +94,29 @@ public class SolicitudRentingServiceImplTest {
         @Test
         public void verEstadoSolicitud_shouldNotThrow_EstadoSolicitudNotFoundException_when_codSolicitudNull_and_idNotExists ( ) {
             Mockito.when(tipoResultadoSolicitudMapper.existeCodigoResolucion(anyInt())).thenReturn(1);
+            Mockito.when(tipoResultadoSolicitudMapper.codigoValido(anyString())).thenReturn(1);
+            Mockito.when(tipoResultadoSolicitudMapper.getResultadoSolicitud(anyInt())).thenReturn(creaTipoResultadoFicticia());
 
             Assertions.assertDoesNotThrow(( ) -> {
                 String estado = solicitudService.verEstadoSolicitud(anyInt());
             });
         }
+        @Test
+        public void verEstadoSolicitud_shouldThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid(){
+            Mockito.when(tipoResultadoSolicitudMapper.codigoValido(anyString())).thenReturn(0);
+            Assertions.assertThrows(EstadoSolicitudInvalidException.class,() ->{
+                codigoResolucionValidator.validarCodResolucion(anyString());
+            });
+        }
+        @Test
+        public void verEstadoSolicitud_shouldNotThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid(){
+            Mockito.when(tipoResultadoSolicitudMapper.codigoValido(anyString())).thenReturn(1);
+
+            Assertions.assertDoesNotThrow(()->{
+                codigoResolucionValidator.validarCodResolucion(anyString());
+            });
+        }
+
     }
 
     @Nested

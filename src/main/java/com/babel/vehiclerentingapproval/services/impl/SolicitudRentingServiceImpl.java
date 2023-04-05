@@ -5,6 +5,7 @@ import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
+import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import org.springframework.stereotype.Service;
@@ -12,16 +13,21 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.util.List;
 
+import static com.babel.vehiclerentingapproval.services.impl.EmailServiceImpl.SendMail;
+
 @Service
 public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private final SolicitudRentingMapper solicitudRentingMapper;
     private final TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
     private final PersonaService personaService;
+    private final CodigoResolucionValidator codigoResolucionValidator;
 
-    public SolicitudRentingServiceImpl (SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaService personaService) {
+    public SolicitudRentingServiceImpl (SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaService personaService, CodigoResolucionValidator codigoResolucionValidator) {
         this.solicitudRentingMapper = solicitudRentingMapper;
         this.tipoResultadoSolicitudMapper = tipoResultadoSolicitudMapper;
         this.personaService = personaService;
+        this.codigoResolucionValidator = codigoResolucionValidator;
+
     }
 
     @Override
@@ -45,14 +51,23 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     }
 
     @Override
-    public String verEstadoSolicitud (int idSolicitud) throws EstadoSolicitudNotFoundException {
+    public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFoundException, EstadoSolicitudInvalidException {
         int codigoExiste = tipoResultadoSolicitudMapper.existeCodigoResolucion(idSolicitud);
 
-        if (codigoExiste == 0) {
+        if(codigoExiste == 0){ //idSolicitud or codResolucion null
             throw new EstadoSolicitudNotFoundException();
         }
-        String estado = tipoResultadoSolicitudMapper.getEstadoSolicitud(idSolicitud);
-        return estado;
+
+        TipoResultadoSolicitud resultadoSolicitud = this.tipoResultadoSolicitudMapper.getResultadoSolicitud(idSolicitud);
+        this.validarCodigoResolucion(resultadoSolicitud.getCodResultado());
+
+        return resultadoSolicitud.getDescripcion();
+
+
+    }
+    private void validarCodigoResolucion(String CodResolucion) throws EstadoSolicitudInvalidException{
+        this.codigoResolucionValidator.validarCodResolucion(CodResolucion);
+
     }
 
     public SolicitudRenting getSolicitudById (int id) throws SolicitudRentingNotFoundException {

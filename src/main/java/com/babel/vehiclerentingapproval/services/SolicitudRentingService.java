@@ -11,7 +11,8 @@ import java.util.List;
 public interface SolicitudRentingService {
     SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) throws RequestApiValidationException;
 
-    public String verEstadoSolicitud (int idSolicitud) throws EstadoSolicitudNotFoundException;
+    public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFoundException, EstadoSolicitudInvalidException;
+    public SolicitudRenting getSolicitudById(int it);
 
     public SolicitudRenting getSolicitudById (int it);
 
