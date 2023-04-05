@@ -6,6 +6,7 @@ import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
+import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +18,13 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private SolicitudRentingMapper solicitudRentingMapper;
     private TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
     private final PersonaMapper personaMapper;
+    private final CodigoResolucionValidator codigoResolucionValidator;
 
-    public SolicitudRentingServiceImpl (SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaMapper personaMapper) {
+    public SolicitudRentingServiceImpl(SolicitudRentingMapper solicitudRentingMapper,TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaMapper personaMapper,CodigoResolucionValidator codigoResolucionValidator) {
         this.solicitudRentingMapper = solicitudRentingMapper;
         this.tipoResultadoSolicitudMapper = tipoResultadoSolicitudMapper;
         this.personaMapper = personaMapper;
+        this.codigoResolucionValidator = codigoResolucionValidator;
     }
 
     @Override
@@ -44,14 +47,23 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     }
 
     @Override
-    public String verEstadoSolicitud (int idSolicitud) throws EstadoSolicitudNotFoundException {
+    public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFoundException, EstadoSolicitudInvalidException {
         int codigoExiste = tipoResultadoSolicitudMapper.existeCodigoResolucion(idSolicitud);
 
-        if (codigoExiste == 0) {
+        if(codigoExiste == 0){ //idSolicitud or codResolucion null
             throw new EstadoSolicitudNotFoundException();
         }
-        String estado = tipoResultadoSolicitudMapper.getEstadoSolicitud(idSolicitud);
-        return estado;
+
+        TipoResultadoSolicitud resultadoSolicitud = this.tipoResultadoSolicitudMapper.getResultadoSolicitud(idSolicitud);
+        this.validarCodigoResolucion(resultadoSolicitud.getCodResultado());
+
+        return resultadoSolicitud.getDescripcion();
+
+
+    }
+    private void validarCodigoResolucion(String CodResolucion) throws EstadoSolicitudInvalidException{
+        this.codigoResolucionValidator.validarCodResolucion(CodResolucion);
+
     }
 
     public SolicitudRenting getSolicitudById (int id) throws SolicitudRentingNotFoundException {

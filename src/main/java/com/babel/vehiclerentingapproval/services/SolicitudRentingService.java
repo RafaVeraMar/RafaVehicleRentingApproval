@@ -11,7 +11,7 @@ import java.util.List;
 public interface SolicitudRentingService {
 	SolicitudRenting addSolicitudRenting(SolicitudRenting solicitudRenting) throws WrongLenghtFieldException, PersonaNotFoundException, InputIsNullOrIsEmpty, DateIsBeforeException, InputIsNegativeOrZeroException;
 
-    public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFoundException;
+    public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFoundException, EstadoSolicitudInvalidException;
     public SolicitudRenting getSolicitudById(int it);
 
     void modificaEstadoSolicitud(Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws EstadoSolicitudNotFoundException, SolicitudRentingNotFoundException;

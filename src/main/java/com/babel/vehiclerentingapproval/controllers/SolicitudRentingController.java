@@ -1,6 +1,7 @@
 package com.babel.vehiclerentingapproval.controllers;
 
 
+import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudInvalidException;
 import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundException;
@@ -65,31 +66,47 @@ public class SolicitudRentingController {
     @Operation(summary = "Ver estado de solicitud por ID", description = "Devuelve el estado de una solicitud a partir de su ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Estado de la solicitud", content = @Content(mediaType = "application/json")),
-            @ApiResponse(responseCode = "500", description = "Error de formato en el ID", content = @Content(mediaType = "application/json")),
-            @ApiResponse(responseCode = "404", description = "ID de solicitud no encontrado", content = @Content(mediaType = "application/json"))
+            @ApiResponse(responseCode = "400", description = "Error de formato en el ID", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "404", description = "ID de solicitud no encontrado", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor: el cod de resolución no es válido", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(mediaType = "application/json"))
     })
-    @Parameter(name = "id", description = "ID de la solicitud a consultar", required = true)
-    ResponseEntity<Object> verEstadoSolicitud (@PathVariable String id) throws EstadoSolicitudNotFoundException {
-        Map<String, Object> respuesta = new HashMap<String, Object>();
-        try {
+    @Parameter(name = "id",description = "ID de la solicitud a consultar",required = true)
+    ResponseEntity<Object> verEstadoSolicitud(@PathVariable String id){
+        Map<String,Object> respuesta = new HashMap<String,Object>();
+        try{
             int idSolicitud = Integer.parseInt(id);
             String estado = this.solicitud.verEstadoSolicitud(idSolicitud);
 
-            respuesta.put("Status", HttpStatus.OK);
-            respuesta.put("Id", id);
-            respuesta.put("Descripcion", estado);
-            return new ResponseEntity<Object>(respuesta, HttpStatus.OK);
-        } catch (EstadoSolicitudNotFoundException e) {
-            respuesta.put("Status", HttpStatus.NOT_FOUND);
-            respuesta.put("Id", id);
-            respuesta.put("Descripcion", "Error: No existe ninguna codigo de resolución válido asociado a esa solicitud ");
-            return new ResponseEntity<Object>(respuesta, HttpStatus.NOT_FOUND);
+            respuesta.put("Status",HttpStatus.OK);
+            respuesta.put("Id",id);
+            respuesta.put("Descripcion",estado);
+            return new ResponseEntity<Object>(respuesta,HttpStatus.OK);
+        }
+        catch (NumberFormatException e){
+            respuesta.put("Status",HttpStatus.BAD_REQUEST);
+            respuesta.put("Id",id);
+            respuesta.put("Descripcion","Error: el formato de ID es inválido");
+            return new ResponseEntity<Object>(respuesta,HttpStatus.BAD_REQUEST);
+        }
+        catch (EstadoSolicitudNotFoundException e){
+            respuesta.put("Status",HttpStatus.NOT_FOUND);
+            respuesta.put("Id",id);
+            respuesta.put("Descripcion","Error: No existe ninguna codigo de resolución asociado a esa solicitud ");
+            return new ResponseEntity<Object>(respuesta,HttpStatus.NOT_FOUND);
 
-        } catch (Exception e) {
-            respuesta.put("Status", HttpStatus.BAD_REQUEST);
-            respuesta.put("Id", id);
-            respuesta.put("Descripcion", "Error: No ha introducido una id valida ");
-            return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
+        }
+        catch (EstadoSolicitudInvalidException e){
+            respuesta.put("Status",HttpStatus.INTERNAL_SERVER_ERROR);
+            respuesta.put("Id",id);
+            respuesta.put("Descripcion","Error: El codigo de resolución no es válido ");
+            return new ResponseEntity<Object>(respuesta,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        catch (Exception e){
+            respuesta.put("Status",HttpStatus.INTERNAL_SERVER_ERROR);
+            respuesta.put("Id",id);
+            respuesta.put("Descripcion","Error: Ha ocurrido un error interno en el servidor ");
+            return new ResponseEntity<Object>(respuesta,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
