@@ -14,11 +14,11 @@ import java.math.BigInteger;
 
 @Service
 public class SolicitudRentingServiceImpl implements SolicitudRentingService {
-    private final SolicitudRentingMapper solicitudRentingMapper;
-    private final TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
+    private SolicitudRentingMapper solicitudRentingMapper;
+    private TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
     private final PersonaMapper personaMapper;
 
-    public SolicitudRentingServiceImpl(SolicitudRentingMapper solicitudRentingMapper,TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaMapper personaMapper) {
+    public SolicitudRentingServiceImpl(SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaMapper personaMapper) {
         this.solicitudRentingMapper = solicitudRentingMapper;
         this.tipoResultadoSolicitudMapper = tipoResultadoSolicitudMapper;
         this.personaMapper = personaMapper;
@@ -76,7 +76,10 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         if (existeEstado == 0) {
             throw new SolicitudRentingNotFoundException();
         }
+
         this.solicitudRentingMapper.modificaEstadoSolicitud(solicitudId,nuevoEstado);
+        System.out.println("\n\nCambios en tu solicitud.\nSu solicitud se encuentra: " + this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId));
+
     }
     @Override
     public List<String> getListaEstados() {
