@@ -153,12 +153,14 @@ public class Persona {
         this.telefonos = telefonos;
     }
 
+
     public List<ProductoContratado> getProductosContratados() {
         return productosContratados;
     }
 
     public void setProductosContratados(List<ProductoContratado> productosContratados) {
         this.productosContratados = productosContratados;
+
     }
 
     public String getEmail() {
