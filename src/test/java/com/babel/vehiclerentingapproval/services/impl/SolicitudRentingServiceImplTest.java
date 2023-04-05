@@ -1,14 +1,12 @@
-package com.babel.vehiclerentingapproval.Services.impl;
+package com.babel.vehiclerentingapproval.services.impl;
 
 import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
-import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
+import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
-import com.babel.vehiclerentingapproval.services.impl.CodigoResolucionValidatorImpl;
-import com.babel.vehiclerentingapproval.services.impl.SolicitudRentingServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -37,13 +35,14 @@ public class SolicitudRentingServiceImplTest {
     void setUpAll ( ) {
         tipoResultadoSolicitudMapper = Mockito.mock(TipoResultadoSolicitudMapper.class);
         solicitudRentingMapper = Mockito.mock(SolicitudRentingMapper.class);
-        personaMapper = Mockito.mock(PersonaMapper.class);
+        personaService = Mockito.mock(PersonaService.class);
         codigoResolucionValidator = new CodigoResolucionValidatorImpl(tipoResultadoSolicitudMapper);
-        solicitudService = new SolicitudRentingServiceImpl(solicitudRentingMapper,tipoResultadoSolicitudMapper, personaMapper,codigoResolucionValidator);
+        solicitudService = new SolicitudRentingServiceImpl(solicitudRentingMapper, tipoResultadoSolicitudMapper, personaService, codigoResolucionValidator);
 
-        
+
     }
-    private TipoResultadoSolicitud creaTipoResultadoFicticia(){
+
+    private TipoResultadoSolicitud creaTipoResultadoFicticia ( ) {
         TipoResultadoSolicitud tipoResultadoSolicitud = new TipoResultadoSolicitud();
         tipoResultadoSolicitud.setCodResultado("AA");
         tipoResultadoSolicitud.setCodResultado("Aprobada");
@@ -101,18 +100,20 @@ public class SolicitudRentingServiceImplTest {
                 String estado = solicitudService.verEstadoSolicitud(anyInt());
             });
         }
+
         @Test
-        public void verEstadoSolicitud_shouldThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid(){
+        public void verEstadoSolicitud_shouldThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid ( ) {
             Mockito.when(tipoResultadoSolicitudMapper.codigoValido(anyString())).thenReturn(0);
-            Assertions.assertThrows(EstadoSolicitudInvalidException.class,() ->{
+            Assertions.assertThrows(EstadoSolicitudInvalidException.class, ( ) -> {
                 codigoResolucionValidator.validarCodResolucion(anyString());
             });
         }
+
         @Test
-        public void verEstadoSolicitud_shouldNotThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid(){
+        public void verEstadoSolicitud_shouldNotThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid ( ) {
             Mockito.when(tipoResultadoSolicitudMapper.codigoValido(anyString())).thenReturn(1);
 
-            Assertions.assertDoesNotThrow(()->{
+            Assertions.assertDoesNotThrow(( ) -> {
                 codigoResolucionValidator.validarCodResolucion(anyString());
             });
         }
