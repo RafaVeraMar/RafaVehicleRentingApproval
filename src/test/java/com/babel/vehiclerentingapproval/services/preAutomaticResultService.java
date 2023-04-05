@@ -211,5 +211,14 @@ public class preAutomaticResultService {
 
     }
 
+    public void validateTotalResult() throws ParseException {
+        this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2000"));
+        this.solicitud.getPersona().setScoring(1);
+        this.solicitud.setPlazo(10);
+        ////
+
+
+    }
+
 }
 

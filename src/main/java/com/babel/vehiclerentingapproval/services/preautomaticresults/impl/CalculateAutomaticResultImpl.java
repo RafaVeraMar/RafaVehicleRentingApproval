@@ -70,20 +70,30 @@ public class CalculateAutomaticResultImpl implements CalculateAutomaticResult {
     }
 
     @Override
-    public void totalResult(SolicitudRenting solicitudRenting) {
+    public String totalResult(SolicitudRenting solicitudRenting) {
+
+        String result = "";
 
         if (this.findAnyDeny(solicitudRenting)) {
             if (this.findAllApproval(solicitudRenting)) {
-                this.automaticResultMapper.setApproval(solicitudRenting);
-
+           //     this.automaticResultMapper.updateCodResolucion(solicitudRenting);
+                result = "AA";
             } else if (this.findAnyApproval(solicitudRenting)) {
-                this.automaticResultMapper.setPendingResult(solicitudRenting);
+            //    this.automaticResultMapper.updateCodResolucion(solicitudRenting);
+                result = "PA";
             } else {
-                this.automaticResultMapper.setDeny(solicitudRenting);
+            //    this.automaticResultMapper.updateCodResolucion(solicitudRenting);
+                result = "DM";
             }
         } else {
-            this.automaticResultMapper.setDeny(solicitudRenting);
+        //    this.automaticResultMapper.updateCodResolucion(solicitudRenting);
+            result = "DM";
+
 
         }
+        return result;
     }
+
+
+
 }

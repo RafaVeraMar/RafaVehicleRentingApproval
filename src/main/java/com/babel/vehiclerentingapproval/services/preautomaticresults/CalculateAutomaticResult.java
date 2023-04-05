@@ -12,6 +12,6 @@ public interface CalculateAutomaticResult {
     @Bean
     Boolean findAnyApproval(SolicitudRenting solicitudRenting);
     @Bean
-    void totalResult(SolicitudRenting solicitudRenting);
+    String totalResult(SolicitudRenting solicitudRenting);
 
 }
