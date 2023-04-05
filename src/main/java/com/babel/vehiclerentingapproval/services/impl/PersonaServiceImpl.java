@@ -31,7 +31,7 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     @Transactional
-    public Persona addPersona(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
+    public Persona addPersona (Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
 
         this.validatePersonData(persona);
 
@@ -51,9 +51,9 @@ public class PersonaServiceImpl implements PersonaService {
     }
 
     @Override
-    public Persona getPerson(int idPersona) throws RequestApiValidationException {
-        if (idPersona<0){
-            throw new RequestApiValidationException();
+    public Persona getPerson (int idPersona) throws RequestApiValidationException {
+        if (idPersona < 0) {
+            throw new ProfesionNotFoundException(idPersona);
         }
         return null;
     }
@@ -82,7 +82,7 @@ public class PersonaServiceImpl implements PersonaService {
         persona.getDireccionDomicilio().setProvinciaCod(provincia);
         this.direccionMapper.insertDireccion(persona.getDireccionDomicilio());
 
-        if (persona.isDireccionDomicilioSameAsNotificacion()){
+        if (persona.isDireccionDomicilioSameAsNotificacion()) {
             persona.setDireccionNotificacion(persona.getDireccionDomicilio());
         }else{
             provincia = this.provinciaMapper.getProvincia(persona.getDireccionNotificacion().getProvincia().getCodProvincia());
@@ -123,8 +123,8 @@ public class PersonaServiceImpl implements PersonaService {
         if ((persona.getNombre() == null) || persona.getNombre().isEmpty()) {
             throw new RequiredMissingFieldException();
         }
-        if (persona.getNombre().length() > 50){
-            throw new WrongLenghtFieldException();
+        if (persona.getNombre().length() > 50) {
+            throw new WrongLenghtFieldException("nombre");
         }
     }
 

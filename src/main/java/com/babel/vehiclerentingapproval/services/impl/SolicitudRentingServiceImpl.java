@@ -18,46 +18,48 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
     private final PersonaMapper personaMapper;
 
-    public SolicitudRentingServiceImpl(SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaMapper personaMapper) {
+    public SolicitudRentingServiceImpl (SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaMapper personaMapper) {
         this.solicitudRentingMapper = solicitudRentingMapper;
         this.tipoResultadoSolicitudMapper = tipoResultadoSolicitudMapper;
         this.personaMapper = personaMapper;
     }
 
     @Override
-    public SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) throws PersonaNotFoundException, WrongLenghtFieldException, InputIsNullOrIsEmpty, DateIsBeforeException {
+    public SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) throws PersonaNotFoundException, WrongLenghtFieldException, InputIsNullOrIsEmpty, DateIsBeforeException, InputIsNegativeOrZeroException {
         validatePersona(solicitudRenting.getPersona().getPersonaId());
-        validateNumber(solicitudRenting);
-        validateNotNullOrIsEmpty(solicitudRenting);
+        validateNumVehiculos(solicitudRenting);
+        validateInversion(solicitudRenting);
+        validateCuota(solicitudRenting);
+        validatePlazo(solicitudRenting);
         validateFecha(solicitudRenting);
-         solicitudRentingMapper.insertSolicitudRenting(solicitudRenting);
-         return solicitudRenting;
+        solicitudRentingMapper.insertSolicitudRenting(solicitudRenting);
+        return solicitudRenting;
     }
 
 
     private void existIdPersona (int idPersona) throws PersonaNotFoundException {
-        if (personaMapper.existePersona(idPersona) < 1){
-            throw new PersonaNotFoundException();
+        if (personaMapper.existePersona(idPersona) < 1) {
+            throw new PersonaNotFoundException(idPersona);
         }
     }
 
     @Override
-    public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFoundException {
+    public String verEstadoSolicitud (int idSolicitud) throws EstadoSolicitudNotFoundException {
         int codigoExiste = tipoResultadoSolicitudMapper.existeCodigoResolucion(idSolicitud);
 
-        if(codigoExiste == 0){
+        if (codigoExiste == 0) {
             throw new EstadoSolicitudNotFoundException();
         }
         String estado = tipoResultadoSolicitudMapper.getEstadoSolicitud(idSolicitud);
         return estado;
     }
 
-    public SolicitudRenting getSolicitudById(int id) throws SolicitudRentingNotFoundException {
+    public SolicitudRenting getSolicitudById (int id) throws SolicitudRentingNotFoundException {
         int existe = this.solicitudRentingMapper.existeSolicitud(id);
         SolicitudRenting solicitudRenting;
         if (existe == 1) {
             solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
-        }else{
+        } else {
             throw new SolicitudRentingNotFoundException();
         }
 
@@ -87,42 +89,70 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         return listaEstados;
     }
 
-     private int lenghtNumber(BigInteger number){
-        if(number != null){
+    private int lenghtNumber (BigInteger number) {
+        if (number != null) {
             String numeroString = number.toString();
             return numeroString.length();
         }
         return 0;
-     }
+    }
 
-    private void validatePersona(int idPersona) throws PersonaNotFoundException {
+    private void validatePersona (int idPersona) throws PersonaNotFoundException {
         existIdPersona(idPersona);
     }
 
-     private void validateNumber(SolicitudRenting solicitudRenting) throws WrongLenghtFieldException {
-        if(lenghtNumber(solicitudRenting.getNumVehiculos()) > 38 || lenghtNumber(solicitudRenting.getPlazo()) > 38){
-            throw new WrongLenghtFieldException();
+    private void validateNumVehiculos (SolicitudRenting solicitudRenting) throws WrongLenghtFieldException, InputIsNullOrIsEmpty, InputIsNegativeOrZeroException {
+        if (lenghtNumber(solicitudRenting.getNumVehiculos()) > 38) {
+            throw new WrongLenghtFieldException("numVehiculos");
         }
-     }
-
-     private void validateNotNullOrIsEmpty (SolicitudRenting solicitudRenting) throws InputIsNullOrIsEmpty {
-        if(solicitudRenting.getNumVehiculos() == null || solicitudRenting.getNumVehiculos().toString().isEmpty()
-                || solicitudRenting.getInversion() == null || solicitudRenting.getInversion().toString().isEmpty()
-                    || solicitudRenting.getCuota() == null || solicitudRenting.getCuota().toString().isEmpty()){
-            throw new InputIsNullOrIsEmpty();
+        if (solicitudRenting.getNumVehiculos() == null) {
+            throw new InputIsNullOrIsEmpty("numVehivulos");
         }
-     }
+        if (solicitudRenting.getNumVehiculos().signum() == -1 || solicitudRenting.getNumVehiculos().signum() == 0) {
+            throw new InputIsNegativeOrZeroException("numVehiculos");
+        }
+    }
 
-     private void validateFecha(SolicitudRenting solicitudRenting) throws DateIsBeforeException {
-            if(solicitudRenting.getFechaInicioVigor() != null && solicitudRenting.getFechaResolucion() != null){
-                if(solicitudRenting.getFechaInicioVigor().before(solicitudRenting.getFechaResolucion())){
-                    throw new DateIsBeforeException();
-                }
+    private void validateInversion (SolicitudRenting solicitudRenting) throws InputIsNullOrIsEmpty, InputIsNegativeOrZeroException {
+        if (solicitudRenting.getInversion() == null) {
+            throw new InputIsNullOrIsEmpty("inversion");
+        }
+        if (solicitudRenting.getInversion() < 1) {
+            throw new InputIsNegativeOrZeroException("inversion");
+        }
+    }
+
+    private void validateCuota (SolicitudRenting solicitudRenting) throws InputIsNullOrIsEmpty, InputIsNegativeOrZeroException {
+        if (solicitudRenting.getCuota() == null) {
+            throw new InputIsNullOrIsEmpty("cuota");
+        }
+        if (solicitudRenting.getCuota() < 1) {
+            throw new InputIsNegativeOrZeroException("cuota");
+        }
+    }
+
+    private void validatePlazo (SolicitudRenting solicitudRenting) throws WrongLenghtFieldException, InputIsNegativeOrZeroException, InputIsNullOrIsEmpty {
+        if (solicitudRenting.getPlazo() != null) {
+            if (lenghtNumber(solicitudRenting.getPlazo()) > 38) {
+                throw new WrongLenghtFieldException("Plazo");
             }
-     }
-    public void cancelarSolicitud(int id) throws SolicitudRentingNotFoundException{
+            if (solicitudRenting.getPlazo().signum() == -1 || solicitudRenting.getPlazo().signum() == 0) {
+                throw new InputIsNegativeOrZeroException("plazo");
+            }
+        }
+    }
+
+    private void validateFecha (SolicitudRenting solicitudRenting) throws DateIsBeforeException {
+        if (solicitudRenting.getFechaInicioVigor() != null && solicitudRenting.getFechaResolucion() != null) {
+            if (solicitudRenting.getFechaInicioVigor().before(solicitudRenting.getFechaResolucion())) {
+                throw new DateIsBeforeException("fechaInicioVigo", "fechaResolucion");
+            }
+        }
+    }
+
+    public void cancelarSolicitud (int id) throws SolicitudRentingNotFoundException {
         SolicitudRenting solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
-        if(solicitudRenting==null){
+        if (solicitudRenting == null) {
             throw new SolicitudRentingNotFoundException();
         }
         solicitudRentingMapper.cancelarSolicitud(solicitudRenting);
