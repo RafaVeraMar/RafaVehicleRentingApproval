@@ -155,7 +155,7 @@ public class SolicitudRentingController {
             this.solicitud.modificaEstadoSolicitud(solicitudId,nuevoEstado);
             respuestaJson.put("Status",HttpStatus.OK);
             respuestaJson.put("Id",solicitudId);
-            respuestaJson.put("Descripcion",nuevoEstado.getDescripcion());
+            respuestaJson.put("Descripcion","La solicitud ha sido modificada y se ha notificado al usuario");
             return new ResponseEntity<Object>(respuestaJson,HttpStatus.OK);
         }catch (SolicitudRentingNotFoundException e){
             respuestaJson.put("Status",407);

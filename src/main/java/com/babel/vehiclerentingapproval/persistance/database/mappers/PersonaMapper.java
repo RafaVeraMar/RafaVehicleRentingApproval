@@ -40,4 +40,8 @@ public interface PersonaMapper {
             "SCORING=#{scoring}, FECHA_SCORING=#{fechaScoring, jdbcType=DATE}, EMAIL={email}"+
             "WHERE PERSONA_ID=#{personaId}")
     void updatePersona(Persona persona);
+
+
+    @Select("SELECT EMAIL FROM PERSONA WHERE PERSONA_ID=#{personaId}")
+    String getEmail(int personaId);
 }
