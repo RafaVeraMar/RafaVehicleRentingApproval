@@ -1,10 +1,7 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
 
-import com.babel.vehiclerentingapproval.exceptions.PersonaNotFoundException;
-import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
-import com.babel.vehiclerentingapproval.exceptions.RequiredMissingFieldException;
-import com.babel.vehiclerentingapproval.exceptions.WrongLenghtFieldException;
+import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
@@ -100,16 +97,22 @@ public class PersonaServiceImpl implements PersonaService {
     }
 
     @Override
-    public void modificarPersona(Persona persona) throws PersonaNotFoundException {
+    @Transactional
+    public void modificarPersona(Persona persona) throws PersonaNotFoundException, DireccionNotFoundException {
+
+        if (persona.isDireccionDomicilioSameAsNotificacion()) {
+            persona.setDireccionNotificacion(persona.getDireccionDomicilio());
+        }
 
         this.validatePersonaExistente(persona);
 
-        if (persona.isDireccionDomicilioSameAsNotificacion()){
-            persona.setDireccionNotificacion(persona.getDireccionDomicilio());
-            this.personaMapper.updatePersona(persona);
-        }else{
-            this.personaMapper.updatePersona(persona);
-        }
+        //Actualizamos las direcciones anteriores
+        direccionMapper.updateDireccion(persona.getDireccionDomicilio());
+        direccionMapper.updateDireccion(persona.getDireccionNotificacion());
+
+        //Insertamos el resto de cambios
+        this.personaMapper.updatePersona(persona);
+
     }
 
     public void validatePersonData(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
@@ -130,9 +133,12 @@ public class PersonaServiceImpl implements PersonaService {
             throw new PersonaNotFoundException();
         }
     }
-    private void validatePersonaExistente(Persona persona) throws PersonaNotFoundException {
+    private void validatePersonaExistente(Persona persona) throws PersonaNotFoundException, DireccionNotFoundException {
         if (!existePersona(persona.getPersonaId())){
             throw new PersonaNotFoundException();
+        }
+        if(existeDireccion(persona.getDireccionDomicilio().getDireccionId())==false ||existeDireccion(persona.getDireccionNotificacion().getDireccionId())==false){ //Si no existe alguna direcicon
+            throw new DireccionNotFoundException();
         }
     }
 
@@ -141,5 +147,15 @@ public class PersonaServiceImpl implements PersonaService {
             return false;
         }
         return true;
+    }
+
+
+
+    public boolean existeDireccion(int direccionId){
+        if(this.direccionMapper.existeDireccion(direccionId)==0){
+            return false;
+        }else{
+            return true;
+        }
     }
 }

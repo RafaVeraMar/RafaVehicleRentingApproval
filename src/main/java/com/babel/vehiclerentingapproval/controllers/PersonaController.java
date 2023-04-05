@@ -1,5 +1,6 @@
 package com.babel.vehiclerentingapproval.controllers;
 
+import com.babel.vehiclerentingapproval.exceptions.DireccionNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.PersonaNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.RequiredMissingFieldException;
 import com.babel.vehiclerentingapproval.models.Persona;
@@ -84,6 +85,7 @@ public class PersonaController {
     @Tag(name="Modificar datos persona",description = "Endpoint que permite modificar los datos de una persona existente en la base de datos.")
     @ApiResponses( value = { @ApiResponse( responseCode = "200", description = "Los datos de la persona se han modificado correctamente.", content = { @Content( mediaType = "application/json")}),
             @ApiResponse(responseCode = "404", description = "La persona que se ha intentado modificar no se ha encontrado en la base de datos.", content = { @Content( mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400", description = "La direccion proporcionada no se encuentra en la base de datos.", content = { @Content( mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Error interno del servidor. No se ha podido realizar la operación.", content = { @Content( mediaType = "application/json")})})
     @Parameter(name = "persona", description = "JSON de la persona con datos a modificar", required = true)
 
@@ -99,6 +101,10 @@ public class PersonaController {
             map.put("status", HttpStatus.NOT_FOUND);
             map.put("descripcion", "La persona que se intenta modificar no existe en la base de datos");
             return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
+        } catch (DireccionNotFoundException e) {
+            map.put("status", HttpStatus.BAD_REQUEST);
+            map.put("descripcion", "La direccion no existe en la base de datos");
+            return new ResponseEntity<Object>(map, HttpStatus.BAD_REQUEST);
         }
     }
 }

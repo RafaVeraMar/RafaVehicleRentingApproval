@@ -1,9 +1,6 @@
 package com.babel.vehiclerentingapproval.services;
 
-import com.babel.vehiclerentingapproval.exceptions.PersonaNotFoundException;
-import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
-import com.babel.vehiclerentingapproval.exceptions.RequiredMissingFieldException;
-import com.babel.vehiclerentingapproval.exceptions.WrongLenghtFieldException;
+import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.ProductoContratado;
 import org.springframework.stereotype.Service;
@@ -28,5 +25,7 @@ public interface PersonaService {
 
     public boolean existePersona(int personaId);
 
-    void modificarPersona(Persona persona) throws PersonaNotFoundException;
+    void modificarPersona(Persona persona) throws PersonaNotFoundException, DireccionNotFoundException;
+
+    boolean existeDireccion(int direccionId);
 }
