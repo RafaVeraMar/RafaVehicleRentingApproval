@@ -20,14 +20,7 @@ import java.util.Date;
 public class denyRulesServiceTests {
 
     DenyRulesService service;
-    private ScoringRatingMapper scoringRatingMapper;
-    private EmploymentSeniorityMapper employmentSeniorityMapper;
-    private InversionIngresosMapper inversionIngresosMapper;
-    private PersonaMapper personaMapper;
-    private RentaMapper rentaMapper;
-    private SalariedMapper salariedMapper;
-    private ImpagosCuotaMapper impagosCuotaMapper;
-    private ApprovalGarantiaMapper garantiaMapper;
+
 
     SolicitudRenting solicitud;
 
@@ -36,14 +29,7 @@ public class denyRulesServiceTests {
     @BeforeEach
     public void setUp() throws ParseException {
 
-        this.scoringRatingMapper = Mockito.mock((ScoringRatingMapper.class));
-        this.employmentSeniorityMapper = Mockito.mock((EmploymentSeniorityMapper.class));
-        this.inversionIngresosMapper = Mockito.mock((InversionIngresosMapper.class));
-        this.personaMapper = Mockito.mock((PersonaMapper.class));
-        this.rentaMapper = Mockito.mock((RentaMapper.class));
-        this.salariedMapper = Mockito.mock((SalariedMapper.class));
-        this.impagosCuotaMapper = Mockito.mock((ImpagosCuotaMapper.class));
-        this.garantiaMapper = Mockito.mock((ApprovalGarantiaMapper.class));
+
 
         this.solicitud = this.createSolicitudMock();
         this.renta = this.createRentaMock();
@@ -113,6 +99,7 @@ public class denyRulesServiceTests {
         } else {
             this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse(fechaNacimientoStr));
         }
+
         boolean validationClientAge = service.validateClientAge(solicitud);
         Assertions.assertTrue(validationClientAge);
     }
