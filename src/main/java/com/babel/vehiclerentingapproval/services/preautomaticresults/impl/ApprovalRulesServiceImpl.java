@@ -39,7 +39,6 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     public Boolean validateInversionIngresos(SolicitudRenting solicitudRenting) {
         if (solicitudRenting.getInversion()
                 <= this.inversionIngresosMapper.obtenerImporteNetoRenta(solicitudRenting)) {
-
             return true;
 
         } else {
