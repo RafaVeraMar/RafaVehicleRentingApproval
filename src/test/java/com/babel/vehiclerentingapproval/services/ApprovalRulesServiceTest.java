@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 
 public class ApprovalRulesServiceTest {
@@ -31,6 +32,7 @@ public class ApprovalRulesServiceTest {
     private SalariedMapper salariedMapper;
     private ImpagosCuotaMapper impagosCuotaMapper;
     private ApprovalClienteMapper garantiaMapper;
+    private ClienteExistenteGaranteMapper clienteExistenteGaranteMapper;
 
     SolicitudRenting solicitud;
 
@@ -50,8 +52,9 @@ public class ApprovalRulesServiceTest {
 
         this.solicitud = this.createSolicitudMock();
         this.renta = this.createRentaMock();
+        this.clienteExistenteGaranteMapper = Mockito.mock(ClienteExistenteGaranteMapper.class);
 
-        this.service = new ApprovalRulesServiceImpl(this.scoringRatingMapper, this.employmentSeniorityMapper, this.inversionIngresosMapper, this.personaMapper, this.rentaMapper, this.salariedMapper, this.impagosCuotaMapper, this.garantiaMapper);
+        this.service = new ApprovalRulesServiceImpl(this.scoringRatingMapper, this.employmentSeniorityMapper, this.inversionIngresosMapper, this.personaMapper, this.rentaMapper, this.salariedMapper, this.impagosCuotaMapper, this.garantiaMapper, this.clienteExistenteGaranteMapper);
     }
 
     private SolicitudRenting createSolicitudMock() throws ParseException {
@@ -341,5 +344,22 @@ public class ApprovalRulesServiceTest {
         Mockito.when(garantiaMapper.existeClienteRechazadoPreviamente(anyInt())).thenReturn(1);
         boolean validateClienteNoRechazadoPreviamente = service.validateClienteNoRechazadoPreviamente(this.solicitud);
         Assertions.assertTrue(validateClienteNoRechazadoPreviamente);
+    }
+
+    //test validatefindPersonasByCodResultado
+    @Test
+    public void validatefindPersonasByCodResultado_should_beTrue_when_clienteExiste_and_clienteEsGarante() {
+        Mockito.when(clienteExistenteGaranteMapper.existeCliente(any())).thenReturn(1);
+        Mockito.when(clienteExistenteGaranteMapper.clienteEsGarante(any())).thenReturn(1);
+        boolean validatefindPersonasByCodResultado = service.validatefindPersonasByCodResultado(this.solicitud);
+        Assertions.assertTrue(validatefindPersonasByCodResultado);
+    }
+
+    @Test
+    public void validatefindPersonasByCodResultado_should_beFalse_when_clienteNoExiste_or_clienteNoEsGarante() {
+        Mockito.when(clienteExistenteGaranteMapper.existeCliente(any())).thenReturn(0);
+        Mockito.when(clienteExistenteGaranteMapper.clienteEsGarante(any())).thenReturn(0);
+        boolean validatefindPersonasByCodResultado = service.validatefindPersonasByCodResultado(this.solicitud);
+        Assertions.assertFalse(validatefindPersonasByCodResultado);
     }
 }
