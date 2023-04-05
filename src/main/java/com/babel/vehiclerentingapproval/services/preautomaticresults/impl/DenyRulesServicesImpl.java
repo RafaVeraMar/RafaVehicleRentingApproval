@@ -5,6 +5,8 @@ import com.babel.vehiclerentingapproval.services.preautomaticresults.DenyRulesSe
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
@@ -18,14 +20,25 @@ public class DenyRulesServicesImpl implements DenyRulesService {
 
     @Override
     public Boolean validateClientAge(SolicitudRenting solicitudRenting) {
+
+        Date fechaNacimiento = solicitudRenting.getPersona().getFechaNacimiento();
+        int anyo = fechaNacimiento.getYear() + 1900;
+        int day = fechaNacimiento.getDate();
+        int month = fechaNacimiento.getMonth() + 1;
+        LocalDate fechaConcreta = LocalDate.of(anyo, month, day);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String fechaFormateada = fechaConcreta.format(formatter);
+
+
+      /*  LocalDateTime fechaActual = LocalDateTime.now();
         int anyo = solicitudRenting.getPersona().getFechaNacimiento().getYear();
         int day = solicitudRenting.getPersona().getFechaNacimiento().getDay();
         int month = solicitudRenting.getPersona().getFechaNacimiento().getMonth();
-        LocalDate fechaConcreta = LocalDate.of(anyo, month, day);
+        LocalDate fechaConcreta = LocalDate.of(anyo, month, day); */
         long anios = ChronoUnit.YEARS.between(fechaConcreta, fechaActual);
-        if(anios<anyosMayor){
+        if (anios < anyosMayor) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -47,9 +60,9 @@ public class DenyRulesServicesImpl implements DenyRulesService {
         int month = solicitudRenting.getPersona().getFechaNacimiento().getMonth();
         LocalDate fechaConcreta = LocalDate.of(anyo, month, day);
         long anios = ChronoUnit.YEARS.between(fechaConcreta, fechaActual);
-        if(anios + solicitudRenting.getPlazo()>=anyosPlazo){
+        if (anios + solicitudRenting.getPlazo() >= anyosPlazo) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
