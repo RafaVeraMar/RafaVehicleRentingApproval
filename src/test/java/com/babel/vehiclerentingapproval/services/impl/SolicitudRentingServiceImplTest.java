@@ -1,12 +1,10 @@
-package com.babel.vehiclerentingapproval.Services.impl;
+package com.babel.vehiclerentingapproval.services.impl;
 
 import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundException;
 import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 import com.babel.vehiclerentingapproval.exceptions.*;
-import com.babel.vehiclerentingapproval.models.Direccion;
-import com.babel.vehiclerentingapproval.models.Persona;
-import com.babel.vehiclerentingapproval.models.SolicitudRenting;
+import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
@@ -50,12 +48,12 @@ public class SolicitudRentingServiceImplTest {
         Persona personaFicticia = new Persona();
         Direccion direccionFicticia = new Direccion();
         direccionFicticia.setDireccionId(1);
-        direccionFicticia.setTipoViaId(2);
+        direccionFicticia.setTipoViaId(new TipoVia(1,"Alameda"));
         direccionFicticia.setNombreCalle("Alosno");
         direccionFicticia.setNumero("5");
         direccionFicticia.setCodPostal("21006");
         direccionFicticia.setMunicipio("Huelva");
-        direccionFicticia.setProvinciaCod("f5");
+        direccionFicticia.setProvinciaCod(new Provincia("02","Albacete"));
         personaFicticia.setPersonaId(1);
         personaFicticia.setNombre("Migue");
         personaFicticia.setApellido1("Estevez");
@@ -63,7 +61,7 @@ public class SolicitudRentingServiceImplTest {
         personaFicticia.setDireccionNotificacion(direccionFicticia);
         personaFicticia.setDireccionDomicilioSameAsNotificacion(false);
         personaFicticia.setNif("4444444E");
-        personaFicticia.setNacionalidad("ES");
+        personaFicticia.setNacionalidad(new Pais("AD",20,"AND","Andorra",2));
         solicitudFicticia.setPersona(personaFicticia);
         solicitudFicticia.setSolicitudId(1);
         solicitudFicticia.setFechaSolicitud(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2023"));

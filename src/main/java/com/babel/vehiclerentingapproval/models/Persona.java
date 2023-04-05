@@ -1,23 +1,51 @@
 package com.babel.vehiclerentingapproval.models;
+import javax.validation.constraints.*;
 import java.util.Date;
+import java.util.List;
 
 public class Persona {
+    @NotNull
+    @NotEmpty
+    @NotBlank
+    @Positive
     private int personaId;
+    @Size(max = 50)
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private String nombre;
+    @Size(max = 50)
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private String apellido1;
+    @Size(max = 50)
     private String apellido2;
-    private String email;
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private Direccion direccionDomicilio;
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private Direccion direccionNotificacion;
-    private boolean direccionDomicilioSameAsNotificacion=true;
+    private boolean direccionDomicilioSameAsNotificacion = true;
+    @Size(max=10)
+    @NotNull
+    @NotEmpty
+    @NotBlank
     private String nif;
+    @PastOrPresent
     private Date fechaNacimiento;
-    private String nacionalidad;
+    @NotNull
+    @NotEmpty
+    @NotBlank
+    private Pais nacionalidad;
     private int scoring;
+    @PastOrPresent
     private Date fechaScoring;
-
-    //getters y setters
-
+    private List<TelefonoContacto> telefonos;
+    private List<ProductoContratado> productosContratados;
 
     public int getPersonaId() {
         return personaId;
@@ -67,6 +95,14 @@ public class Persona {
         this.direccionNotificacion = direccionNotificacion;
     }
 
+    public boolean isDireccionDomicilioSameAsNotificacion() {
+        return direccionDomicilioSameAsNotificacion;
+    }
+
+    public void setDireccionDomicilioSameAsNotificacion(boolean direccionDomicilioSameAsNotificacion) {
+        this.direccionDomicilioSameAsNotificacion = direccionDomicilioSameAsNotificacion;
+    }
+
     public String getNif() {
         return nif;
     }
@@ -83,11 +119,11 @@ public class Persona {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getNacionalidad() {
+    public Pais getNacionalidad() {
         return nacionalidad;
     }
 
-    public void setNacionalidad(String nacionalidad) {
+    public void setNacionalidad(Pais nacionalidad) {
         this.nacionalidad = nacionalidad;
     }
 
@@ -107,19 +143,23 @@ public class Persona {
         this.fechaScoring = fechaScoring;
     }
 
-    public boolean isDireccionDomicilioSameAsNotificacion() {
-        return direccionDomicilioSameAsNotificacion;
+    public List<TelefonoContacto> getTelefonos() {
+        return telefonos;
     }
 
-    public void setDireccionDomicilioSameAsNotificacion(boolean direccionDomicilioSameAsNotificacion) {
-        this.direccionDomicilioSameAsNotificacion = direccionDomicilioSameAsNotificacion;
+    public void setTelefonos(List<TelefonoContacto> telefonos) {
+        this.telefonos = telefonos;
     }
 
-    public String getEmail() {
-        return email;
+
+    public List<ProductoContratado> getProductosContratados() {
+        return productosContratados;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setProductosContratados(List<ProductoContratado> productosContratados) {
+        this.productosContratados = productosContratados;
+
     }
 }
+    //getters y setters
+
