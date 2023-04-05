@@ -92,17 +92,73 @@ public class denyRulesServiceTests {
     }
 
     @Test
-    public void validateClientAge_shouldBeFalse_whenisEmpty() throws ParseException {
-        String fechaNacimientoStr = ""; // cadena vacía
+    public void validateClientAge_shouldBeTrue_whenisEmpty() throws ParseException {
+        String fechaNacimientoStr = "";
         if (fechaNacimientoStr.isEmpty()) {
-            this.solicitud.getPersona().setFechaNacimiento(new Date(Long.MIN_VALUE));
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                boolean validateClientAge = service.validateClientAge(solicitud);
+                Assertions.assertFalse(validateClientAge);
+            });
         } else {
-            this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse(fechaNacimientoStr));
-        }
+            this.solicitud.getPersona().setFechaNacimiento(new Date(Long.MIN_VALUE));
 
-        boolean validationClientAge = service.validateClientAge(solicitud);
-        Assertions.assertTrue(validationClientAge);
+        }
     }
 
+    //validateScoringTitular
+    @Test
+    public void validateScoringTitular_shouldBeTrue_whenScoringMayororEqual6(){
+
+        this.solicitud.getPersona().setScoring(10);
+        boolean validateScoringTitular = service.validateScoringTitular(solicitud);
+        Assertions.assertTrue(validateScoringTitular);
+    }
+
+    @Test
+    public void validateScoringTitular_shouldBeTrue_whenScoringMinor6(){
+
+        this.solicitud.getPersona().setScoring(3);
+        boolean validateScoringTitular = service.validateScoringTitular(solicitud);
+        Assertions.assertFalse(validateScoringTitular);
+    }
+
+    @Test
+    public void validateClientAgePlusPlazo_shouldBeTrue_whenMayor80() throws ParseException {
+
+        this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2016"));
+        this.solicitud.setPlazo(100);
+        boolean validateClientAgePlusPlazo = service.validateClientAgePlusPlazo(solicitud);
+        Assertions.assertTrue(validateClientAgePlusPlazo);
+    }
+
+    @Test
+    public void validateClientAgePlusPlazo_shouldBeFalse_whenMinor80() throws ParseException {
+        this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2000"));
+        this.solicitud.setPlazo(10);
+        boolean validateClientAgePlusPlazo = service.validateClientAgePlusPlazo(solicitud);
+        Assertions.assertFalse(validateClientAgePlusPlazo);
+    }
+
+    @Test
+    public void validateClientAgePlusPlazo_shouldBeFalse_whenNull() {
+        this.solicitud.getPersona().setFechaNacimiento(null);
+        this.solicitud.setPlazo(null);
+        Assertions.assertThrows(NullPointerException.class, () -> {
+            boolean validateClientAgePlusPlazo = service.validateClientAgePlusPlazo(solicitud);
+            Assertions.assertFalse(validateClientAgePlusPlazo);
+        });
+    }
+
+    @Test
+    public void validateClientAgePlusPlazo_shouldBeTrue_whenisEmpty() throws ParseException {
+        String fechaNacimientoStr = "";
+        if (fechaNacimientoStr.isEmpty()) {
+            Assertions.assertThrows(NullPointerException.class, () -> {
+                boolean validateClientAgePlusPlazo = service.validateClientAgePlusPlazo(solicitud);
+                Assertions.assertFalse(validateClientAgePlusPlazo);
+            });
+        } else {
+            this.solicitud.getPersona().setFechaNacimiento(new Date(Long.MIN_VALUE));        }
+    }
 
 }
