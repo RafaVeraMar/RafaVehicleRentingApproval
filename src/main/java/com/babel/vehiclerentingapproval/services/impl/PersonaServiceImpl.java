@@ -11,6 +11,7 @@ import com.babel.vehiclerentingapproval.services.PersonaService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -107,8 +108,30 @@ public class PersonaServiceImpl implements PersonaService {
         if (persona.isDireccionDomicilioSameAsNotificacion()){
             persona.setDireccionNotificacion(persona.getDireccionDomicilio());
             this.personaMapper.updatePersona(persona);
+            modificarTelefono(persona);
         }else{
             this.personaMapper.updatePersona(persona);
+            modificarTelefono(persona);
+
+        }
+    }
+
+    public void modificarTelefono(Persona persona) {
+        List<TelefonoContacto> telefonos = persona.getTelefonos();
+        List<TelefonoContacto> telefonosAntiguos = telefonoMapper.listarTelefonos(persona.getPersonaId());
+
+        for(int i=0;i<telefonos.size();i++){
+            if(!telefonosAntiguos.contains(telefonos.get(i))){
+                this.telefonoMapper.addTelefono(telefonos.get(i), persona);
+            }
+            for(int j=0;j<telefonosAntiguos.size();j++){
+                if(!telefonos.contains(telefonosAntiguos.get(j))){
+                    this.telefonoMapper.deleteTelefono(telefonosAntiguos.get(j), persona.getPersonaId());
+                }
+                if(telefonosAntiguos.get(j).getTelefonoId()==telefonos.get(i).getTelefonoId() && !telefonosAntiguos.get(j).getTelefono().equals(telefonos.get(i).getTelefono())){
+                    this.telefonoMapper.updateTelefono(telefonos.get(i), persona.getPersonaId());
+                }
+            }
         }
     }
 

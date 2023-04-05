@@ -29,4 +29,7 @@ public interface PersonaService {
     public boolean existePersona(int personaId);
 
     void modificarPersona(Persona persona) throws PersonaNotFoundException;
-}
+
+    public void modificarTelefono(Persona persona);
+
+    }
