@@ -1,7 +1,10 @@
 package com.babel.vehiclerentingapproval.controllers;
 
 
-import com.babel.vehiclerentingapproval.exceptions.*;
+import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudInvalidException;
+import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundException;
+import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
+import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundException;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
@@ -14,7 +17,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,43 +39,32 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "404", description = "La persona asociada a la solicitud no existe.", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "400", description = "Los datos de entrada sobrepasan la longitud maxima.", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "400", description = "Alguno de los datos son nulos o no se han rellenado.", content = @Content(mediaType = "application/json")),
-            @ApiResponse(responseCode = "400", description = "La fecha de inici de vigor, no puede ser anterior a la fecha de resolucion", content = @Content(mediaType = "application/json"))
+            @ApiResponse(responseCode = "400", description = "La fecha de inicio de vigor, no puede ser anterior a la fecha de resolucion", content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "400", description = "Los datos de entrada tienen que ser mayor que 0", content = @Content(mediaType = "application/json")),
     })
-
-    ResponseEntity addSolicitudRenting(@RequestBody SolicitudRenting solicitudRenting){
+    ResponseEntity addSolicitudRenting (@RequestBody SolicitudRenting solicitudRenting) {
         Map<String, Object> respuesta = new HashMap<String, Object>();
         try {
             solicitud.addSolicitudRenting(solicitudRenting);
             respuesta.put("Status", HttpStatus.OK);
             respuesta.put("Id", solicitudRenting.getSolicitudId());
-            respuesta.put("Descripcion:", "Persona introducida correctamente");
-            return new ResponseEntity<Object>(respuesta,HttpStatus.OK);
-        } catch (PersonaNotFoundException e) {
-            respuesta.put("Status", HttpStatus.BAD_REQUEST);
+            respuesta.put("Descripcion:", "Solicitud creada correctamente");
+            return new ResponseEntity<Object>(respuesta, HttpStatus.OK);
+        } catch (RequestApiValidationException e) {
+            respuesta.put("Status", e.getStatusCode());
             respuesta.put("Id", solicitudRenting.getSolicitudId());
-            respuesta.put("Descripcion:", "La persona no existe en la base de datos.");
-            return new ResponseEntity<Object>(respuesta,HttpStatus.BAD_REQUEST);
-        } catch (WrongLenghtFieldException e) {
-            respuesta.put("Status", HttpStatus.BAD_REQUEST);
-            respuesta.put("Id", solicitudRenting.getSolicitudId());
-            respuesta.put("Descripcion:", "Comprueba que no sobrepase la longitud de los datos de entrada.");
-            return new ResponseEntity<Object>(respuesta,HttpStatus.BAD_REQUEST);
-        } catch (InputIsNullOrIsEmpty e){
-            respuesta.put("Status", HttpStatus.BAD_REQUEST);
-            respuesta.put("Id", solicitudRenting.getSolicitudId());
-            respuesta.put("Descripcion:", "Comprueba los datos de entrada.");
-            return new ResponseEntity<Object>(respuesta,HttpStatus.BAD_REQUEST);
-        } catch (DateIsBeforeException e) {
-            respuesta.put("Status", HttpStatus.BAD_REQUEST);
-            respuesta.put("Id", solicitudRenting.getSolicitudId());
-            respuesta.put("Descripcion:", "La fecha de inicio vigor no puede ser anterior a la de resolucion.");
-            return new ResponseEntity<Object>(respuesta,HttpStatus.BAD_REQUEST);
+            respuesta.put("Descripcion:", e.getExternalMessage());
+            return new ResponseEntity<Object>(respuesta, e.getStatusCode());
+        } catch (Exception e) {
+            respuesta.put("Status", HttpStatus.INTERNAL_SERVER_ERROR);
+            respuesta.put("Descripcion:", "Error interno, intentelo de nuevo mas tarde.");
+            return new ResponseEntity<Object>(respuesta, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/estado/{id}")
     @Operation(summary = "Ver estado de solicitud por ID", description = "Devuelve el estado de una solicitud a partir de su ID")
-    @ApiResponses( value = {
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Estado de la solicitud", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "400", description = "Error de formato en el ID", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "ID de solicitud no encontrado", content = @Content(mediaType = "application/json")),
@@ -127,7 +118,7 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "404", description = "ID de solicitud no encontrado", content = @Content(mediaType = "application/json"))
     })
     @Parameter(name = "id", description = "ID para comprobar si existe la solicitud", required = true)
-    ResponseEntity muestraSolicitudPorId(@PathVariable int id) {
+    ResponseEntity muestraSolicitudPorId (@PathVariable int id) {
         try {
             this.solicitud.getSolicitudById(id);
         } catch (SolicitudRentingNotFoundException e) {
@@ -147,7 +138,7 @@ public class SolicitudRentingController {
     })
     @Parameter(name = "id", description = "ID de la solicitud a cancelar", required = true)
     @PatchMapping("/{id}")
-    ResponseEntity cancelarSolicitud(@PathVariable int id) {
+    ResponseEntity cancelarSolicitud (@PathVariable int id) {
         Map<String, Object> respuesta = new HashMap<String, Object>();
         try {
             this.solicitud.cancelarSolicitud(id);
