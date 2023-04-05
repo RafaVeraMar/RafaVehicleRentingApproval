@@ -5,28 +5,30 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class Profesion {
+public class ResolucionSolicitud {
     @NotNull
-    @NotEmpty
     @NotBlank
-    private int profesionId;
-    @Size(max = 50)
+    @NotEmpty
+    @Size(max=2)
+    private String codigoResultado;
+
     @NotNull
-    @NotEmpty
     @NotBlank
+    @NotEmpty
+    @Size(max=100)
     private String descripcion;
 
-    public Profesion(int profesionId, String descripcion) {
-        this.profesionId = profesionId;
+    public ResolucionSolicitud(String codigoResultado, String descripcion) {
+        this.codigoResultado = codigoResultado;
         this.descripcion = descripcion;
     }
 
-    public int getProfesionId() {
-        return profesionId;
+    public String getCodigoResultado() {
+        return codigoResultado;
     }
 
-    public void setProfesionId(int profesionId) {
-        this.profesionId = profesionId;
+    public void setCodigoResultado(String codigoResultado) {
+        this.codigoResultado = codigoResultado;
     }
 
     public String getDescripcion() {
