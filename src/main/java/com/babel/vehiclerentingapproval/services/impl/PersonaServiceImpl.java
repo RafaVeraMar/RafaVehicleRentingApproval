@@ -35,11 +35,17 @@ public class PersonaServiceImpl implements PersonaService {
 
         this.validatePersonData(persona);
 
+
         persona=this.addPersonaDireccion(persona);
+
         Pais pais = this.paisMapper.getPais(persona.getNacionalidad().getIsoAlfa_2());
+
         persona.setNacionalidad(pais);
+
         this.personaMapper.insertPersona(persona);
+
         this.addTelefonos(persona);
+
         return persona;
     }
 
