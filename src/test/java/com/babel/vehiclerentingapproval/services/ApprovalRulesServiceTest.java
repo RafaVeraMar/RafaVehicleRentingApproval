@@ -3,6 +3,7 @@ package com.babel.vehiclerentingapproval.services;
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.Renta;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
+import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.preautomaticresults.ApprovalRulesService;
 import com.babel.vehiclerentingapproval.services.preautomaticresults.impl.ApprovalRulesServiceImpl;
@@ -14,8 +15,9 @@ import org.mockito.Mockito;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import static org.mockito.ArgumentMatchers.anyInt;
 
 public class ApprovalRulesServiceTest {
 
@@ -28,7 +30,7 @@ public class ApprovalRulesServiceTest {
     private RentaMapper rentaMapper;
     private SalariedMapper salariedMapper;
     private ImpagosCuotaMapper impagosCuotaMapper;
-    private ApprovalGarantiaMapper garantiaMapper;
+    private ApprovalClienteMapper garantiaMapper;
 
     SolicitudRenting solicitud;
 
@@ -44,7 +46,7 @@ public class ApprovalRulesServiceTest {
         this.rentaMapper = Mockito.mock((RentaMapper.class));
         this.salariedMapper = Mockito.mock((SalariedMapper.class));
         this.impagosCuotaMapper = Mockito.mock((ImpagosCuotaMapper.class));
-        this.garantiaMapper = Mockito.mock((ApprovalGarantiaMapper.class));
+        this.garantiaMapper = Mockito.mock((ApprovalClienteMapper.class));
 
         this.solicitud = this.createSolicitudMock();
         this.renta = this.createRentaMock();
@@ -54,6 +56,7 @@ public class ApprovalRulesServiceTest {
 
     private SolicitudRenting createSolicitudMock() throws ParseException {
         SolicitudRenting solicitud = new SolicitudRenting();
+        TipoResultadoSolicitud tipoResultadoSolicitud = new TipoResultadoSolicitud();
         Persona persona = new Persona();
         persona.setPersonaId(104);
         persona.setNombre("John");
@@ -67,6 +70,9 @@ public class ApprovalRulesServiceTest {
         solicitud.setNumVehiculos(1);
         solicitud.setPlazo(36);
         solicitud.setFechaResolucion(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2020"));
+        tipoResultadoSolicitud.setCodResultado("AA");
+        tipoResultadoSolicitud.setDescripcion("Aprobada");
+        solicitud.setTipoResultadoSolicitud(tipoResultadoSolicitud);
         return solicitud;
     }
 
@@ -254,6 +260,7 @@ public class ApprovalRulesServiceTest {
         boolean validateCIFCliente = service.validateCIFCliente(this.solicitud);
         Assertions.assertFalse(validateCIFCliente);
     }
+
     @Test
     public void validateCIFCliente_should_beTrue_when_isNotNull() {
         Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn("N0676766J");
@@ -263,58 +270,76 @@ public class ApprovalRulesServiceTest {
     }
 
     @Test
-    public void validateInvestmentIncome_should_beTrue_when_Investment_smallerThan_Neto(){
+    public void validateInvestmentIncome_should_beTrue_when_Investment_smallerThan_Neto() {
         Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(11000F);
-        boolean  validateInvestmentIncome = service.validateInversionIngresos(this.solicitud);
+        boolean validateInvestmentIncome = service.validateInversionIngresos(this.solicitud);
         Assertions.assertTrue(validateInvestmentIncome);
     }
 
     @Test
-    public void validateInvestmentIncome_should_beTrue_when_Investment_Equals_Neto(){
+    public void validateInvestmentIncome_should_beTrue_when_Investment_Equals_Neto() {
         Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(10000F);
-        boolean  validateInvestmentIncome = service.validateInversionIngresos(this.solicitud);
+        boolean validateInvestmentIncome = service.validateInversionIngresos(this.solicitud);
         Assertions.assertTrue(validateInvestmentIncome);
 
     }
+
     @Test
-    public void validateInvestmentIncome_should_beTrue_when_Investment_biggerThan_Neto(){
+    public void validateInvestmentIncome_should_beTrue_when_Investment_biggerThan_Neto() {
         Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(9000F);
-        boolean  validateInvestmentIncome = service.validateInversionIngresos(this.solicitud);
+        boolean validateInvestmentIncome = service.validateInversionIngresos(this.solicitud);
         Assertions.assertFalse(validateInvestmentIncome);
 
     }
+
     @Test
-    public void validateNonPaymentFee_should_beFalse_when_nonPayment_smallerThan_Fee(){
+    public void validateNonPaymentFee_should_beFalse_when_nonPayment_smallerThan_Fee() {
         Mockito.when(impagosCuotaMapper.obtenerImporteImpagoInterno(solicitud)).thenReturn(300F);
-        boolean  validateNonPaymentFee= service.validateImpagoCuota(this.solicitud);
+        boolean validateNonPaymentFee = service.validateImpagoCuota(this.solicitud);
         Assertions.assertTrue(validateNonPaymentFee);
     }
 
     @Test
-    public void validateNonPaymentFee_should_beFalse_when_nonPayment_EqualsThan_Fee(){
+    public void validateNonPaymentFee_should_beFalse_when_nonPayment_EqualsThan_Fee() {
         Mockito.when(impagosCuotaMapper.obtenerImporteImpagoInterno(solicitud)).thenReturn(500F);
-        boolean  validateNonPaymentFee= service.validateImpagoCuota(this.solicitud);
+        boolean validateNonPaymentFee = service.validateImpagoCuota(this.solicitud);
         Assertions.assertTrue(validateNonPaymentFee);
     }
+
     @Test
-    public void validateNonPaymentFee_should_beFalse_when_nonPayment_biggerThan_Fee(){
+    public void validateNonPaymentFee_should_beFalse_when_nonPayment_biggerThan_Fee() {
         Mockito.when(impagosCuotaMapper.obtenerImporteImpagoInterno(solicitud)).thenReturn(600F);
-        boolean  validateNonPaymentFee= service.validateImpagoCuota(this.solicitud);
+        boolean validateNonPaymentFee = service.validateImpagoCuota(this.solicitud);
         Assertions.assertFalse(validateNonPaymentFee);
     }
 
     //test validateClienteNoAprobadoConGarantia
     @Test
-    public void validateClienteNoAprobadoConGarantia_should_beFalse_when_codResolucionIsNotAG_or_lessThan2YearsSinceFechaResolucion() {
-        Mockito.when(garantiaMapper.existeClienteAprobadoConGarantias(solicitud.getSolicitudId())).thenReturn(0);
+    public void validateClienteNoAprobadoConGarantia_should_beFalse_when_codResolucionIsAG_or_lessThan2YearsSinceFechaResolucion() {
+        Mockito.when(garantiaMapper.existeClienteAprobadoConGarantias(anyInt())).thenReturn(0);
         boolean validateClienteNoAprobadoConGarantia = service.validateClienteNoAprobadoConGarantias(this.solicitud);
         Assertions.assertFalse(validateClienteNoAprobadoConGarantia);
     }
 
     @Test
-    public void validateClienteNoAprobadoConGarantia_should_beTrue_when_codResolucionNotAG_or_moreThan2YearsSinceFechaResolucion() {
-        Mockito.when(garantiaMapper.existeClienteAprobadoConGarantias(solicitud.getSolicitudId())).thenReturn(1);
+    public void validateClienteNoAprobadoConGarantia_should_beTrue_when_codResolucionIsNotAG_and_moreThan2YearsSinceFechaResolucion() {
+        Mockito.when(garantiaMapper.existeClienteAprobadoConGarantias(anyInt())).thenReturn(1);
         boolean validateClienteNoAprobadoConGarantia = service.validateClienteNoAprobadoConGarantias(this.solicitud);
         Assertions.assertTrue(validateClienteNoAprobadoConGarantia);
+    }
+
+    //test validateClienteNORechazadoPreviamente
+    @Test
+    public void validateClienteNORechazadoConGarantia_should_beFalse_when_codResolucionIsDA_or_lessThan2YearsSinceFechaResolucion() {
+        Mockito.when(garantiaMapper.existeClienteRechazadoPreviamente(anyInt())).thenReturn(0);
+        boolean validateClienteNoRechazadoPreviamente = service.validateClienteNoRechazadoPreviamente(this.solicitud);
+        Assertions.assertFalse(validateClienteNoRechazadoPreviamente);
+    }
+
+    @Test
+    public void validateClienteNORechazadoConGarantia_should_beTrue_when_codResolucionIsNotDA_and_moreThan2YearsSinceFechaResolucion() {
+        Mockito.when(garantiaMapper.existeClienteRechazadoPreviamente(anyInt())).thenReturn(1);
+        boolean validateClienteNoRechazadoPreviamente = service.validateClienteNoRechazadoPreviamente(this.solicitud);
+        Assertions.assertTrue(validateClienteNoRechazadoPreviamente);
     }
 }

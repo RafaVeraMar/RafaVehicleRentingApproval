@@ -1,9 +1,6 @@
 package com.babel.vehiclerentingapproval.services.preautomaticresults;
 
-import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
-
-import java.util.Optional;
 
 public interface ApprovalRulesService {
     Boolean validateInversionIngresos(SolicitudRenting solicitudRenting);
@@ -20,8 +17,10 @@ public interface ApprovalRulesService {
 
     Boolean validateYearsExperience(SolicitudRenting solicitudRenting);
 
-     Boolean validatefindPersonasByCodResultado(SolicitudRenting solicitudRenting);
+    Boolean validatefindPersonasByCodResultado(SolicitudRenting solicitudRenting);
 
     Boolean validateClienteNoAprobadoConGarantias(SolicitudRenting solicitudRenting);
+
+    Boolean validateClienteNoRechazadoPreviamente(SolicitudRenting solicitudRenting);
 }
 

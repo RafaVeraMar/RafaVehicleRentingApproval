@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/validaciones")
@@ -32,6 +31,7 @@ public class InversionIngresosController {
         boolean t6 = this.approvalService.validateNationality(solicitudRentingl);
         boolean t7 = this.approvalService.validateClienteNoAprobadoConGarantias(solicitudRentingl);
         boolean t8 = this.approvalService.validatefindPersonasByCodResultado(solicitudRentingl);
+        boolean t9 = this.approvalService.validateClienteNoRechazadoPreviamente(solicitudRentingl);
         ArrayList<Boolean> lista = new ArrayList<Boolean>();
 
 
@@ -44,6 +44,7 @@ public class InversionIngresosController {
         lista.add(t6);
         lista.add(t7);
         lista.add(t8);
+        lista.add(t9);
 
         return ResponseEntity.ok((lista));
     }
