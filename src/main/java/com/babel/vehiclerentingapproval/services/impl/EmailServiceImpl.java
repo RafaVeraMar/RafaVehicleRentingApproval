@@ -7,28 +7,22 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-@Service("EmailService")
-public class EmailServiceImpl implements EmailService {
+@Service
+public class EmailServiceImpl {
+    private JavaMailSender mailSender;
 
-    private static final String NOREPLY_ADDRESS = "solicitudrenting@gmail.com";
+    public EmailServiceImpl(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
 
-    @Autowired
-    private JavaMailSender emailSender;
+    public void send(String to, String subject, String text) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("solicitudrenting@gmail.com");
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(text);
 
-
-    public void sendSimpleMessage(String to, String subject, String text) {
-        try {
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom(NOREPLY_ADDRESS);
-            message.setTo(to);
-            message.setSubject(subject);
-            message.setText(text);
-
-            emailSender.send(message);
-            System.out.println(message);
-        } catch (MailException exception) {
-            exception.printStackTrace();
-        }
+        mailSender.send(message);
     }
 }
 

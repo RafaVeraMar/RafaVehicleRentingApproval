@@ -16,10 +16,9 @@ import java.math.BigInteger;
 public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private SolicitudRentingMapper solicitudRentingMapper;
     private TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
-    private EmailServiceImpl emailService;
     private final PersonaMapper personaMapper;
 
-    public SolicitudRentingServiceImpl(SolicitudRentingMapper solicitudRentingMapper,TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaMapper personaMapper) {
+    public SolicitudRentingServiceImpl(SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaMapper personaMapper) {
         this.solicitudRentingMapper = solicitudRentingMapper;
         this.tipoResultadoSolicitudMapper = tipoResultadoSolicitudMapper;
         this.personaMapper = personaMapper;
@@ -71,9 +70,6 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         List<String> posiblesEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
         int existeEstado = this.solicitudRentingMapper.existeSolicitud(solicitudId);
 
-        SolicitudRenting solicitud = getSolicitudById(solicitudId);
-
-        this.emailService.sendSimpleMessage(solicitud.getPersona().getEmail(),"Cambios en tu solicitud", "Su solicitud se encuentra: " + nuevoEstado.getDescripcion());
         if(!posiblesEstados.contains(nuevoEstado.getCodResultado())){
             throw new EstadoSolicitudNotFoundException();
         }
@@ -82,7 +78,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         }
 
         this.solicitudRentingMapper.modificaEstadoSolicitud(solicitudId,nuevoEstado);
-        this.emailService.sendSimpleMessage(solicitud.getPersona().getEmail(),"Cambios en tu solicitud", "Su solicitud se encuentra: " + nuevoEstado.getDescripcion());
+        System.out.println("\n\nCambios en tu solicitud.\nSu solicitud se encuentra: " + this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId));
 
     }
     @Override
