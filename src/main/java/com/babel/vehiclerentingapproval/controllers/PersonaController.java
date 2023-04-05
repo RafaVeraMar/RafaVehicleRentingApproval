@@ -105,10 +105,6 @@ public class PersonaController {
             map.put("status", HttpStatus.BAD_REQUEST);
             map.put("descripcion", "La direccion no existe en la base de datos");
             return new ResponseEntity<Object>(map, HttpStatus.BAD_REQUEST);
-        }catch(Exception e){
-            map.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
-            map.put("descripcion", "Error interno del servidor");
-            return new ResponseEntity<Object>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

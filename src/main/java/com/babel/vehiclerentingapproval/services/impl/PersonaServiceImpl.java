@@ -100,11 +100,11 @@ public class PersonaServiceImpl implements PersonaService {
     @Transactional
     public void modificarPersona(Persona persona) throws PersonaNotFoundException, DireccionNotFoundException {
 
-        this.validatePersonaExistente(persona);
-
         if (persona.isDireccionDomicilioSameAsNotificacion()) {
             persona.setDireccionNotificacion(persona.getDireccionDomicilio());
         }
+
+        this.validatePersonaExistente(persona);
 
         //Actualizamos las direcciones anteriores
         direccionMapper.updateDireccion(persona.getDireccionDomicilio());
@@ -141,8 +141,6 @@ public class PersonaServiceImpl implements PersonaService {
             throw new DireccionNotFoundException();
         }
     }
-
-
 
     public boolean existePersona(int personaId){
         if(personaMapper.existePersona(personaId)==0){
