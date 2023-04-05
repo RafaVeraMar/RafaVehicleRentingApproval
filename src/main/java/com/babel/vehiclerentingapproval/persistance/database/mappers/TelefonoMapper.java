@@ -22,7 +22,7 @@ public interface TelefonoMapper {
     @Options(useGeneratedKeys = true, keyProperty = "telefono.telefonoId", keyColumn = "TELEFONO_ID")
     void addTelefono(TelefonoContacto telefono, Persona persona);
 
-    @Update("Update TELEFONO_CONTACTO SET (telefono.telefono) WHERE PERSONA_ID = #{personaId} AND TELEFONO_ID = #{telefono.telefonoId}")
+    @Update("Update TELEFONO_CONTACTO SET TELEFONO=#{telefono.telefono} WHERE PERSONA_ID = #{personaId} AND TELEFONO_ID = #{telefono.telefonoId}")
     void updateTelefono(TelefonoContacto telefono, Integer personaId);
 
     @Delete("DELETE FROM TELEFONO_CONTACTO WHERE TELEFONO_ID = #{telefono.telefonoId} AND PERSONA_ID = #{personaId}")
