@@ -19,10 +19,11 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     private SalariedMapper salariedMapper;
     private ImpagosCuotaMapper impagosCuotaMapper;
     private ApprovalClienteMapper approvalClienteMapper;
+    private ClienteExistenteGaranteMapper clienteExistenteGaranteMapper;
     private static final int inversionMayor = 80000;
     private static final int scoringRating = 5;
 
-    public ApprovalRulesServiceImpl(ScoringRatingMapper scoringRatingMapper, EmploymentSeniorityMapper employmentSeniorityMapper, InversionIngresosMapper inversionIngresosMapper, PersonaMapper personaMapper, RentaMapper rentaMapper, SalariedMapper salariedMapper, ImpagosCuotaMapper impagosCuotaMapper, ApprovalClienteMapper approvalClienteMapper) {
+    public ApprovalRulesServiceImpl(ScoringRatingMapper scoringRatingMapper, EmploymentSeniorityMapper employmentSeniorityMapper, InversionIngresosMapper inversionIngresosMapper, PersonaMapper personaMapper, RentaMapper rentaMapper, SalariedMapper salariedMapper, ImpagosCuotaMapper impagosCuotaMapper, ApprovalClienteMapper approvalClienteMapper, ClienteExistenteGaranteMapper clienteExistenteGaranteMapper) {
         this.scoringRatingMapper = scoringRatingMapper;
         this.employmentSeniorityMapper = employmentSeniorityMapper;
         this.inversionIngresosMapper = inversionIngresosMapper;
@@ -31,6 +32,7 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
         this.salariedMapper = salariedMapper;
         this.impagosCuotaMapper = impagosCuotaMapper;
         this.approvalClienteMapper = approvalClienteMapper;
+        this.clienteExistenteGaranteMapper = clienteExistenteGaranteMapper;
     }
 
     @Override
@@ -136,8 +138,14 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
 
     @Override
     public Boolean validatefindPersonasByCodResultado(SolicitudRenting solicitudRenting) {
-        return this.personaMapper.validatefindPersonasByCodResultado(solicitudRenting);
+        int existeCliente = this.clienteExistenteGaranteMapper.existeCliente(solicitudRenting.getFechaSolicitud());
+        int clienteEsGarante = this.clienteExistenteGaranteMapper.clienteEsGarante(solicitudRenting.getPersona().getNif());
 
+        if (existeCliente == 1 || clienteEsGarante == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

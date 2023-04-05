@@ -22,5 +22,6 @@ public interface ApprovalRulesService {
     Boolean validateClienteNoAprobadoConGarantias(SolicitudRenting solicitudRenting);
 
     Boolean validateClienteNoRechazadoPreviamente(SolicitudRenting solicitudRenting);
+    
 }
 
