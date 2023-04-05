@@ -2,6 +2,7 @@ package com.babel.vehiclerentingapproval.services.preautomaticresults.impl;
 
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.services.preautomaticresults.DenyRulesService;
+import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
-
+@Service
 public class DenyRulesServicesImpl implements DenyRulesService {
 
     private static final LocalDate fechaActual = LocalDate.now();

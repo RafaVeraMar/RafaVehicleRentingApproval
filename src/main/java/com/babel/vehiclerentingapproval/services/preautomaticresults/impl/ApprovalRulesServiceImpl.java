@@ -7,7 +7,6 @@ import com.babel.vehiclerentingapproval.services.preautomaticresults.ApprovalRul
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ApprovalRulesServiceImpl implements ApprovalRulesService {
@@ -19,11 +18,11 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     private RentaMapper rentaMapper;
     private SalariedMapper salariedMapper;
     private ImpagosCuotaMapper impagosCuotaMapper;
-    private ApprovalGarantiaMapper approvalGarantiaMapper;
+    private ApprovalClienteMapper approvalClienteMapper;
     private static final int inversionMayor = 80000;
     private static final int scoringRating = 5;
 
-    public ApprovalRulesServiceImpl(ScoringRatingMapper scoringRatingMapper, EmploymentSeniorityMapper employmentSeniorityMapper, InversionIngresosMapper inversionIngresosMapper, PersonaMapper personaMapper, RentaMapper rentaMapper, SalariedMapper salariedMapper, ImpagosCuotaMapper impagosCuotaMapper, ApprovalGarantiaMapper approvalGarantiaMapper) {
+    public ApprovalRulesServiceImpl(ScoringRatingMapper scoringRatingMapper, EmploymentSeniorityMapper employmentSeniorityMapper, InversionIngresosMapper inversionIngresosMapper, PersonaMapper personaMapper, RentaMapper rentaMapper, SalariedMapper salariedMapper, ImpagosCuotaMapper impagosCuotaMapper, ApprovalClienteMapper approvalClienteMapper) {
         this.scoringRatingMapper = scoringRatingMapper;
         this.employmentSeniorityMapper = employmentSeniorityMapper;
         this.inversionIngresosMapper = inversionIngresosMapper;
@@ -31,12 +30,13 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
         this.rentaMapper = rentaMapper;
         this.salariedMapper = salariedMapper;
         this.impagosCuotaMapper = impagosCuotaMapper;
-        this.approvalGarantiaMapper = approvalGarantiaMapper;
+        this.approvalClienteMapper = approvalClienteMapper;
     }
 
     @Override
     public Boolean validateInversionIngresos(SolicitudRenting solicitudRenting) {
-        if (this.inversionIngresosMapper.obtenerInversionSolicitud(solicitudRenting) <= this.inversionIngresosMapper.obtenerImporteSolicitud(solicitudRenting)) {
+        if (solicitudRenting.getInversion()
+                <= this.inversionIngresosMapper.obtenerImporteNetoRenta(solicitudRenting)) {
 
             return true;
 
@@ -62,8 +62,8 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
 
     @Override
     public Boolean validateImpagoCuota(SolicitudRenting solicitudRenting) {
-        if (this.impagosCuotaMapper.obtenerImporteImpagoSolicitud(solicitudRenting)
-                <= impagosCuotaMapper.obtenerCuotaSolicitud(solicitudRenting)) {
+        if (this.impagosCuotaMapper.obtenerImporteImpagoInterno(solicitudRenting)
+                <= solicitudRenting.getCuota()) {
 
             return true;
 
@@ -116,16 +116,26 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
 
     public Boolean validateClienteNoAprobadoConGarantias(SolicitudRenting solicitudRenting) {
         Persona persona = solicitudRenting.getPersona();
-        int aprobado = this.approvalGarantiaMapper.existeClienteAprobadoConGarantias(persona.getPersonaId());
+        int aprobado = this.approvalClienteMapper.existeClienteAprobadoConGarantias(persona.getPersonaId());
         if (aprobado == 0) {
             return false;
         } else {
             return true;
         }
-       } 
+    }
+
+    public Boolean validateClienteNoRechazadoPreviamente(SolicitudRenting solicitudRenting) {
+        Persona persona = solicitudRenting.getPersona();
+        int aprobado = this.approvalClienteMapper.existeClienteRechazadoPreviamente(persona.getPersonaId());
+        if (aprobado == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     @Override
-    public Optional<Persona> validatefindPersonasByCodResultado(SolicitudRenting solicitudRenting) {
+    public Boolean validatefindPersonasByCodResultado(SolicitudRenting solicitudRenting) {
         return this.personaMapper.validatefindPersonasByCodResultado(solicitudRenting);
 
     }

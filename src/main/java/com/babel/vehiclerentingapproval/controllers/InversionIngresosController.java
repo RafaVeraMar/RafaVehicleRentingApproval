@@ -30,6 +30,8 @@ public class InversionIngresosController {
         boolean t5 = this.approvalService.validateImpagoCuota(solicitudRentingl);
         boolean t6 = this.approvalService.validateNationality(solicitudRentingl);
         boolean t7 = this.approvalService.validateClienteNoAprobadoConGarantias(solicitudRentingl);
+        boolean t8 = this.approvalService.validatefindPersonasByCodResultado(solicitudRentingl);
+        boolean t9 = this.approvalService.validateClienteNoRechazadoPreviamente(solicitudRentingl);
         ArrayList<Boolean> lista = new ArrayList<Boolean>();
 
 
@@ -41,6 +43,8 @@ public class InversionIngresosController {
         lista.add(t5);
         lista.add(t6);
         lista.add(t7);
+        lista.add(t8);
+        lista.add(t9);
 
         return ResponseEntity.ok((lista));
     }
