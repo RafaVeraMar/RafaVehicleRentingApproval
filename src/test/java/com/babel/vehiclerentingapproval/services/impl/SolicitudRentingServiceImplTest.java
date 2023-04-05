@@ -1,10 +1,10 @@
-package com.babel.vehiclerentingapproval.Services.impl;
+package com.babel.vehiclerentingapproval.services.impl;
 
-import com.babel.vehiclerentingapproval.exceptions.*;
-import com.babel.vehiclerentingapproval.models.Direccion;
-import com.babel.vehiclerentingapproval.models.Persona;
-import com.babel.vehiclerentingapproval.models.SolicitudRenting;
+import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundException;
+import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundException;
 import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
+import com.babel.vehiclerentingapproval.exceptions.*;
+import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
@@ -17,10 +17,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.util.Assert;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 
@@ -39,6 +46,7 @@ public class SolicitudRentingServiceImplTest {
         codigoResolucionValidator = new CodigoResolucionValidatorImpl(tipoResultadoSolicitudMapper);
         solicitudService = new SolicitudRentingServiceImpl(solicitudRentingMapper,tipoResultadoSolicitudMapper, personaMapper,codigoResolucionValidator);
 
+        
     }
     private TipoResultadoSolicitud creaTipoResultadoFicticia(){
         TipoResultadoSolicitud tipoResultadoSolicitud = new TipoResultadoSolicitud();
@@ -52,12 +60,12 @@ public class SolicitudRentingServiceImplTest {
         Persona personaFicticia = new Persona();
         Direccion direccionFicticia = new Direccion();
         direccionFicticia.setDireccionId(1);
-        direccionFicticia.setTipoViaId(2);
+        direccionFicticia.setTipoViaId(new TipoVia(1,"Alameda"));
         direccionFicticia.setNombreCalle("Alosno");
         direccionFicticia.setNumero("5");
         direccionFicticia.setCodPostal("21006");
         direccionFicticia.setMunicipio("Huelva");
-        direccionFicticia.setProvinciaCod("f5");
+        direccionFicticia.setProvinciaCod(new Provincia("02","Albacete"));
         personaFicticia.setPersonaId(1);
         personaFicticia.setNombre("Migue");
         personaFicticia.setApellido1("Estevez");
@@ -65,7 +73,7 @@ public class SolicitudRentingServiceImplTest {
         personaFicticia.setDireccionNotificacion(direccionFicticia);
         personaFicticia.setDireccionDomicilioSameAsNotificacion(false);
         personaFicticia.setNif("4444444E");
-        personaFicticia.setNacionalidad("ES");
+        personaFicticia.setNacionalidad(new Pais("AD",20,"AND","Andorra",2));
         solicitudFicticia.setPersona(personaFicticia);
         solicitudFicticia.setSolicitudId(1);
         solicitudFicticia.setFechaSolicitud(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2023"));
@@ -124,7 +132,6 @@ public class SolicitudRentingServiceImplTest {
             Assertions.assertThrows(SolicitudRentingNotFoundException.class, ()->{
                 solicitudService.getSolicitudById(0);
             });
-
         }
         @Test
         public void verSolicitudRenting_shouldNotThrow_SolicitudRentingNotFoundException_when_solicitudIdExists(){
@@ -136,10 +143,44 @@ public class SolicitudRentingServiceImplTest {
 
         }
     }
+    @Nested
+    class TestsModificaEstadoSolicitud{
+        @Test
+        public void modificaEstadoSolicitud_shouldThrow_EstadoSolicitudNotFoundException_when_codSolicitudNotExist(){
+
+            Mockito.when(tipoResultadoSolicitudMapper.getListaEstados()).thenReturn(creaListaMock());
+            when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(1);
+            Assertions.assertThrows(EstadoSolicitudNotFoundException.class,() -> {
+                int id = 1;
+                TipoResultadoSolicitud tipoResultadoSolicitud = new TipoResultadoSolicitud();
+                tipoResultadoSolicitud.setCodResultado("WW");
+                tipoResultadoSolicitud.setDescripcion("");
+                solicitudService.modificaEstadoSolicitud(id, tipoResultadoSolicitud);
+            });
+        }
+        @Test
+        public void modificaEstadoSolicitud_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists() {
+            Mockito.when(tipoResultadoSolicitudMapper.getListaEstados()).thenReturn(creaListaMock());
+            when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(0);
+            Assertions.assertThrows(SolicitudRentingNotFoundException.class, () -> {
+                int id = -1;
+                TipoResultadoSolicitud tipoResultadoSolicitud = new TipoResultadoSolicitud();
+                tipoResultadoSolicitud.setCodResultado("AA");
+                tipoResultadoSolicitud.setDescripcion("");
+                solicitudService.modificaEstadoSolicitud(id,tipoResultadoSolicitud);
+            });
+        }
+    }
+
+    private List<String> creaListaMock() {
+        List<String> listaMock = new ArrayList<>();
+        listaMock.add("AA");
+        return listaMock;
+    }
+
 
     @Nested
     class TestInsertSolicitudRenting{
-
 
         @Test
         public void addSolicitudRenting_shouldThrow_InputIsNullException_when_Inversion_IsNull(){
@@ -150,9 +191,8 @@ public class SolicitudRentingServiceImplTest {
                 solicitudService.addSolicitudRenting(solicitudRenting);
             });
         }
-
         @Test
-        public void insertarSolicitudRenting_shouldThrow_InputIsNullException_when_Cuota_IsNull(){
+        void insertarSolicitudRenting_shouldThrow_InputIsNullException_when_Cuota_IsNull(){
             Mockito.when(personaMapper.existePersona(1)).thenReturn(1);
             Assertions.assertThrows(InputIsNullOrIsEmpty.class, ()->{
                 SolicitudRenting solicitudRenting = creaSolicitudFicticia();
@@ -222,17 +262,21 @@ public class SolicitudRentingServiceImplTest {
         public void cancelarSolicitudRenting_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists() {
             Mockito.when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(0);
 
-            Assertions.assertThrows(SolicitudRentingNotFoundException.class, ()->{
-                solicitudService.getSolicitudById(0);
+            Assertions.assertThrows(SolicitudRentingNotFoundException.class, () -> {
+                solicitudService.cancelarSolicitud(0);
             });
         }
+
         @Test
-        public void cancelarSolicitudRenting_shouldNotThrow_SolicitudRentingNotFoundException_when_solicitudIdExists() {
+        public void cancelarSolicitudRenting_shouldNotThrow_SolicitudRentingNotFoundException_when_solicitudIdExists() throws ParseException {
+            SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+            Mockito.when(solicitudRentingMapper.getSolicitudByID(anyInt())).thenReturn(solicitudRenting);
             Mockito.when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(1);
 
-            Assertions.assertDoesNotThrow(()->{
-                solicitudService.getSolicitudById(0);
+            Assertions.assertDoesNotThrow(() -> {
+                solicitudService.cancelarSolicitud(1);
             });
+
         }
     }
 }

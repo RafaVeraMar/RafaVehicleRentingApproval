@@ -10,6 +10,7 @@ import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.math.BigInteger;
 
 @Service
@@ -62,6 +63,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         this.codigoResolucionValidator.validarCodResolucion(CodResolucion);
 
     }
+
     public SolicitudRenting getSolicitudById(int id) throws SolicitudRentingNotFoundException {
         int existe = this.solicitudRentingMapper.existeSolicitud(id);
         SolicitudRenting solicitudRenting;
@@ -75,8 +77,23 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     }
 
     @Override
-    public void modificaSolicitud(Integer solicitudId, SolicitudRenting nuevoRenting) {
-        this.solicitudRentingMapper.modificaSolicitud(solicitudId,nuevoRenting);
+    public void modificaEstadoSolicitud(Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException{
+
+        List<String> posiblesEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
+        int existeEstado = this.solicitudRentingMapper.existeSolicitud(solicitudId);
+
+        if(!posiblesEstados.contains(nuevoEstado.getCodResultado())){
+            throw new EstadoSolicitudNotFoundException();
+        }
+        if (existeEstado == 0) {
+            throw new SolicitudRentingNotFoundException();
+        }
+        this.solicitudRentingMapper.modificaEstadoSolicitud(solicitudId,nuevoEstado);
+    }
+    @Override
+    public List<String> getListaEstados() {
+        List<String> listaEstados =  this.tipoResultadoSolicitudMapper.getListaEstados();
+        return listaEstados;
     }
 
      private int lenghtNumber(BigInteger number){
@@ -118,7 +135,6 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
             throw new SolicitudRentingNotFoundException();
         }
         solicitudRentingMapper.cancelarSolicitud(solicitudRenting);
-
     }
-   
+
 }

@@ -1,13 +1,14 @@
 package com.babel.vehiclerentingapproval.persistance.database.mappers;
 
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
+import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface SolicitudRentingMapper {
+    final static String cancelar = "CA";
     @Update("UPDATE SOLICITUD_RENTING SET FECHA_RESOLUCION=SYSDATE, " +
-            "COD_RESOLUCION='CA' where SOLICITUD_ID=#{solicitudId}")
-    @Options(useGeneratedKeys = true, keyProperty = "solicitudId", keyColumn = "SOLICITUD_ID")
+            "COD_RESOLUCION=cancelar where SOLICITUD_ID=#{solicitudId}")
     void cancelarSolicitud(SolicitudRenting solicitudRenting);
 
     @Select("Select SOLICITUD_ID,PERSONA_ID,FECHA_SOLICITUD,NUM_VEHICULOS,INVERSION,CUOTA,PLAZO," +
@@ -27,15 +28,12 @@ public interface SolicitudRentingMapper {
     SolicitudRenting getSolicitudByID(int solicitudId);
 
     @Update("Update SOLICITUD_RENTING SET " +
-            "NUM_VEHICULOS = #{nuevoRenting.numVehiculos}, " +
-            "INVERSION = #{nuevoRenting.inversion}," +
-            "CUOTA = #{nuevoRenting.cuota}," +
-            "PLAZO = #{nuevoRenting.plazo, jdbcType=FLOAT}," +
-            "FECHA_INICIO_VIGOR = #{nuevoRenting.fechaInicioVigor,jdbcType=DATE}," +
-            "FECHA_RESOLUCION = #{nuevoRenting.fechaResolucion,jdbcType=DATE}, " +
-            "COD_RESOLUCION = #{nuevoRenting.tipoResultadoSolicitud.codResultado,jdbcType=CHAR}" +
+            "COD_RESOLUCION = #{nuevoEstado.codResultado,jdbcType=CHAR}" +
             "Where SOLICITUD_ID=#{solicitudId}")
+    void modificaEstadoSolicitud(Integer solicitudId, TipoResultadoSolicitud nuevoEstado);
+
     void modificaSolicitud(Integer solicitudId, SolicitudRenting nuevoRenting);
+
     @Insert("INSERT INTO SOLICITUD_RENTING (PERSONA_ID, FECHA_SOLICITUD, NUM_VEHICULOS, INVERSION, CUOTA, PLAZO, FECHA_INICIO_VIGOR, FECHA_RESOLUCION, " +
             "COD_RESOLUCION) VALUES (#{persona.personaId}, SYSDATE, #{numVehiculos}, #{inversion}, #{cuota}, #{plazo, jdbcType=INTEGER}, " +
             "#{fechaInicioVigor, jdbcType=DATE}, #{fechaResolucion,jdbcType=DATE}, #{tipoResultadoSolicitud.codResultado, jdbcType=CHAR})")
