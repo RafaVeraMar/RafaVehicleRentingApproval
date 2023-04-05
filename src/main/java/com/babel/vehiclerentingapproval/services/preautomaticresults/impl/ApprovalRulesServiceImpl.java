@@ -15,6 +15,7 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     private EmploymentSeniorityMapper employmentSeniorityMapper;
     private InversionIngresosMapper inversionIngresosMapper;
     private PersonaMapper personaMapper;
+
     private RentaMapper rentaMapper;
     private SalariedMapper salariedMapper;
     private ImpagosCuotaMapper impagosCuotaMapper;

@@ -28,7 +28,7 @@ public class preAutomaticResultService {
 
     CalculateAutomaticResult calculateAutomaticResult;
 
-
+    private ClienteExistenteGaranteMapper clienteExistenteGaranteMapper;
     private ScoringRatingMapper scoringRatingMapper;
     private EmploymentSeniorityMapper employmentSeniorityMapper;
     private InversionIngresosMapper inversionIngresosMapper;
@@ -52,6 +52,7 @@ public class preAutomaticResultService {
         this.salariedMapper = Mockito.mock((SalariedMapper.class));
         this.impagosCuotaMapper = Mockito.mock((ImpagosCuotaMapper.class));
         this.garantiaMapper = Mockito.mock((ApprovalClienteMapper.class));
+        this.clienteExistenteGaranteMapper = Mockito.mock((ClienteExistenteGaranteMapper.class));
 
         this.solicitud = this.createSolicitudMock();
         this.renta = this.createRentaMock();
@@ -59,7 +60,7 @@ public class preAutomaticResultService {
 
         this.approvalRulesService = new ApprovalRulesServiceImpl(this.scoringRatingMapper,
                 this.employmentSeniorityMapper, this.inversionIngresosMapper, this.personaMapper,
-                this.rentaMapper, this.salariedMapper, this.impagosCuotaMapper, this.garantiaMapper);
+                this.rentaMapper, this.salariedMapper, this.impagosCuotaMapper, this.garantiaMapper, this.clienteExistenteGaranteMapper);
         this.calculateAutomaticResult = new CalculateAutomaticResultImpl(this.denyRulesService,this.approvalRulesService,this.automaticResultMapper);
     }
 
