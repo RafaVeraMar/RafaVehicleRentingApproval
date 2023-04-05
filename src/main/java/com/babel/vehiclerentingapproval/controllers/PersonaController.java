@@ -3,6 +3,7 @@ package com.babel.vehiclerentingapproval.controllers;
 import com.babel.vehiclerentingapproval.exceptions.DireccionNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.PersonaNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.RequiredMissingFieldException;
+import com.babel.vehiclerentingapproval.exceptions.WrongLenghtFieldException;
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.ProductoContratado;
 import com.babel.vehiclerentingapproval.services.PersonaService;
@@ -47,12 +48,16 @@ public class PersonaController {
             map.put("status", HttpStatus.BAD_REQUEST);
             map.put("descripcion", "Comprueba los datos de entrada");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Comprueba los datos de entrada");
-        }
-        catch (Exception e) {
-            map.put("status", HttpStatus.NOT_FOUND);
+        } catch (WrongLenghtFieldException e) {
+            map.put("status", HttpStatus.BAD_REQUEST);
+            map.put("descripcion", "Comprueba los datos de entrada");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Comprueba los datos de entrada");
+        }catch (Exception e) {
+            map.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
             map.put("description", "Error del sistema");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+
         map.put("status", HttpStatus.OK);
         map.put("description", "Persona añadida.");
         map.put("id", personaCreada.getPersonaId());
