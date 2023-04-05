@@ -1,7 +1,9 @@
 package com.babel.vehiclerentingapproval.controllers;
 
 
-import com.babel.vehiclerentingapproval.exceptions.*;
+import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundException;
+import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
+import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundException;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
@@ -46,31 +48,15 @@ public class SolicitudRentingController {
             respuesta.put("Id", solicitudRenting.getSolicitudId());
             respuesta.put("Descripcion:", "Solicitud creada correctamente");
             return new ResponseEntity<Object>(respuesta, HttpStatus.OK);
-        } catch (PersonaNotFoundException e) {
-            respuesta.put("Status", HttpStatus.BAD_REQUEST);
+        } catch (RequestApiValidationException e) {
+            respuesta.put("Status", e.getStatusCode());
             respuesta.put("Id", solicitudRenting.getSolicitudId());
-            respuesta.put("Descripcion:", "La persona no existe en la base de datos.");
-            return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
-        } catch (WrongLenghtFieldException e) {
-            respuesta.put("Status", HttpStatus.BAD_REQUEST);
-            respuesta.put("Id", solicitudRenting.getSolicitudId());
-            respuesta.put("Descripcion:", "Comprueba que no sobrepase la longitud de los datos de entrada.");
-            return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
-        } catch (InputIsNullOrIsEmpty e) {
-            respuesta.put("Status", HttpStatus.BAD_REQUEST);
-            respuesta.put("Id", solicitudRenting.getSolicitudId());
-            respuesta.put("Descripcion:", "Los datos de entrada no pueden ser nulos.");
-            return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
-        } catch (DateIsBeforeException e) {
-            respuesta.put("Status", HttpStatus.BAD_REQUEST);
-            respuesta.put("Id", solicitudRenting.getSolicitudId());
-            respuesta.put("Descripcion:", "La fecha de inicio vigor no puede ser anterior a la de resolucion.");
-            return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
-        } catch (InputIsNegativeOrZeroException e) {
-            respuesta.put("Status", HttpStatus.BAD_REQUEST);
-            respuesta.put("Id", solicitudRenting.getSolicitudId());
-            respuesta.put("Descripcion:", "Los datos de entrada no pueden ser negativo.");
-            return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
+            respuesta.put("Descripcion:", e.getExternalMessage());
+            return new ResponseEntity<Object>(respuesta, e.getStatusCode());
+        } catch (Exception e) {
+            respuesta.put("Status", HttpStatus.INTERNAL_SERVER_ERROR);
+            respuesta.put("Descripcion:", "Error interno, intentelo de nuevo mas tarde.");
+            return new ResponseEntity<Object>(respuesta, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
