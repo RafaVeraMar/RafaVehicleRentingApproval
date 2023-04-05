@@ -47,6 +47,8 @@ public class Persona {
     private List<TelefonoContacto> telefonos;
     private List<ProductoContratado> productosContratados;
 
+    private String email;
+
     public int getPersonaId() {
         return personaId;
     }
@@ -158,6 +160,14 @@ public class Persona {
     public void setProductosContratados(List<ProductoContratado> productosContratados) {
         this.productosContratados = productosContratados;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }
-    //getters y setters
+
 
