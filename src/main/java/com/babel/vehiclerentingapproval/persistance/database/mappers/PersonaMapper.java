@@ -18,6 +18,9 @@ public interface PersonaMapper {
     @Select("SELECT COUNT(PERSONA_ID) FROM PERSONA WHERE PERSONA_ID = #{personaId}")
     int existePersona(int personaId);
 
+    @Select("SELECT COUNT(NIF) FROM PERSONA WHERE NIF = #{nif,jdbcType=CHAR}")
+    int existeNif(String nif);
+
     @Select("SELECT pc.PRODUCTO_CONTRATADO_ID, pc.PRODUCTO_ID, pc.ALIAS, pc.IMPORTE_NOMINAL, pc.FECHA_ALTA, pc.FECHA_BAJA " +
             "FROM PERSONA p INNER JOIN PRODUCTO_CONTRATADO_PERSONA pcp ON p.PERSONA_ID =pcp.PERSONA_ID " +
             "INNER JOIN PRODUCTO_CONTRATADO pc ON pc.PRODUCTO_CONTRATADO_ID = pcp.PRODUCTO_CONTRATADO_ID WHERE p.PERSONA_ID = #{id}")
@@ -37,7 +40,7 @@ public interface PersonaMapper {
     @Update("UPDATE PERSONA SET NOMBRE=#{nombre}, APELLIDO1=#{apellido1}, APELLIDO2=#{apellido2},"+
             "DIRECCION_DOMICILIO_ID=#{direccionDomicilio.direccionId}, DIRECCION_NOTIFICACION_ID=#{direccionNotificacion.direccionId},"+
             "NIF=#{nif},FECHA_NACIMIENTO=#{fechaNacimiento,jdbcType=DATE},NACIONALIDAD=#{nacionalidad.isoAlfa_2},"+
-            "SCORING=#{scoring}, FECHA_SCORING=#{fechaScoring, jdbcType=DATE}, EMAIL={email}"+
+            "SCORING=#{scoring}, FECHA_SCORING=#{fechaScoring, jdbcType=DATE}, EMAIL=#{email} "+
             "WHERE PERSONA_ID=#{personaId}")
     void updatePersona(Persona persona);
 
