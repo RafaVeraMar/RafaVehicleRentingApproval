@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class PersonaServiceImpl implements PersonaService {
@@ -117,23 +119,41 @@ public class PersonaServiceImpl implements PersonaService {
     }
 
     public void modificarTelefono(Persona persona) {
-        List<TelefonoContacto> telefonos = persona.getTelefonos();
         List<TelefonoContacto> telefonosAntiguos = telefonoMapper.listarTelefonos(persona.getPersonaId());
+        List<TelefonoContacto> telefonosNuevos = persona.getTelefonos();
 
-        for(int i=0;i<telefonos.size();i++){
-            if(!telefonosAntiguos.contains(telefonos.get(i))){
-                this.telefonoMapper.addTelefono(telefonos.get(i), persona);
+        if(telefonosAntiguos.isEmpty()) {
+            for (int j = 0; j < telefonosNuevos.size(); j++) {
+                this.telefonoMapper.addTelefono(telefonosNuevos.get(j), persona);
             }
-            for(int j=0;j<telefonosAntiguos.size();j++){
-                if(!telefonos.contains(telefonosAntiguos.get(j))){
-                    this.telefonoMapper.deleteTelefono(telefonosAntiguos.get(j), persona.getPersonaId());
+        }else{
+
+            List<TelefonoContacto> telefonosAntiguosDelete = telefonosAntiguos;
+            List<TelefonoContacto> telefonosNuevosAdd = telefonosNuevos;
+
+            for(int i=0;i<telefonosNuevos.size();i++){
+                for (int j = 0; j < telefonosAntiguos.size(); j++) {
+                    if (telefonosNuevos.get(i).equals(telefonosAntiguos.get(j))) {
+                        telefonosNuevosAdd.remove(telefonosNuevos.get(i));
+                        telefonosAntiguosDelete.remove(telefonosAntiguos.get(j));
+                    }
+                    else if (telefonosNuevos.get(i).getTelefonoId()==telefonosAntiguos.get(j).getTelefonoId() &&
+                            telefonosNuevos.get(i).getTelefono()!=telefonosAntiguos.get(j).getTelefono()) {
+                        telefonosNuevosAdd.remove(telefonosNuevos.get(i));
+                        telefonosAntiguosDelete.remove(telefonosAntiguos.get(j));
+                        this.telefonoMapper.updateTelefono(persona.getPersonaId(),telefonosNuevos.get(i));
+                    }
                 }
-                if(telefonosAntiguos.get(j).getTelefonoId()==telefonos.get(i).getTelefonoId() && !telefonosAntiguos.get(j).getTelefono().equals(telefonos.get(i).getTelefono())){
-                    this.telefonoMapper.updateTelefono(telefonos.get(i), persona.getPersonaId());
-                }
+            }
+            for (int k1 = 0; k1 < telefonosNuevosAdd.size(); k1++) {
+                this.telefonoMapper.addTelefono(telefonosNuevosAdd.get(k1), persona);
+            }
+            for (int k2 = 0; k2 < telefonosAntiguosDelete.size(); k2++) {
+                this.telefonoMapper.deleteTelefono(persona.getPersonaId(), telefonosAntiguosDelete.get(k2));
             }
         }
     }
+
 
     public void validatePersonData(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
         this.validateNombre(persona);

@@ -23,9 +23,12 @@ public interface TelefonoMapper {
     void addTelefono(TelefonoContacto telefono, Persona persona);
 
     @Update("Update TELEFONO_CONTACTO SET TELEFONO=#{telefono.telefono} WHERE PERSONA_ID = #{personaId} AND TELEFONO_ID = #{telefono.telefonoId}")
-    void updateTelefono(TelefonoContacto telefono, Integer personaId);
+    void updateTelefono(Integer personaId, TelefonoContacto telefono);
 
     @Delete("DELETE FROM TELEFONO_CONTACTO WHERE TELEFONO_ID = #{telefono.telefonoId} AND PERSONA_ID = #{personaId}")
-    void deleteTelefono(TelefonoContacto telefono, Integer personaId);
+    void deleteTelefono(Integer personaId, TelefonoContacto telefono);
+
+    @Delete("DELETE FROM TELEFONO_CONTACTO WHERE PERSONA_ID = #{personaId}")
+    void deleteTelefonosByIdPersona(Integer personaId);
 
 }

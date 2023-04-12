@@ -32,4 +32,17 @@ public class TelefonoContacto {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TelefonoContacto that = (TelefonoContacto) o;
+        return telefonoId == that.telefonoId && telefono.equals(that.telefono);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(telefonoId, telefono);
+    }
 }
