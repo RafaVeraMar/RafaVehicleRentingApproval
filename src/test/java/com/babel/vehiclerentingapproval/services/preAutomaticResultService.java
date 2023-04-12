@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -71,13 +72,15 @@ public class preAutomaticResultService {
         persona.setNombre("John");
         persona.setApellido1("Doe");
         persona.setApellido2("Doe");
-        persona.setNacionalidad("ES");
+        persona.getNacionalidad().setIsoAlfa_2("ES");
         persona.setScoring(750);
         solicitud.setPersona(persona);
-        solicitud.setInversion(10000);
-        solicitud.setCuota(500);
-        solicitud.setNumVehiculos(1);
-        solicitud.setPlazo(36);
+        solicitud.setInversion(10000f);
+        solicitud.setCuota(500f);
+        BigInteger num1 = BigInteger.valueOf(1);
+        solicitud.setNumVehiculos(num1);
+        BigInteger num2 = BigInteger.valueOf(36);
+        solicitud.setPlazo(num2);
         return solicitud;
     }
     private Renta createRentaMock() throws ParseException {
@@ -86,9 +89,9 @@ public class preAutomaticResultService {
         persona.setNombre("John");
         persona.setApellido1("Doe");
         persona.setApellido2("Doe");
-        persona.setNacionalidad("ES");
+        persona.getNacionalidad().setIsoAlfa_2("ES");
         persona.setScoring(750);
-        renta.setImporte(100000);
+        renta.setImporteBruto(10000f);
         renta.setFechaInicioEmpleo(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2016"));
         return renta;
     }
@@ -97,7 +100,8 @@ public class preAutomaticResultService {
     public void validateFindAnyDeny_shouldBeTrue_whenAllFalse() throws ParseException {
         this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2000"));
         this.solicitud.getPersona().setScoring(1);
-        this.solicitud.setPlazo(10);
+        BigInteger num2 = BigInteger.valueOf(10);
+        this.solicitud.setPlazo(num2);
         boolean validateFindAnyDeny = this.calculateAutomaticResult.findAnyDeny(solicitud);
 
         Assertions.assertTrue(validateFindAnyDeny);
@@ -107,7 +111,8 @@ public class preAutomaticResultService {
     public void validateFindAnyDeny_shouldBeFalse_whenAnyTrue() throws ParseException {
         this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2016"));
         this.solicitud.getPersona().setScoring(1);
-        this.solicitud.setPlazo(10);
+        BigInteger num2 = BigInteger.valueOf(10);
+        this.solicitud.setPlazo(num2);
         boolean validateFindAnyDeny = this.calculateAutomaticResult.findAnyDeny(solicitud);
 
         Assertions.assertFalse(validateFindAnyDeny);
@@ -116,19 +121,19 @@ public class preAutomaticResultService {
 
     @Test
     public void validateFindAllApproval_shouldBeTrue_whenAllTrue() throws ParseException {
-        this.solicitud.setInversion(10000);
+        this.solicitud.setInversion(10000f);
         Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(90000f);
         Mockito.when(inversionIngresosMapper.obtenerInversionSolicitud(solicitud)).thenReturn(90000f);
         Mockito.when(scoringRatingMapper.obtenercScoringPersona(solicitud)).thenReturn(3f);
         Mockito.when(impagosCuotaMapper.obtenerImporteImpagoInterno(solicitud)).thenReturn(10f);
-        this.solicitud.setCuota(20);
+        this.solicitud.setCuota(20f);
         List<String> listaValores = new ArrayList<>();
         listaValores.add("45442L");
         listaValores.add("45442L");
         listaValores.add("45442L");
         Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn("45442L");
         Mockito.when(salariedMapper.obtenerCIFInforma()).thenReturn(listaValores);
-        this.solicitud.getPersona().setNacionalidad("ES");
+        this.solicitud.getPersona().getNacionalidad().setIsoAlfa_2("ES");
         Mockito.when(employmentSeniorityMapper.obtenerFechaInicioEmpleoSolicitud(solicitud)).thenReturn(10f);
         Mockito.when(garantiaMapper.existeClienteAprobadoConGarantias(anyInt())).thenReturn(1);
         Mockito.when(garantiaMapper.existeClienteRechazadoPreviamente(anyInt())).thenReturn(1);
@@ -140,19 +145,19 @@ public class preAutomaticResultService {
     }
     @Test
     public void validateFindAllApproval_shouldBeFalse_whenAnyFalse() throws ParseException {
-        this.solicitud.setInversion(90000);
+        this.solicitud.setInversion(90000f);
         Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(90000f);
         Mockito.when(inversionIngresosMapper.obtenerInversionSolicitud(solicitud)).thenReturn(90000f);
         Mockito.when(scoringRatingMapper.obtenercScoringPersona(solicitud)).thenReturn(8f);
         Mockito.when(impagosCuotaMapper.obtenerImporteImpagoInterno(solicitud)).thenReturn(10f);
-        this.solicitud.setCuota(20);
+        this.solicitud.setCuota(20f);
         List<String> listaValores = new ArrayList<>();
         listaValores.add("45442L");
         listaValores.add("45442L");
         listaValores.add("45442L");
         Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn("45442L");
         Mockito.when(salariedMapper.obtenerCIFInforma()).thenReturn(listaValores);
-        this.solicitud.getPersona().setNacionalidad("ES");
+        this.solicitud.getPersona().getNacionalidad().setIsoAlfa_2("ES");
         Mockito.when(employmentSeniorityMapper.obtenerFechaInicioEmpleoSolicitud(solicitud)).thenReturn(10f);
         Mockito.when(garantiaMapper.existeClienteAprobadoConGarantias(anyInt())).thenReturn(1);
         Mockito.when(garantiaMapper.existeClienteRechazadoPreviamente(anyInt())).thenReturn(1);
@@ -165,19 +170,19 @@ public class preAutomaticResultService {
 
     @Test
     public void validateFindAnyApproval_shouldBeTrue_whenAnyTrue() throws ParseException {
-        this.solicitud.setInversion(10000);
+        this.solicitud.setInversion(10000f);
         Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(90000f);
         Mockito.when(inversionIngresosMapper.obtenerInversionSolicitud(solicitud)).thenReturn(90000f);
         Mockito.when(scoringRatingMapper.obtenercScoringPersona(solicitud)).thenReturn(3f);
         Mockito.when(impagosCuotaMapper.obtenerImporteImpagoInterno(solicitud)).thenReturn(10f);
-        this.solicitud.setCuota(20);
+        this.solicitud.setCuota(20f);
         List<String> listaValores = new ArrayList<>();
         listaValores.add("45442L");
         listaValores.add("45442L");
         listaValores.add("45442L");
         Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn("45442L");
         Mockito.when(salariedMapper.obtenerCIFInforma()).thenReturn(listaValores);
-        this.solicitud.getPersona().setNacionalidad("ES");
+        this.solicitud.getPersona().getNacionalidad().setIsoAlfa_2("ES");
         Mockito.when(employmentSeniorityMapper.obtenerFechaInicioEmpleoSolicitud(solicitud)).thenReturn(10f);
         Mockito.when(garantiaMapper.existeClienteAprobadoConGarantias(anyInt())).thenReturn(1);
         Mockito.when(garantiaMapper.existeClienteRechazadoPreviamente(anyInt())).thenReturn(1);
@@ -189,19 +194,19 @@ public class preAutomaticResultService {
     }
     @Test
     public void validateFindAnyApproval_shouldBeFalse_whenAnyFalse() throws ParseException {
-        this.solicitud.setInversion(90000);
+        this.solicitud.setInversion(90000f);
         Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(90000f);
         Mockito.when(inversionIngresosMapper.obtenerInversionSolicitud(solicitud)).thenReturn(90000f);
         Mockito.when(scoringRatingMapper.obtenercScoringPersona(solicitud)).thenReturn(8f);
         Mockito.when(impagosCuotaMapper.obtenerImporteImpagoInterno(solicitud)).thenReturn(10f);
-        this.solicitud.setCuota(20);
+        this.solicitud.setCuota(20f);
         List<String> listaValores = new ArrayList<>();
         listaValores.add("45442L");
         listaValores.add("45442L");
         listaValores.add("45442L");
         Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn("45442L");
         Mockito.when(salariedMapper.obtenerCIFInforma()).thenReturn(listaValores);
-        this.solicitud.getPersona().setNacionalidad("ES");
+        this.solicitud.getPersona().getNacionalidad().setIsoAlfa_2("ES");
         Mockito.when(employmentSeniorityMapper.obtenerFechaInicioEmpleoSolicitud(solicitud)).thenReturn(10f);
         Mockito.when(garantiaMapper.existeClienteAprobadoConGarantias(anyInt())).thenReturn(1);
         Mockito.when(garantiaMapper.existeClienteRechazadoPreviamente(anyInt())).thenReturn(1);
@@ -215,7 +220,8 @@ public class preAutomaticResultService {
     public void validateTotalResult() throws ParseException {
         this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2000"));
         this.solicitud.getPersona().setScoring(1);
-        this.solicitud.setPlazo(10);
+        BigInteger num2 = BigInteger.valueOf(10);
+        this.solicitud.setPlazo(num2);
         ////
 
 

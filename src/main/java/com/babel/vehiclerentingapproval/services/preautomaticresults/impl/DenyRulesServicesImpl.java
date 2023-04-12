@@ -53,7 +53,7 @@ public class DenyRulesServicesImpl implements DenyRulesService {
         int month = fechaNacimiento.getMonth() + 1;
         LocalDate fechaConcreta = LocalDate.of(anyo, month, day);
         long anios = ChronoUnit.YEARS.between(fechaConcreta, fechaActual);
-        if (anios + solicitudRenting.getPlazo() >= anyosPlazo) {
+        if (anios + solicitudRenting.getPlazo().intValue() >= anyosPlazo) {
             return true;
         } else {
             return false;

@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -43,13 +44,15 @@ public class denyRulesServiceTests {
         persona.setNombre("John");
         persona.setApellido1("Doe");
         persona.setApellido2("Doe");
-        persona.setNacionalidad("ES");
+        persona.getNacionalidad().setIsoAlfa_2("ES");
         persona.setScoring(750);
         solicitud.setPersona(persona);
-        solicitud.setInversion(10000);
-        solicitud.setCuota(500);
-        solicitud.setNumVehiculos(1);
-        solicitud.setPlazo(36);
+        solicitud.setInversion(10000f);
+        solicitud.setCuota(500f);
+        BigInteger num1 = BigInteger.valueOf(1);
+        solicitud.setNumVehiculos(num1);
+        BigInteger num2 = BigInteger.valueOf(36);
+        solicitud.setPlazo(num2);
         return solicitud;
     }
 
@@ -59,9 +62,9 @@ public class denyRulesServiceTests {
         persona.setNombre("John");
         persona.setApellido1("Doe");
         persona.setApellido2("Doe");
-        persona.setNacionalidad("ES");
+        persona.getNacionalidad().setIsoAlfa_2("ES");
         persona.setScoring(750);
-        renta.setImporte(100000);
+        renta.setImporteBruto(10000f);
         renta.setFechaInicioEmpleo(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2016"));
         return renta;
     }
@@ -126,7 +129,8 @@ public class denyRulesServiceTests {
     public void validateClientAgePlusPlazo_shouldBeTrue_whenMayor80() throws ParseException {
 
         this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2016"));
-        this.solicitud.setPlazo(100);
+        BigInteger num2 = BigInteger.valueOf(100);
+        solicitud.setPlazo(num2);
         boolean validateClientAgePlusPlazo = service.validateClientAgePlusPlazo(solicitud);
         Assertions.assertTrue(validateClientAgePlusPlazo);
     }
@@ -134,7 +138,8 @@ public class denyRulesServiceTests {
     @Test
     public void validateClientAgePlusPlazo_shouldBeFalse_whenMinor80() throws ParseException {
         this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2000"));
-        this.solicitud.setPlazo(10);
+        BigInteger num2 = BigInteger.valueOf(10);
+        solicitud.setPlazo(num2);
         boolean validateClientAgePlusPlazo = service.validateClientAgePlusPlazo(solicitud);
         Assertions.assertFalse(validateClientAgePlusPlazo);
     }

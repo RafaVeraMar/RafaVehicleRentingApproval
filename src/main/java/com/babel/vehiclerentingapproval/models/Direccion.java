@@ -1,14 +1,37 @@
 package com.babel.vehiclerentingapproval.models;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class Direccion {
+    @NotNull
     private int direccionId;
-    private int tipoViaId;
+    @NotNull
+    private TipoVia tipoViaId;
+    @NotNull
+    @Size(max=50)
     private String nombreCalle;
+    @NotNull
+    @Size(max=10)
     private String numero;
+    @Size(max=10)
     private String piso;
+    @Size(max=10)
+    private String puerta;
+    @Size(max=10)
+    private String escalera;
+    @Size(max=100)
+    private String otroDato;
+    @NotNull
+    @Size(max=5)
     private String codPostal;
+    @NotNull
+    @Size(max=50)
     private String municipio;
-    private String provinciaCod;
+    @NotNull
+    @Size(max=2)
+    private Provincia provincia;
 
     public int getDireccionId() {
         return direccionId;
@@ -18,11 +41,11 @@ public class Direccion {
         this.direccionId = direccionId;
     }
 
-    public int getTipoViaId() {
+    public TipoVia getTipoViaId() {
         return tipoViaId;
     }
 
-    public void setTipoViaId(int tipoViaId) {
+    public void setTipoViaId(TipoVia tipoViaId) {
         this.tipoViaId = tipoViaId;
     }
 
@@ -42,6 +65,38 @@ public class Direccion {
         this.numero = numero;
     }
 
+    public String getPiso() {
+        return piso;
+    }
+
+    public void setPiso(String piso) {
+        this.piso = piso;
+    }
+
+    public String getPuerta() {
+        return puerta;
+    }
+
+    public void setPuerta(String puerta) {
+        this.puerta = puerta;
+    }
+
+    public String getEscalera() {
+        return escalera;
+    }
+
+    public void setEscalera(String escalera) {
+        this.escalera = escalera;
+    }
+
+    public String getOtroDato() {
+        return otroDato;
+    }
+
+    public void setOtroDato(String otroDato) {
+        this.otroDato = otroDato;
+    }
+
     public String getCodPostal() {
         return codPostal;
     }
@@ -58,19 +113,11 @@ public class Direccion {
         this.municipio = municipio;
     }
 
-    public String getProvinciaCod() {
-        return provinciaCod;
+    public Provincia getProvincia() {
+        return provincia;
     }
 
-    public void setProvinciaCod(String provinciaCod) {
-        this.provinciaCod = provinciaCod;
-    }
-
-    public String getPiso() {
-        return piso;
-    }
-
-    public void setPiso(String piso) {
-        this.piso = piso;
+    public void setProvinciaCod(Provincia provincia) {
+        this.provincia = provincia;
     }
 }

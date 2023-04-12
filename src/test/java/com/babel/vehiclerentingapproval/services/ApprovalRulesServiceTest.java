@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -65,13 +66,15 @@ public class ApprovalRulesServiceTest {
         persona.setNombre("John");
         persona.setApellido1("Doe");
         persona.setApellido2("Doe");
-        persona.setNacionalidad("ES");
+        persona.getNacionalidad().setIsoAlfa_2("ES");
         persona.setScoring(750);
         solicitud.setPersona(persona);
-        solicitud.setInversion(10000);
-        solicitud.setCuota(500);
-        solicitud.setNumVehiculos(1);
-        solicitud.setPlazo(36);
+        solicitud.setInversion(10000f);
+        solicitud.setCuota(500f);
+        BigInteger num1 = BigInteger.valueOf(1);
+        solicitud.setNumVehiculos(num1);
+        BigInteger num2 = BigInteger.valueOf(36);
+        solicitud.setPlazo(num2);
         solicitud.setFechaResolucion(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2020"));
         tipoResultadoSolicitud.setCodResultado("AA");
         tipoResultadoSolicitud.setDescripcion("Aprobada");
@@ -85,9 +88,9 @@ public class ApprovalRulesServiceTest {
         persona.setNombre("John");
         persona.setApellido1("Doe");
         persona.setApellido2("Doe");
-        persona.setNacionalidad("ES");
+        persona.getNacionalidad().setIsoAlfa_2("ES");
         persona.setScoring(750);
-        renta.setImporte(10000);
+        renta.setImporteBruto(10000f);
         renta.setFechaInicioEmpleo(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2016"));
         return renta;
     }
@@ -103,7 +106,7 @@ public class ApprovalRulesServiceTest {
     @Test
     public void validateNationality_should_beFalse_when_NotES() {
 
-        this.solicitud.getPersona().setNacionalidad("IT");
+        this.solicitud.getPersona().getNacionalidad().setIsoAlfa_2("IT");
         boolean validationNationality = service.validateNationality(this.solicitud);
 
         Assertions.assertFalse(validationNationality);
@@ -112,7 +115,7 @@ public class ApprovalRulesServiceTest {
     @Test
     public void validateNationality_should_beFalse_when_Empty() {
 
-        this.solicitud.getPersona().setNacionalidad("");
+        this.solicitud.getPersona().getNacionalidad().setIsoAlfa_2("ES");
         boolean validationNationality = service.validateNationality(this.solicitud);
 
         Assertions.assertFalse(validationNationality);

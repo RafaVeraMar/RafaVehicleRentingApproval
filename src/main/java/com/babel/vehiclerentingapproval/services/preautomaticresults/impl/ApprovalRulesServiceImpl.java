@@ -95,7 +95,7 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
 
     @Override
     public Boolean validateNationality(SolicitudRenting solicitudRenting) {
-        String nacionalidad = solicitudRenting.getPersona().getNacionalidad();
+        String nacionalidad = solicitudRenting.getPersona().getNacionalidad().getIsoAlfa_2();
         boolean espanol = false;
 
         if (nacionalidad != null && nacionalidad.equalsIgnoreCase("ES")) {

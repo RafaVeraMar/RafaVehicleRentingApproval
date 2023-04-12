@@ -2,44 +2,54 @@ package com.babel.vehiclerentingapproval.services;
 
 import com.babel.vehiclerentingapproval.exceptions.PersonaNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.ProfesionNotFoundException;
+import com.babel.vehiclerentingapproval.exceptions.RentaFoundException;
 import com.babel.vehiclerentingapproval.models.Renta;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
-import com.babel.vehiclerentingapproval.persistance.database.mappers.ProfesionMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.RentaMapper;
+import com.babel.vehiclerentingapproval.services.PersonaService;
+import com.babel.vehiclerentingapproval.services.ProfesionService;
 import com.babel.vehiclerentingapproval.services.RentaService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RentaServiceImpl implements RentaService {
     RentaMapper rentaMapper;
-    ProfesionMapper profesionMapper;
 
-    PersonaMapper personaMapper;
 
-    public RentaServiceImpl(RentaMapper rentaMapper, ProfesionMapper profesionMapper, PersonaMapper personaMapper) {
+
+
+    PersonaService personaService;
+
+    ProfesionService profesionService;
+
+    public RentaServiceImpl(RentaMapper rentaMapper, PersonaService personaService, ProfesionService profesionService) {
         this.rentaMapper = rentaMapper;
-        this.profesionMapper = profesionMapper;
-        this.personaMapper = personaMapper;
+        this.personaService = personaService;
+        this.profesionService = profesionService;
     }
 
     @Override
-    public Renta addRenta(Renta renta) throws ProfesionNotFoundException, PersonaNotFoundException {
-        this.existeProfesion(renta.getProfesion().getProfesionId());
-        this.existePersona(renta.getPersona().getPersonaId());
+    public Renta addRenta(Renta renta) throws ProfesionNotFoundException, PersonaNotFoundException, RentaFoundException {
+        this.profesionService.validateProfesion(renta.getProfesion().getProfesionId());
+        this.personaService.validatePersona(renta.getPersona().getPersonaId());
+        this.validateRenta(renta.getRentaId());
         this.rentaMapper.addRenta(renta);
         return renta;
     }
 
-    private void existeProfesion(int profesionId) throws ProfesionNotFoundException {
-         if(this.profesionMapper.existeProfesion(profesionId)==0){
-             throw new ProfesionNotFoundException();
-         }
+
+
+    public void validateRenta(int rentaId) throws RentaFoundException {
+        if(this.existeRenta(rentaId)){
+            throw new RentaFoundException();
+        }
     }
 
-    private void existePersona(int personaId) throws PersonaNotFoundException{
-        if(this.personaMapper.existePersona(personaId)==0){
-            throw new PersonaNotFoundException();
+    public boolean existeRenta(int rentaId){
+        if(this.rentaMapper.existeRenta(rentaId)!=0){
+            return true;
         }
+        return false;
     }
 
 }
