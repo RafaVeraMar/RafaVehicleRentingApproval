@@ -31,10 +31,10 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     @Transactional
-    public Persona addPersona (Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
+    public Persona addPersona (Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException, DniFoundException {
 
         this.validatePersonData(persona);
-
+        this.validateNif(persona.getNif());
 
         persona=this.addPersonaDireccion(persona);
 
@@ -148,6 +148,12 @@ public class PersonaServiceImpl implements PersonaService {
         }
     }
 
+    public void validateNif(String nif) throws DniFoundException {
+        if (existeNif(nif)){
+            throw new DniFoundException();
+        }
+    }
+
     public boolean existePersona(int personaId){
         if(personaMapper.existePersona(personaId)==0){
             return false;
@@ -163,5 +169,12 @@ public class PersonaServiceImpl implements PersonaService {
         }else{
             return true;
         }
+    }
+
+    public boolean existeNif(String nif){
+        if(this.personaMapper.existeNif(nif)!=0){
+            return true;
+        }
+        return false;
     }
 }
