@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface PersonaService {
 
-    Persona addPersona(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException;
+    Persona addPersona(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException, DireccionNotFoundException, PersonaNotFoundException, DniFoundException;
 
     Persona getPerson(int idPersona) throws RequestApiValidationException;
 

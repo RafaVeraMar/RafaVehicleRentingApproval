@@ -33,6 +33,7 @@ public class RentaController {
 
 
     @PostMapping("/renta")
+    @Operation(summary = "Añadir una renta", description = "Añade una renta a una persona")
     @ApiResponses( value = { @ApiResponse( responseCode = "200", description = "La renta ha añadido con éxito a la base de datos.", content = { @Content( mediaType = "application/json")}),
             @ApiResponse(responseCode = "400", description = "La profesión no existe." , content = { @Content( mediaType = "application/json")}),
             @ApiResponse(responseCode = "404", description = "La persona no existe.", content = { @Content( mediaType = "application/json")}),

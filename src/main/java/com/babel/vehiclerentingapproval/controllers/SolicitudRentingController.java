@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@Tag(name="Operaciones con Solicitud Renting",description = "Endpoint permite operar con las solicitudes de renting.")
 @RequestMapping("/solicitud")
 public class SolicitudRentingController {
 
