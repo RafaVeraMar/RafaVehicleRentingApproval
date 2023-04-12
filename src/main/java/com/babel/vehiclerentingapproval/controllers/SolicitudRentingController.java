@@ -132,14 +132,14 @@ public class SolicitudRentingController {
     }
 
 
-    @Operation(summary = "Ver estado de solicitud por ID", description = "Devuelve el estado de una solicitud a partir de su ID")
+    @Operation(summary = "Cancela una solicitud", description = "Cancela una solicitud dada su ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Cancelada la solicitud", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "500", description = "Error con el id al cancelar solicitud", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "404", description = "ID de solicitud no encontrado", content = @Content(mediaType = "application/json"))
     })
     @Parameter(name = "id", description = "ID de la solicitud a cancelar", required = true)
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     ResponseEntity cancelarSolicitud (@PathVariable int id) {
         Map<String, Object> respuesta = new HashMap<String, Object>();
         try {
