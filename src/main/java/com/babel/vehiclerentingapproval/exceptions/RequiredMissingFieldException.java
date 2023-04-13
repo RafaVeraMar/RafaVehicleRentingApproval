@@ -3,15 +3,21 @@ package com.babel.vehiclerentingapproval.exceptions;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * La clase RequiredMissingFieldException representa una excepción personalizada para campos
+ * requeridos que están vacíos o faltantes en una solicitud de API. Esta excepción extiende
+ * la clase RequestApiValidationException y contiene información adicional, como un mensaje
+ * de error específico y un código de estado HTTP.
+ */
 public class RequiredMissingFieldException extends RequestApiValidationException {
 
     private static final String externalMessage = "El nombre de la persona no puede estar vacio";
     private static final HttpStatus statusCode = HttpStatus.BAD_REQUEST;
 
-    public RequiredMissingFieldException (String[] args) {
-        super(externalMessage, statusCode, args);
-    }
-
+    /**
+     * Crea una nueva instancia de RequiredMissingFieldException con el mensaje de error y el
+     * código de estado HTTP predeterminados.
+     */
     public RequiredMissingFieldException ( ) {
         super(externalMessage, statusCode);
     }

@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.util.List;
 
-import static com.babel.vehiclerentingapproval.services.impl.EmailServiceImpl.SendMail;
-
 @Service
 public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private final SolicitudRentingMapper solicitudRentingMapper;
@@ -30,6 +28,19 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
     }
 
+    /**
+     * Agrega una nueva solicitud de renting, realizando varias validaciones antes de insertar la solicitud en la base de datos.
+     *
+     * @param solicitudRenting La solicitud de renting a agregar.
+     * @return La solicitud de renting agregada, incluyendo la información de la persona asociada.
+     * @throws RequestApiValidationException Si alguna de las validaciones no se cumple.
+     * @see #validatePersona(int)
+     * @see #validateNumVehiculos(SolicitudRenting)
+     * @see #validateInversion(SolicitudRenting)
+     * @see #validateCuota(SolicitudRenting)
+     * @see #validatePlazo(SolicitudRenting)
+     * @see #validateFecha(SolicitudRenting)
+     */
     @Override
     public SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) throws RequestApiValidationException {
         validatePersona(solicitudRenting.getPersona().getPersonaId());
@@ -43,7 +54,12 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         return solicitudRenting;
     }
 
-
+    /**
+     * Comprueba si existe una persona con el identificador proporcionado.
+     *
+     * @param idPersona el identificador de la persona a verificar
+     * @throws PersonaNotFoundException si no se encuentra una persona con el identificador proporcionado
+     */
     private void existIdPersona (int idPersona) throws PersonaNotFoundException {
         if (!personaService.existePersona(idPersona)) {
             throw new PersonaNotFoundException(idPersona);
@@ -51,10 +67,10 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     }
 
     @Override
-    public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFoundException, EstadoSolicitudInvalidException {
+    public String verEstadoSolicitud (int idSolicitud) throws EstadoSolicitudNotFoundException, EstadoSolicitudInvalidException {
         int codigoExiste = tipoResultadoSolicitudMapper.existeCodigoResolucion(idSolicitud);
 
-        if(codigoExiste == 0){ //idSolicitud or codResolucion null
+        if (codigoExiste == 0) { //idSolicitud or codResolucion null
             throw new EstadoSolicitudNotFoundException();
         }
 
@@ -65,7 +81,8 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
 
     }
-    private void validarCodigoResolucion(String CodResolucion) throws EstadoSolicitudInvalidException{
+
+    private void validarCodigoResolucion (String CodResolucion) throws EstadoSolicitudInvalidException {
         this.codigoResolucionValidator.validarCodResolucion(CodResolucion);
 
     }
@@ -106,6 +123,12 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         return listaEstados;
     }
 
+    /**
+     * Calcula la cantidad de dígitos en un objeto BigInteger.
+     *
+     * @param number el objeto BigInteger cuya cantidad de dígitos se desea calcular
+     * @return la cantidad de dígitos en el objeto BigInteger; si el objeto BigInteger es nulo, devuelve 0
+     */
     private int lenghtNumber (BigInteger number) {
         if (number != null) {
             String numeroString = number.toString();
@@ -114,10 +137,30 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         return 0;
     }
 
+    /**
+     * Valida si existe una persona con el ID proporcionado.
+     *
+     * @param idPersona El identificador de la persona a validar.
+     * @throws PersonaNotFoundException Si no se encuentra una persona con el ID especificado.
+     * @see #existIdPersona(int)
+     */
     private void validatePersona (int idPersona) throws PersonaNotFoundException {
         existIdPersona(idPersona);
     }
 
+    /**
+     * Valida el número de vehículos en una solicitud de renting.
+     * Verifica si el valor de 'numVehiculos' cumple con las siguientes condiciones:
+     * 1. No tiene más de 38 dígitos.
+     * 2. No es nulo o vacío.
+     * 3. No es negativo o igual a cero.
+     *
+     * @param solicitudRenting el objeto SolicitudRenting cuyo campo 'numVehiculos' se va a validar
+     * @throws WrongLenghtFieldException      si el valor de 'numVehiculos' tiene más de 38 dígitos
+     * @throws InputIsNullOrIsEmpty           si el valor de 'numVehiculos' es nulo o vacío
+     * @throws InputIsNegativeOrZeroException si el valor de 'numVehiculos' es negativo o igual a cero
+     * @see #lenghtNumber(BigInteger)
+     */
     private void validateNumVehiculos (SolicitudRenting solicitudRenting) throws WrongLenghtFieldException, InputIsNullOrIsEmpty, InputIsNegativeOrZeroException {
         if (lenghtNumber(solicitudRenting.getNumVehiculos()) > 38) {
             throw new WrongLenghtFieldException("numVehiculos");
@@ -130,6 +173,16 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         }
     }
 
+    /**
+     * Valida el campo 'inversion' en una solicitud de renting.
+     * Verifica si el valor de 'inversion' cumple con las siguientes condiciones:
+     * 1. No es nulo o vacío.
+     * 2. No es negativo o igual a cero.
+     *
+     * @param solicitudRenting el objeto SolicitudRenting cuyo campo 'inversion' se va a validar
+     * @throws InputIsNullOrIsEmpty           si el valor de 'inversion' es nulo o vacío
+     * @throws InputIsNegativeOrZeroException si el valor de 'inversion' es negativo o igual a cero
+     */
     private void validateInversion (SolicitudRenting solicitudRenting) throws InputIsNullOrIsEmpty, InputIsNegativeOrZeroException {
         if (solicitudRenting.getInversion() == null) {
             throw new InputIsNullOrIsEmpty("inversion");
@@ -139,6 +192,16 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         }
     }
 
+    /**
+     * Valida el campo 'cuota' en una solicitud de renting.
+     * Verifica si el valor de 'cuota' cumple con las siguientes condiciones:
+     * 1. No es nulo o vacío.
+     * 2. No es negativo o igual a cero.
+     *
+     * @param solicitudRenting el objeto SolicitudRenting cuyo campo 'cuota' se va a validar
+     * @throws InputIsNullOrIsEmpty           si el valor de 'cuota' es nulo o vacío
+     * @throws InputIsNegativeOrZeroException si el valor de 'cuota' es negativo o igual a cero
+     */
     private void validateCuota (SolicitudRenting solicitudRenting) throws InputIsNullOrIsEmpty, InputIsNegativeOrZeroException {
         if (solicitudRenting.getCuota() == null) {
             throw new InputIsNullOrIsEmpty("cuota");
@@ -148,6 +211,18 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         }
     }
 
+    /**
+     * Valida el campo 'plazo' en una solicitud de renting.
+     * Verifica si el valor de 'plazo' cumple con las siguientes condiciones:
+     * 1. No tiene más de 38 dígitos.
+     * 2. No es negativo o igual a cero.
+     * <p>
+     * Si el valor de 'plazo' es nulo, no se lanza ninguna excepción.
+     *
+     * @param solicitudRenting el objeto SolicitudRenting cuyo campo 'plazo' se va a validar
+     * @throws WrongLenghtFieldException      si el valor de 'plazo' tiene más de 38 dígitos
+     * @throws InputIsNegativeOrZeroException si el valor de 'plazo' es negativo o igual a cero
+     */
     private void validatePlazo (SolicitudRenting solicitudRenting) throws WrongLenghtFieldException, InputIsNegativeOrZeroException, InputIsNullOrIsEmpty {
         if (solicitudRenting.getPlazo() != null) {
             if (lenghtNumber(solicitudRenting.getPlazo()) > 38) {
@@ -159,6 +234,15 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         }
     }
 
+    /**
+     * Valida las fechas 'fechaInicioVigor' y 'fechaResolucion' en una solicitud de renting.
+     * Verifica si la 'fechaInicioVigor' es posterior a la 'fechaResolucion'.
+     * <p>
+     * Si alguna de las fechas es nula, no se lanza ninguna excepción.
+     *
+     * @param solicitudRenting el objeto SolicitudRenting cuyas fechas se van a validar
+     * @throws DateIsBeforeException si 'fechaInicioVigor' es anterior a 'fechaResolucion'
+     */
     private void validateFecha (SolicitudRenting solicitudRenting) throws DateIsBeforeException {
         if (solicitudRenting.getFechaInicioVigor() != null && solicitudRenting.getFechaResolucion() != null) {
             if (solicitudRenting.getFechaInicioVigor().before(solicitudRenting.getFechaResolucion())) {
