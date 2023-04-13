@@ -1,9 +1,6 @@
 package com.babel.vehiclerentingapproval.services;
 
-import com.babel.vehiclerentingapproval.models.Persona;
-import com.babel.vehiclerentingapproval.models.Renta;
-import com.babel.vehiclerentingapproval.models.SolicitudRenting;
-import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
+import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.preautomaticresults.ApprovalRulesService;
 import com.babel.vehiclerentingapproval.services.preautomaticresults.impl.ApprovalRulesServiceImpl;
@@ -66,7 +63,8 @@ public class ApprovalRulesServiceTest {
         persona.setNombre("John");
         persona.setApellido1("Doe");
         persona.setApellido2("Doe");
-        persona.getNacionalidad().setIsoAlfa_2("ES");
+        Pais pais = new Pais("ES", 724, "ESP", "España", 1);
+        persona.setNacionalidad(pais);
         persona.setScoring(750);
         solicitud.setPersona(persona);
         solicitud.setInversion(10000f);
@@ -88,7 +86,8 @@ public class ApprovalRulesServiceTest {
         persona.setNombre("John");
         persona.setApellido1("Doe");
         persona.setApellido2("Doe");
-        persona.getNacionalidad().setIsoAlfa_2("ES");
+        Pais pais = new Pais("ES", 724, "ESP", "España", 1);
+        persona.setNacionalidad(pais);
         persona.setScoring(750);
         renta.setImporteBruto(10000f);
         renta.setFechaInicioEmpleo(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2016"));
@@ -97,7 +96,7 @@ public class ApprovalRulesServiceTest {
 
     @Test
     public void validateNationality_should_beTrue_when_ES() {
-
+        this.solicitud.getPersona().getNacionalidad().setIsoAlfa_2("ES");
         boolean validationNationality = service.validateNationality(this.solicitud);
 
         Assertions.assertTrue(validationNationality);
@@ -115,7 +114,8 @@ public class ApprovalRulesServiceTest {
     @Test
     public void validateNationality_should_beFalse_when_Empty() {
 
-        this.solicitud.getPersona().getNacionalidad().setIsoAlfa_2("ES");
+
+        this.solicitud.getPersona().getNacionalidad().setIsoAlfa_2("");
         boolean validationNationality = service.validateNationality(this.solicitud);
 
         Assertions.assertFalse(validationNationality);
@@ -123,8 +123,7 @@ public class ApprovalRulesServiceTest {
 
     @Test
     public void validateNationality_should_beFalse_when_Null() {
-
-        this.solicitud.getPersona().setNacionalidad(null);
+        this.solicitud.getPersona().getNacionalidad().setIsoAlfa_2(null);
         boolean validationNationality = service.validateNationality(this.solicitud);
 
         Assertions.assertFalse(validationNationality);
