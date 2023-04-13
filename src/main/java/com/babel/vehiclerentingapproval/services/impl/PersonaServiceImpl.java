@@ -125,13 +125,13 @@ public class PersonaServiceImpl implements PersonaService {
 
         //Borramos telefonos pertenecientes al usuario
         for (int i = 0; i < telefonosAntiguos.size(); i++) {
-            this.telefonoMapper.deleteTelefono(telefonosAntiguos.get(i),persona.getPersonaId());
+            this.telefonoMapper.deleteTelefono(persona.getPersonaId(), telefonosAntiguos.get(i));
         }
         //Añadimos los telefonos del usuario
         for (int i = 0;i<telefonos.size();i++) {
             this.telefonoMapper.addTelefono(telefonos.get(i),persona);
         }
-        
+
     }
 
     public void validatePersonData(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
