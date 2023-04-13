@@ -3,6 +3,7 @@ package com.babel.vehiclerentingapproval.services;
 import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.ProductoContratado;
+import com.babel.vehiclerentingapproval.models.TelefonoContacto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +25,8 @@ public interface PersonaService {
     public void validatePersona(int personaId) throws PersonaNotFoundException;
 
     public boolean existePersona(int personaId);
+
+    public void modificarTelefono(Persona persona);
 
     void modificarPersona(Persona persona) throws PersonaNotFoundException, DireccionNotFoundException;
 
