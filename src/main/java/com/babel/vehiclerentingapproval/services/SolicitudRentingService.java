@@ -27,7 +27,14 @@ public interface SolicitudRentingService {
      */
     SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) throws RequestApiValidationException;
 
-    public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFoundException, EstadoSolicitudInvalidException;
+    /**
+     * Método que devuelve el estado de una solicitud
+     * @param idSolicitud ID de la solicitud de renting
+     * @return String con el estado de la solicitud
+     * @throws RequestApiValidationException si la id de la solicitud no existe, el codigo de resolucion es nulo, o no es valido
+     * @see RequestApiValidationException
+     */
+    public String verEstadoSolicitud (int idSolicitud) throws RequestApiValidationException;
 
     /**
      * Método que devuelve un objeto SolicitudRenting encontrado por su ID

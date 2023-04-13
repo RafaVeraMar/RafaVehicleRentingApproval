@@ -73,13 +73,17 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         }
     }
 
+    /**
+     * Devuelve el estado de una solicitud de renting a partir de su id
+     * @param idSolicitud el ID de la solicitud a consultar
+     * @return el estado de la solicitud como una cadena de caracteres
+     * @throws RequestApiValidationException si la id de la solicitud no existe, el codigo de resolucion es nulo, o no es valido
+     */
     @Override
-    public String verEstadoSolicitud (int idSolicitud) throws EstadoSolicitudNotFoundException, EstadoSolicitudInvalidException {
+    public String verEstadoSolicitud(int idSolicitud) throws RequestApiValidationException {
         int codigoExiste = tipoResultadoSolicitudMapper.existeCodigoResolucion(idSolicitud);
 
-        if (codigoExiste == 0) { //idSolicitud or codResolucion null
-            throw new EstadoSolicitudNotFoundException();
-        }
+        validarCodResolucionExiste(codigoExiste);
 
         TipoResultadoSolicitud resultadoSolicitud = this.tipoResultadoSolicitudMapper.getResultadoSolicitud(idSolicitud);
         this.validarCodigoResolucion(resultadoSolicitud.getCodResultado());
@@ -89,7 +93,26 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
     }
 
-    private void validarCodigoResolucion(String CodResolucion) throws EstadoSolicitudInvalidException {
+    /**
+     * Comprueba que el codigo de resolucion de la solicitud existe.
+     * @param codResolucion Valor encontrado al hacer la consulta en la base de datos
+     * @throws EstadoSolicitudNotFoundException si el codigo de resolución es nulo o el id de la solicitud no existe
+     */
+    private void validarCodResolucionExiste(int codResolucion) throws EstadoSolicitudNotFoundException{
+
+        if(codResolucion == 0){ //idSolicitud or codResolucion null
+            throw new EstadoSolicitudNotFoundException();
+        }
+
+    }
+
+    /**
+     * Método que comprueba si el codigo de la resolución es válido
+     * @param CodResolucion el codigo de la resolucion
+     * @throws EstadoSolicitudInvalidException si el codigo de resolucion no es valido
+     * @see CodigoResolucionValidatorImpl
+     */
+    private void validarCodigoResolucion(String CodResolucion) throws EstadoSolicitudInvalidException{
         this.codigoResolucionValidator.validarCodResolucion(CodResolucion);
 
     }
