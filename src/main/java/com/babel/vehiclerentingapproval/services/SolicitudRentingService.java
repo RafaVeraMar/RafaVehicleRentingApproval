@@ -12,6 +12,13 @@ import java.util.List;
 public interface SolicitudRentingService {
     SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) throws RequestApiValidationException;
 
+    /**
+     * Método que devuelve el estado de una solicitud
+     * @param idSolicitud ID de la solicitud de renting
+     * @return String con el estado de la solicitud
+     * @throws RequestApiValidationException si la id de la solicitud no existe, el codigo de resolucion es nulo, o no es valido
+     * @see RequestApiValidationException
+     */
     public String verEstadoSolicitud (int idSolicitud) throws RequestApiValidationException;
 
     public SolicitudRenting getSolicitudById (int it);
