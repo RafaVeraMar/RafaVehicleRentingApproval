@@ -1,10 +1,15 @@
 package com.babel.vehiclerentingapproval.persistance.database.mappers;
 
 import com.babel.vehiclerentingapproval.models.Persona;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Select;
 import com.babel.vehiclerentingapproval.models.ProductoContratado;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+
 
 @Mapper
 public interface PersonaMapper {

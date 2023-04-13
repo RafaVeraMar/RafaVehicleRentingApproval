@@ -1,5 +1,7 @@
 package com.babel.vehiclerentingapproval.models;
 
+import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.math.BigInteger;
