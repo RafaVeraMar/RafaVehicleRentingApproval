@@ -12,7 +12,7 @@ import java.util.List;
 public interface SolicitudRentingService {
     SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) throws RequestApiValidationException;
 
-    public String verEstadoSolicitud (int idSolicitud) throws EstadoSolicitudNotFoundException, EstadoSolicitudInvalidException;
+    public String verEstadoSolicitud (int idSolicitud) throws RequestApiValidationException;
 
     public SolicitudRenting getSolicitudById (int it);
 
