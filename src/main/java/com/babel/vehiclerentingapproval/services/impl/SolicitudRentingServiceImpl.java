@@ -13,6 +13,13 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.util.List;
 
+/**
+ * Esta clase es la implementación de los métodos CRUD (Crear, Ver, Modificar y Cancelar) de las Solicitudes de Renting.
+ *
+ * @author miguel.sdela@babelgroup.com, javier.serrano@babelgroup.com, ramon.vazquez@babelgroup.com, alvaro.aleman@babelgroup.com, javier.roldan@babelgroup.com
+ * @see SolicitudRentingService
+ */
+
 @Service
 public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private final SolicitudRentingMapper solicitudRentingMapper;
@@ -20,7 +27,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private final PersonaService personaService;
     private final CodigoResolucionValidator codigoResolucionValidator;
 
-    public SolicitudRentingServiceImpl (SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaService personaService, CodigoResolucionValidator codigoResolucionValidator) {
+    public SolicitudRentingServiceImpl(SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaService personaService, CodigoResolucionValidator codigoResolucionValidator) {
         this.solicitudRentingMapper = solicitudRentingMapper;
         this.tipoResultadoSolicitudMapper = tipoResultadoSolicitudMapper;
         this.personaService = personaService;
@@ -42,7 +49,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @see #validateFecha(SolicitudRenting)
      */
     @Override
-    public SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) throws RequestApiValidationException {
+    public SolicitudRenting addSolicitudRenting(SolicitudRenting solicitudRenting) throws RequestApiValidationException {
         validatePersona(solicitudRenting.getPersona().getPersonaId());
         validateNumVehiculos(solicitudRenting);
         validateInversion(solicitudRenting);
@@ -82,25 +89,27 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
     }
 
-    private void validarCodigoResolucion (String CodResolucion) throws EstadoSolicitudInvalidException {
+    private void validarCodigoResolucion(String CodResolucion) throws EstadoSolicitudInvalidException {
         this.codigoResolucionValidator.validarCodResolucion(CodResolucion);
 
     }
 
-    public SolicitudRenting getSolicitudById (int id) throws SolicitudRentingNotFoundException {
-        int existe = this.solicitudRentingMapper.existeSolicitud(id);
-        SolicitudRenting solicitudRenting;
-        if (existe == 1) {
-            solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
-        } else {
-            throw new SolicitudRentingNotFoundException();
-        }
+    /**
+     * Implementación del método que busca una solicitud por su ID
+     *
+     * @param id Es el ID de la solicitud que se quiere buscar
+     * @return Devuelve un objeto Solicitud Renting
+     * @throws RequestApiValidationException
+     */
 
+    public SolicitudRenting getSolicitudById(int id) throws RequestApiValidationException {
+        SolicitudRenting solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
+        validateSolicitudRenting(solicitudRenting);
         return solicitudRenting;
     }
 
     @Override
-    public void modificaEstadoSolicitud (Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException {
+    public void modificaEstadoSolicitud(Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException {
 
         List<String> posiblesEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
         int existeEstado = this.solicitudRentingMapper.existeSolicitud(solicitudId);
@@ -118,7 +127,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     }
 
     @Override
-    public List<String> getListaEstados ( ) {
+    public List<String> getListaEstados() {
         List<String> listaEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
         return listaEstados;
     }
@@ -251,12 +260,27 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         }
     }
 
+    /**
+     * Servicio que se encarga de cancelar la solicitud de renting asociada al id que se le pasa como parametro, solicitud que encontramos gracias al uso del metodo getSolicitudById
+     * @param id de la solicitud de renting
+     * @throws SolicitudRentingNotFoundException que recoge la excepcion cuando la solicitud de renting es nula, si la solicitud no es nula la devuelve cancelada
+     */
     public void cancelarSolicitud (int id) throws SolicitudRentingNotFoundException {
         SolicitudRenting solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
-        if (solicitudRenting == null) {
-            throw new SolicitudRentingNotFoundException();
-        }
+        validateSolicitudRenting(solicitudRenting);
         solicitudRentingMapper.cancelarSolicitud(solicitudRenting);
+    }
+
+    /**
+     * Validacion de si una Solicitud de Renting es nula o no
+     *
+     * @param solicitudRenting solicitud a comprobar si es nula
+     * @throws SolicitudRentingNotFoundException
+     */
+    public void validateSolicitudRenting(SolicitudRenting solicitudRenting) throws SolicitudRentingNotFoundException {
+        if (solicitudRenting == null) {
+            throw new NullPointerException();
+        }
     }
 
 }

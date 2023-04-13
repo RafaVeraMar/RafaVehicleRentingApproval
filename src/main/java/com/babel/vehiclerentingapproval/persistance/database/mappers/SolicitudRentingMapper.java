@@ -4,14 +4,29 @@ import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 import org.apache.ibatis.annotations.*;
 
+/**
+ * Esta clase sirve para hacer los accesos a la base de datos de las Solicitudes de Renting
+ *
+ * @author miguel.sdela@babelgroup.com / javier.serrano@babelgroup.com / ramon.vazquez@babelgroup.com / alvaro.aleman@babelgroup.com / javier.roldan@babelgroup.com
+ */
 @Mapper
 public interface SolicitudRentingMapper {
     final static String cancelar = "CA";
 
+    /**
+     * Mapper con el que actualizamos en la base de datos la solicitud cuando sea cancelada, cambiando solamente el campo de codigo de resolucion y la fecha en la que se ha establecido esa resolucion
+     * @param solicitudRenting que es la solicitud la solicitud que vamos a actualizar
+     */
     @Update("UPDATE SOLICITUD_RENTING SET FECHA_RESOLUCION=SYSDATE, " +
             "COD_RESOLUCION='" + cancelar + "' where SOLICITUD_ID=#{solicitudId}")
     void cancelarSolicitud (SolicitudRenting solicitudRenting);
 
+    /**
+     * Consulta que devuelve una solicitud con sus campos.
+     *
+     * @param solicitudId Este parámetro es el id de la Solicitud que queremos ver
+     * @return
+     */
     @Select("Select SOLICITUD_ID,PERSONA_ID,FECHA_SOLICITUD,NUM_VEHICULOS,INVERSION,CUOTA,PLAZO," +
             "FECHA_INICIO_VIGOR,FECHA_RESOLUCION,COD_RESOLUCION from SCORING.SOLICITUD_RENTING where SOLICITUD_ID = #{solicitudId}")
     @Results({
@@ -46,6 +61,12 @@ public interface SolicitudRentingMapper {
     @Options(useGeneratedKeys = true, keyProperty = "solicitudId", keyColumn = "SOLICITUD_ID")
     void insertSolicitudRenting (SolicitudRenting solicitudRenting);
 
+    /**
+     * Consulta que comprueba si existe una solicitud por el ID proporcionado
+     *
+     * @param solicitudId
+     * @return devuelve el número de solicitudes que se encuentran con ese ID, si sale 0 significa que no hay.
+     */
     @Select("SELECT COUNT(SOLICITUD_ID) FROM SOLICITUD_RENTING WHERE SOLICITUD_ID = #{solicitudId}")
     int existeSolicitud (int solicitudId);
 
