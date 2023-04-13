@@ -12,6 +12,14 @@
 .idea/**/dictionaries
 .idea/**/shelf
 
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+*.cmd
+*.mvn
+
 # AWS User-specific
 .idea/**/aws.xml
 
