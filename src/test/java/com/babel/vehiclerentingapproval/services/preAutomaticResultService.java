@@ -27,9 +27,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 public class preAutomaticResultService {
     ApprovalRulesService approvalRulesService;
     DenyRulesService denyRulesService;
-
     CalculateAutomaticResult calculateAutomaticResult;
-
     private ClienteExistenteGaranteMapper clienteExistenteGaranteMapper;
     private ScoringRatingMapper scoringRatingMapper;
     private EmploymentSeniorityMapper employmentSeniorityMapper;
@@ -85,6 +83,12 @@ public class preAutomaticResultService {
         solicitud.setPlazo(num2);
         return solicitud;
     }
+
+    /**
+     * Este metodo no seq
+     * @return Renta que es
+     * @throws ParseException esto se lanza en el caso de...
+     */
     private Renta createRentaMock() throws ParseException {
         Renta renta = new Renta();
         Persona persona = new Persona();
