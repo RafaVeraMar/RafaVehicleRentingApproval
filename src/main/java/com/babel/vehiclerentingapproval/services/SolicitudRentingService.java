@@ -9,16 +9,28 @@ import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 
 import java.util.List;
 
+/**
+ * Esta clase SERVICE sirve como interfaz de las operaciones para hacer el CRUD (Crear, Ver, Modificar y Cancelar) de las Solicitudes de Renting
+ *
+ * @author miguel.sdela@babelgroup.com / javier.serrano@babelgroup.com / ramon.vazquez@babelgroup.com / alvaro.aleman@babelgroup.com / javier.roldan@babelgroup.com
+ */
 public interface SolicitudRentingService {
-    SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) throws RequestApiValidationException;
+    SolicitudRenting addSolicitudRenting(SolicitudRenting solicitudRenting) throws RequestApiValidationException;
 
-    public String verEstadoSolicitud (int idSolicitud) throws EstadoSolicitudNotFoundException, EstadoSolicitudInvalidException;
+    public String verEstadoSolicitud(int idSolicitud) throws EstadoSolicitudNotFoundException, EstadoSolicitudInvalidException;
 
-    public SolicitudRenting getSolicitudById (int it);
+    /**
+     * Método que devuelve un objeto SolicitudRenting encontrado por su ID
+     *
+     * @param it Es el ID de la solicitud que se quiere buscar
+     * @return devuelve un objeto SolicitudRenting cuando la ha encontrado.
+     * @throws RequestApiValidationException
+     */
+    public SolicitudRenting getSolicitudById(int it) throws RequestApiValidationException;
 
-    void modificaEstadoSolicitud (Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws EstadoSolicitudNotFoundException, SolicitudRentingNotFoundException;
+    void modificaEstadoSolicitud(Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws EstadoSolicitudNotFoundException, SolicitudRentingNotFoundException;
 
-    public List<String> getListaEstados ( );
+    public List<String> getListaEstados();
 
-    void cancelarSolicitud (int id);
+    void cancelarSolicitud(int id) throws RequestApiValidationException;
 }
