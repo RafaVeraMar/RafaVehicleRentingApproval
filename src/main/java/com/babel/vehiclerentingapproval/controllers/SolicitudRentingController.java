@@ -64,6 +64,11 @@ public class SolicitudRentingController {
         }
     }
 
+    /**
+     * Endpoint para ver el estado de una solicitud de renting
+     * @param id ID de la solicitud de renting
+     * @return Objeto ResponseEntity con el estado HTTP de la solicitud, el id proporcionado y el estado de la solicitud o la descripción del error
+     */
     @GetMapping("/estado/{id}")
     @Operation(summary = "Ver estado de solicitud por ID", description = "Devuelve el estado de una solicitud a partir de su ID")
     @ApiResponses(value = {
