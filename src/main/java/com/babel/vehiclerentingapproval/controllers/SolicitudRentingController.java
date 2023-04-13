@@ -142,7 +142,12 @@ public class SolicitudRentingController {
         return ResponseEntity.ok(this.solicitud.getSolicitudById(id));
     }
 
-
+    /**
+     *  Metodo que se encarga de cancelar la solicitud de renting asociada al id de esta, que se pasa como parametro en la funcion.
+     *  Ademas se implementa la documentacion con swagger
+     * @param id es la id de la solicitud de renting que queremos cancelar
+     * @return se devuelve un json en el que se informa de que la solicitud ha sido cancelada
+     */
     @Operation(summary = "Cancela una solicitud", description = "Cancela una solicitud dada su ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Cancelada la solicitud", content = @Content(mediaType = "application/json")),

@@ -30,5 +30,9 @@ public interface SolicitudRentingService {
 
     public List<String> getListaEstados ( );
 
+    /**
+     * Interfaz que se encarga de cancelar la solicitud asociada al id que se le pasa como parametro
+     * @param id asociado a la solicitud que se quiere cancelar
+     */
     void cancelarSolicitud (int id);
 }
