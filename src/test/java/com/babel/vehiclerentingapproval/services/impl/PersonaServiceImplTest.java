@@ -1,6 +1,8 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
+import com.babel.vehiclerentingapproval.exceptions.DireccionNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.PersonaNotFoundException;
+import com.babel.vehiclerentingapproval.models.Direccion;
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
@@ -24,9 +26,10 @@ public class PersonaServiceImplTest {
     void setupAll(){
         personaMapper= Mockito.mock(PersonaMapper.class);
         when(personaMapper.existePersona(100)).thenReturn(0); //No existe la persona
+        when(personaMapper.existePersona(1)).thenReturn(1); //Existe la persona
 
         direccionMapper = Mockito.mock(DireccionMapper.class);
-
+        when(direccionMapper.existeDireccion(1)).thenReturn(0);
 
         TelefonoMapper telefonoMapper = Mockito.mock(TelefonoMapper.class);
         TipoViaMapper tipoViaMapper = Mockito.mock(TipoViaMapper.class);
@@ -52,7 +55,24 @@ public class PersonaServiceImplTest {
     public void modificarPersona_should_throwPersonaNotFoundException_when_personaNoExisteEnBaseDeDatos(){
         Assertions.assertThrows(PersonaNotFoundException.class,() ->{
             Persona persona = new Persona();
-            persona.setPersonaId(100);
+            persona.setPersonaId(100); //Persona no existente
+            personaService.modificarPersona(persona);
+        });
+    }
+
+    @Test
+    public void modificarPersona_should_throwDireccionNotFoundException_when_direccionNoExisteEnBaseDeDatos(){
+        Assertions.assertThrows(DireccionNotFoundException.class,() ->{
+            Persona persona = new Persona();
+
+            Direccion direccion = new Direccion();
+            direccion.setDireccionId(1); //Direccion no existente
+
+            persona.setPersonaId(1); //Persona existente
+
+            persona.setDireccionDomicilio(direccion);
+            persona.setDireccionNotificacion(direccion);
+
             personaService.modificarPersona(persona);
         });
     }

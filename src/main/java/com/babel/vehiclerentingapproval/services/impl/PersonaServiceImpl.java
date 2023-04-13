@@ -1,10 +1,7 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
 
-import com.babel.vehiclerentingapproval.exceptions.PersonaNotFoundException;
-import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
-import com.babel.vehiclerentingapproval.exceptions.RequiredMissingFieldException;
-import com.babel.vehiclerentingapproval.exceptions.WrongLenghtFieldException;
+import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
@@ -37,15 +34,21 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     @Transactional
-    public Persona addPersona(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
+    public Persona addPersona (Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException, DniFoundException {
 
         this.validatePersonData(persona);
+        this.validateNif(persona.getNif());
 
         persona=this.addPersonaDireccion(persona);
+
         Pais pais = this.paisMapper.getPais(persona.getNacionalidad().getIsoAlfa_2());
+
         persona.setNacionalidad(pais);
+
         this.personaMapper.insertPersona(persona);
+
         this.addTelefonos(persona);
+
         return persona;
     }
 
@@ -57,9 +60,9 @@ public class PersonaServiceImpl implements PersonaService {
     }
 
     @Override
-    public Persona getPerson(int idPersona) throws RequestApiValidationException {
-        if (idPersona<0){
-            throw new RequestApiValidationException();
+    public Persona getPerson (int idPersona) throws RequestApiValidationException {
+        if (idPersona < 0) {
+            throw new ProfesionNotFoundException(idPersona);
         }
         return null;
     }
@@ -88,7 +91,7 @@ public class PersonaServiceImpl implements PersonaService {
         persona.getDireccionDomicilio().setProvinciaCod(provincia);
         this.direccionMapper.insertDireccion(persona.getDireccionDomicilio());
 
-        if (persona.isDireccionDomicilioSameAsNotificacion()){
+        if (persona.isDireccionDomicilioSameAsNotificacion()) {
             persona.setDireccionNotificacion(persona.getDireccionDomicilio());
         }else{
             provincia = this.provinciaMapper.getProvincia(persona.getDireccionNotificacion().getProvincia().getCodProvincia());
@@ -103,19 +106,23 @@ public class PersonaServiceImpl implements PersonaService {
     }
 
     @Override
-    public void modificarPersona(Persona persona) throws PersonaNotFoundException {
+    @Transactional
+    public void modificarPersona(Persona persona) throws PersonaNotFoundException, DireccionNotFoundException {
+
+        if (persona.isDireccionDomicilioSameAsNotificacion()) {
+            persona.setDireccionNotificacion(persona.getDireccionDomicilio());
+        }
 
         this.validatePersonaExistente(persona);
 
-        if (persona.isDireccionDomicilioSameAsNotificacion()){
-            persona.setDireccionNotificacion(persona.getDireccionDomicilio());
-            this.personaMapper.updatePersona(persona);
-            modificarTelefono(persona);
-        }else{
-            this.personaMapper.updatePersona(persona);
-            modificarTelefono(persona);
+        //Actualizamos las direcciones anteriores
+        direccionMapper.updateDireccion(persona.getDireccionDomicilio());
+        direccionMapper.updateDireccion(persona.getDireccionNotificacion());
 
-        }
+        //Insertamos el resto de cambios
+        this.personaMapper.updatePersona(persona);
+        modificarTelefono(persona);
+
     }
 
     @Transactional
@@ -142,8 +149,8 @@ public class PersonaServiceImpl implements PersonaService {
         if ((persona.getNombre() == null) || persona.getNombre().isEmpty()) {
             throw new RequiredMissingFieldException();
         }
-        if (persona.getNombre().length() > 50){
-            throw new WrongLenghtFieldException();
+        if (persona.getNombre().length() > 50) {
+            throw new WrongLenghtFieldException("nombre");
         }
     }
 
@@ -152,9 +159,18 @@ public class PersonaServiceImpl implements PersonaService {
             throw new PersonaNotFoundException();
         }
     }
-    private void validatePersonaExistente(Persona persona) throws PersonaNotFoundException {
+    private void validatePersonaExistente(Persona persona) throws PersonaNotFoundException, DireccionNotFoundException {
         if (!existePersona(persona.getPersonaId())){
             throw new PersonaNotFoundException();
+        }
+        if(existeDireccion(persona.getDireccionDomicilio().getDireccionId())==false ||existeDireccion(persona.getDireccionNotificacion().getDireccionId())==false){ //Si no existe alguna direcicon
+            throw new DireccionNotFoundException();
+        }
+    }
+
+    public void validateNif(String nif) throws DniFoundException {
+        if (existeNif(nif)){
+            throw new DniFoundException();
         }
     }
 
@@ -163,5 +179,22 @@ public class PersonaServiceImpl implements PersonaService {
             return false;
         }
         return true;
+    }
+
+
+
+    public boolean existeDireccion(int direccionId){
+        if(this.direccionMapper.existeDireccion(direccionId)==0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    public boolean existeNif(String nif){
+        if(this.personaMapper.existeNif(nif)!=0){
+            return true;
+        }
+        return false;
     }
 }

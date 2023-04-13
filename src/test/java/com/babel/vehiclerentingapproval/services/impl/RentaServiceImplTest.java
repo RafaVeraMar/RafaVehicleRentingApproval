@@ -20,7 +20,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -31,14 +30,12 @@ public class RentaServiceImplTest {
     PersonaService personaService;
 
 
-
     @BeforeEach
-    void setUpAll() throws ProfesionNotFoundException {
+    void setUpAll ( ) throws ProfesionNotFoundException {
 
         ProfesionMapper profesionMapper = Mockito.mock(ProfesionMapper.class);
         when(profesionMapper.existeProfesion(100)).thenReturn(0);
         when(profesionMapper.existeProfesion(1)).thenReturn(1);
-
 
 
         rentaMapper = Mockito.mock(RentaMapper.class);
@@ -56,16 +53,16 @@ public class RentaServiceImplTest {
         PaisMapper paisMapper = Mockito.mock(PaisMapper.class);
 
 
-        personaService = new PersonaServiceImpl(direccionMapper,personaMapper,telefonoMapper,tipoViaMapper,provinciaMapper,paisMapper);
+        personaService = new PersonaServiceImpl(direccionMapper, personaMapper, telefonoMapper, tipoViaMapper, provinciaMapper, paisMapper);
         profesionService = new ProfesionServiceImpl(profesionMapper);
 
 
-        rentaService = new RentaServiceImpl(rentaMapper,personaService, profesionService);
+        rentaService = new RentaServiceImpl(rentaMapper, personaService, profesionService);
     }
 
     @Test
-    public void addRenta_should_throwProfesionNotFoundException_when_profesionIdNoExiste(){
-        Assertions.assertThrows(ProfesionNotFoundException.class,() ->{
+    public void addRenta_should_throwProfesionNotFoundException_when_profesionIdNoExiste ( ) {
+        Assertions.assertThrows(ProfesionNotFoundException.class, ( ) -> {
             Renta renta = createRenta();
 
             Profesion profesion = createProfesion();
@@ -79,8 +76,8 @@ public class RentaServiceImplTest {
 
 
     @Test
-    public void addRenta_should_throwPersonaNotFoundException_when_personaIdNoExiste(){
-        Assertions.assertThrows(PersonaNotFoundException.class,() ->{
+    public void addRenta_should_throwPersonaNotFoundException_when_personaIdNoExiste ( ) {
+        Assertions.assertThrows(PersonaNotFoundException.class, ( ) -> {
             Renta renta = createRenta();
             Persona persona = createPersona();
 
@@ -94,8 +91,8 @@ public class RentaServiceImplTest {
     }
 
     @Test
-    public void addRenta_should_throwRentaFoundException_when_rentaIdExiste(){
-        Assertions.assertThrows(RentaFoundException.class,() ->{
+    public void addRenta_should_throwRentaFoundException_when_rentaIdExiste ( ) {
+        Assertions.assertThrows(RentaFoundException.class, ( ) -> {
             Renta renta = createRenta();
             Persona persona = createPersona();
             Profesion profesion = createProfesion();
@@ -111,8 +108,7 @@ public class RentaServiceImplTest {
     }
 
 
-
-    private Renta createRenta() throws ParseException {
+    private Renta createRenta ( ) throws ParseException {
         Renta renta = new Renta();
 
 
@@ -130,13 +126,13 @@ public class RentaServiceImplTest {
     }
 
 
-    private Profesion createProfesion(){
-        Profesion profesion = new Profesion(1,null);
+    private Profesion createProfesion ( ) {
+        Profesion profesion = new Profesion(1, null);
         return profesion;
     }
 
-    private Persona createPersona() throws ParseException {
-        Persona persona=new Persona();
+    private Persona createPersona ( ) throws ParseException {
+        Persona persona = new Persona();
         persona.setNombre("Juan");
         persona.setApellido1("Francés");
         persona.setApellido2("Atúñez");
@@ -156,7 +152,6 @@ public class RentaServiceImplTest {
         domicilio.setNumero("44");
         domicilio.setCodPostal("41001");
         domicilio.setMunicipio("Sevilla");
-
 
 
         persona.setDireccionDomicilio(domicilio);
