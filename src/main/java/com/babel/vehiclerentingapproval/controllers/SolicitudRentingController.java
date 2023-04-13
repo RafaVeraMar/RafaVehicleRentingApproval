@@ -83,33 +83,24 @@ public class SolicitudRentingController {
             respuesta.put("Status",HttpStatus.OK);
             respuesta.put("Id",id);
             respuesta.put("Descripcion",estado);
-            return new ResponseEntity<Object>(respuesta,HttpStatus.OK);
         }
         catch (NumberFormatException e){
             respuesta.put("Status",HttpStatus.BAD_REQUEST);
             respuesta.put("Id",id);
             respuesta.put("Descripcion","Error: el formato de ID es inválido");
-            return new ResponseEntity<Object>(respuesta,HttpStatus.BAD_REQUEST);
         }
-        catch (EstadoSolicitudNotFoundException e){
-            respuesta.put("Status",HttpStatus.NOT_FOUND);
-            respuesta.put("Id",id);
-            respuesta.put("Descripcion","Error: No existe ninguna codigo de resolución asociado a esa solicitud ");
-            return new ResponseEntity<Object>(respuesta,HttpStatus.NOT_FOUND);
-
-        }
-        catch (EstadoSolicitudInvalidException e){
-            respuesta.put("Status",HttpStatus.INTERNAL_SERVER_ERROR);
-            respuesta.put("Id",id);
-            respuesta.put("Descripcion","Error: El codigo de resolución no es válido ");
-            return new ResponseEntity<Object>(respuesta,HttpStatus.INTERNAL_SERVER_ERROR);
+        catch (RequestApiValidationException e) {
+            respuesta.put("Status", e.getStatusCode());
+            respuesta.put("Id", id);
+            respuesta.put("Descripcion:", e.getExternalMessage());
         }
         catch (Exception e){
             respuesta.put("Status",HttpStatus.INTERNAL_SERVER_ERROR);
             respuesta.put("Id",id);
             respuesta.put("Descripcion","Error: Ha ocurrido un error interno en el servidor ");
-            return new ResponseEntity<Object>(respuesta,HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+        return new ResponseEntity<Object>(respuesta,(HttpStatus)respuesta.get("Status"));
     }
 
     @GetMapping("{id}")
