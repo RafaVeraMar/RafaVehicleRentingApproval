@@ -265,7 +265,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @param id de la solicitud de renting
      * @throws SolicitudRentingNotFoundException que recoge la excepcion cuando la solicitud de renting es nula, si la solicitud no es nula la devuelve cancelada
      */
-    public void cancelarSolicitud (int id) throws SolicitudRentingNotFoundException {
+    public void cancelarSolicitud (int id) throws RequestApiValidationException {
         SolicitudRenting solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
         validateSolicitudRenting(solicitudRenting);
         solicitudRentingMapper.cancelarSolicitud(solicitudRenting);

@@ -46,5 +46,5 @@ public interface SolicitudRentingService {
      * Interfaz que se encarga de cancelar la solicitud asociada al id que se le pasa como parametro
      * @param id asociado a la solicitud que se quiere cancelar
      */
-    void cancelarSolicitud (int id);
+    void cancelarSolicitud (int id) throws RequestApiValidationException;
 }
