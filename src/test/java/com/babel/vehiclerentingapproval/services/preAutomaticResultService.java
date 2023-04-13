@@ -1,5 +1,6 @@
 package com.babel.vehiclerentingapproval.services;
 
+import com.babel.vehiclerentingapproval.models.Pais;
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.Renta;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
@@ -72,7 +73,8 @@ public class preAutomaticResultService {
         persona.setNombre("John");
         persona.setApellido1("Doe");
         persona.setApellido2("Doe");
-        persona.getNacionalidad().setIsoAlfa_2("ES");
+        Pais pais = new Pais("ES", 724, "ESP", "España", 1);
+        persona.setNacionalidad(pais);
         persona.setScoring(750);
         solicitud.setPersona(persona);
         solicitud.setInversion(10000f);
@@ -89,7 +91,8 @@ public class preAutomaticResultService {
         persona.setNombre("John");
         persona.setApellido1("Doe");
         persona.setApellido2("Doe");
-        persona.getNacionalidad().setIsoAlfa_2("ES");
+        Pais pais = new Pais("ES", 724, "ESP", "España", 1);
+        persona.setNacionalidad(pais);
         persona.setScoring(750);
         renta.setImporteBruto(10000f);
         renta.setFechaInicioEmpleo(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2016"));
