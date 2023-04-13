@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+
+import static java.lang.Math.abs;
 
 @Service
 public class PersonaServiceImpl implements PersonaService {
@@ -119,41 +119,39 @@ public class PersonaServiceImpl implements PersonaService {
     }
 
     public void modificarTelefono(Persona persona) {
+        List<TelefonoContacto> telefonos = persona.getTelefonos();
         List<TelefonoContacto> telefonosAntiguos = telefonoMapper.listarTelefonos(persona.getPersonaId());
-        List<TelefonoContacto> telefonosNuevos = persona.getTelefonos();
+        int diferenciaJSONBBDD = telefonos.size()-telefonosAntiguos.size();
+        
+        //Comprobamos la diferencia de numeros
 
-        if(telefonosAntiguos.isEmpty()) {
-            for (int j = 0; j < telefonosNuevos.size(); j++) {
-                this.telefonoMapper.addTelefono(telefonosNuevos.get(j), persona);
+        if (diferenciaJSONBBDD<0){
+            //Hay mas numeros en la BBDD que en el JSON nuevo. Necesitamos eliminar la diferencia de numeros y actualizar los existentes.
+            for (int indice=0;indice<abs(diferenciaJSONBBDD);indice++) {
+                this.telefonoMapper.deleteTelefono(persona.getTelefonos().get(indice), persona.getPersonaId() );
             }
-        }else{
 
-            List<TelefonoContacto> telefonosAntiguosDelete = telefonosAntiguos;
-            List<TelefonoContacto> telefonosNuevosAdd = telefonosNuevos;
+            for (int indice=0;indice<telefonos.size();indice++) {
+                this.telefonoMapper.updateTelefono(persona.getTelefonos().get(indice), persona.getPersonaId() );
+            }
 
-            for(int i=0;i<telefonosNuevos.size();i++){
-                for (int j = 0; j < telefonosAntiguos.size(); j++) {
-                    if (telefonosNuevos.get(i).equals(telefonosAntiguos.get(j))) {
-                        telefonosNuevosAdd.remove(telefonosNuevos.get(i));
-                        telefonosAntiguosDelete.remove(telefonosAntiguos.get(j));
-                    }
-                    else if (telefonosNuevos.get(i).getTelefonoId()==telefonosAntiguos.get(j).getTelefonoId() &&
-                            telefonosNuevos.get(i).getTelefono()!=telefonosAntiguos.get(j).getTelefono()) {
-                        telefonosNuevosAdd.remove(telefonosNuevos.get(i));
-                        telefonosAntiguosDelete.remove(telefonosAntiguos.get(j));
-                        this.telefonoMapper.updateTelefono(persona.getPersonaId(),telefonosNuevos.get(i));
-                    }
-                }
+        } else if (diferenciaJSONBBDD>0) {
+            //Hay mas numeros en el JSON que en la BBDD. Necesitamos añadir la diferencia de numeros y actuializar el resto.
+            for (int indice=0;indice<diferenciaJSONBBDD;indice++) {
+                this.telefonoMapper.addTelefono(persona.getTelefonos().get(indice), persona );
             }
-            for (int k1 = 0; k1 < telefonosNuevosAdd.size(); k1++) {
-                this.telefonoMapper.addTelefono(telefonosNuevosAdd.get(k1), persona);
+
+            for (int indice=0;indice<telefonos.size();indice++) {
+                this.telefonoMapper.updateTelefono(persona.getTelefonos().get(indice), persona.getPersonaId() );
             }
-            for (int k2 = 0; k2 < telefonosAntiguosDelete.size(); k2++) {
-                this.telefonoMapper.deleteTelefono(persona.getPersonaId(), telefonosAntiguosDelete.get(k2));
+
+        }else {
+            //Hay el mismo numero de telefonos en el JSON que el la BBDD. Hacemos un update.
+            for (int i=0; i<telefonos.size();i++) {
+                this.telefonoMapper.updateTelefono(persona.getTelefonos().get(i),persona.getPersonaId());
             }
         }
     }
-
 
     public void validatePersonData(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
         this.validateNombre(persona);
