@@ -167,6 +167,11 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         }
     }
 
+    /**
+     * Servicio que se encarga de cancelar la solicitud de renting asociada al id que se le pasa como parametro, solicitud que encontramos gracias al uso del metodo getSolicitudById
+     * @param id de la solicitud de renting
+     * @throws SolicitudRentingNotFoundException que recoge la excepcion cuando la solicitud de renting es nula, si la solicitud no es nula la devuelve cancelada
+     */
     public void cancelarSolicitud (int id) throws SolicitudRentingNotFoundException {
         SolicitudRenting solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
         if (solicitudRenting == null) {
