@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 /**
  * Clase que contiene los metodos que engloba todos los metodos destinados a comprobar el cumplimiento de reglas de preparobacion,
  * predenegacion, y la obtencion de un estado de la solicitud.
+ * @author: ismael.mesa@babelgroup.com
+ * @author: alvaro.dorado@babelgroup.com
  */
 @Service
 public class CalculateAutomaticResultImpl implements CalculateAutomaticResult {

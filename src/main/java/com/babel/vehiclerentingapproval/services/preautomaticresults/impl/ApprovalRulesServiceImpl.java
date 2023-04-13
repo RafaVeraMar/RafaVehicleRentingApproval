@@ -10,10 +10,12 @@ import java.util.List;
 /**
 
  * Esta clase contiene las reglas de aprobación de una solicitud de renting, las cuales todas ellas se tienen que cumplir
- * @author: Ismael Mesa Zyout
- * @author: Álvaro Dorado Navas
- * @author: Rafael Vera Marañon
- * @author: Daniel Gallardo Carrión
+ * @author: ismael.mesa@babelgroup.com
+ * @author: alvaro.dorado@babelgroup.com
+ * @author: rafael.vera@babelgroup.com
+ * @author: daniel.gallardo@babelgroup.com
+ * @author: ramon.vazquez@babelgroup.com
+ * @author: alvaro.aleman@babelgroup.com
  */
 @Service
 public class ApprovalRulesServiceImpl implements ApprovalRulesService {
