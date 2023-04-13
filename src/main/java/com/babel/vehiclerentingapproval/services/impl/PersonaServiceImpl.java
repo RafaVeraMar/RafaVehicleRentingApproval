@@ -118,39 +118,20 @@ public class PersonaServiceImpl implements PersonaService {
         }
     }
 
+    @Transactional
     public void modificarTelefono(Persona persona) {
         List<TelefonoContacto> telefonos = persona.getTelefonos();
         List<TelefonoContacto> telefonosAntiguos = telefonoMapper.listarTelefonos(persona.getPersonaId());
-        int diferenciaJSONBBDD = telefonos.size()-telefonosAntiguos.size();
-        
-        //Comprobamos la diferencia de numeros
 
-        if (diferenciaJSONBBDD<0){
-            //Hay mas numeros en la BBDD que en el JSON nuevo. Necesitamos eliminar la diferencia de numeros y actualizar los existentes.
-            for (int indice=0;indice<abs(diferenciaJSONBBDD);indice++) {
-                this.telefonoMapper.deleteTelefono(persona.getTelefonos().get(indice), persona.getPersonaId() );
-            }
-
-            for (int indice=0;indice<telefonos.size();indice++) {
-                this.telefonoMapper.updateTelefono(persona.getTelefonos().get(indice), persona.getPersonaId() );
-            }
-
-        } else if (diferenciaJSONBBDD>0) {
-            //Hay mas numeros en el JSON que en la BBDD. Necesitamos añadir la diferencia de numeros y actuializar el resto.
-            for (int indice=0;indice<diferenciaJSONBBDD;indice++) {
-                this.telefonoMapper.addTelefono(persona.getTelefonos().get(indice), persona );
-            }
-
-            for (int indice=0;indice<telefonos.size();indice++) {
-                this.telefonoMapper.updateTelefono(persona.getTelefonos().get(indice), persona.getPersonaId() );
-            }
-
-        }else {
-            //Hay el mismo numero de telefonos en el JSON que el la BBDD. Hacemos un update.
-            for (int i=0; i<telefonos.size();i++) {
-                this.telefonoMapper.updateTelefono(persona.getTelefonos().get(i),persona.getPersonaId());
-            }
+        //Borramos telefonos pertenecientes al usuario
+        for (int i = 0; i < telefonosAntiguos.size(); i++) {
+            this.telefonoMapper.deleteTelefono(telefonosAntiguos.get(i),persona.getPersonaId());
         }
+        //Añadimos los telefonos del usuario
+        for (int i = 0;i<telefonos.size();i++) {
+            this.telefonoMapper.addTelefono(telefonos.get(i),persona);
+        }
+        
     }
 
     public void validatePersonData(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
