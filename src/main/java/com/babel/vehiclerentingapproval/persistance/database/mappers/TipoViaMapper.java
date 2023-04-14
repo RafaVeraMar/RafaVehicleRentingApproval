@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Select;
 /**
  * Esta clase proporciona metodos de manejo de TipoVia en la base de datos
  *
- * @author enrique.munoz@babelgroup.com
+ * @author enrique.munoz@babelgroup.com,andres.guijarro@babelgroup.com
  */
 @Mapper
 public interface TipoViaMapper {
