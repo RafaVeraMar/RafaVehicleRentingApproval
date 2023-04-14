@@ -6,6 +6,7 @@ import javax.validation.constraints.*;
 import java.util.Date;
 
 public class Renta {
+
     @NotNull @NotEmpty @NotBlank @Positive
     private int rentaId;
     @NotNull @NotEmpty @NotBlank
