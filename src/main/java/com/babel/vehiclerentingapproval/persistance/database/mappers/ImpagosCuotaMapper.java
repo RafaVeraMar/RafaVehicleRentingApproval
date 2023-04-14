@@ -4,7 +4,7 @@ import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 /**
- * Esta clase sirve ofrecer operaciones sobre las cuotas de impago en la base de datos
+ * Esta interfaz sirve ofrecer operaciones sobre las cuotas de impago en la base de datos
  *
  * @author daniel.gallardo@babelgroup.com, ismael.mesa@babelgroup.com
  */

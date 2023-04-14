@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 /**
- * Esta clase proporciona metodos para el manejo de la informacion de una persona en la base de datos
+ * Esta interfaz proporciona metodos para el manejo de la informacion de una persona en la base de datos
  *
  * @author andres.guijarro@babelgroup.com, rafael.vera@babelgroup.com, tomas.prados@babelgroup.com
  */

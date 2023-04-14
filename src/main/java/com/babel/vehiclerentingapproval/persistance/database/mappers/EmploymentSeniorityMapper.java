@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 /**
- * Esta clase sirve para obtener la fecha de inicio de empleo de una solicitud
+ * Esta interfaz sirve para obtener la fecha de inicio de empleo de una solicitud
  *
  * @author ismael.mesa@babelgroup.com, rafael.vera@babelgroup.com
  */

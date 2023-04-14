@@ -4,7 +4,7 @@ import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
 /**
- * Esta clase sirve para hacer los accesos a la base de datos de las Solicitudes de Renting
+ * Esta interfaz sirve para hacer los accesos a la base de datos de las Solicitudes de Renting
  *
  * @author alvaro.dorado@babelgroup.com / ismael.mesa@babelgroup.com
  */

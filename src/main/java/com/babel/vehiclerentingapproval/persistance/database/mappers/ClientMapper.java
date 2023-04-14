@@ -2,7 +2,7 @@ package com.babel.vehiclerentingapproval.persistance.database.mappers;
 
 import org.apache.ibatis.annotations.Select;
 /**
- * Esta clase sirve para hacer las operaciones relacionadas con las solicitudes de los clientes
+ * Esta interfaz sirve para hacer las operaciones relacionadas con las solicitudes de los clientes
  *
  * @author ismael.mesa@babelgroup.com, rafael.vera@babelgroup.com
  */

@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 /**
- * Esta clase hace dos consultas referentes a las provincias
+ * Esta interfaz hace dos consultas referentes a las provincias
  *
  * @author enrique.munoz@babelgroup.com
  */

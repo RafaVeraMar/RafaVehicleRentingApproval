@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 /**
- * Esta clase hace dos consultas referentes a los tipos de resolucion de solicitudes de la base de datos
+ * Esta interfaz hace dos consultas referentes a los tipos de resolucion de solicitudes de la base de datos
  *
  * @author andres.guijarro@babelgroup.com
  */
