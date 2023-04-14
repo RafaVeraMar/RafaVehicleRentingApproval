@@ -301,8 +301,8 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws SolicitudRentingNotFoundException
      */
     public void validateSolicitudRenting(SolicitudRenting solicitudRenting) throws SolicitudRentingNotFoundException {
-        if (solicitudRenting == null) {
-            throw new NullPointerException();
+        if (this.solicitudRentingMapper.existeSolicitud(solicitudRenting.getSolicitudId()) == 0) {
+            throw new SolicitudRentingNotFoundException();
         }
     }
 
