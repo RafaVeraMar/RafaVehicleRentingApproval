@@ -25,6 +25,7 @@ public interface PersonaService {
 
     public boolean existePersona(int personaId);
 
+    public void modificarTelefono(Persona persona);
     void modificarPersona(Persona persona) throws PersonaNotFoundException, DireccionNotFoundException;
 
     boolean existeDireccion(int direccionId);

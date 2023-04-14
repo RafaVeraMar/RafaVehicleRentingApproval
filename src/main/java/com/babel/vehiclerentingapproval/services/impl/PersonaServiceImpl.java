@@ -120,6 +120,23 @@ public class PersonaServiceImpl implements PersonaService {
 
         //Insertamos el resto de cambios
         this.personaMapper.updatePersona(persona);
+        this.modificarTelefono(persona);
+    }
+
+    @Transactional
+    public void modificarTelefono(Persona persona) {
+        List<TelefonoContacto> telefonos = persona.getTelefonos();
+        List<TelefonoContacto> telefonosAntiguos = telefonoMapper.listarTelefonos(persona.getPersonaId());
+
+        //Borramos telefonos pertenecientes al usuario
+        for (int i = 0; i < telefonosAntiguos.size(); i++) {
+            this.telefonoMapper.deleteTelefono(persona.getPersonaId(), telefonosAntiguos.get(i));
+        }
+        //Añadimos los telefonos del usuario
+        for (int i = 0;i<telefonos.size();i++) {
+            this.telefonoMapper.addTelefono(telefonos.get(i),persona);
+        }
+
     }
 
     public void validatePersonData(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
