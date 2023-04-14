@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 /**
- * Esta clase proporciona metodos de manejo de paises en la base de datos
+ * Esta interfaz proporciona metodos de manejo de paises en la base de datos
  *
  * @author enrique.munoz@babelgroup.com
  */

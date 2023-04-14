@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 /**
- * Esta clase hace dos consultas referentes a las preaprobaciones para las solicitudes
+ * Esta interfaz hace dos consultas referentes a las preaprobaciones para las solicitudes
  *
  * @author alvaro.aleman@babelgroup.com, ramon.vazquez@babelgroup.com
  */
