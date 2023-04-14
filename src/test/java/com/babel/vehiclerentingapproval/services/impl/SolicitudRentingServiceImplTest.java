@@ -126,14 +126,14 @@ public class SolicitudRentingServiceImplTest {
         public void verSolicitudRenting_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists ( ) {
             Mockito.when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(0);
 
-            Assertions.assertThrows(NullPointerException.class, ( ) -> {
+            Assertions.assertThrows(SolicitudRentingNotFoundException.class, ( ) -> {
                 solicitudService.getSolicitudById(0);
             });
         }
 
         @Test
         public void verSolicitudRenting_shouldNotThrow_SolicitudRentingNotFoundException_when_solicitudIdExists ( ) {
-            Mockito.when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(1);
+            Mockito.when(solicitudRentingMapper.getSolicitudByID(anyInt())).thenReturn(new SolicitudRenting());
 
             Assertions.assertDoesNotThrow(( ) -> {
                 solicitudService.getSolicitudById(0);
@@ -342,7 +342,7 @@ public class SolicitudRentingServiceImplTest {
         public void cancelarSolicitudRenting_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists ( ) {
             Mockito.when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(0);
 
-            Assertions.assertThrows(NullPointerException.class, ( ) -> {
+            Assertions.assertThrows(SolicitudRentingNotFoundException.class, ( ) -> {
                 solicitudService.cancelarSolicitud(0);
             });
         }
