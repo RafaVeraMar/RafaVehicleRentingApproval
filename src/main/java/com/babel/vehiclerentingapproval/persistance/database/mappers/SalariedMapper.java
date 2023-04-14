@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 /**
- * Esta clase hace dos consultas referentes a las CIF de los Scorings
+ * Esta interfaz hace dos consultas referentes a las CIF de los Scorings
  *
  * @author alvaro.dorado@babelgroup.com, ismael.mesa@babelgroup.com
  */

@@ -3,7 +3,7 @@ package com.babel.vehiclerentingapproval.persistance.database.mappers;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 /**
- * Esta clase proporciona metodos de manejo de profesiones en la base de datos
+ * Esta interfaz proporciona metodos de manejo de profesiones en la base de datos
  *
  * @author andres.guijarro@babelgroup.com
  */

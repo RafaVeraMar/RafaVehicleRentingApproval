@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Select;
 import java.util.Date;
 
 /**
- * Esta clase sirve para hacer consultas en la base de datos para hacer las preaprobaciones de si un cliente
+ * Esta interfaz sirve para hacer consultas en la base de datos para hacer las preaprobaciones de si un cliente
  * existe y es garante para una solicitud de renting.
  *
  * @author ramon.vazquez@babelgroup.com, alvaro.aleman@babelgroup.com

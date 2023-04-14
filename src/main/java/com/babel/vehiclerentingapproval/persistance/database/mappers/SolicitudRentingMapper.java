@@ -5,7 +5,7 @@ import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 import org.apache.ibatis.annotations.*;
 
 /**
- * Esta clase sirve para hacer los accesos a la base de datos de las Solicitudes de Renting
+ * Esta interfaz sirve para hacer los accesos a la base de datos de las Solicitudes de Renting
  *
  * @author miguel.sdela@babelgroup.com / javier.serrano@babelgroup.com / ramon.vazquez@babelgroup.com / alvaro.aleman@babelgroup.com / javier.roldan@babelgroup.com
  */

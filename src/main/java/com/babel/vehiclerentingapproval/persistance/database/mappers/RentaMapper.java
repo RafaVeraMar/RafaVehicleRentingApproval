@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 /**
- * Esta clase sirve para hacer los accesos a la base de datos de renta
+ * Esta interfaz sirve para hacer los accesos a la base de datos de renta
  *
  * @author andres.guijarro@babelgroup.com
  */
