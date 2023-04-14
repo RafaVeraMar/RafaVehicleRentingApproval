@@ -13,6 +13,7 @@ public interface ResolucionSolicitudesService {
     /**
      * Método que recupera los codigos de resolucion de solicitudes.
      * @throws ResolucionSolicitudesNotFoundException si no existe ninguna
+     * @see ResolucionSolicitud
      */
     public List<ResolucionSolicitud> getTipoResolucionesSolicitudes() throws ResolucionSolicitudesNotFoundException;
 }
