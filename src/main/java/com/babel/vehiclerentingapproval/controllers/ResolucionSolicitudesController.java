@@ -38,9 +38,8 @@ public class ResolucionSolicitudesController {
      * <p>
      * En caso de cualquier otra excepción, se devuelve un error interno del servidor.
      *
-     * @param solicitudRenting la solicitud de renting que se va a añadir
-     * @return un objeto ResponseEntity que contiene la información de la solicitud creada,
-     * incluido su ID, y el código de estado HTTP
+     * @return un objeto ResponseEntity que contiene la información de la solicitud creada, que contiene los codigos de
+     * resolución que existen
      */
     @GetMapping("/listarTiposResolucion")
     @Operation(summary = "Listar los tipos de resolucion de solicitudes", description = "Lista los tipos de resolucion de solicitudes existentes en la base de datos")
