@@ -4,6 +4,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
+ * Clase que modela el telefono de contacto
  * @author javier.roldan@babelgroup.com
  * @author tomas.prados@babelgroup.com
  */
