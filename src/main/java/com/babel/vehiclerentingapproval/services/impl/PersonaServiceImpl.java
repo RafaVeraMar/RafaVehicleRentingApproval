@@ -67,7 +67,9 @@ public class PersonaServiceImpl implements PersonaService {
     @Override
     public List<ProductoContratado> viewPersonaProducto(int idPersona) throws PersonaNotFoundException {
         this.validatePersona(idPersona);
-        return this.personaMapper.verProductosContratadosPersona(idPersona);
+        List<ProductoContratado> listaProductos = this.personaMapper.verProductosContratadosPersona(idPersona);
+        this.updateEstadoPersonaProducto(listaProductos);
+        return listaProductos;
     }
 
     public void updateEstadoPersonaProducto(List<ProductoContratado> listaProductoPersona){
@@ -118,7 +120,6 @@ public class PersonaServiceImpl implements PersonaService {
 
         //Insertamos el resto de cambios
         this.personaMapper.updatePersona(persona);
-
     }
 
     public void validatePersonData(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
