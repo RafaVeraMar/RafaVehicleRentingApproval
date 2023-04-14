@@ -33,6 +33,7 @@ public class ResolucionSolicitudesServiceImpl implements ResolucionSolicitudesSe
      * @return Una lista de objetos de tipo ResolucionSolicitud con los datos de la base de datos
      * @throws ResolucionSolicitudesNotFoundException Si no se encuentra ningun datos de resolucion de solicitudes.
      * @see #existenSolicitudes()
+     * @see ResolucionSolicitud
      */
     @Override
     public List<ResolucionSolicitud> getTipoResolucionesSolicitudes() throws ResolucionSolicitudesNotFoundException {
