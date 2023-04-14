@@ -57,7 +57,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         validatePlazo(solicitudRenting);
         validateFecha(solicitudRenting);
         solicitudRentingMapper.insertSolicitudRenting(solicitudRenting);
-        solicitudRenting.setPersona(personaService.getPerson(solicitudRenting.getPersona().getPersonaId()));
+        solicitudRenting.setPersona(personaService.existPerson(solicitudRenting.getPersona().getPersonaId()));
         return solicitudRenting;
     }
 

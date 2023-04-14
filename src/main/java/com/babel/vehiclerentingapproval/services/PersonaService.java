@@ -3,7 +3,6 @@ package com.babel.vehiclerentingapproval.services;
 import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.ProductoContratado;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -12,7 +11,7 @@ public interface PersonaService {
 
     Persona addPersona(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException, DireccionNotFoundException, PersonaNotFoundException, DniFoundException;
 
-    Persona getPerson(int idPersona) throws RequestApiValidationException;
+    Persona existPerson(int idPersona) throws RequestApiValidationException;
 
     List<ProductoContratado> viewPersonaProducto(int id) throws PersonaNotFoundException;
     void updateEstadoPersonaProducto(List<ProductoContratado> listaProductoPersona);
