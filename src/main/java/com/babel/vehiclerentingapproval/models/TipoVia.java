@@ -4,66 +4,63 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * Este clase modela el tipo de via
- *
- * @author tomas.prados@babelgroup.com
+ * Clase que modela el tipo de via
  * @author javier.roldan@babelgroup.com
+ * @author tomas.prados@babelgroup.com
  * @author enrique.munoz@babelgroup.com
-
  */
 public class TipoVia {
     /**
-     * El identificador del tipo de via
+     * Parametro que alamcena el identificador del tipo de via, de tipo Integer
      */
     @NotNull
     private Integer tipoViaId;
     /**
-     * La descripcion que define el tipo de via
+     * Parametro que almacena la descripcion del tipo de via, de tipo String con un tamaño maximo de 50 caracteres
      */
     @NotNull
     @Size(max = 50)
     private String descripcion;
 
     /**
-     * Constructor de la clase {TipoVia}
+     * Constructor del modelo de tipo de via, pasandole como parametros los atributos explicados anteriormente
      * @param tipoViaId
      * @param descripcion
      */
-
     public TipoVia(Integer tipoViaId, String descripcion) {
         this.tipoViaId = tipoViaId;
         this.descripcion = descripcion;
     }
 
     /**
-     * Metodo publico que devuelve el identificador del tipo de via
-     * @return devuelve el identificador delk tipo de via
+     * Metodo público que se encarga de mostrar el valor del identificador del tipo de via, de tipo Integer
+     * @return devuelve el identificador del tipo de via
      */
     public Integer getTipoViaId() {
         return tipoViaId;
     }
 
     /**
-     * metodo publico que inicializa el tipo de via
-     * @param tipoViaId
+     * Metodo publico que se encarga de asignar el valor pasado como parametro al identificador del tipo de via
+     * @param tipoViaId es el valor que se le va a asignar al parametro indicado del objeto TipoVia
      */
     public void setTipoViaId(Integer tipoViaId) {
         this.tipoViaId = tipoViaId;
     }
 
     /**
-     * metodo publico que devuelve la descripcion del tipo de via
-     * @return
+     * Metodo público que se encarga de mostrar el valor de la descripcion del tipo de via, de tipo String
+     * @return devuelve la descripcion del tipo de via
      */
-
     public String getDescripcion() {
         return descripcion;
     }
 
     /**
-     * metodo publico que inicializa la descripcion
-     * @param descripcion
+     * Metodo publico que se encarga de asignar el valor pasado como parametro a la descripcion del tipo de via
+     * @param descripcion es el valor que se le va a asignar al parametro indicado del objeto TipoVia
      */
+
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
