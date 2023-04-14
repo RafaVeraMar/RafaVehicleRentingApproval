@@ -6,6 +6,7 @@ import javax.validation.constraints.*;
 import java.util.Date;
 
 /**
+ * Clase que modela el objeto de Renta
  * @author andres.guijarro@babelgroup.com
  * @author javier.roldan@babelgroup.com
  */
