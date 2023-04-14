@@ -4,201 +4,204 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.validation.constraints.*;
 import java.util.Date;
+
 /**
+ * Clase que modela el objeto de Renta
  * @author andres.guijarro@babelgroup.com
  * @author javier.roldan@babelgroup.com
  */
 public class Renta {
-
     /**
-     * Atributo que es un identifacdor de una renta
+     * Parametro que indica el identificador de la renta
      */
     @NotNull @NotEmpty @NotBlank @Positive
     private int rentaId;
     /**
-     * Parametro de tipo Persona que representa a una persona
+     * Parametro de tipo Persona, que asocia a la persona con la renta
      */
     @NotNull @NotEmpty @NotBlank
     private Persona persona;
     /**
-     * Parametro de tipo Profesion que representa a una profesion
+     * Parametro de tipo Profesion, que asocia a la profesion con la renta
      */
     @NotNull @NotEmpty @NotBlank
     private Profesion profesion;
     /**
-     * Atributo que representa el anio fiscal al que pertenece la renta
+     * Parametro de tipo int, referido al año de la renta
      */
     @NotNull @NotEmpty @NotBlank @Positive
     private int anio;
     /**
-     * Atributo que representa el importe neto de una renta
+     * Parametro de tipo float, que indica el importe neto de la renta
      */
     @NotNull @NotEmpty @NotBlank
     private float importeNeto;
     /**
-     * Atributo que representa el importe bruto de una renta
+     * Parametro de tipo float, que indica el importe bruto de la renta
      */
     @NotNull @NotEmpty @NotBlank
     private float importeBruto;
     /**
-     * Atributo que representa si tu la cuenta pertenece a la persona titular
+     * Parametro de tipo int, que comprueba si la cuenta es propia o no
      */
     @NotNull @NotEmpty @NotBlank
     private int isCuentaPropia;
     /**
-     * Atributo que representa el impuesto sobre actividades económicas de una persona en una renta
+     * Parametro de tipo String que indica el iae de la renta
      */
     @Size(max = 5) @NotNull @NotEmpty @NotBlank
     private String iae;
     /**
-     * Atributo que representa el cif de empleador de una persona
+     * Parametro de tipo String que indica el cif del empleador
      */
     @Size(max = 10)
     private String cifEmpleador;
     /**
-     * Atributo que representa la fecha de inicio del empleo de la persona
+     * Parametro de tipo Date, referido a la fecha de inicio de empleo
      */
     @PastOrPresent
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date fechaInicioEmpleo;
 
     /**
-     * Metodo público que se encarga de mostrar el valor de la id de la renta
-     * @return devuelve el id de la renta
+     * Metodo público que se encarga de mostrar el valor del identificador de la renta, de tipo int
+     * @return devuelve el identificador asociado a la renta
      */
     public int getRentaId() {
         return rentaId;
     }
     /**
-     * Metodo publico que se encarga de darle un valor al id de la renta
-     * @param rentaId que es el id de la renta
+     * Metodo publico que se encarga de asignar el valor pasado como parametro al identificador de la renta
+     * @param rentaId es el valor que se le va a asignar al parametro indicado del objeto renta
      */
     public void setRentaId(int rentaId) {
         this.rentaId = rentaId;
     }
     /**
-     * Metodo público que se encarga de mostrar la Persona asociada a la renta
-     * @return devuelve la persona
+     * Metodo público que se encarga de mostrar el valor de la persona asociada a la renta
+     * @return devuelve la persona asociada a la renta
      */
     public Persona getPersona() {
         return persona;
     }
     /**
-     * Metodo publico que se encarga de darle un valor a la persona asociada a la renta
-     * @param persona a la que se le quiere dar un valor
+     * Metodo publico que se encarga de asignar el valor pasado como parametro a la persona asociada a la renta
+     * @param persona es el valor que se le va a asignar al parametro indicado del objeto renta
      */
     public void setPersona(Persona persona) {
         this.persona = persona;
     }
     /**
-     * Metodo público que se encarga de mostrar la profesion asociada a la renta
-     * @return devuelve la profesion
+     * Metodo público que se encarga de mostrar el valor de la profesion asociada a la renta
+     * @return devuelve la profesion asociada a la renta
      */
     public Profesion getProfesion() {
         return profesion;
     }
     /**
-     * Metodo publico que se encarga de darle un valor a la prfoesion asociada a la renta
-     * @param profesion a la que se le quiere dar un valor
+     * Metodo publico que se encarga de asignar el valor pasado como parametro a la profesion asociada a la renta
+     * @param profesion es el valor que se le va a asignar al parametro indicado del objeto renta
      */
     public void setProfesion(Profesion profesion) {
         this.profesion = profesion;
     }
     /**
-     * Metodo público que se encarga de mostrar el anio asociada a la renta
-     * @return devuelve el anio
+     * Metodo público que se encarga de mostrar el valor del año asociada a la renta
+     * @return devuelve el año asociado a la renta
      */
     public int getAnio() {
         return anio;
     }
     /**
-     * Metodo publico que se encarga de darle un valor al anio asociada a la renta
-     * @param anio a la que se le quiere dar un valor
+     * Metodo publico que se encarga de asignar el valor pasado como parametro al año asociado a la renta
+     * @param anio es el valor que se le va a asignar al parametro indicado del objeto renta
      */
     public void setAnio(int anio) {
         this.anio = anio;
     }
     /**
-     * Metodo público que se encarga de mostrar el importe neto asociado a la renta
-     * @return devuelve el importe neto
+     * Metodo público que se encarga de mostrar el valor del importe neto asociado a la renta
+     * @return devuelve el importe neto asociado a la renta
      */
     public float getImporteNeto() {
         return importeNeto;
     }
     /**
-     * Metodo publico que se encarga de darle un valor al importe neto asociado a la renta
-     * @param importeNeto a la que se le quiere dar un valor
+     * Metodo publico que se encarga de asignar el valor pasado como parametro al importe neto asociado a la renta
+     * @param importeNeto es el valor que se le va a asignar al parametro indicado del objeto renta
      */
     public void setImporteNeto(float importeNeto) {
         this.importeNeto = importeNeto;
     }
     /**
-     * Metodo público que se encarga de mostrar el importe bruto asociado a la renta
-     * @return devuelve el importe bruto
+     * Metodo público que se encarga de mostrar el valor del importe bruto asociado a la renta
+     * @return devuelve el importe bruto asociado a la renta
      */
     public float getImporteBruto() {
         return importeBruto;
     }
     /**
-     * Metodo publico que se encarga de darle un valor al importe bruto asociado a la renta
-     * @param importeBruto a la que se le quiere dar un valor
+     * Metodo publico que se encarga de asignar el valor pasado como parametro al importe bruto asociado a la renta
+     * @param importeBruto es el valor que se le va a asignar al parametro indicado del objeto renta
      */
     public void setImporteBruto(float importeBruto) {
         this.importeBruto = importeBruto;
     }
-
     /**
-     * Metodo público que se encarga de mostrar la cuenta propia asociado a la renta
-     * @return devuelve la cuenta propia
+     * Metodo público que se encarga de mostrar el valor de si es cuenta propia o no, asociado a la renta
+     * @return devuelve el valor de si es cuenta propia o no asociado a la renta
      */
     public int getIsCuentaPropia() {
         return isCuentaPropia;
     }
     /**
-     * Metodo publico que se encarga de darle un valor a la cuenta propia asociado a la renta
-     * @param isCuentaPropia a la que se le quiere dar un valor
+     * Metodo publico que se encarga de asignar el valor pasado como parametro al isCuentaPropia asociado a la renta
+     * @param isCuentaPropia es el valor que se le va a asignar al parametro indicado del objeto renta
      */
     public void setIsCuentaPropia(int isCuentaPropia) {
         this.isCuentaPropia = isCuentaPropia;
     }
     /**
-     * Metodo público que se encarga de mostrar el iae asociado a la renta
-     * @return devuelve el iae
+     * Metodo público que se encarga de mostrar el valor del iae, asociado a la renta
+     * @return devuelve el valor del iae asociado a la renta
      */
     public String getIae() {
         return iae;
     }
     /**
-     * Metodo publico que se encarga de darle un valor al iae a la renta
-     * @param iae a la que se le quiere dar un valor
+     * Metodo publico que se encarga de asignar el valor pasado como parametro al iae, asociado a la renta
+     * @param iae es el valor que se le va a asignar al parametro indicado del objeto renta
      */
     public void setIae(String iae) {
         this.iae = iae;
     }
     /**
-     * Metodo público que se encarga de mostrar el cid del empleador asociado a la renta
-     * @return devuelve el cid del empleador
+     * Metodo público que se encarga de mostrar el valor del cif del empleador, asociado a la renta
+     * @return devuelve el valor del cif de empleador asociado a la renta
      */
     public String getCifEmpleador() {
         return cifEmpleador;
     }
+
     /**
-     * Metodo publico que se encarga de darle un valor al cid del empleador a la renta
-     * @param cifEmpleador a la que se le quiere dar un valor
+     * Metodo publico que se encarga de asignar el valor pasado como parametro al cif del empleador, asociado a la renta
+     * @param cifEmpleador es el valor que se le va a asignar al parametro indicado del objeto renta
      */
     public void setCifEmpleador(String cifEmpleador) {
         this.cifEmpleador = cifEmpleador;
     }
+
     /**
-     * Metodo público que se encarga de mostrar la fecha de inicio de empleo asociado a la renta
-     * @return devuelve la fecha de inicio de empleo
+     * Metodo público que se encarga de mostrar el valor de la fecha de inicio de empleo, asociado a la renta
+     * @return devuelve el valor de la fecha de inicio de empleo, asociado a la renta
      */
     public Date getFechaInicioEmpleo() {
         return fechaInicioEmpleo;
     }
+
     /**
-     * Metodo publico que se encarga de darle un valor a la fecha de inicio de empleo a la renta
-     * @param fechaInicioEmpleo a la que se le quiere dar un valor
+     * Metodo publico que se encarga de asignar el valor pasado como parametro a la fecha de inicio del empleo, asociado a la renta
+     * @param fechaInicioEmpleo es el valor que se le va a asignar al parametro indicado del objeto renta
      */
     public void setFechaInicioEmpleo(Date fechaInicioEmpleo) {
         this.fechaInicioEmpleo = fechaInicioEmpleo;
