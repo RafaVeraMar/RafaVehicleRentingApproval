@@ -192,6 +192,12 @@ public class SolicitudRentingController {
         return new ResponseEntity<Object>(respuesta, (HttpStatus) respuesta.get("Status"));
     }
 
+    /**
+     * Endpoint para actualizar el estado de una solicitud de renting
+     * @param solicitudId ID de la solicitud de renting
+     * @param nuevoEstado valor del nuevo estado de la solicitud de renting
+     * @return Objeto ResponseEntity que devuelve un Json con el código de la operación REST, ID de solicitud y código de resolución
+     */
     @PutMapping("/estado/{solicitudId}")
     @Operation(summary = "Modificar estado de solicitud por ID", description = "Modifica el estado de una solicitud a partir de su ID y notifica al usuario enviando un correo electronico")
     @ApiResponses(value = {

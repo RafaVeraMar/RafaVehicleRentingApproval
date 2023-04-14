@@ -45,8 +45,20 @@ public interface SolicitudRentingService {
      */
     public SolicitudRenting getSolicitudById(int it) throws RequestApiValidationException;
 
+    /**
+     * Interfaz que se encarga de cancelar la solicitud asociada al id que se le pasa como parametro
+     * @param solicitudId asociado al estado de solicitud que se quiere actualizar
+     * @param nuevoEstado nuevo estado de solicitud renting
+     * @throws EstadoSolicitudNotFoundException
+     * @throws SolicitudRentingNotFoundException
+     */
     void modificaEstadoSolicitud(Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws EstadoSolicitudNotFoundException, SolicitudRentingNotFoundException;
 
+    /**
+     * Interfaz que enlaza la implementacion del servicio de {@link com.babel.vehiclerentingapproval.services.impl.SolicitudRentingServiceImpl}
+     *
+     * @return void (llamada a base de datos (mapper) para modificar el estado.
+     */
     public List<String> getListaEstados();
 
     /**
