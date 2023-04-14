@@ -131,6 +131,18 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         return solicitudRenting;
     }
 
+    /**
+     * Modifica únicamete el estado de una solicitud de renting, se comprueba a través de la base de datos que el nuevo estado sea uno de los valores posible.
+     *
+     * @param solicitudId ID de solicitud de renting.
+     * @param nuevoEstado Nuevo estado de solicitud rentinh por validar.
+     * @return void (llamada a base de datos (mapper) para modificar el estado.
+     * @see #getListaEstados()
+     * @see SolicitudRentingService
+     * @see SolicitudRentingMapper
+     * @throws SolicitudRentingNotFoundException cuando no exista el ID de la solicitud.
+     * @throws EstadoSolicitudNotFoundException cuando el estado de la solicitud no sea uno de los valores válidos posibles.
+     */
     @Override
     public void modificaEstadoSolicitud(Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException {
 
@@ -149,6 +161,11 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
     }
 
+    /**
+     * Modifica únicamete el estado de una solicitud de renting, se comprueba a través de la base de datos que el nuevo estado sea uno de los valores posible.
+     *
+     * @return List<String> (llamada a base de datos (mapper) para recoger posibles estados.
+     */
     @Override
     public List<String> getListaEstados() {
         List<String> listaEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
