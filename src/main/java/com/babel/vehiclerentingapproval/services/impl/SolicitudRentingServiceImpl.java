@@ -302,7 +302,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      */
     public void validateSolicitudRenting(SolicitudRenting solicitudRenting) throws SolicitudRentingNotFoundException {
         if (solicitudRenting == null) {
-            throw new NullPointerException();
+            throw new SolicitudRentingNotFoundException();
         }
     }
 
