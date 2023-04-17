@@ -57,7 +57,8 @@ public class PersonaController {
             @ApiResponse(responseCode = "400", description = "Comprueba los datos de entrada.", content = { @Content( mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Error del servidor.", content = { @Content( mediaType = "application/json")})
     })
-    public ResponseEntity addPersona(@RequestBody Persona persona){
+
+    ResponseEntity addPersona(@RequestBody Persona persona){
         Persona personaCreada;
         Map<String, Object> map = new HashMap<String, Object>();
         try {
