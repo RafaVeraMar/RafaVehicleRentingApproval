@@ -108,12 +108,12 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
     /**
      * Método que comprueba si el codigo de la resolución es válido
-     * @param CodResolucion el codigo de la resolucion
+     * @param codResolucion el codigo de la resolucion
      * @throws EstadoSolicitudInvalidException si el codigo de resolucion no es valido
      * @see CodigoResolucionValidatorImpl
      */
-    private void validarCodigoResolucion(String CodResolucion) throws EstadoSolicitudInvalidException{
-        this.codigoResolucionValidator.validarCodResolucion(CodResolucion);
+    private void validarCodigoResolucion(String codResolucion) throws EstadoSolicitudInvalidException{
+        this.codigoResolucionValidator.validarCodResolucion(codResolucion);
 
     }
 
