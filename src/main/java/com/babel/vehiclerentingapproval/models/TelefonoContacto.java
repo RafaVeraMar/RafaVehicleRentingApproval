@@ -20,6 +20,12 @@ public class TelefonoContacto {
     @NotNull
     @Size(max = 50)
     private String telefono;
+    /**
+     * Constructor del modelo de telefono de contacto vacio
+
+     */
+    public TelefonoContacto() {
+    }
 
     /**
      * Constructor del modelo de telefono de contacto, pasandole como parametro los atributos explicados anteriormente
@@ -66,8 +72,8 @@ public class TelefonoContacto {
     @Override
     public String toString() {
         return "TelefonoContacto{" +
-                "telefonoId=" + telefonoId +
-                ", telefono='" + telefono + '\'' +
+                "telefonoId=" + getTelefonoId() +
+                ", telefono='" + getTelefono() + '\'' +
                 '}';
     }
 }
