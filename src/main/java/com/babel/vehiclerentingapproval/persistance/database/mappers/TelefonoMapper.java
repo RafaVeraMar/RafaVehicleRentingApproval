@@ -1,7 +1,6 @@
 package com.babel.vehiclerentingapproval.persistance.database.mappers;
 
 import com.babel.vehiclerentingapproval.models.Persona;
-import com.babel.vehiclerentingapproval.models.Renta;
 import com.babel.vehiclerentingapproval.models.TelefonoContacto;
 import org.apache.ibatis.annotations.*;
 
