@@ -108,7 +108,7 @@ public class PersonaController {
     @ApiResponses( value = {@ApiResponse(responseCode = "200", description = "Se han obtenido con éxito los productos contratados por una persona.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "404", description = "La persona no existe.", content = { @Content( mediaType = "application/json")}),
     })
-    ResponseEntity viewPersonaProducto(@PathVariable("id") int id){
+    public ResponseEntity viewPersonaProducto(@PathVariable("id") int id){
         List<ProductoContratado> lista;
         Map<String, Object> map = new HashMap<String, Object>();
 
