@@ -16,11 +16,11 @@ public class ProvinciaTest {
 
     @Test
     public void profesion_shouldReturn_sameString() {
-        Provincia provincia = createProductoContratado();
+        Provincia provincia = createProvincia();
         Assertions.assertEquals(provincia.toString(), "Provincia{codProvincia='SE', nombre='SEVILLA'}");
     }
 
-    public Provincia createProductoContratado() {
+    public Provincia createProvincia() {
         this.provincia = new Provincia();
         this.provincia.setCodProvincia("SE");
         this.provincia.setNombre("SEVILLA");

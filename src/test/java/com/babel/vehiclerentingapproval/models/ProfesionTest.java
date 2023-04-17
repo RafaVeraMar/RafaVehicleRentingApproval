@@ -17,11 +17,11 @@ public class ProfesionTest {
 
     @Test
     public void profesion_shouldReturn_sameString() {
-        Profesion profesion = createProductoContratado();
+        Profesion profesion = createProfesion();
         Assertions.assertEquals(profesion.toString(), "Profesion{profesionId=2, descripcion='Ingeniero'}");
     }
 
-    public Profesion createProductoContratado() {
+    public Profesion createProfesion() {
         this.profesion = new Profesion();
         this.profesion.setProfesionId(2);
         this.profesion.setDescripcion("Ingeniero");
