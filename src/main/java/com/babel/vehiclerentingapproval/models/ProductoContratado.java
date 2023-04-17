@@ -53,6 +53,13 @@ public class ProductoContratado {
     private EstadoProductoContratado estado;
 
     /**
+     * Metodo constructor de la clase vacio
+     */
+    public ProductoContratado() {
+
+    }
+
+    /**
      * Metodo constructor de la clase con todos los atributos no nulos como parametros
      * @param idProductoContratado id del producto contratado
      * @param idProducto id del producto
@@ -184,13 +191,13 @@ public class ProductoContratado {
     @Override
     public String toString() {
         return "ProductoContratado{" +
-                "idProductoContratado=" + idProductoContratado +
-                ", idProducto=" + idProducto +
-                ", alias='" + alias + '\'' +
-                ", importeNominal=" + importeNominal +
-                ", fechaAlta=" + fechaAlta +
-                ", fechaBaja=" + fechaBaja +
-                ", estado=" + estado +
+                "idProductoContratado=" + getIdProductoContratado() +
+                ", idProducto=" + getIdProducto() +
+                ", alias='" + getAlias() + '\'' +
+                ", importeNominal=" + getImporteNominal() +
+                ", fechaAlta=" + getFechaAlta().toString() +
+                ", fechaBaja=" + getFechaBaja().toString() +
+                ", estado=" + getEstado().toString() +
                 '}';
     }
 }
