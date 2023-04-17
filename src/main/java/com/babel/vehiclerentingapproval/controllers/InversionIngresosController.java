@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-
+/**
+ * Esta clase define las reglas de validación para la preaprobación automática de una solicitud de renting.
+ * @author: ismael.mesa@babelgroup.com, rafael.vera@babelgroup.com, alvaro.aleman@babelgroup.com, daniel.gallardo@babelgroup.com
+ */
 @RestController
 @RequestMapping("/validaciones")
 public class InversionIngresosController {
@@ -19,7 +22,13 @@ public class InversionIngresosController {
     public InversionIngresosController(ApprovalRulesService approvalService) {
         this.approvalService = approvalService;
     }
-
+    /**
+     * Devuelve un objeto ResponseEntity que contiene una lista de booleanos resultado de pasar las reglas
+     * de validación definidas por el cliente.
+     * <p>
+     * @param solicitudRentingl solicitud de renting que se quiere evaluar
+     * @return un objeto ResponseEntity que contiene una lista de booleanos,
+     */
     @GetMapping("")
     ResponseEntity makeProofs(@RequestParam SolicitudRenting solicitudRentingl) {
         boolean t = this.approvalService.validateInversionIngresos(solicitudRentingl);
