@@ -51,14 +51,12 @@ public interface PersonaMapper {
     @Select("SELECT pc.PRODUCTO_CONTRATADO_ID, pc.PRODUCTO_ID, pc.ALIAS, pc.IMPORTE_NOMINAL, pc.FECHA_ALTA, pc.FECHA_BAJA " +
             "FROM PERSONA p INNER JOIN PRODUCTO_CONTRATADO_PERSONA pcp ON p.PERSONA_ID =pcp.PERSONA_ID " +
             "INNER JOIN PRODUCTO_CONTRATADO pc ON pc.PRODUCTO_CONTRATADO_ID = pcp.PRODUCTO_CONTRATADO_ID WHERE p.PERSONA_ID = #{id}")
-    @Results({
-            @Result(property = "idProductoContratado", column = "PRODUCTO_CONTRATADO_ID"),
-            @Result(property = "idProducto", column = "PRODUCTO_ID"),
-            @Result(property = "alias", column = "ALIAS"),
-            @Result(property = "importeNominal", column = "IMPORTE_NOMINAL"),
-            @Result(property = "fechaAlta", column = "FECHA_ALTA"),
-            @Result(property = "fechaBaja", column = "FECHA_BAJA")
-    })
+    @Result(property = "idProductoContratado", column = "PRODUCTO_CONTRATADO_ID")
+    @Result(property = "idProducto", column = "PRODUCTO_ID")
+    @Result(property = "alias", column = "ALIAS")
+    @Result(property = "importeNominal", column = "IMPORTE_NOMINAL")
+    @Result(property = "fechaAlta", column = "FECHA_ALTA")
+    @Result(property = "fechaBaja", column = "FECHA_BAJA")
     List<ProductoContratado> verProductosContratadosPersona(int id);
 
     /**
