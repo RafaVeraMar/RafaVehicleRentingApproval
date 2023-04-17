@@ -230,4 +230,20 @@ public class SolicitudRenting {
     public void setTipoResultadoSolicitud (TipoResultadoSolicitud tipoResultadoSolicitud) {
         this.tipoResultadoSolicitud = tipoResultadoSolicitud;
     }
+
+    @Override
+    public String toString() {
+        return "SolicitudRenting{" +
+                "solicitudId=" + getSolicitudId() +
+                ", persona=" + getPersona() +
+                ", fechaSolicitud=" + getFechaSolicitud() +
+                ", numVehiculos=" + getNumVehiculos() +
+                ", inversion=" + getInversion() +
+                ", cuota=" + getCuota() +
+                ", plazo=" + getPlazo()+
+                ", fechaInicioVigor=" + getFechaInicioVigor() +
+                ", fechaResolucion=" + getFechaResolucion() +
+                ", tipoResultadoSolicitud=" + getTipoResultadoSolicitud() +
+                '}';
+    }
 }

@@ -40,6 +40,11 @@ public class Pais {
     private Integer orden;
 
     /**
+     * Constructor del pais vacío
+     */
+    public Pais(){}
+
+    /**
      * Constructor del pais formado por todos los atributos del pais explicados anteriormente
      * @param isoAlfa_2
      * @param isoNum_3
@@ -47,6 +52,7 @@ public class Pais {
      * @param nombre
      * @param orden
      */
+
 
     public Pais(String isoAlfa_2, Integer isoNum_3, String isoAlfa_3, String nombre, Integer orden) {
         this.isoAlfa_2 = isoAlfa_2;
@@ -135,5 +141,16 @@ public class Pais {
 
     public void setOrden(Integer orden) {
         this.orden = orden;
+    }
+
+    @Override
+    public String toString() {
+        return "Pais{" +
+                "isoAlfa_2='" + this.getIsoAlfa_2() + '\'' +
+                ", isoNum_3=" + this.getIsoNum_3() +
+                ", isoAlfa_3='" + this.getIsoAlfa_3() + '\'' +
+                ", nombre='" + this.getNombre() + '\'' +
+                ", orden=" + this.getOrden() +
+                '}';
     }
 }
