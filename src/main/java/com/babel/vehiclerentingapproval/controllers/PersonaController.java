@@ -110,7 +110,7 @@ public class PersonaController {
     })
     public ResponseEntity viewPersonaProducto(@PathVariable("id") int id){
         List<ProductoContratado> lista;
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
 
         try {
             lista = this.personaService.viewPersonaProducto(id);
