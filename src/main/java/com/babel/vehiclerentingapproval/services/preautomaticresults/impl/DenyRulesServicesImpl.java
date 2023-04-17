@@ -50,8 +50,8 @@ public class DenyRulesServicesImpl implements DenyRulesService {
         int month = fechaNacimientoLocalDate.getMonthValue();
 
         var fechaConcreta = LocalDate.of(anyo, month, day);
-        long anios = ChronoUnit.YEARS.between(fechaConcreta, fechaActual);
-        if (anios < anyosMayor) {
+        long anios = ChronoUnit.YEARS.between(fechaConcreta, FECHACTUAL);
+        if (anios < ANYOSMAYOR) {
             return true;
         } else {
             return false;
