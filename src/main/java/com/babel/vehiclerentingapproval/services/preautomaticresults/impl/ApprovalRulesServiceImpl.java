@@ -1,6 +1,5 @@
 package com.babel.vehiclerentingapproval.services.preautomaticresults.impl;
 
-import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.preautomaticresults.ApprovalRulesService;

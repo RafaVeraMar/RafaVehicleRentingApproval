@@ -142,7 +142,7 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "404", description = "ID de solicitud no encontrado", content = @Content(mediaType = "application/json"))
     })
     @Parameter(name = "id", description = "ID para comprobar si existe la solicitud", required = true)
-    public ResponseEntity muestraSolicitudPorId(@PathVariable("id") int id) throws RequestApiValidationException {
+    public ResponseEntity<Object> muestraSolicitudPorId(@PathVariable("id") int id) throws RequestApiValidationException {
         Map<String, Object> respuesta = new HashMap<>();
         try {
             this.solicitud.getSolicitudById(id);
