@@ -52,6 +52,25 @@ public class PersonaServiceImplTest {
     }
 
     @Test
+    public void addPersona_should_throwRequiredMissingFieldException_when_apellido1Null(){
+        Assertions.assertThrows(Exception.class, () ->{
+            Persona persona = new Persona();
+
+            persona.setApellido1(null);
+            this.personaService.addPersona(persona);
+        });
+    }
+
+    @Test
+    public void addPersona_should_throwRequiredMissingFieldException_when_nifNull(){
+        Assertions.assertThrows(Exception.class, () ->{
+            Persona persona = new Persona();
+
+            persona.setNif(null);
+            this.personaService.addPersona(persona);
+        });
+    }
+    @Test
     public void modificarPersona_should_throwPersonaNotFoundException_when_personaNoExisteEnBaseDeDatos(){
         Assertions.assertThrows(PersonaNotFoundException.class,() ->{
             Persona persona = new Persona();
