@@ -26,14 +26,14 @@ public class CodigoResolucionValidatorImplTest {
     @Nested
     class TestsvalidarCodResolucion{
         @Test
-        public void verEstadoSolicitud_shouldThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid(){
+        void verEstadoSolicitud_shouldThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid(){
             Mockito.when(tipoResultadoSolicitudMapper.codigoValido(anyString())).thenReturn(0);
             Assertions.assertThrows(EstadoSolicitudInvalidException.class,() ->{
                 codigoResolucionValidator.validarCodResolucion(anyString());
             });
         }
         @Test
-        public void verEstadoSolicitud_shouldNotThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid(){
+        void verEstadoSolicitud_shouldNotThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid(){
             Mockito.when(tipoResultadoSolicitudMapper.codigoValido(anyString())).thenReturn(1);
 
             Assertions.assertDoesNotThrow(()->{

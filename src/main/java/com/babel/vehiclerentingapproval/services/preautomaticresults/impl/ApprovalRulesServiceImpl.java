@@ -1,6 +1,5 @@
 package com.babel.vehiclerentingapproval.services.preautomaticresults.impl;
 
-import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.preautomaticresults.ApprovalRulesService;
@@ -87,13 +86,12 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
      */
     @Override
     public Boolean validateInversionIngresos(SolicitudRenting solicitudRenting) {
+        Boolean res= false;
         if (solicitudRenting.getInversion()
                 <= this.inversionIngresosMapper.obtenerImporteNetoRenta(solicitudRenting)) {
-            return true;
-
-        } else {
-            return false;
+            res= true;
         }
+            return res;
     }
     /**
      * Método que comprueba si la inversion de una solicitud es mayor que la inversionMayor establecida
@@ -112,11 +110,13 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     @Override
     public Boolean validateScoringPersona(SolicitudRenting solicitudRenting) {
         float valorScoring = this.scoringRatingMapper.obtenercScoringPersona(solicitudRenting);
+        boolean resultado;
         if (valorScoring < scoringRating) {
-            return true;
+            resultado = true;
         } else {
-            return false;
+            resultado = false;
         }
+        return resultado;
     }
     /**
      * Método que comprueba si el impago interno de un cliente es menor o igual que la cuota de una solicitud de renting
@@ -125,14 +125,12 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
      */
     @Override
     public Boolean validateImpagoCuota(SolicitudRenting solicitudRenting) {
+        Boolean res = false;
         if (this.impagosCuotaMapper.obtenerImporteImpagoInterno(solicitudRenting)
                 <= solicitudRenting.getCuota()) {
-
-            return true;
-
-        } else {
-            return false;
+            res = true;
         }
+        return res;
     }
     /**
      * Método que comprueba si el cif de empleador de un cliente esta contenido en la lista de de cif de Informa
@@ -143,9 +141,9 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     public Boolean validateCIFCliente(SolicitudRenting solicitudRenting) {
         boolean encontrado = false;
         String cadena;
-        String cifSol = this.salariedMapper.obtenerCIFSolicitud(solicitudRenting);
+        var cifSol = this.salariedMapper.obtenerCIFSolicitud(solicitudRenting);
         List<String> listaCIF = this.salariedMapper.obtenerCIFInforma();
-        if (!cifSol.isEmpty() && cifSol != null) {
+        if (!cifSol.isEmpty()) {
             for (String cif : listaCIF) {
                 cadena = cif.trim();
                 if (cadena.equals(cifSol)) {

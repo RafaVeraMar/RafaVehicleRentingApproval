@@ -8,9 +8,9 @@ import org.springframework.http.HttpStatus;
  * @author javier.serrano@babelgroup.com
  */
 public class EstadoSolicitudNotFoundException extends RequestApiValidationException{
-    private static final String externalMessage = "No existe ninguna codigo de resolución asociado a esa solicitud";
-    private static final HttpStatus statusCode = HttpStatus.NOT_FOUND;
+    private static final String EXTERNALMESSAGE = "No existe ninguna codigo de resolución asociado a esa solicitud";
+    private static final HttpStatus STATUSCODE = HttpStatus.NOT_FOUND;
     public EstadoSolicitudNotFoundException() {
-        super(externalMessage, statusCode);
+        super(EXTERNALMESSAGE, STATUSCODE);
     }
 }

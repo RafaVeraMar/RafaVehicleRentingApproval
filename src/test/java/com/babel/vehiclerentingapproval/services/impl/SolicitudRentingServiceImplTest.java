@@ -91,7 +91,7 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        public void verEstadoSolicitud_shouldNotThrow_EstadoSolicitudNotFoundException_when_codSolicitudNull_and_idNotExists() {
+        void verEstadoSolicitud_shouldNotThrow_EstadoSolicitudNotFoundException_when_codSolicitudNull_and_idNotExists() {
             Mockito.when(tipoResultadoSolicitudMapper.existeCodigoResolucion(anyInt())).thenReturn(1);
             Mockito.when(tipoResultadoSolicitudMapper.codigoValido(anyString())).thenReturn(1);
             Mockito.when(tipoResultadoSolicitudMapper.getResultadoSolicitud(anyInt())).thenReturn(creaTipoResultadoFicticia());
@@ -102,7 +102,7 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        public void verEstadoSolicitud_shouldThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid() {
+        void verEstadoSolicitud_shouldThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid() {
             Mockito.when(tipoResultadoSolicitudMapper.codigoValido(anyString())).thenReturn(0);
             Assertions.assertThrows(EstadoSolicitudInvalidException.class, () -> {
                 codigoResolucionValidator.validarCodResolucion(anyString());
@@ -110,7 +110,7 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        public void verEstadoSolicitud_shouldNotThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid() {
+        void verEstadoSolicitud_shouldNotThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid() {
             Mockito.when(tipoResultadoSolicitudMapper.codigoValido(anyString())).thenReturn(1);
 
             Assertions.assertDoesNotThrow(() -> {
@@ -339,7 +339,7 @@ public class SolicitudRentingServiceImplTest {
     @Nested
     class TestsCancelarSolicitudRenting {
         @Test
-        public void cancelarSolicitudRenting_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists() {
+        void cancelarSolicitudRenting_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists() {
             Mockito.when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(0);
 
             Assertions.assertThrows(SolicitudRentingNotFoundException.class, () -> {
@@ -348,7 +348,7 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        public void cancelarSolicitudRenting_shouldNotThrow_SolicitudRentingNotFoundException_when_solicitudIdExists() throws ParseException {
+        void cancelarSolicitudRenting_shouldNotThrow_SolicitudRentingNotFoundException_when_solicitudIdExists() throws ParseException {
             SolicitudRenting solicitudRenting = creaSolicitudFicticia();
             Mockito.when(solicitudRentingMapper.getSolicitudByID(anyInt())).thenReturn(solicitudRenting);
             Mockito.when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(1);

@@ -108,12 +108,12 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
     /**
      * Método que comprueba si el codigo de la resolución es válido
-     * @param CodResolucion el codigo de la resolucion
+     * @param codResolucion el codigo de la resolucion
      * @throws EstadoSolicitudInvalidException si el codigo de resolucion no es valido
      * @see CodigoResolucionValidatorImpl
      */
-    private void validarCodigoResolucion(String CodResolucion) throws EstadoSolicitudInvalidException{
-        this.codigoResolucionValidator.validarCodResolucion(CodResolucion);
+    private void validarCodigoResolucion(String codResolucion) throws EstadoSolicitudInvalidException{
+        this.codigoResolucionValidator.validarCodResolucion(codResolucion);
 
     }
 
@@ -307,7 +307,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws SolicitudRentingNotFoundException que recoge la excepcion cuando la solicitud de renting es nula, si la solicitud no es nula la devuelve cancelada
      */
     public void cancelarSolicitud (int id) throws RequestApiValidationException {
-        SolicitudRenting solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
+        var solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
         validateSolicitudRenting(solicitudRenting);
         solicitudRentingMapper.cancelarSolicitud(solicitudRenting);
     }
