@@ -195,9 +195,9 @@ public class ProductoContratado {
                 ", idProducto=" + getIdProducto() +
                 ", alias='" + getAlias() + '\'' +
                 ", importeNominal=" + getImporteNominal() +
-                ", fechaAlta=" + getFechaAlta().toString() +
-                ", fechaBaja=" + getFechaBaja().toString() +
-                ", estado=" + getEstado().toString() +
+                ", fechaAlta=" + getFechaAlta() +
+                ", fechaBaja=" + getFechaBaja() +
+                ", estado=" + getEstado() +
                 '}';
     }
 }
