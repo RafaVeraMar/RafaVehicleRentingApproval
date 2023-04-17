@@ -148,14 +148,12 @@ public class PersonaServiceImpl implements PersonaService {
      * @see ProvinciaMapper
      * @see DireccionMapper
      */
-    private Persona addPersonaDireccion (Persona persona) {
-
+    Persona addPersonaDireccion (Persona persona) {
         TipoVia tipoVia = this.tipoViaMapper.getTipoVia(persona.getDireccionDomicilio().getTipoViaId().getTipoViaId());
         persona.getDireccionDomicilio().setTipoViaId(tipoVia);
         Provincia provincia = this.provinciaMapper.getProvincia(persona.getDireccionDomicilio().getProvincia().getCodProvincia());
         persona.getDireccionDomicilio().setProvinciaCod(provincia);
         this.direccionMapper.insertDireccion(persona.getDireccionDomicilio());
-
         if (persona.isDireccionDomicilioSameAsNotificacion()) {
             persona.setDireccionNotificacion(persona.getDireccionDomicilio());
         } else {
@@ -165,8 +163,6 @@ public class PersonaServiceImpl implements PersonaService {
             persona.getDireccionNotificacion().setTipoViaId(tipoVia);
             this.direccionMapper.insertDireccion(persona.getDireccionNotificacion());
         }
-
-
         return persona;
     }
 
