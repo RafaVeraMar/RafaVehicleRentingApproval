@@ -275,14 +275,14 @@ public class ApprovalRulesServiceTest {
     }
 
     @Test
-    public void validateInvestmentIncome_should_beTrue_when_Investment_smallerThan_Neto() {
+    void validateInvestmentIncome_should_beTrue_when_Investment_smallerThan_Neto() {
         Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(11000F);
         boolean validateInvestmentIncome = service.validateInversionIngresos(this.solicitud);
         Assertions.assertTrue(validateInvestmentIncome);
     }
 
     @Test
-    public void validateInvestmentIncome_should_beTrue_when_Investment_Equals_Neto() {
+    void validateInvestmentIncome_should_beTrue_when_Investment_Equals_Neto() {
         Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(10000F);
         boolean validateInvestmentIncome = service.validateInversionIngresos(this.solicitud);
         Assertions.assertTrue(validateInvestmentIncome);
@@ -290,7 +290,7 @@ public class ApprovalRulesServiceTest {
     }
 
     @Test
-    public void validateInvestmentIncome_should_beTrue_when_Investment_biggerThan_Neto() {
+    void validateInvestmentIncome_should_beTrue_when_Investment_biggerThan_Neto() {
         Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(9000F);
         boolean validateInvestmentIncome = service.validateInversionIngresos(this.solicitud);
         Assertions.assertFalse(validateInvestmentIncome);
@@ -298,21 +298,21 @@ public class ApprovalRulesServiceTest {
     }
 
     @Test
-    public void validateNonPaymentFee_should_beFalse_when_nonPayment_smallerThan_Fee() {
+    void validateNonPaymentFee_should_beFalse_when_nonPayment_smallerThan_Fee() {
         Mockito.when(impagosCuotaMapper.obtenerImporteImpagoInterno(solicitud)).thenReturn(300F);
         boolean validateNonPaymentFee = service.validateImpagoCuota(this.solicitud);
         Assertions.assertTrue(validateNonPaymentFee);
     }
 
     @Test
-    public void validateNonPaymentFee_should_beFalse_when_nonPayment_EqualsThan_Fee() {
+    void validateNonPaymentFee_should_beFalse_when_nonPayment_EqualsThan_Fee() {
         Mockito.when(impagosCuotaMapper.obtenerImporteImpagoInterno(solicitud)).thenReturn(500F);
         boolean validateNonPaymentFee = service.validateImpagoCuota(this.solicitud);
         Assertions.assertTrue(validateNonPaymentFee);
     }
 
     @Test
-    public void validateNonPaymentFee_should_beFalse_when_nonPayment_biggerThan_Fee() {
+     void validateNonPaymentFee_should_beFalse_when_nonPayment_biggerThan_Fee() {
         Mockito.when(impagosCuotaMapper.obtenerImporteImpagoInterno(solicitud)).thenReturn(600F);
         boolean validateNonPaymentFee = service.validateImpagoCuota(this.solicitud);
         Assertions.assertFalse(validateNonPaymentFee);
