@@ -126,7 +126,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      */
 
     public SolicitudRenting getSolicitudById(int id) throws RequestApiValidationException {
-        SolicitudRenting solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
+        var solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
         validateSolicitudRenting(solicitudRenting);
         return solicitudRenting;
     }

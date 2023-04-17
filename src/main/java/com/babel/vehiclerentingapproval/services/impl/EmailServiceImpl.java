@@ -14,6 +14,8 @@ import java.util.Properties;
 @Service
 public class EmailServiceImpl {
 
+    public EmailServiceImpl() {
+    }
 
     /**
      * Metodo que envía un correo electrónico.

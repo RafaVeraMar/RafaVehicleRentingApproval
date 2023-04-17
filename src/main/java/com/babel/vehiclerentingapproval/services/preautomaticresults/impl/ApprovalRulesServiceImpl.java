@@ -182,11 +182,7 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     @Override
     public Boolean validateYearsExperience(SolicitudRenting solicitudRenting) {
         float yearsEmployment = this.employmentSeniorityMapper.obtenerFechaInicioEmpleoSolicitud(solicitudRenting);
-        if (yearsEmployment >= 3) {
-            return true;
-        } else {
-            return false;
-        }
+        return yearsEmployment >= 3;
     }
     /**
      * Método que comprueba si las garantias de un cliente han sido aprobadas
@@ -194,13 +190,9 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
      * @return true si las garantias de un cliente han sido aprobadas y false en caso contrario
      */
     public Boolean validateClienteNoAprobadoConGarantias(SolicitudRenting solicitudRenting) {
-        Persona persona = solicitudRenting.getPersona();
+        var persona = solicitudRenting.getPersona();
         int aprobado = this.approvalClienteMapper.existeClienteAprobadoConGarantias(persona.getPersonaId());
-        if (aprobado == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return aprobado != 0;
     }
     /**
      * Método que comprueba si la cliente ha sido rechazado previamente
@@ -208,13 +200,9 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
      * @return true si si la persona ha sido rechazado previamente y false en caso contrario
      */
     public Boolean validateClienteNoRechazadoPreviamente(SolicitudRenting solicitudRenting) {
-        Persona persona = solicitudRenting.getPersona();
+        var persona = solicitudRenting.getPersona();
         int aprobado = this.approvalClienteMapper.existeClienteRechazadoPreviamente(persona.getPersonaId());
-        if (aprobado == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return aprobado != 0;
     }
     /**
      * Método que comprueba si existe un cliente y si existe un garante para un cliente
@@ -226,11 +214,7 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
         int existeCliente = this.clienteExistenteGaranteMapper.existeCliente(solicitudRenting.getFechaSolicitud());
         int clienteEsGarante = this.clienteExistenteGaranteMapper.clienteEsGarante(solicitudRenting.getPersona().getNif());
 
-        if (existeCliente == 1 || clienteEsGarante == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return existeCliente == 1 || clienteEsGarante == 1;
     }
 
 }
