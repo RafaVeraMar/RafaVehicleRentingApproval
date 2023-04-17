@@ -100,7 +100,7 @@ class PersonaServiceImplTest {
     }
 
     @Test
-    public void modificarTelefono_should_throwPersonaNotFoundException_when_idPersonaNoExisteEnBaseDeDatos() {
+    void modificarTelefono_should_throwPersonaNotFoundException_when_idPersonaNoExisteEnBaseDeDatos() {
 
         when(personaMapper.existePersona(anyInt())).thenReturn(0);
         Assertions.assertThrows(PersonaNotFoundException.class, ( ) -> {
