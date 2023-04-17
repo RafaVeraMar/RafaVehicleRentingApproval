@@ -225,4 +225,23 @@ public class Direccion {
     public void setProvinciaCod(Provincia provincia) {
         this.provincia = provincia;
     }
+
+    @Override
+    public String toString() {
+        return "Direccion{" +
+                "direccionId=" + this.getDireccionId() +
+                ", tipoViaId=" + this.getTipoViaId().getTipoViaId() +'\'' +
+                ", descripcionTipoVia=" + this.getTipoViaId().getDescripcion() +'\'' +
+                ", nombreCalle='" + this.getNombreCalle() + '\'' +
+                ", numero='" + this.getNumero() + '\'' +
+                ", piso='" + this.getPiso() + '\'' +
+                ", puerta='" + this.getPuerta() + '\'' +
+                ", escalera='" + this.getEscalera() + '\'' +
+                ", otroDato='" + this.getOtroDato() + '\'' +
+                ", codPostal='" + this.getCodPostal() + '\'' +
+                ", municipio='" + this.getMunicipio() + '\'' +
+                ", codProvincia=" + this.getProvincia().getCodProvincia() +'\'' +
+                ", codProvincia=" + this.getProvincia().getNombre() +'\'' +
+                '}';
+    }
 }
