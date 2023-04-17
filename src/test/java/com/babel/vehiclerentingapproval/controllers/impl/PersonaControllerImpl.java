@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import java.text.ParseException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 public class PersonaControllerImpl {
@@ -40,7 +41,7 @@ public class PersonaControllerImpl {
 
     }
 
-    private Persona personaficticia() throws ParseException {
+/*    private Persona personaficticia() throws ParseException {
         Persona personaFicticia = new Persona();
         Direccion direccionFicticia = new Direccion();
         direccionFicticia.setDireccionId(1);
@@ -70,4 +71,44 @@ public class PersonaControllerImpl {
         ResponseEntity response = personaController.addPersona(persona);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
+*/
+    private Persona personaficticia() throws ParseException {
+        Persona personaFicticia = new Persona();
+        Direccion direccionFicticia = new Direccion();
+        direccionFicticia.setDireccionId(1);
+        direccionFicticia.setTipoViaId(new TipoVia(1,"Alameda"));
+        direccionFicticia.setNombreCalle("Alosno");
+        direccionFicticia.setNumero("5");
+        direccionFicticia.setCodPostal("21006");
+        direccionFicticia.setMunicipio("Huelva");
+        direccionFicticia.setProvinciaCod(new Provincia("02", "Albacete"));
+        personaFicticia.setPersonaId(1);
+        personaFicticia.setNombre("Migue");
+        personaFicticia.setApellido1("Estevez");
+        personaFicticia.setDireccionDomicilio(direccionFicticia);
+        personaFicticia.setDireccionNotificacion(direccionFicticia);
+        personaFicticia.setDireccionDomicilioSameAsNotificacion(false);
+        personaFicticia.setNif("4444444E");
+        personaFicticia.setNacionalidad(new Pais("AD", 20, "AND", "Andorra", 2));
+        System.out.println(personaFicticia);
+        return personaFicticia;
+    }
+
+    @Test
+    void testAddPersonaSuccess() throws Exception {
+        PersonaController personaController = new PersonaController(personaService);
+        Persona persona = personaficticia();
+
+        // Verifica que el objeto personaService no sea nulo antes de llamar a addPersona
+        assertNotNull(personaService);
+
+
+        Persona person1 = personaService.addPersona(persona);
+
+        // Verifica que el objeto response no sea nulo antes de hacer la aserción
+        ResponseEntity response = personaController.addPersona(persona);
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
 }
