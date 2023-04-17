@@ -2,7 +2,10 @@ package com.babel.vehiclerentingapproval.services.impl;
 
 
 import com.babel.vehiclerentingapproval.exceptions.*;
-import com.babel.vehiclerentingapproval.models.*;
+import com.babel.vehiclerentingapproval.models.EstadoProductoContratado;
+import com.babel.vehiclerentingapproval.models.Persona;
+import com.babel.vehiclerentingapproval.models.ProductoContratado;
+import com.babel.vehiclerentingapproval.models.TelefonoContacto;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import org.springframework.stereotype.Service;
@@ -152,9 +155,9 @@ public class PersonaServiceImpl implements PersonaService {
      * @see ProvinciaMapper
      * @see DireccionMapper
      */
-    private void addPersonaDireccion(Persona persona){
+    private Persona addPersonaDireccion (Persona persona) {
 
-        var tipoVia=this.tipoViaMapper.getTipoVia(persona.getDireccionDomicilio().getTipoViaId().getTipoViaId());
+        var tipoVia = this.tipoViaMapper.getTipoVia(persona.getDireccionDomicilio().getTipoViaId().getTipoViaId());
         persona.getDireccionDomicilio().setTipoViaId(tipoVia);
         var provincia = this.provinciaMapper.getProvincia(persona.getDireccionDomicilio().getProvincia().getCodProvincia());
         persona.getDireccionDomicilio().setProvinciaCod(provincia);
@@ -211,9 +214,9 @@ public class PersonaServiceImpl implements PersonaService {
      * @see TelefonoMapper
      */
     @Transactional
-    public void modificarTelefono(Persona persona) throws PersonaNotFoundException{
+    public void modificarTelefono (Persona persona) throws PersonaNotFoundException {
 
-        if(existePersona(persona.getPersonaId())) {
+        if (existePersona(persona.getPersonaId())) {
             List<TelefonoContacto> telefonos = persona.getTelefonos();
             List<TelefonoContacto> telefonosAntiguos = telefonoMapper.listarTelefonos(persona.getPersonaId());
 
@@ -223,7 +226,7 @@ public class PersonaServiceImpl implements PersonaService {
             for (var i = 0; i < telefonos.size(); i++) {
                 this.telefonoMapper.addTelefono(telefonos.get(i), persona);
             }
-        }else{
+        } else {
             throw new PersonaNotFoundException();
         }
     }

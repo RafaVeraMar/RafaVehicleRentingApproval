@@ -10,6 +10,7 @@ import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -110,11 +111,12 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
     /**
      * Método que comprueba si el codigo de la resolución es válido
+     *
      * @param codResolucion el codigo de la resolucion
      * @throws EstadoSolicitudInvalidException si el codigo de resolucion no es valido
      * @see CodigoResolucionValidatorImpl
      */
-    private void validarCodigoResolucion(String codResolucion) throws EstadoSolicitudInvalidException{
+    private void validarCodigoResolucion (String codResolucion) throws EstadoSolicitudInvalidException {
         this.codigoResolucionValidator.validarCodResolucion(codResolucion);
 
     }
@@ -127,7 +129,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws RequestApiValidationException
      */
 
-    public SolicitudRenting getSolicitudById(int id) throws RequestApiValidationException {
+    public SolicitudRenting getSolicitudById (int id) throws RequestApiValidationException {
         var solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
         validateSolicitudRenting(solicitudRenting);
         return solicitudRenting;
@@ -146,7 +148,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @see SolicitudRentingMapper
      */
     @Override
-    public void modificaEstadoSolicitud (Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException {
+    public void modificaEstadoSolicitud (Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException, MessagingException {
 
         List<String> posiblesEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
         int existeEstado = this.solicitudRentingMapper.existeSolicitud(solicitudId);
@@ -160,7 +162,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         }
 
         this.solicitudRentingMapper.modificaEstadoSolicitud(solicitudId, nuevoEstado);
-        EmailServiceImpl.SendMail("Su solicitud se encuentra: " + this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId),solicitud.getPersona().getEmail(),"Cambios en tu solicitud");
+        EmailServiceImpl.sendMail("Su solicitud se encuentra: " + this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId), solicitud.getPersona().getEmail(), "Cambios en tu solicitud");
 
     }
 

@@ -17,6 +17,8 @@ import java.util.Properties;
 @Service
 public class EmailServiceImpl {
 
+    private final JavaMailSender mailSender;
+
     public EmailServiceImpl (JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
