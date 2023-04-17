@@ -35,8 +35,8 @@ public class RentaController {
      * Contiene un mapper que realiza las acciones relacionadas con la renta
      */
     RentaService rentaService;
-    private final static String DESCRIPCION = "Descripcion: ";
-    private final static String STATUS = "status: ";
+    private static final String DESCRIPCION = "Descripcion: ";
+    private static final String STATUS = "status: ";
 
     public RentaController (RentaService rentaService) {
         this.rentaService = rentaService;

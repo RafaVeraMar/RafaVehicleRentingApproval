@@ -32,7 +32,7 @@ public class PersonaController {
      */
     PersonaService personaService;
 
-    private final static String DESCRIPCION = "Descripcion: ";
+    private static final String DESCRIPCION = "Descripcion: ";
 
 
     public PersonaController (PersonaService personaService) {

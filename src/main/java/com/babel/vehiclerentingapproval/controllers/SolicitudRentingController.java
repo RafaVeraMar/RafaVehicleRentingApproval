@@ -36,7 +36,7 @@ public class SolicitudRentingController {
     private final SolicitudRentingService solicitud;
     private SolicitudRentingMapper solicitudRentingMapper;
 
-    private final static String DESCRIPCION = "Descripcion: ";
+    private static final String DESCRIPCION = "Descripcion: ";
 
     public SolicitudRentingController (SolicitudRentingService solicitud) {
         this.solicitud = solicitud;
