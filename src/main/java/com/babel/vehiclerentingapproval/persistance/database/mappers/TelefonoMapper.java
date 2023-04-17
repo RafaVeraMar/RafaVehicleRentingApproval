@@ -20,10 +20,8 @@ public interface TelefonoMapper {
      * @return lista de telefonos que tiene una persona
      */
     @Select("Select TELEFONO_ID, TELEFONO FROM TELEFONO_CONTACTO WHERE PERSONA_ID = #{personaId}")
-    @Results({
-            @Result(property = "telefonoId", column = "TELEFONO_ID"),
-            @Result(property = "telefono", column = "TELEFONO")
-    })
+    @Result(property = "telefonoId", column = "TELEFONO_ID")
+    @Result(property = "telefono", column = "TELEFONO")
     List<TelefonoContacto> listarTelefonos(Integer personaId);
     /**
      * Consulta que añade un telefono
