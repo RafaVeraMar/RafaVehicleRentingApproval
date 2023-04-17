@@ -6,7 +6,6 @@ import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException
 import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundException;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
-import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,7 +33,7 @@ public class SolicitudRentingController {
 
 
     private final SolicitudRentingService solicitud;
-    private SolicitudRentingMapper solicitudRentingMapper;
+
 
     public SolicitudRentingController(SolicitudRentingService solicitud) {
         this.solicitud = solicitud;
@@ -174,8 +173,8 @@ public class SolicitudRentingController {
     })
     @Parameter(name = "id", description = "ID de la solicitud a cancelar", required = true)
     @PutMapping("/{id}")
-    ResponseEntity cancelarSolicitud(@PathVariable int id) {
-        Map<String, Object> respuesta = new HashMap<String, Object>();
+    public ResponseEntity<Object> cancelarSolicitud(@PathVariable int id) {
+        Map<String, Object> respuesta = new HashMap<>();
         try {
             this.solicitud.cancelarSolicitud(id);
             respuesta.put("Status", HttpStatus.OK);
@@ -190,7 +189,7 @@ public class SolicitudRentingController {
             respuesta.put("Id", id);
             respuesta.put("Descripcion", "Error: No ha introducido una id valida ");
         }
-        return new ResponseEntity<Object>(respuesta, (HttpStatus) respuesta.get("Status"));
+        return new ResponseEntity<>(respuesta, (HttpStatus) respuesta.get("Status"));
     }
 
     /**

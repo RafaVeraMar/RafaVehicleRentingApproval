@@ -1,11 +1,5 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
-import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudInvalidException;
-import com.babel.vehiclerentingapproval.services.EmailService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
@@ -19,11 +13,6 @@ import java.util.Properties;
  */
 @Service
 public class EmailServiceImpl {
-    private JavaMailSender mailSender;
-
-    public EmailServiceImpl(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
-    }
 
 
     /**

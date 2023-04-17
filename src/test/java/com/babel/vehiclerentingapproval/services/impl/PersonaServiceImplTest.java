@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class PersonaServiceImplTest {
+class PersonaServiceImplTest {
     PersonaMapper personaMapper;
 
     DireccionMapper direccionMapper;
@@ -42,7 +42,7 @@ public class PersonaServiceImplTest {
     }
 
     @Test
-    public void addPersona_should_throwRequiredMissingFieldException_when_nombreIsNull(){
+    void addPersona_should_throwRequiredMissingFieldException_when_nombreIsNull(){
         Assertions.assertThrows(Exception.class,() ->{
             Persona persona = new Persona();
 
@@ -52,7 +52,7 @@ public class PersonaServiceImplTest {
     }
 
     @Test
-    public void addPersona_should_throwRequiredMissingFieldException_when_apellido1Null(){
+    void addPersona_should_throwRequiredMissingFieldException_when_apellido1Null(){
         Assertions.assertThrows(Exception.class, () ->{
             Persona persona = new Persona();
 
@@ -62,7 +62,7 @@ public class PersonaServiceImplTest {
     }
 
     @Test
-    public void addPersona_should_throwRequiredMissingFieldException_when_nifNull(){
+    void addPersona_should_throwRequiredMissingFieldException_when_nifNull(){
         Assertions.assertThrows(Exception.class, () ->{
             Persona persona = new Persona();
 
@@ -71,7 +71,7 @@ public class PersonaServiceImplTest {
         });
     }
     @Test
-    public void modificarPersona_should_throwPersonaNotFoundException_when_personaNoExisteEnBaseDeDatos(){
+    void modificarPersona_should_throwPersonaNotFoundException_when_personaNoExisteEnBaseDeDatos(){
         Assertions.assertThrows(PersonaNotFoundException.class,() ->{
             Persona persona = new Persona();
             persona.setPersonaId(100); //Persona no existente
@@ -80,7 +80,7 @@ public class PersonaServiceImplTest {
     }
 
     @Test
-    public void modificarPersona_should_throwDireccionNotFoundException_when_direccionNoExisteEnBaseDeDatos(){
+    void modificarPersona_should_throwDireccionNotFoundException_when_direccionNoExisteEnBaseDeDatos(){
         Assertions.assertThrows(DireccionNotFoundException.class,() ->{
             Persona persona = new Persona();
 

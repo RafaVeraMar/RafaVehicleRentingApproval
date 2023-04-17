@@ -1,7 +1,5 @@
 package com.babel.vehiclerentingapproval.services;
 
-import java.io.IOException;
-import java.util.Map;
 /**
  * Esta interfaz define un método para enviar correos electrónicos
  * @author andres.guijarro@babelgroup.com
