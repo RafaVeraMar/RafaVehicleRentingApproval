@@ -320,14 +320,14 @@ public class ApprovalRulesServiceTest {
 
     //test validateClienteNoAprobadoConGarantia
     @Test
-    public void validateClienteNoAprobadoConGarantia_should_beFalse_when_codResolucionIsAG_or_lessThan2YearsSinceFechaResolucion() {
+    void validateClienteNoAprobadoConGarantia_should_beFalse_when_codResolucionIsAG_or_lessThan2YearsSinceFechaResolucion() {
         Mockito.when(garantiaMapper.existeClienteAprobadoConGarantias(anyInt())).thenReturn(0);
         boolean validateClienteNoAprobadoConGarantia = service.validateClienteNoAprobadoConGarantias(this.solicitud);
         Assertions.assertFalse(validateClienteNoAprobadoConGarantia);
     }
 
     @Test
-    public void validateClienteNoAprobadoConGarantia_should_beTrue_when_codResolucionIsNotAG_and_moreThan2YearsSinceFechaResolucion() {
+    void validateClienteNoAprobadoConGarantia_should_beTrue_when_codResolucionIsNotAG_and_moreThan2YearsSinceFechaResolucion() {
         Mockito.when(garantiaMapper.existeClienteAprobadoConGarantias(anyInt())).thenReturn(1);
         boolean validateClienteNoAprobadoConGarantia = service.validateClienteNoAprobadoConGarantias(this.solicitud);
         Assertions.assertTrue(validateClienteNoAprobadoConGarantia);
@@ -335,14 +335,14 @@ public class ApprovalRulesServiceTest {
 
     //test validateClienteNORechazadoPreviamente
     @Test
-    public void validateClienteNORechazadoConGarantia_should_beFalse_when_codResolucionIsDA_or_lessThan2YearsSinceFechaResolucion() {
+    void validateClienteNORechazadoConGarantia_should_beFalse_when_codResolucionIsDA_or_lessThan2YearsSinceFechaResolucion() {
         Mockito.when(garantiaMapper.existeClienteRechazadoPreviamente(anyInt())).thenReturn(0);
         boolean validateClienteNoRechazadoPreviamente = service.validateClienteNoRechazadoPreviamente(this.solicitud);
         Assertions.assertFalse(validateClienteNoRechazadoPreviamente);
     }
 
     @Test
-    public void validateClienteNORechazadoConGarantia_should_beTrue_when_codResolucionIsNotDA_and_moreThan2YearsSinceFechaResolucion() {
+    void validateClienteNORechazadoConGarantia_should_beTrue_when_codResolucionIsNotDA_and_moreThan2YearsSinceFechaResolucion() {
         Mockito.when(garantiaMapper.existeClienteRechazadoPreviamente(anyInt())).thenReturn(1);
         boolean validateClienteNoRechazadoPreviamente = service.validateClienteNoRechazadoPreviamente(this.solicitud);
         Assertions.assertTrue(validateClienteNoRechazadoPreviamente);
@@ -350,7 +350,7 @@ public class ApprovalRulesServiceTest {
 
     //test validatefindPersonasByCodResultado
     @Test
-    public void validatefindPersonasByCodResultado_should_beTrue_when_clienteExiste_and_clienteEsGarante() {
+    void validatefindPersonasByCodResultado_should_beTrue_when_clienteExiste_and_clienteEsGarante() {
         Mockito.when(clienteExistenteGaranteMapper.existeCliente(any())).thenReturn(1);
         Mockito.when(clienteExistenteGaranteMapper.clienteEsGarante(any())).thenReturn(1);
         boolean validatefindPersonasByCodResultado = service.validatefindPersonasByCodResultado(this.solicitud);
@@ -358,7 +358,7 @@ public class ApprovalRulesServiceTest {
     }
 
     @Test
-    public void validatefindPersonasByCodResultado_should_beFalse_when_clienteNoExiste_or_clienteNoEsGarante() {
+    void validatefindPersonasByCodResultado_should_beFalse_when_clienteNoExiste_or_clienteNoEsGarante() {
         Mockito.when(clienteExistenteGaranteMapper.existeCliente(any())).thenReturn(0);
         Mockito.when(clienteExistenteGaranteMapper.clienteEsGarante(any())).thenReturn(0);
         boolean validatefindPersonasByCodResultado = service.validatefindPersonasByCodResultado(this.solicitud);
