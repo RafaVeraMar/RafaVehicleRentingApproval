@@ -16,6 +16,11 @@ import java.util.HashMap;
 
 import java.util.Map;
 
+/**
+ * Esta clase define el endpoint de listado de tipos de resoluciones posibles para una solicitud.
+ *
+ * @author andres.guijarro@babelgroup.com
+ */
 @Tag(name="Listar tipos de solicitudes",description = "Endpoint que devuelve una lista de los tipos de solicitudes existentes en la base de datos.")
 @RestController
 public class ResolucionSolicitudesController {
@@ -25,7 +30,17 @@ public class ResolucionSolicitudesController {
     public ResolucionSolicitudesController(ResolucionSolicitudesService resolucionSolicitudesService) {
         this.resolucionSolicitudesService = resolucionSolicitudesService;
     }
-
+    /**
+     * Devuelve un array de objetos en JSON con los códigos de resolución existentes en la base de datos.
+     * <p>
+     * El método maneja las siguientes excepciones:
+     * - ResolucionSolicitudesNotFoundException si no se encuentra ningun codigo de resolucion de solicitudes.
+     * <p>
+     * En caso de cualquier otra excepción, se devuelve un error interno del servidor.
+     *
+     * @return un objeto ResponseEntity que contiene la información de la solicitud creada, que contiene los codigos de
+     * resolución que existen
+     */
     @GetMapping("/listarTiposResolucion")
     @Operation(summary = "Listar los tipos de resolucion de solicitudes", description = "Lista los tipos de resolucion de solicitudes existentes en la base de datos")
     @ApiResponses( value = { @ApiResponse( responseCode = "200", description = "Existen datos en la base de datos y se devuelven.", content = { @Content( mediaType = "application/json")}),

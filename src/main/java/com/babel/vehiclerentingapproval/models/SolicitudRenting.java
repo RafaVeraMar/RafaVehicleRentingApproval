@@ -6,6 +6,7 @@ import java.math.BigInteger;
 import java.util.Date;
 
 /**
+ * Esta clase modela la Solicitud de renting
  * @author ismael.mesa@babelgroup.com
  * @author miguel.sdela@babelgroup.com
  */
@@ -64,7 +65,7 @@ public class SolicitudRenting {
 
     /**
      * Metodo publico que se encarga de darle un valor al id de la solicitud de renting
-     * @param solicitudId que es el id de la solicitud
+     * @param solicitudId es el valor que se asignara al parametro solicitudID del objeto SolicitudRenting
      */
 
     public void setSolicitudId (int solicitudId) {
@@ -81,7 +82,7 @@ public class SolicitudRenting {
 
     /**
      * Metodo publico que se encarga de darle un valor a la persona asociada a la solicitud de renting
-     * @param persona a la que se le quiere dar un valor
+     * @param persona es el valor que se asignara al parametro persona del objeto SolicitudRenting
      */
 
     public void setPersona (Persona persona) {
@@ -99,7 +100,7 @@ public class SolicitudRenting {
 
     /**
      * Metodo publico que se encarga de darle un valor a la fecha de la solicitud de renting
-     * @param fechaSolicitud a la cual se le quiere dar un valor
+     * @param fechaSolicitud es el valor que se asignara a la fecha de solicitud del objeto SolicitudRenting
      */
     public void setFechaSolicitud (Date fechaSolicitud) {
         this.fechaSolicitud = fechaSolicitud;
@@ -116,7 +117,7 @@ public class SolicitudRenting {
 
     /**
      * Metodo publico que se encarga de darle un valor al numero de vehiculos asociados a la solicitud de renting
-     * @param numVehiculos a los que queremos dar un valor
+     * @param numVehiculos es el valor que se asignara al parametro numVehiculos del objeto SolicitudRenting
      */
 
     public void setNumVehiculos (BigInteger numVehiculos) {
@@ -134,7 +135,7 @@ public class SolicitudRenting {
 
     /**
      * Metodo publico que se encarga de darle un valor a la inversion asociada a la solicitud de renting
-     * @param inversion a la que le queremos dar un valor
+     * @param inversion es el valor que se asignara al parametro inversion del objeto SolicitudRenting
      */
 
     public void setInversion (Float inversion) {
@@ -152,7 +153,7 @@ public class SolicitudRenting {
 
     /**
      * Metodo publico que se encarga de darle un valor a la cuota asociada a la solicitud de renting
-     * @param cuota a la que queremos dar un valor
+     * @param cuota es el valor que se asignara al parametro cuota del objeto SolicitudRenting
      */
 
     public void setCuota (Float cuota) {
@@ -170,7 +171,7 @@ public class SolicitudRenting {
 
     /**
      * Metodo publico que se encarga de darle un valor al plazo asociado a la solicitud de renting
-     * @param plazo al que queremos dar un valor
+     * @param plazo es el valor que se asignara al parametro plazo del objeto SolicitudRenting
      */
 
     public void setPlazo (BigInteger plazo) {
@@ -188,7 +189,7 @@ public class SolicitudRenting {
 
     /**
      * Metodo publico que se encarga de darle un valor a la fecha asociada a la solicitud de renting
-     * @param fechaInicioVigor a la que le queremos dar un valor
+     * @param fechaInicioVigor es el valor que se asignara al parametro de fecha de inicio del objeto SolicitudRenting
      */
 
     public void setFechaInicioVigor (Date fechaInicioVigor) {
@@ -206,7 +207,7 @@ public class SolicitudRenting {
 
     /**
      * Metodo publico que se encarga de darle un valor a la fecha de resolucion asociada a la solicitud de renting
-     * @param fechaResolucion a la que queremos dar un valor
+     * @param fechaResolucion es el valor que se asignara al parametro de fecha de resolucion del objeto SolicitudRenting
      */
     public void setFechaResolucion (Date fechaResolucion) {
         this.fechaResolucion = fechaResolucion;
@@ -223,7 +224,7 @@ public class SolicitudRenting {
 
     /**
      * Metodo publico que se encarga de darle un valor al tipo de resultado de la solicitud de renting
-     * @param tipoResultadoSolicitud
+     * @param tipoResultadoSolicitud es el valor que se asignara al parametro tipo resultado de solicitud del objeto SolicitudRenting
      */
 
     public void setTipoResultadoSolicitud (TipoResultadoSolicitud tipoResultadoSolicitud) {

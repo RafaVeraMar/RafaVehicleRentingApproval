@@ -73,13 +73,17 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         }
     }
 
+    /**
+     * Devuelve el estado de una solicitud de renting a partir de su id
+     * @param idSolicitud el ID de la solicitud a consultar
+     * @return el estado de la solicitud como una cadena de caracteres
+     * @throws RequestApiValidationException si la id de la solicitud no existe, el codigo de resolucion es nulo, o no es valido
+     */
     @Override
-    public String verEstadoSolicitud (int idSolicitud) throws EstadoSolicitudNotFoundException, EstadoSolicitudInvalidException {
+    public String verEstadoSolicitud(int idSolicitud) throws RequestApiValidationException {
         int codigoExiste = tipoResultadoSolicitudMapper.existeCodigoResolucion(idSolicitud);
 
-        if (codigoExiste == 0) { //idSolicitud or codResolucion null
-            throw new EstadoSolicitudNotFoundException();
-        }
+        validarCodResolucionExiste(codigoExiste);
 
         TipoResultadoSolicitud resultadoSolicitud = this.tipoResultadoSolicitudMapper.getResultadoSolicitud(idSolicitud);
         this.validarCodigoResolucion(resultadoSolicitud.getCodResultado());
@@ -89,7 +93,26 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
     }
 
-    private void validarCodigoResolucion(String CodResolucion) throws EstadoSolicitudInvalidException {
+    /**
+     * Comprueba que el codigo de resolucion de la solicitud existe.
+     * @param codResolucion Valor encontrado al hacer la consulta en la base de datos
+     * @throws EstadoSolicitudNotFoundException si el codigo de resolución es nulo o el id de la solicitud no existe
+     */
+    private void validarCodResolucionExiste(int codResolucion) throws EstadoSolicitudNotFoundException{
+
+        if(codResolucion == 0){ //idSolicitud or codResolucion null
+            throw new EstadoSolicitudNotFoundException();
+        }
+
+    }
+
+    /**
+     * Método que comprueba si el codigo de la resolución es válido
+     * @param CodResolucion el codigo de la resolucion
+     * @throws EstadoSolicitudInvalidException si el codigo de resolucion no es valido
+     * @see CodigoResolucionValidatorImpl
+     */
+    private void validarCodigoResolucion(String CodResolucion) throws EstadoSolicitudInvalidException{
         this.codigoResolucionValidator.validarCodResolucion(CodResolucion);
 
     }
@@ -108,6 +131,18 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         return solicitudRenting;
     }
 
+    /**
+     * Modifica únicamete el estado de una solicitud de renting, se comprueba a través de la base de datos que el nuevo estado sea uno de los valores posible.
+     *
+     * @param solicitudId ID de solicitud de renting.
+     * @param nuevoEstado Nuevo estado de solicitud rentinh por validar.
+     * @return void (llamada a base de datos (mapper) para modificar el estado.
+     * @see #getListaEstados()
+     * @see SolicitudRentingService
+     * @see SolicitudRentingMapper
+     * @throws SolicitudRentingNotFoundException cuando no exista el ID de la solicitud.
+     * @throws EstadoSolicitudNotFoundException cuando el estado de la solicitud no sea uno de los valores válidos posibles.
+     */
     @Override
     public void modificaEstadoSolicitud(Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException {
 
@@ -126,6 +161,11 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
     }
 
+    /**
+     * Modifica únicamete el estado de una solicitud de renting, se comprueba a través de la base de datos que el nuevo estado sea uno de los valores posible.
+     *
+     * @return List<String> (llamada a base de datos (mapper) para recoger posibles estados.
+     */
     @Override
     public List<String> getListaEstados() {
         List<String> listaEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
@@ -279,7 +319,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      */
     public void validateSolicitudRenting(SolicitudRenting solicitudRenting) throws SolicitudRentingNotFoundException {
         if (solicitudRenting == null) {
-            throw new NullPointerException();
+            throw new SolicitudRentingNotFoundException();
         }
     }
 

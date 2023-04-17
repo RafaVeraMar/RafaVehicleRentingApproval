@@ -1,5 +1,6 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
+import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudInvalidException;
 import com.babel.vehiclerentingapproval.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
@@ -11,7 +12,11 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
-
+/**
+ * Esta clase define un método para enviar correos electrónicos
+ * @author andres.guijarro@babelgroup.com
+ * @author enrique.munoz@babelgroup.com
+ */
 @Service
 public class EmailServiceImpl {
     private JavaMailSender mailSender;
@@ -20,6 +25,13 @@ public class EmailServiceImpl {
         this.mailSender = mailSender;
     }
 
+
+    /**
+     * Metodo que envía un correo electrónico.
+     * @param mensaje el mensaje del correo electrónico
+     * @param destino el correo electrónico del destinatario
+     * @param asunto el asunto del correo electrónico
+     */
     public static void SendMail(String mensaje,String destino, String asunto) {
         //usuario y contraseña del usuario de google que vayamos a utilizar
         String Username = "solicitudrenting@gmail.com";

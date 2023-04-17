@@ -85,6 +85,11 @@ public class SolicitudRentingController {
         return new ResponseEntity<Object>(respuesta, (HttpStatus)respuesta.get("Status"));
     }
 
+    /**
+     * Endpoint para ver el estado de una solicitud de renting
+     * @param id ID de la solicitud de renting
+     * @return Objeto ResponseEntity con el estado HTTP de la solicitud, el id proporcionado y el estado de la solicitud o la descripción del error
+     */
     @GetMapping("/estado/{id}")
     @Operation(summary = "Ver estado de solicitud por ID", description = "Devuelve el estado de una solicitud a partir de su ID")
     @ApiResponses(value = {
@@ -101,32 +106,27 @@ public class SolicitudRentingController {
             int idSolicitud = Integer.parseInt(id);
             String estado = this.solicitud.verEstadoSolicitud(idSolicitud);
 
-            respuesta.put("Status", HttpStatus.OK);
-            respuesta.put("Id", id);
-            respuesta.put("Descripcion", estado);
-            return new ResponseEntity<Object>(respuesta, HttpStatus.OK);
-        } catch (NumberFormatException e) {
-            respuesta.put("Status", HttpStatus.BAD_REQUEST);
-            respuesta.put("Id", id);
-            respuesta.put("Descripcion", "Error: el formato de ID es inválido");
-            return new ResponseEntity<Object>(respuesta, HttpStatus.BAD_REQUEST);
-        } catch (EstadoSolicitudNotFoundException e) {
-            respuesta.put("Status", HttpStatus.NOT_FOUND);
-            respuesta.put("Id", id);
-            respuesta.put("Descripcion", "Error: No existe ninguna codigo de resolución asociado a esa solicitud ");
-            return new ResponseEntity<Object>(respuesta, HttpStatus.NOT_FOUND);
-
-        } catch (EstadoSolicitudInvalidException e) {
-            respuesta.put("Status", HttpStatus.INTERNAL_SERVER_ERROR);
-            respuesta.put("Id", id);
-            respuesta.put("Descripcion", "Error: El codigo de resolución no es válido ");
-            return new ResponseEntity<Object>(respuesta, HttpStatus.INTERNAL_SERVER_ERROR);
-        } catch (Exception e) {
-            respuesta.put("Status", HttpStatus.INTERNAL_SERVER_ERROR);
-            respuesta.put("Id", id);
-            respuesta.put("Descripcion", "Error: Ha ocurrido un error interno en el servidor ");
-            return new ResponseEntity<Object>(respuesta, HttpStatus.INTERNAL_SERVER_ERROR);
+            respuesta.put("Status",HttpStatus.OK);
+            respuesta.put("Id",id);
+            respuesta.put("Descripcion",estado);
         }
+        catch (NumberFormatException e){
+            respuesta.put("Status",HttpStatus.BAD_REQUEST);
+            respuesta.put("Id",id);
+            respuesta.put("Descripcion","Error: el formato de ID es inválido");
+        }
+        catch (RequestApiValidationException e) {
+            respuesta.put("Status", e.getStatusCode());
+            respuesta.put("Id", id);
+            respuesta.put("Descripcion:", e.getExternalMessage());
+        }
+        catch (Exception e){
+            respuesta.put("Status",HttpStatus.INTERNAL_SERVER_ERROR);
+            respuesta.put("Id",id);
+            respuesta.put("Descripcion","Error: Ha ocurrido un error interno en el servidor ");
+        }
+
+        return new ResponseEntity<Object>(respuesta,(HttpStatus)respuesta.get("Status"));
     }
 
     /**
@@ -192,6 +192,12 @@ public class SolicitudRentingController {
         return new ResponseEntity<Object>(respuesta, (HttpStatus) respuesta.get("Status"));
     }
 
+    /**
+     * Endpoint para actualizar el estado de una solicitud de renting
+     * @param solicitudId ID de la solicitud de renting
+     * @param nuevoEstado valor del nuevo estado de la solicitud de renting
+     * @return Objeto ResponseEntity que devuelve un Json con el código de la operación REST, ID de solicitud y código de resolución
+     */
     @PutMapping("/estado/{solicitudId}")
     @Operation(summary = "Modificar estado de solicitud por ID", description = "Modifica el estado de una solicitud a partir de su ID y notifica al usuario enviando un correo electronico")
     @ApiResponses(value = {

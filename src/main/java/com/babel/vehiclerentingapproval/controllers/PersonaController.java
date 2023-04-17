@@ -104,7 +104,7 @@ public class PersonaController {
      * @return un objeto ResponseEntity que contiene la información de los productos
      * contratados por la persona y el código de estado HTTP
      */
-    @GetMapping("/mostrarProductosPersona/{id}")
+    @GetMapping("/persona/{id}/productosContratados")
     @Operation(summary = "Listar los productos contratados por una persona", description = "Devuelve los productos contratados por una persona dada su ID")
     @ApiResponses( value = {@ApiResponse(responseCode = "200", description = "Se han obtenido con éxito los productos contratados por una persona.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "404", description = "La persona no existe.", content = { @Content( mediaType = "application/json")}),
@@ -115,17 +115,15 @@ public class PersonaController {
 
         try {
             lista = this.personaService.viewPersonaProducto(id);
-            this.personaService.updateEstadoPersonaProducto(lista);
+            map.put("status", HttpStatus.OK);
+            map.put("description", "Productos contratados por una persona.");
+            map.put("Lista de productos contratados por una persona",lista);
+            return new ResponseEntity<Object>(map,HttpStatus.OK);
         } catch (PersonaNotFoundException e) {
             map.put("status", HttpStatus.NOT_FOUND);
             map.put("description", "Persona no encontrada en la base de datos");
             return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
         }
-
-        map.put("status", HttpStatus.OK);
-        map.put("description", "Productos contratados por una persona.");
-        map.put("Lista de productos contratados por una persona",lista);
-        return new ResponseEntity<Object>(map,HttpStatus.OK);
     }
 
     /**

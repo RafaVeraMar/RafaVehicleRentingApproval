@@ -133,7 +133,7 @@ public class SolicitudRentingServiceImplTest {
 
         @Test
         public void verSolicitudRenting_shouldNotThrow_SolicitudRentingNotFoundException_when_solicitudIdExists ( ) {
-            Mockito.when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(1);
+            Mockito.when(solicitudRentingMapper.getSolicitudByID(anyInt())).thenReturn(new SolicitudRenting());
 
             Assertions.assertDoesNotThrow(( ) -> {
                 solicitudService.getSolicitudById(0);
