@@ -28,6 +28,11 @@ public class ResolucionSolicitud {
     @NotEmpty
     @Size(max=100)
     private String descripcion;
+    /**
+     * Este es el constructor de la clase {@link ResolucionSolicitud} vacia
+     */
+    public ResolucionSolicitud() {
+    }
 
     /**
      * Este es el constructor de la clase {@link ResolucionSolicitud} que utiliza como parametros un codigoResultado y una descripcion
@@ -65,5 +70,13 @@ public class ResolucionSolicitud {
      */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    @Override
+    public String toString() {
+        return "ResolucionSolicitud{" +
+                "codigoResultado='" + getCodigoResultado() + '\'' +
+                ", descripcion='" + getDescripcion() + '\'' +
+                '}';
     }
 }
