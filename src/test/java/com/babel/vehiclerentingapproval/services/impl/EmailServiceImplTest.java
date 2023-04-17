@@ -23,14 +23,14 @@ public class EmailServiceImplTest {
     @Test
     public void email_shouldNotThrow_Exception_when_emailIsSent(){
         Assertions.assertDoesNotThrow(()->{
-            emailService.SendMail("Mensaje de prueba","andres.guijarro@babelgroup.com","Asunto de ejemplo");
+            emailService.sendMail("Mensaje de prueba","andres.guijarro@babelgroup.com","Asunto de ejemplo");
         });
     }
 
     @Test
     public void email_shouldThrow_RuntimeException_when_emailIsWrong(){
         Assertions.assertThrows(RuntimeException.class,()->{
-            emailService.SendMail("Mensaje de prueba","emailErroneo","Asunto de ejemplo");
+            emailService.sendMail("Mensaje de prueba","emailErroneo","Asunto de ejemplo");
         });
     }
 
