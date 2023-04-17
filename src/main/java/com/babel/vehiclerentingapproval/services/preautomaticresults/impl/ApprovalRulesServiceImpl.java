@@ -111,11 +111,13 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     @Override
     public Boolean validateScoringPersona(SolicitudRenting solicitudRenting) {
         float valorScoring = this.scoringRatingMapper.obtenercScoringPersona(solicitudRenting);
+        boolean resultado;
         if (valorScoring < scoringRating) {
-            return true;
+            resultado = true;
         } else {
-            return false;
+            resultado = false;
         }
+        return resultado;
     }
     /**
      * Método que comprueba si el impago interno de un cliente es menor o igual que la cuota de una solicitud de renting
@@ -140,9 +142,9 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     public Boolean validateCIFCliente(SolicitudRenting solicitudRenting) {
         boolean encontrado = false;
         String cadena;
-        String cifSol = this.salariedMapper.obtenerCIFSolicitud(solicitudRenting);
+        var cifSol = this.salariedMapper.obtenerCIFSolicitud(solicitudRenting);
         List<String> listaCIF = this.salariedMapper.obtenerCIFInforma();
-        if (!cifSol.isEmpty() && cifSol != null) {
+        if (!cifSol.isEmpty()) {
             for (String cif : listaCIF) {
                 cadena = cif.trim();
                 if (cadena.equals(cifSol)) {
