@@ -6,7 +6,6 @@ import com.babel.vehiclerentingapproval.models.Direccion;
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
-import com.babel.vehiclerentingapproval.services.impl.PersonaServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,15 +15,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class PersonaServiceImplTest {
+class PersonaServiceImplTest {
     PersonaMapper personaMapper;
 
     DireccionMapper direccionMapper;
     PersonaService personaService;
 
     @BeforeEach
-    void setupAll(){
-        personaMapper= Mockito.mock(PersonaMapper.class);
+    void setupAll ( ) {
+        personaMapper = Mockito.mock(PersonaMapper.class);
         when(personaMapper.existePersona(100)).thenReturn(0); //No existe la persona
         when(personaMapper.existePersona(1)).thenReturn(1); //Existe la persona
 
@@ -37,13 +36,13 @@ public class PersonaServiceImplTest {
         PaisMapper paisMapper = Mockito.mock(PaisMapper.class);
 
 
-        personaService = new PersonaServiceImpl(direccionMapper,personaMapper,telefonoMapper,tipoViaMapper,provinciaMapper,paisMapper);
+        personaService = new PersonaServiceImpl(direccionMapper, personaMapper, telefonoMapper, tipoViaMapper, provinciaMapper, paisMapper);
 
     }
 
     @Test
-    public void addPersona_should_throwRequiredMissingFieldException_when_nombreIsNull(){
-        Assertions.assertThrows(Exception.class,() ->{
+    public void addPersona_should_throwRequiredMissingFieldException_when_nombreIsNull ( ) {
+        Assertions.assertThrows(Exception.class, ( ) -> {
             Persona persona = new Persona();
 
             persona.setNombre(null);
@@ -52,8 +51,8 @@ public class PersonaServiceImplTest {
     }
 
     @Test
-    public void addPersona_should_throwRequiredMissingFieldException_when_apellido1Null(){
-        Assertions.assertThrows(Exception.class, () ->{
+    public void addPersona_should_throwRequiredMissingFieldException_when_apellido1Null ( ) {
+        Assertions.assertThrows(Exception.class, ( ) -> {
             Persona persona = new Persona();
 
             persona.setApellido1(null);
@@ -62,17 +61,18 @@ public class PersonaServiceImplTest {
     }
 
     @Test
-    public void addPersona_should_throwRequiredMissingFieldException_when_nifNull(){
-        Assertions.assertThrows(Exception.class, () ->{
+    public void addPersona_should_throwRequiredMissingFieldException_when_nifNull ( ) {
+        Assertions.assertThrows(Exception.class, ( ) -> {
             Persona persona = new Persona();
 
             persona.setNif(null);
             this.personaService.addPersona(persona);
         });
     }
+
     @Test
-    public void modificarPersona_should_throwPersonaNotFoundException_when_personaNoExisteEnBaseDeDatos(){
-        Assertions.assertThrows(PersonaNotFoundException.class,() ->{
+    void modificarPersona_should_throwPersonaNotFoundException_when_personaNoExisteEnBaseDeDatos ( ) {
+        Assertions.assertThrows(PersonaNotFoundException.class, ( ) -> {
             Persona persona = new Persona();
             persona.setPersonaId(100); //Persona no existente
             personaService.modificarPersona(persona);
@@ -80,8 +80,8 @@ public class PersonaServiceImplTest {
     }
 
     @Test
-    public void modificarPersona_should_throwDireccionNotFoundException_when_direccionNoExisteEnBaseDeDatos(){
-        Assertions.assertThrows(DireccionNotFoundException.class,() ->{
+    void modificarPersona_should_throwDireccionNotFoundException_when_direccionNoExisteEnBaseDeDatos ( ) {
+        Assertions.assertThrows(DireccionNotFoundException.class, ( ) -> {
             Persona persona = new Persona();
 
             Direccion direccion = new Direccion();

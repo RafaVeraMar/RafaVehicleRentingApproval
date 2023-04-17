@@ -5,23 +5,23 @@ import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
-import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
- *Implementación del servicio de persona.
- *  Se realiza la lógica de persona para trasladar la información relacionada a personas desde el cliente a base de datos
- *  Se incluyen los mappers relacionados a persona:
- *      @see DireccionMapper
- *      @see PersonaMapper
- *      @see TelefonoMapper
- *      @see TipoViaMapper
- *      @see ProvinciaMapper
- *      @see PaisMapper
+ * Implementación del servicio de persona.
+ * Se realiza la lógica de persona para trasladar la información relacionada a personas desde el cliente a base de datos
+ * Se incluyen los mappers relacionados a persona:
+ *
  * @author @author miguel.sdela@babelgroup.com, javier.serrano@babelgroup.com, ramon.vazquez@babelgroup.com, alvaro.aleman@babelgroup.com, javier.roldan@babelgroup.com
+ * @see DireccionMapper
+ * @see PersonaMapper
+ * @see TelefonoMapper
+ * @see TipoViaMapper
+ * @see ProvinciaMapper
+ * @see PaisMapper
  */
 @Service
 public class PersonaServiceImpl implements PersonaService {
@@ -33,7 +33,7 @@ public class PersonaServiceImpl implements PersonaService {
     private ProvinciaMapper provinciaMapper;
     private PaisMapper paisMapper;
 
-    public PersonaServiceImpl(DireccionMapper direccionMapper, PersonaMapper personaMapper, TelefonoMapper telefonoMapper, TipoViaMapper tipoViaMapper, ProvinciaMapper provinciaMapper, PaisMapper paisMapper) {
+    public PersonaServiceImpl (DireccionMapper direccionMapper, PersonaMapper personaMapper, TelefonoMapper telefonoMapper, TipoViaMapper tipoViaMapper, ProvinciaMapper provinciaMapper, PaisMapper paisMapper) {
         this.direccionMapper = direccionMapper;
         this.personaMapper = personaMapper;
         this.telefonoMapper = telefonoMapper;
@@ -45,49 +45,43 @@ public class PersonaServiceImpl implements PersonaService {
     /**
      * Añade una nueva solicitud de renting y devuelve un objeto ResponseEntity con la información
      * de la solicitud creada, incluido su ID.
-     *<p>
+     * <p>
      * El método maneja las siguientes excepciones: <br>
      * - RequiredMissingFieldException si falta algun campo por rellenar.<br>
      * - WrongLenghtFieldException si los datos de entrada sobrepasan la longitud máxima.<br>
      * - DniFoundException si se encuentra un dni ya existente previamente. <br>
      * En caso de cualquier otra excepción, se devuelve un error interno.
+     *
+     * @param persona Persona con la informacion referente
+     * @return se devuelve la persona por si se requieren mas operaciones a posteriori
      * @see PaisMapper
      * @see PersonaMapper
      * @see #validatePersona(int)
      * @see #validateNif(String)
      * @see #addPersonaDireccion(Persona)
      * @see #addTelefonos(Persona)
-     * @param persona Persona con la informacion referente
-     * @return se devuelve la persona por si se requieren mas operaciones a posteriori
      */
     @Override
     @Transactional
     public Persona addPersona (Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException, DniFoundException {
-
         this.validatePersonData(persona);
         this.validateNif(persona.getNif());
-
-        persona=this.addPersonaDireccion(persona);
-
         Pais pais = this.paisMapper.getPais(persona.getNacionalidad().getIsoAlfa_2());
-
         persona.setNacionalidad(pais);
-
         this.personaMapper.insertPersona(persona);
-
         this.addTelefonos(persona);
-
         return persona;
     }
 
     /**
      * Añade telefonos a persona.
-     * @see TelefonoMapper
+     *
      * @param persona
      * @return void.
+     * @see TelefonoMapper
      */
-    private void addTelefonos(Persona persona) {
-        for (TelefonoContacto telefonoContacto:persona.getTelefonos()) {
+    private void addTelefonos (Persona persona) {
+        for (TelefonoContacto telefonoContacto : persona.getTelefonos()) {
             this.telefonoMapper.addTelefono(telefonoContacto, persona);
         }
     }
@@ -100,7 +94,7 @@ public class PersonaServiceImpl implements PersonaService {
      * @throws PersonaNotFoundException
      */
     @Override
-    public Persona existPerson(int idPersona) throws RequestApiValidationException {
+    public Persona existPerson (int idPersona) throws RequestApiValidationException {
         if (idPersona < 0) {
             throw new PersonaNotFoundException(idPersona);
         }
@@ -109,18 +103,19 @@ public class PersonaServiceImpl implements PersonaService {
 
     /**
      * Se listan los productos asociados a una persona en concreto.
-     *<p>
+     * <p>
      * El método maneja las siguientes excepciones: <br>
      * - PersonaNotFoundException si no se encuentra la persona asociada.<p>
      * En caso de cualquier otra excepción, se devuelve un error interno.
+     *
+     * @param idPersona id de persona.
+     * @return se devuelve la lita de productos asociada a la idPersona.
      * @see PersonaMapper
      * @see #validatePersona(int)
      * @see #updateEstadoPersonaProducto(List)
-     * @param idPersona id de persona.
-     * @return se devuelve la lita de productos asociada a la idPersona.
      */
     @Override
-    public List<ProductoContratado> viewPersonaProducto(int idPersona) throws PersonaNotFoundException {
+    public List<ProductoContratado> viewPersonaProducto (int idPersona) throws PersonaNotFoundException {
         this.validatePersona(idPersona);
         List<ProductoContratado> listaProductos = this.personaMapper.verProductosContratadosPersona(idPersona);
         this.updateEstadoPersonaProducto(listaProductos);
@@ -129,14 +124,15 @@ public class PersonaServiceImpl implements PersonaService {
 
     /**
      * Se actualizan los estados de personas por producto.
+     *
      * @param listaProductoPersona productos asociados a una persona.
      * @return void.
      */
-    public void updateEstadoPersonaProducto(List<ProductoContratado> listaProductoPersona){
-        for(ProductoContratado productoContratado : listaProductoPersona){
-            if(productoContratado.getFechaBaja() == null){
+    public void updateEstadoPersonaProducto (List<ProductoContratado> listaProductoPersona) {
+        for (ProductoContratado productoContratado : listaProductoPersona) {
+            if (productoContratado.getFechaBaja() == null) {
                 productoContratado.setEstado(EstadoProductoContratado.VIGENTE);
-            }else{
+            } else {
                 productoContratado.setEstado(EstadoProductoContratado.VENCIDO);
             }
         }
@@ -144,16 +140,17 @@ public class PersonaServiceImpl implements PersonaService {
 
     /**
      * Se añaden las direcciones de domicilio y notificacion a persona para un posterior update a la bbdd.
-     *<p>
+     * <p>
+     *
+     * @param persona Persona con la informacion referente
+     * @return se devuelve la persona con las direcciones ya incluida, incluyendo los mappers del tipo de vía y provincia
      * @see TipoViaMapper
      * @see ProvinciaMapper
      * @see DireccionMapper
-     * @param persona Persona con la informacion referente
-     * @return se devuelve la persona con las direcciones ya incluida, incluyendo los mappers del tipo de vía y provincia
      */
-    private Persona addPersonaDireccion(Persona persona){
+    private Persona addPersonaDireccion (Persona persona) {
 
-        TipoVia tipoVia=this.tipoViaMapper.getTipoVia(persona.getDireccionDomicilio().getTipoViaId().getTipoViaId());
+        TipoVia tipoVia = this.tipoViaMapper.getTipoVia(persona.getDireccionDomicilio().getTipoViaId().getTipoViaId());
         persona.getDireccionDomicilio().setTipoViaId(tipoVia);
         Provincia provincia = this.provinciaMapper.getProvincia(persona.getDireccionDomicilio().getProvincia().getCodProvincia());
         persona.getDireccionDomicilio().setProvinciaCod(provincia);
@@ -161,10 +158,10 @@ public class PersonaServiceImpl implements PersonaService {
 
         if (persona.isDireccionDomicilioSameAsNotificacion()) {
             persona.setDireccionNotificacion(persona.getDireccionDomicilio());
-        }else{
+        } else {
             provincia = this.provinciaMapper.getProvincia(persona.getDireccionNotificacion().getProvincia().getCodProvincia());
             persona.getDireccionNotificacion().setProvinciaCod(provincia);
-            tipoVia=this.tipoViaMapper.getTipoVia(persona.getDireccionNotificacion().getTipoViaId().getTipoViaId());
+            tipoVia = this.tipoViaMapper.getTipoVia(persona.getDireccionNotificacion().getTipoViaId().getTipoViaId());
             persona.getDireccionNotificacion().setTipoViaId(tipoVia);
             this.direccionMapper.insertDireccion(persona.getDireccionNotificacion());
         }
@@ -175,19 +172,20 @@ public class PersonaServiceImpl implements PersonaService {
 
     /**
      * Modificación de una persona.
-     *<p>
+     * <p>
      * El método maneja las siguientes excepciones: <br>
      * - PersonaNotFoundException si no se encuentra el idPersona asociado.<br>
      * - DireccionNotFoundException si se introducen datos no válidos en dirección.<br>
      * En caso de cualquier otra excepción, se devuelve un error interno.
-     * @see DireccionMapper
-     * @see PersonaMapper
+     *
      * @param persona Persona con la informacion referente
      * @return se devuelve la persona por si se requieren mas operaciones a posteriori
+     * @see DireccionMapper
+     * @see PersonaMapper
      */
     @Override
     @Transactional
-    public void modificarPersona(Persona persona) throws PersonaNotFoundException, DireccionNotFoundException {
+    public void modificarPersona (Persona persona) throws PersonaNotFoundException, DireccionNotFoundException {
 
         if (persona.isDireccionDomicilioSameAsNotificacion()) {
             persona.setDireccionNotificacion(persona.getDireccionDomicilio());
@@ -206,12 +204,13 @@ public class PersonaServiceImpl implements PersonaService {
 
     /**
      * Se modifican los registros de teléfono asociados a una persona.
-     * @see TelefonoMapper
+     *
      * @param persona Persona con la informacion referente
      * @return void
+     * @see TelefonoMapper
      */
     @Transactional
-    public void modificarTelefono(Persona persona) {
+    public void modificarTelefono (Persona persona) {
         List<TelefonoContacto> telefonos = persona.getTelefonos();
         List<TelefonoContacto> telefonosAntiguos = telefonoMapper.listarTelefonos(persona.getPersonaId());
 
@@ -220,38 +219,40 @@ public class PersonaServiceImpl implements PersonaService {
             this.telefonoMapper.deleteTelefono(persona.getPersonaId(), telefonosAntiguos.get(i));
         }
         //Añadimos los telefonos del usuario
-        for (int i = 0;i<telefonos.size();i++) {
-            this.telefonoMapper.addTelefono(telefonos.get(i),persona);
+        for (int i = 0; i < telefonos.size(); i++) {
+            this.telefonoMapper.addTelefono(telefonos.get(i), persona);
         }
 
     }
 
     /**
      * Validacion de datos de persona (nombre)
-     *<p>
+     * <p>
      * El método maneja las siguientes excepciones: <br>
      * - RequiredMissingFieldException si falta algun campo por rellenar.<br>
      * - WrongLenghtFieldException si los datos de entrada sobrepasan la longitud máxima.<p>
      * En caso de cualquier otra excepción, se devuelve un error interno.
-     * @see #validateNombre(Persona)
+     *
      * @param persona Persona con la informacion referente
      * @return void
+     * @see #validateNombre(Persona)
      */
-    public void validatePersonData(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
+    public void validatePersonData (Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
         this.validateNombre(persona);
     }
 
     /**
      * Validacion del campo nombre de persona (nombre)
-     *<p>
+     * <p>
      * El método maneja las siguientes excepciones: <br>
      * - RequiredMissingFieldException si falta algun campo por rellenar.<br>
      * - WrongLenghtFieldException si los datos de entrada sobrepasan la longitud máxima.<p>
      * En caso de cualquier otra excepción, se devuelve un error interno.
+     *
      * @param persona Persona con la informacion referente
      * @return void
      */
-    public void validateNombre(Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
+    public void validateNombre (Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
         if ((persona.getNombre() == null) || persona.getNombre().isEmpty()) {
             throw new RequiredMissingFieldException();
         }
@@ -259,38 +260,41 @@ public class PersonaServiceImpl implements PersonaService {
             throw new WrongLenghtFieldException("nombre");
         }
     }
+
     /**
      * Validación de los datos de una persona
-     *<p>
+     * <p>
      * El método maneja las siguientes excepciones: <br>
      * - PersonaNotFoundException si no se encuentra la ID de persona <br>
      * En caso de cualquier otra excepción, se devuelve un error interno.
+     *
      * @param personaId Persona con la informacion referente
      * @return void
      */
-    public void validatePersona(int personaId) throws PersonaNotFoundException {
-        if (!existePersona(personaId)){
+    public void validatePersona (int personaId) throws PersonaNotFoundException {
+        if (!existePersona(personaId)) {
             throw new PersonaNotFoundException();
         }
     }
 
     /**
      * Validacion de la existencia de una persona <p>
-
+     * <p>
      * El método maneja las siguientes excepciones: <br>
      * - PersonaNotFoundException si no se encuentra la ID de persona <br>
      * - DireccionNotFoundException si no se encuentra la ID de persona <br>
      * En caso de cualquier otra excepción, se devuelve un error interno.
-     * @see #existePersona(int)
-     * @see #existeDireccion(int)
+     *
      * @param persona Persona con la informacion referente
      * @return void
+     * @see #existePersona(int)
+     * @see #existeDireccion(int)
      */
-    private void validatePersonaExistente(Persona persona) throws PersonaNotFoundException, DireccionNotFoundException {
-        if (!existePersona(persona.getPersonaId())){
+    private void validatePersonaExistente (Persona persona) throws PersonaNotFoundException, DireccionNotFoundException {
+        if (!existePersona(persona.getPersonaId())) {
             throw new PersonaNotFoundException();
         }
-        if(existeDireccion(persona.getDireccionDomicilio().getDireccionId())==false ||existeDireccion(persona.getDireccionNotificacion().getDireccionId())==false){ //Si no existe alguna direcicon
+        if (!existeDireccion(persona.getDireccionDomicilio().getDireccionId()) || !existeDireccion(persona.getDireccionNotificacion().getDireccionId())) { //Si no existe alguna direcicon
             throw new DireccionNotFoundException();
         }
     }
@@ -300,55 +304,47 @@ public class PersonaServiceImpl implements PersonaService {
      * El método maneja las siguientes excepciones: <br>
      * - DniFoundException si ya existe el dni proporcionado <br>
      * En caso de cualquier otra excepción, se devuelve un error interno.
-     * @see #existeNif(String)
+     *
      * @param nif dni de la persona
      * @return void
+     * @see #existeNif(String)
      */
-    public void validateNif(String nif) throws DniFoundException {
-        if (existeNif(nif)){
+    public void validateNif (String nif) throws DniFoundException {
+        if (existeNif(nif)) {
             throw new DniFoundException();
         }
     }
 
     /**
      * funcion booleana que comprueba el id de persona
-     * @see PersonaMapper
-
+     *
      * @param personaId id que identifica a la persona
      * @return boolean
+     * @see PersonaMapper
      */
-    public boolean existePersona(int personaId){
-        if(personaMapper.existePersona(personaId)==0){
-            return false;
-        }
-        return true;
+    public boolean existePersona (int personaId) {
+        return personaMapper.existePersona(personaId) != 0;
     }
 
     /**
      * funcion booleana que comprueba si existe id de dirección
-     * @see DireccionMapper
-
+     *
      * @param direccionId id que identifica la direccion de persona
      * @return boolean
+     * @see DireccionMapper
      */
-    public boolean existeDireccion(int direccionId){
-        if(this.direccionMapper.existeDireccion(direccionId)==0){
-            return false;
-        }else{
-            return true;
-        }
+    public boolean existeDireccion (int direccionId) {
+        return this.direccionMapper.existeDireccion(direccionId) != 0;
     }
 
     /**
      * funcion booleana que comprueba si existe nif de persona
-     * @see PersonaMapper
+     *
      * @param nif dni relacionado a persona
      * @return boolean
+     * @see PersonaMapper
      */
-    public boolean existeNif(String nif){
-        if(this.personaMapper.existeNif(nif)!=0){
-            return true;
-        }
-        return false;
+    public boolean existeNif (String nif) {
+        return this.personaMapper.existeNif(nif) != 0;
     }
 }
