@@ -21,6 +21,11 @@ public class TipoVia {
     @NotNull
     @Size(max = 50)
     private String descripcion;
+    /**
+     * Constructor del modelo de tipo de via vacio
+     */
+    public TipoVia() {
+    }
 
     /**
      * Constructor del modelo de tipo de via, pasandole como parametros los atributos explicados anteriormente
@@ -63,5 +68,13 @@ public class TipoVia {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    @Override
+    public String toString() {
+        return "TipoVia{" +
+                "tipoViaId=" + getTipoViaId() +
+                ", descripcion='" + getDescripcion() + '\'' +
+                '}';
     }
 }
