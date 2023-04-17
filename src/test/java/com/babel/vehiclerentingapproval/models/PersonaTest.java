@@ -22,7 +22,7 @@ public class PersonaTest {
     @Test
     public void persona_shouldReturn_sameString() throws ParseException {
         Persona persona = createPersona();
-        Assertions.assertEquals(persona.toString(), "Persona{personaId=0, nombre='Juan', apellido1='Francés', apellido2='Atúñez', direccionDomicilioId=0, direccionNotificacionId=0, direccionDomicilioSameAsNotificacion=true, nif='null', fechaNacimiento=Mon Dec 29 00:00:00 CET 1980, nacionalidadIsoAlfa2=ES, scoring=0, fechaScoring=Fri Dec 29 00:00:00 CET 2000, telefonos=[TelefonoContacto{telefonoId=1, telefono='677645552'}], productosContratados=[ProductoContratado{idProductoContratado=1, idProducto=2, alias='Coche', importeNominal=100, fechaAlta=Fri Dec 29 00:00:00 CET 2000, fechaBaja=null, estado=null}], email='null'}");
+        Assertions.assertEquals(persona.toString(), "Persona{personaId=0, nombre='Juan', apellido1='Francés', apellido2='Atúñez', direccionDomicilioId=0, direccionNotificacionId=0, direccionDomicilioSameAsNotificacion=true, nif='null', fechaNacimiento=Mon Dec 29 00:00:00 CET 1980, nacionalidadIsoAlfa2=ES, scoring=0, fechaScoring=Fri Dec 29 00:00:00 CET 2000, telefonos=[TelefonoContacto{telefonoId=1, telefono='677645552'}], productosContratados=[ProductoContratado{idProductoContratado=1, idProducto=2, alias='Coche', importeNominal=100, fechaAlta=Fri Dec 29 00:00:00 CET 2000, fechaBaja=null, estado=null}], email='email@email.com'}");
     }
 
     public Persona createPersona() throws ParseException {
@@ -66,7 +66,7 @@ public class PersonaTest {
         productosContratados.add(new ProductoContratado(1,2,"Coche",100,new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2000")));
         persona.setProductosContratados(productosContratados);
 
-
+        persona.setEmail("email@email.com");
         return persona;
     }
 }
