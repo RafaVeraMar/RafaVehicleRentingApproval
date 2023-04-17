@@ -8,7 +8,6 @@ import com.babel.vehiclerentingapproval.services.RentaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,10 +23,11 @@ import java.util.Map;
 /**
  * Esta clase define la documentación Swagger con el métodos para hacer el CRUD (Post) de las Renta
  * y sus rutas para poder acceder desde PostMan.
+ *
  * @author: andres.guijarro@babelgroup.com
  */
 
-@Tag(name="Añadir renta",description = "Endpoint que dado un ID de persona y una renta (ambos en JSON) añade la renta a esa persona a la base de datos.")
+@Tag(name = "Añadir renta", description = "Endpoint que dado un ID de persona y una renta (ambos en JSON) añade la renta a esa persona a la base de datos.")
 @RestController
 public class RentaController {
 
@@ -35,8 +35,10 @@ public class RentaController {
      * Contiene un mapper que realiza las acciones relacionadas con la renta
      */
     RentaService rentaService;
+    private static final String DESCRIPCION = "Descripcion: ";
+    private static final String STATUS = "status: ";
 
-    public RentaController(RentaService rentaService) {
+    public RentaController (RentaService rentaService) {
         this.rentaService = rentaService;
     }
 
@@ -49,52 +51,42 @@ public class RentaController {
      * - ProfesionNotFoundException lanza una excepcion cuando la renta ya existe en la base de datos.
      * - RentaFoundException lanza una excepcion cuando la renta ya existe en la base de datos.
      * <p>
+     *
      * @param renta la renta que se va a añadir
      * @return un objeto ResponseEntity que contiene la información de la renta creada,
      * incluido su ID, y el código de estado HTTP
      */
     @PostMapping("/renta")
     @Operation(summary = "Añadir una renta", description = "Añade una renta a una persona")
-    @ApiResponses( value = { @ApiResponse( responseCode = "200", description = "La renta ha añadido con éxito a la base de datos.", content = { @Content( mediaType = "application/json")}),
-            @ApiResponse(responseCode = "400", description = "La profesión no existe." , content = { @Content( mediaType = "application/json")}),
-            @ApiResponse(responseCode = "404", description = "La persona no existe.", content = { @Content( mediaType = "application/json")}),
-            @ApiResponse(responseCode = "406", description ="Se ha intendado introducir un ID de renta que ya existe.", content = { @Content( mediaType = "application/json")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "La renta ha añadido con éxito a la base de datos.", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400", description = "La profesión no existe.", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "La persona no existe.", content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "406", description = "Se ha intendado introducir un ID de renta que ya existe.", content = {@Content(mediaType = "application/json")})
     })
     @Parameter(name = "personaId", description = "ID de una persona existente en la base de datos.", required = true)
-    @Parameter(name= "renta", description = "Objeto Renta a insertar",required = true)
-
-    ResponseEntity addRenta(@RequestBody Renta renta){
+    @Parameter(name = "renta", description = "Objeto Renta a insertar", required = true)
+    public ResponseEntity<Object> addRenta (@RequestBody Renta renta) {
         Renta rentaActualizada;
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         try {
-            rentaActualizada=this.rentaService.addRenta(renta);
+            rentaActualizada = this.rentaService.addRenta(renta);
         } catch (ProfesionNotFoundException e) {
-
-
-            map.put("status", HttpStatus.BAD_REQUEST);
-            map.put("descripcion", "Profesion no encontrada en la base de datos");
-            return new ResponseEntity<Object>(map,HttpStatus.BAD_REQUEST);
-
+            map.put(STATUS, HttpStatus.BAD_REQUEST);
+            map.put(DESCRIPCION, "Profesion no encontrada en la base de datos");
+            return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
         } catch (PersonaNotFoundException e) {
-
-
-            map.put("status", HttpStatus.NOT_FOUND);
-            map.put("description", "Persona no encontrada en la base de datos");
-            return new ResponseEntity<Object>(map,HttpStatus.NOT_FOUND);
-
-
+            map.put(STATUS, HttpStatus.NOT_FOUND);
+            map.put(DESCRIPCION, "Persona no encontrada en la base de datos");
+            return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
         } catch (RentaFoundException e) {
-
-            map.put("status", HttpStatus.NOT_ACCEPTABLE);
-            map.put("description", "La renta ya existe en la base de datos");
-            return new ResponseEntity<Object>(map,HttpStatus.NOT_ACCEPTABLE);
-
+            map.put(STATUS, HttpStatus.NOT_ACCEPTABLE);
+            map.put(DESCRIPCION, "La renta ya existe en la base de datos");
+            return new ResponseEntity<>(map, HttpStatus.NOT_ACCEPTABLE);
         }
-
-        map.put("status", HttpStatus.OK);
-        map.put("description", "Renta añadida.");
-        map.put("id",rentaActualizada.getRentaId());
-        return new ResponseEntity<Object>(map,HttpStatus.OK);
+        map.put(STATUS, HttpStatus.OK);
+        map.put(DESCRIPCION, "Renta añadida.");
+        map.put("id", rentaActualizada.getRentaId());
+        return new ResponseEntity<>(map, HttpStatus.OK);
 
     }
 }

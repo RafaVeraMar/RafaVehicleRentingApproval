@@ -8,8 +8,7 @@ import org.springframework.http.HttpStatus;
  * RequestApiValidationException para proporcionar un mensaje específico y un código de estado HTTP.
  */
 public class PersonaNotFoundException extends RequestApiValidationException {
-    private static final String externalMessage = "La persona con id: %s no existe.";
-    //private static final String externalMessageNoId = "Persona no encontrada";
+    private static final String EXTERNAL_MESSAGE = "La persona con id: %s no existe.";
 
     private static final HttpStatus statusCode = HttpStatus.BAD_REQUEST;
 
@@ -19,7 +18,7 @@ public class PersonaNotFoundException extends RequestApiValidationException {
      * @param personaId ID de la persona que no se encuentra
      */
     public PersonaNotFoundException (int personaId) {
-        super(externalMessage, statusCode, new String[]{String.valueOf(personaId)});
+        super(EXTERNAL_MESSAGE, statusCode, new String[]{String.valueOf(personaId)});
     }
 
     /**
@@ -27,7 +26,7 @@ public class PersonaNotFoundException extends RequestApiValidationException {
      * Utilice este constructor cuando no se requiera información adicional sobre el ID de la persona no encontrada.
      */
     public PersonaNotFoundException ( ) {
-        super(externalMessage, statusCode);
+        super(EXTERNAL_MESSAGE, statusCode);
 
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
  * RequestApiValidationException para proporcionar un mensaje específico y un código de estado HTTP.
  */
 public class InputIsNegativeOrZeroException extends RequestApiValidationException {
-    private static final String externalMessage = "El campo %s tiene que ser mayor que cero.";
+    private static final String EXTERNAL_MESSAGE = "El campo %s tiene que ser mayor que cero.";
     private static final HttpStatus statusCode = HttpStatus.BAD_REQUEST;
 
     /**
@@ -18,7 +18,7 @@ public class InputIsNegativeOrZeroException extends RequestApiValidationExceptio
      * @param args nombre del campo que contiene el valor negativo o igual a cero
      */
     public InputIsNegativeOrZeroException (String args) {
-        super(externalMessage, statusCode, new String[]{args});
+        super(EXTERNAL_MESSAGE, statusCode, new String[]{args});
     }
-    
+
 }

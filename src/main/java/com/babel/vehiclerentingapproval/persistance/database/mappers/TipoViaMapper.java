@@ -1,6 +1,5 @@
 package com.babel.vehiclerentingapproval.persistance.database.mappers;
 
-import com.babel.vehiclerentingapproval.models.Direccion;
 import com.babel.vehiclerentingapproval.models.TipoVia;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;

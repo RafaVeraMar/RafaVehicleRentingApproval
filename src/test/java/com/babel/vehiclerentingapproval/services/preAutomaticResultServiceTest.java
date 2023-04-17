@@ -24,7 +24,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 
-public class preAutomaticResultService {
+class preAutomaticResultServiceTest {
     ApprovalRulesService approvalRulesService;
     DenyRulesService denyRulesService;
     CalculateAutomaticResult calculateAutomaticResult;
@@ -104,7 +104,7 @@ public class preAutomaticResultService {
     }
 
     @Test
-    public void validateFindAnyDeny_shouldBeTrue_whenAllFalse() throws ParseException {
+     void validateFindAnyDeny_shouldBeTrue_whenAllFalse() throws ParseException {
         this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2000"));
         this.solicitud.getPersona().setScoring(1);
         BigInteger num2 = BigInteger.valueOf(10);
@@ -115,7 +115,7 @@ public class preAutomaticResultService {
 
     }
     @Test
-    public void validateFindAnyDeny_shouldBeFalse_whenAnyTrue() throws ParseException {
+     void validateFindAnyDeny_shouldBeFalse_whenAnyTrue() throws ParseException {
         this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2016"));
         this.solicitud.getPersona().setScoring(1);
         BigInteger num2 = BigInteger.valueOf(10);

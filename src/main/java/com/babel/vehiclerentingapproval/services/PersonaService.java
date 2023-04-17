@@ -77,7 +77,7 @@ public interface PersonaService {
      * metodo que modifica el telefono de una persona
      * @param persona la persona a modificar
      */
-    public void modificarTelefono(Persona persona);
+    public void modificarTelefono(Persona persona) throws PersonaNotFoundException;
 
     /**
      * metodo que modifica una persona en la base de datos

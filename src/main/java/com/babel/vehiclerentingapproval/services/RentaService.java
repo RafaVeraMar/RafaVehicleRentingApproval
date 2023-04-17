@@ -3,7 +3,6 @@ package com.babel.vehiclerentingapproval.services;
 import com.babel.vehiclerentingapproval.exceptions.PersonaNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.ProfesionNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.RentaFoundException;
-import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import com.babel.vehiclerentingapproval.models.Renta;
 /**
  * Esta clase SERVICE sirve como interfaz de las operaciones para hacer el CRUD de crear, validar una renta y comprobar que existe una renta
