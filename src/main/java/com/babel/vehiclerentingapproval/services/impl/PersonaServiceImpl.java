@@ -5,7 +5,6 @@ import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
-import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,9 +66,9 @@ public class PersonaServiceImpl implements PersonaService {
         this.validatePersonData(persona);
         this.validateNif(persona.getNif());
 
-        persona=this.addPersonaDireccion(persona);
+        this.addPersonaDireccion(persona);
 
-        Pais pais = this.paisMapper.getPais(persona.getNacionalidad().getIsoAlfa_2());
+        var pais = this.paisMapper.getPais(persona.getNacionalidad().getIsoAlfa_2());
 
         persona.setNacionalidad(pais);
 
@@ -151,11 +150,11 @@ public class PersonaServiceImpl implements PersonaService {
      * @param persona Persona con la informacion referente
      * @return se devuelve la persona con las direcciones ya incluida, incluyendo los mappers del tipo de vía y provincia
      */
-    private Persona addPersonaDireccion(Persona persona){
+    private void addPersonaDireccion(Persona persona){
 
-        TipoVia tipoVia=this.tipoViaMapper.getTipoVia(persona.getDireccionDomicilio().getTipoViaId().getTipoViaId());
+        var tipoVia=this.tipoViaMapper.getTipoVia(persona.getDireccionDomicilio().getTipoViaId().getTipoViaId());
         persona.getDireccionDomicilio().setTipoViaId(tipoVia);
-        Provincia provincia = this.provinciaMapper.getProvincia(persona.getDireccionDomicilio().getProvincia().getCodProvincia());
+        var provincia = this.provinciaMapper.getProvincia(persona.getDireccionDomicilio().getProvincia().getCodProvincia());
         persona.getDireccionDomicilio().setProvinciaCod(provincia);
         this.direccionMapper.insertDireccion(persona.getDireccionDomicilio());
 
@@ -168,9 +167,6 @@ public class PersonaServiceImpl implements PersonaService {
             persona.getDireccionNotificacion().setTipoViaId(tipoVia);
             this.direccionMapper.insertDireccion(persona.getDireccionNotificacion());
         }
-
-
-        return persona;
     }
 
     /**
@@ -211,19 +207,21 @@ public class PersonaServiceImpl implements PersonaService {
      * @return void
      */
     @Transactional
-    public void modificarTelefono(Persona persona) {
-        List<TelefonoContacto> telefonos = persona.getTelefonos();
-        List<TelefonoContacto> telefonosAntiguos = telefonoMapper.listarTelefonos(persona.getPersonaId());
+    public void modificarTelefono(Persona persona) throws PersonaNotFoundException{
 
-        //Borramos telefonos pertenecientes al usuario
-        for (int i = 0; i < telefonosAntiguos.size(); i++) {
-            this.telefonoMapper.deleteTelefono(persona.getPersonaId(), telefonosAntiguos.get(i));
-        }
-        //Añadimos los telefonos del usuario
-        for (int i = 0;i<telefonos.size();i++) {
-            this.telefonoMapper.addTelefono(telefonos.get(i),persona);
-        }
+        if(existePersona(persona.getPersonaId())) {
+            List<TelefonoContacto> telefonos = persona.getTelefonos();
+            List<TelefonoContacto> telefonosAntiguos = telefonoMapper.listarTelefonos(persona.getPersonaId());
 
+            for (var i = 0; i < telefonosAntiguos.size(); i++) {
+                this.telefonoMapper.deleteTelefono(persona.getPersonaId(), telefonosAntiguos.get(i));
+            }
+            for (var i = 0; i < telefonos.size(); i++) {
+                this.telefonoMapper.addTelefono(telefonos.get(i), persona);
+            }
+        }else{
+            throw new PersonaNotFoundException();
+        }
     }
 
     /**
@@ -318,10 +316,11 @@ public class PersonaServiceImpl implements PersonaService {
      * @return boolean
      */
     public boolean existePersona(int personaId){
+        var existe = true;
         if(personaMapper.existePersona(personaId)==0){
-            return false;
+            existe = false;
         }
-        return true;
+        return existe;
     }
 
     /**
@@ -332,11 +331,11 @@ public class PersonaServiceImpl implements PersonaService {
      * @return boolean
      */
     public boolean existeDireccion(int direccionId){
+        var existe = true;
         if(this.direccionMapper.existeDireccion(direccionId)==0){
-            return false;
-        }else{
-            return true;
+            existe = false;
         }
+        return existe;
     }
 
     /**
@@ -346,9 +345,10 @@ public class PersonaServiceImpl implements PersonaService {
      * @return boolean
      */
     public boolean existeNif(String nif){
+        var existe = false;
         if(this.personaMapper.existeNif(nif)!=0){
-            return true;
+            existe = true;
         }
-        return false;
+        return existe;
     }
 }

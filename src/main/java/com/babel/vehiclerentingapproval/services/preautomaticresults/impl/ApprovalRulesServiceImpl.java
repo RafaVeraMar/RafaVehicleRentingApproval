@@ -1,6 +1,5 @@
 package com.babel.vehiclerentingapproval.services.preautomaticresults.impl;
 
-import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.preautomaticresults.ApprovalRulesService;
@@ -87,13 +86,12 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
      */
     @Override
     public Boolean validateInversionIngresos(SolicitudRenting solicitudRenting) {
+        Boolean res= false;
         if (solicitudRenting.getInversion()
                 <= this.inversionIngresosMapper.obtenerImporteNetoRenta(solicitudRenting)) {
-            return true;
-
-        } else {
-            return false;
+            res= true;
         }
+            return res;
     }
     /**
      * Método que comprueba si la inversion de una solicitud es mayor que la inversionMayor establecida
@@ -112,11 +110,13 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     @Override
     public Boolean validateScoringPersona(SolicitudRenting solicitudRenting) {
         float valorScoring = this.scoringRatingMapper.obtenercScoringPersona(solicitudRenting);
+        boolean resultado;
         if (valorScoring < scoringRating) {
-            return true;
+            resultado = true;
         } else {
-            return false;
+            resultado = false;
         }
+        return resultado;
     }
     /**
      * Método que comprueba si el impago interno de un cliente es menor o igual que la cuota de una solicitud de renting
@@ -125,14 +125,12 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
      */
     @Override
     public Boolean validateImpagoCuota(SolicitudRenting solicitudRenting) {
+        Boolean res = false;
         if (this.impagosCuotaMapper.obtenerImporteImpagoInterno(solicitudRenting)
                 <= solicitudRenting.getCuota()) {
-
-            return true;
-
-        } else {
-            return false;
+            res = true;
         }
+        return res;
     }
     /**
      * Método que comprueba si el cif de empleador de un cliente esta contenido en la lista de de cif de Informa
@@ -143,9 +141,9 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     public Boolean validateCIFCliente(SolicitudRenting solicitudRenting) {
         boolean encontrado = false;
         String cadena;
-        String cifSol = this.salariedMapper.obtenerCIFSolicitud(solicitudRenting);
+        var cifSol = this.salariedMapper.obtenerCIFSolicitud(solicitudRenting);
         List<String> listaCIF = this.salariedMapper.obtenerCIFInforma();
-        if (!cifSol.isEmpty() && cifSol != null) {
+        if (!cifSol.isEmpty()) {
             for (String cif : listaCIF) {
                 cadena = cif.trim();
                 if (cadena.equals(cifSol)) {
@@ -182,11 +180,7 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     @Override
     public Boolean validateYearsExperience(SolicitudRenting solicitudRenting) {
         float yearsEmployment = this.employmentSeniorityMapper.obtenerFechaInicioEmpleoSolicitud(solicitudRenting);
-        if (yearsEmployment >= 3) {
-            return true;
-        } else {
-            return false;
-        }
+        return yearsEmployment >= 3;
     }
     /**
      * Método que comprueba si las garantias de un cliente han sido aprobadas
@@ -194,13 +188,9 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
      * @return true si las garantias de un cliente han sido aprobadas y false en caso contrario
      */
     public Boolean validateClienteNoAprobadoConGarantias(SolicitudRenting solicitudRenting) {
-        Persona persona = solicitudRenting.getPersona();
+        var persona = solicitudRenting.getPersona();
         int aprobado = this.approvalClienteMapper.existeClienteAprobadoConGarantias(persona.getPersonaId());
-        if (aprobado == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return aprobado != 0;
     }
     /**
      * Método que comprueba si la cliente ha sido rechazado previamente
@@ -208,13 +198,9 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
      * @return true si si la persona ha sido rechazado previamente y false en caso contrario
      */
     public Boolean validateClienteNoRechazadoPreviamente(SolicitudRenting solicitudRenting) {
-        Persona persona = solicitudRenting.getPersona();
+        var persona = solicitudRenting.getPersona();
         int aprobado = this.approvalClienteMapper.existeClienteRechazadoPreviamente(persona.getPersonaId());
-        if (aprobado == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return aprobado != 0;
     }
     /**
      * Método que comprueba si existe un cliente y si existe un garante para un cliente
@@ -226,11 +212,7 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
         int existeCliente = this.clienteExistenteGaranteMapper.existeCliente(solicitudRenting.getFechaSolicitud());
         int clienteEsGarante = this.clienteExistenteGaranteMapper.clienteEsGarante(solicitudRenting.getPersona().getNif());
 
-        if (existeCliente == 1 || clienteEsGarante == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return existeCliente == 1 || clienteEsGarante == 1;
     }
 
 }

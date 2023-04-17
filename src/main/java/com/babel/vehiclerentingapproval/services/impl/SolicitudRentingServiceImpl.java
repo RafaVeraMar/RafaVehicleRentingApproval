@@ -108,12 +108,12 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
     /**
      * Método que comprueba si el codigo de la resolución es válido
-     * @param CodResolucion el codigo de la resolucion
+     * @param codResolucion el codigo de la resolucion
      * @throws EstadoSolicitudInvalidException si el codigo de resolucion no es valido
      * @see CodigoResolucionValidatorImpl
      */
-    private void validarCodigoResolucion(String CodResolucion) throws EstadoSolicitudInvalidException{
-        this.codigoResolucionValidator.validarCodResolucion(CodResolucion);
+    private void validarCodigoResolucion(String codResolucion) throws EstadoSolicitudInvalidException{
+        this.codigoResolucionValidator.validarCodResolucion(codResolucion);
 
     }
 
@@ -126,7 +126,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      */
 
     public SolicitudRenting getSolicitudById(int id) throws RequestApiValidationException {
-        SolicitudRenting solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
+        var solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
         validateSolicitudRenting(solicitudRenting);
         return solicitudRenting;
     }
@@ -148,6 +148,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
         List<String> posiblesEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
         int existeEstado = this.solicitudRentingMapper.existeSolicitud(solicitudId);
+        SolicitudRenting solicitud = this.solicitudRentingMapper.getSolicitudByID(solicitudId);
 
         if (!posiblesEstados.contains(nuevoEstado.getCodResultado())) {
             throw new EstadoSolicitudNotFoundException();
@@ -157,7 +158,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         }
 
         this.solicitudRentingMapper.modificaEstadoSolicitud(solicitudId, nuevoEstado);
-        System.out.println("\n\nCambios en tu solicitud.\nSu solicitud se encuentra: " + this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId));
+        EmailServiceImpl.SendMail("Su solicitud se encuentra: " + this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId),solicitud.getPersona().getEmail(),"Cambios en tu solicitud");
 
     }
 
@@ -306,7 +307,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws SolicitudRentingNotFoundException que recoge la excepcion cuando la solicitud de renting es nula, si la solicitud no es nula la devuelve cancelada
      */
     public void cancelarSolicitud (int id) throws RequestApiValidationException {
-        SolicitudRenting solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
+        var solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
         validateSolicitudRenting(solicitudRenting);
         solicitudRentingMapper.cancelarSolicitud(solicitudRenting);
     }
