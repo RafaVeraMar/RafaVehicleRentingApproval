@@ -5,7 +5,6 @@ import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
-import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,9 +66,9 @@ public class PersonaServiceImpl implements PersonaService {
         this.validatePersonData(persona);
         this.validateNif(persona.getNif());
 
-        persona=this.addPersonaDireccion(persona);
+        this.addPersonaDireccion(persona);
 
-        Pais pais = this.paisMapper.getPais(persona.getNacionalidad().getIsoAlfa_2());
+        var pais = this.paisMapper.getPais(persona.getNacionalidad().getIsoAlfa_2());
 
         persona.setNacionalidad(pais);
 
@@ -151,7 +150,7 @@ public class PersonaServiceImpl implements PersonaService {
      * @param persona Persona con la informacion referente
      * @return se devuelve la persona con las direcciones ya incluida, incluyendo los mappers del tipo de vía y provincia
      */
-    private Persona addPersonaDireccion(Persona persona){
+    private void addPersonaDireccion(Persona persona){
 
         TipoVia tipoVia=this.tipoViaMapper.getTipoVia(persona.getDireccionDomicilio().getTipoViaId().getTipoViaId());
         persona.getDireccionDomicilio().setTipoViaId(tipoVia);
@@ -168,9 +167,6 @@ public class PersonaServiceImpl implements PersonaService {
             persona.getDireccionNotificacion().setTipoViaId(tipoVia);
             this.direccionMapper.insertDireccion(persona.getDireccionNotificacion());
         }
-
-
-        return persona;
     }
 
     /**
