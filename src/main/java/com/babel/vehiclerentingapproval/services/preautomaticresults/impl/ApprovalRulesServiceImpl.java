@@ -87,13 +87,12 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
      */
     @Override
     public Boolean validateInversionIngresos(SolicitudRenting solicitudRenting) {
+        Boolean res= false;
         if (solicitudRenting.getInversion()
                 <= this.inversionIngresosMapper.obtenerImporteNetoRenta(solicitudRenting)) {
-            return true;
-
-        } else {
-            return false;
+            res= true;
         }
+            return res;
     }
     /**
      * Método que comprueba si la inversion de una solicitud es mayor que la inversionMayor establecida
@@ -125,14 +124,12 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
      */
     @Override
     public Boolean validateImpagoCuota(SolicitudRenting solicitudRenting) {
+        Boolean res = false;
         if (this.impagosCuotaMapper.obtenerImporteImpagoInterno(solicitudRenting)
                 <= solicitudRenting.getCuota()) {
-
-            return true;
-
-        } else {
-            return false;
+            res = true;
         }
+        return res;
     }
     /**
      * Método que comprueba si el cif de empleador de un cliente esta contenido en la lista de de cif de Informa
