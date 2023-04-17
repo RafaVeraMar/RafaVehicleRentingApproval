@@ -73,7 +73,7 @@ public class denyRulesServiceTests {
     }
 
     @Test
-    public void validateClientAge_shouldBeTrue_whenMinor18() throws ParseException {
+     void validateClientAge_shouldBeTrue_whenMinor18() throws ParseException {
 
         this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2016"));
         boolean validationClientAge = service.validateClientAge(solicitud);
@@ -81,7 +81,7 @@ public class denyRulesServiceTests {
     }
 
     @Test
-    public void validateClientAge_shouldBeFalse_whenMajor18() throws ParseException {
+     void validateClientAge_shouldBeFalse_whenMajor18() throws ParseException {
 
         this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2000"));
         boolean validationClientAge = service.validateClientAge(solicitud);
@@ -89,7 +89,7 @@ public class denyRulesServiceTests {
     }
 
     @Test
-    public void validateClientAge_shouldBeFalse_whenNull() {
+     void validateClientAge_shouldBeFalse_whenNull() {
         this.solicitud.getPersona().setFechaNacimiento(null);
         Assertions.assertThrows(NullPointerException.class, () -> {
             boolean validationClientAge = service.validateClientAge(solicitud);
