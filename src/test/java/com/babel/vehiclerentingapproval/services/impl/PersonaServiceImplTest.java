@@ -50,7 +50,7 @@ public class PersonaServiceImplTest {
             this.personaService.addPersona(persona);
         });
     }
-
+    
     @Test
     public void modificarPersona_should_throwPersonaNotFoundException_when_personaNoExisteEnBaseDeDatos(){
         Assertions.assertThrows(PersonaNotFoundException.class,() ->{
