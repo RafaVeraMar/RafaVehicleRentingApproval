@@ -14,7 +14,8 @@ import java.util.Properties;
 @Service
 public class EmailServiceImpl {
 
-    public EmailServiceImpl() {
+    private EmailServiceImpl() {
+        // Do nothing
     }
 
     /**
