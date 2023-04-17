@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mail.javamail.JavaMailSender;
 
+import javax.mail.MessagingException;
 import javax.mail.SendFailedException;
 
 @SpringBootTest
@@ -28,8 +29,8 @@ public class EmailServiceImplTest {
     }
 
     @Test
-    public void email_shouldThrow_RuntimeException_when_emailIsWrong(){
-        Assertions.assertThrows(RuntimeException.class,()->{
+    public void email_shouldThrow_MessagingException_when_emailIsWrong(){
+        Assertions.assertThrows(MessagingException.class,()->{
             emailService.sendMail("Mensaje de prueba","emailErroneo","Asunto de ejemplo");
         });
     }
