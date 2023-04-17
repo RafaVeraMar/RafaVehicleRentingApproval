@@ -32,7 +32,7 @@ public class PersonaController {
      */
     PersonaService personaService;
 
-    private final String descripcion = "Descripcion: ";
+    private final static String DESCRIPCION = "Descripcion: ";
 
 
     public PersonaController (PersonaService personaService) {
@@ -67,23 +67,23 @@ public class PersonaController {
             personaCreada = this.personaService.addPersona(persona);
         } catch (RequiredMissingFieldException | WrongLenghtFieldException e) {
             map.put("status", HttpStatus.BAD_REQUEST);
-            map.put(descripcion, "Comprueba los datos de entrada");
+            map.put(DESCRIPCION, "Comprueba los datos de entrada");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
         } catch (DireccionNotFoundException e) {
             map.put("status", HttpStatus.BAD_REQUEST);
-            map.put(descripcion, "Direccion no encontrada");
+            map.put(DESCRIPCION, "Direccion no encontrada");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
         } catch (DniFoundException e) {
             map.put("status", HttpStatus.BAD_REQUEST);
-            map.put(descripcion, "El NIF de la persona ya existe en la base de datos");
+            map.put(DESCRIPCION, "El NIF de la persona ya existe en la base de datos");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
         } catch (Exception e) {
             map.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
-            map.put(descripcion, "Error del sistema");
+            map.put(DESCRIPCION, "Error del sistema");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
         }
         map.put("status", HttpStatus.OK);
-        map.put(descripcion, "Persona añadida.");
+        map.put(DESCRIPCION, "Persona añadida.");
         map.put("id", personaCreada.getPersonaId());
         return ResponseEntity.ok(personaCreada);
     }
@@ -149,15 +149,15 @@ public class PersonaController {
             persona.setPersonaId(id);
             this.personaService.modificarPersona(persona);
             map.put("status", HttpStatus.OK);
-            map.put(descripcion, "La persona se ha modificado correctamente en la base de datos");
+            map.put(DESCRIPCION, "La persona se ha modificado correctamente en la base de datos");
             return new ResponseEntity<>(map, HttpStatus.OK);
         } catch (PersonaNotFoundException e) {
             map.put("status", HttpStatus.NOT_FOUND);
-            map.put(descripcion, "La persona que se intenta modificar no existe en la base de datos");
+            map.put(DESCRIPCION, "La persona que se intenta modificar no existe en la base de datos");
             return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
         } catch (DireccionNotFoundException e) {
             map.put("status", HttpStatus.BAD_REQUEST);
-            map.put(descripcion, "La direccion no existe en la base de datos");
+            map.put(DESCRIPCION, "La direccion no existe en la base de datos");
             return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
         }
     }

@@ -35,8 +35,8 @@ public class RentaController {
      * Contiene un mapper que realiza las acciones relacionadas con la renta
      */
     RentaService rentaService;
-    private final String descripcion = "Descripcion: ";
-    private final String status = "status: ";
+    private final static String DESCRIPCION = "Descripcion: ";
+    private final static String STATUS = "status: ";
 
     public RentaController (RentaService rentaService) {
         this.rentaService = rentaService;
@@ -71,20 +71,20 @@ public class RentaController {
         try {
             rentaActualizada = this.rentaService.addRenta(renta);
         } catch (ProfesionNotFoundException e) {
-            map.put(status, HttpStatus.BAD_REQUEST);
-            map.put(descripcion, "Profesion no encontrada en la base de datos");
+            map.put(STATUS, HttpStatus.BAD_REQUEST);
+            map.put(DESCRIPCION, "Profesion no encontrada en la base de datos");
             return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
         } catch (PersonaNotFoundException e) {
-            map.put(status, HttpStatus.NOT_FOUND);
-            map.put(descripcion, "Persona no encontrada en la base de datos");
+            map.put(STATUS, HttpStatus.NOT_FOUND);
+            map.put(DESCRIPCION, "Persona no encontrada en la base de datos");
             return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
         } catch (RentaFoundException e) {
-            map.put(status, HttpStatus.NOT_ACCEPTABLE);
-            map.put(descripcion, "La renta ya existe en la base de datos");
+            map.put(STATUS, HttpStatus.NOT_ACCEPTABLE);
+            map.put(DESCRIPCION, "La renta ya existe en la base de datos");
             return new ResponseEntity<>(map, HttpStatus.NOT_ACCEPTABLE);
         }
-        map.put(status, HttpStatus.OK);
-        map.put(descripcion, "Renta añadida.");
+        map.put(STATUS, HttpStatus.OK);
+        map.put(DESCRIPCION, "Renta añadida.");
         map.put("id", rentaActualizada.getRentaId());
         return new ResponseEntity<>(map, HttpStatus.OK);
 

@@ -30,7 +30,7 @@ public class EmailServiceImpl {
      * @param destino el correo electrónico del destinatario
      * @param asunto  el asunto del correo electrónico
      */
-    public static void sendMail (String mensaje, String destino, String asunto) {
+    public static void sendMail (String mensaje, String destino, String asunto) throws MessagingException {
         //usuario y contraseña del usuario de google que vayamos a utilizar
         var username = "solicitudrenting@gmail.com";
         var password = "hswrinyhboucvsss";
@@ -63,7 +63,7 @@ public class EmailServiceImpl {
             message.setText(mensage);
             Transport.send(message);
         } catch (MessagingException e) {
-            throw new RuntimeException("Error al enviar el email");
+            throw new MessagingException(e.getMessage());
         }
     }
 }
