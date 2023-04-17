@@ -26,8 +26,8 @@ class PersonaServiceImplTest {
     PersonaService personaService;
 
     @BeforeEach
-    void setupAll(){
-        personaMapper= Mockito.mock(PersonaMapper.class);
+    void setupAll ( ) {
+        personaMapper = Mockito.mock(PersonaMapper.class);
         when(personaMapper.existePersona(100)).thenReturn(0); //No existe la persona
         when(personaMapper.existePersona(1)).thenReturn(1); //Existe la persona
 
@@ -40,7 +40,7 @@ class PersonaServiceImplTest {
         PaisMapper paisMapper = Mockito.mock(PaisMapper.class);
 
 
-        personaService = new PersonaServiceImpl(direccionMapper,personaMapper,telefonoMapper,tipoViaMapper,provinciaMapper,paisMapper);
+        personaService = new PersonaServiceImpl(direccionMapper, personaMapper, telefonoMapper, tipoViaMapper, provinciaMapper, paisMapper);
 
     }
 
@@ -73,6 +73,7 @@ class PersonaServiceImplTest {
             this.personaService.addPersona(persona);
         });
     }
+
     @Test
     void modificarPersona_should_throwPersonaNotFoundException_when_personaNoExisteEnBaseDeDatos(){
         Assertions.assertThrows(PersonaNotFoundException.class,() ->{

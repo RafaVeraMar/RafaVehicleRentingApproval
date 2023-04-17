@@ -183,7 +183,7 @@ public class SolicitudRentingServiceImplTest {
     class TestInsertSolicitudRenting {
 
         @Test
-        public void insertarSolicitudRenting_shouldThrow_WrongLenghtFieldException_when_NumberVehiculosIsTooBig() {
+        void insertarSolicitudRenting_shouldThrow_WrongLenghtFieldException_when_NumberVehiculosIsTooBig ( ) {
             when(personaService.existePersona(anyInt())).thenReturn(true);
             Assertions.assertThrows(WrongLenghtFieldException.class, () -> {
                 SolicitudRenting solicitudRenting = creaSolicitudFicticia();
@@ -195,7 +195,7 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        public void insertarSolicitudRenting_shouldThrow_InputIsNullOrIsEmpty_when_NumberVehiculosIsNull() {
+        void insertarSolicitudRenting_shouldThrow_InputIsNullOrIsEmpty_when_NumberVehiculosIsNull ( ) {
             Mockito.when(personaService.existePersona(anyInt())).thenReturn(true);
             Assertions.assertThrows(InputIsNullOrIsEmpty.class, () -> {
                 SolicitudRenting solicitudRenting = creaSolicitudFicticia();
@@ -205,7 +205,7 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        public void insertarSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_NumberVehiculosIsNegative() {
+        void insertarSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_NumberVehiculosIsNegative ( ) {
             Mockito.when(personaService.existePersona(anyInt())).thenReturn(true);
             Assertions.assertThrows(InputIsNegativeOrZeroException.class, () -> {
                 SolicitudRenting solicitudRenting = creaSolicitudFicticia();
@@ -217,7 +217,7 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        public void insertarSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_NumberVehiculosIsZero() {
+        void insertarSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_NumberVehiculosIsZero ( ) {
             Mockito.when(personaService.existePersona(anyInt())).thenReturn(true);
             Assertions.assertThrows(InputIsNegativeOrZeroException.class, () -> {
                 SolicitudRenting solicitudRenting = creaSolicitudFicticia();
@@ -229,7 +229,7 @@ public class SolicitudRentingServiceImplTest {
 
 
         @Test
-        public void addSolicitudRenting_shouldThrow_InputIsNullException_when_Inversion_IsNull() {
+        void addSolicitudRenting_shouldThrow_InputIsNullException_when_Inversion_IsNull ( ) {
             Mockito.when(personaService.existePersona(anyInt())).thenReturn(true);
             Assertions.assertThrows(InputIsNullOrIsEmpty.class, () -> {
                 SolicitudRenting solicitudRenting = creaSolicitudFicticia();
@@ -239,7 +239,7 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        public void addSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_Inversion_IsNegative() {
+        void addSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_Inversion_IsNegative ( ) {
             Mockito.when(personaService.existePersona(anyInt())).thenReturn(true);
             Assertions.assertThrows(InputIsNegativeOrZeroException.class, () -> {
                 SolicitudRenting solicitudRenting = creaSolicitudFicticia();
@@ -249,7 +249,7 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        public void addSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_Inversion_IsZero() {
+        void addSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_Inversion_IsZero ( ) {
             Mockito.when(personaService.existePersona(anyInt())).thenReturn(true);
             Assertions.assertThrows(InputIsNegativeOrZeroException.class, () -> {
                 SolicitudRenting solicitudRenting = creaSolicitudFicticia();
@@ -259,7 +259,7 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        public void insertarSolicitudRenting_shouldThrow_InputIsNullException_when_Cuota_IsNull() {
+        void insertarSolicitudRenting_shouldThrow_InputIsNullException_when_Cuota_IsNull ( ) {
             Mockito.when(personaService.existePersona(anyInt())).thenReturn(true);
             Assertions.assertThrows(InputIsNullOrIsEmpty.class, () -> {
                 SolicitudRenting solicitudRenting = creaSolicitudFicticia();
@@ -269,7 +269,7 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        public void insertarSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_Cuota_IsNegative() {
+        void insertarSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_Cuota_IsNegative ( ) {
             Mockito.when(personaService.existePersona(anyInt())).thenReturn(true);
             Assertions.assertThrows(InputIsNegativeOrZeroException.class, () -> {
                 SolicitudRenting solicitudRenting = creaSolicitudFicticia();
@@ -279,7 +279,7 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        public void insertarSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_Cuota_IsZero() {
+        void insertarSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_Cuota_IsZero ( ) {
             Mockito.when(personaService.existePersona(anyInt())).thenReturn(true);
             Assertions.assertThrows(InputIsNegativeOrZeroException.class, () -> {
                 SolicitudRenting solicitudRenting = creaSolicitudFicticia();
@@ -289,7 +289,7 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        public void insertarSolicitudRenting_shouldThrow_WrongLenghtFieldException_when_NumberPlazoIsTooBig() {
+        void insertarSolicitudRenting_shouldThrow_WrongLenghtFieldException_when_NumberPlazoIsTooBig ( ) {
             Mockito.when(personaService.existePersona(anyInt())).thenReturn(true);
             Assertions.assertThrows(WrongLenghtFieldException.class, () -> {
                 SolicitudRenting solicitudRenting = creaSolicitudFicticia();
@@ -301,7 +301,7 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        public void insertarSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_PlazoIsNegative() {
+        void insertarSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_PlazoIsNegative ( ) {
             Mockito.when(personaService.existePersona(anyInt())).thenReturn(true);
             Assertions.assertThrows(InputIsNegativeOrZeroException.class, () -> {
                 SolicitudRenting solicitudRenting = creaSolicitudFicticia();
@@ -313,7 +313,7 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        public void insertarSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_PlazoIsZero() {
+        void insertarSolicitudRenting_shouldThrow_InputIsNegativeOrZeroException_when_PlazoIsZero ( ) {
             Mockito.when(personaService.existePersona(anyInt())).thenReturn(true);
             Assertions.assertThrows(InputIsNegativeOrZeroException.class, () -> {
                 SolicitudRenting solicitudRenting = creaSolicitudFicticia();
@@ -325,7 +325,7 @@ public class SolicitudRentingServiceImplTest {
 
 
         @Test
-        public void insertarSolicitudRenting_shouldThrow_DateIsBeforeException_when_FechaInicio_IsBefore_with_FechaResolucion() {
+        void insertarSolicitudRenting_shouldThrow_DateIsBeforeException_when_FechaInicio_IsBefore_with_FechaResolucion ( ) {
             Mockito.when(personaService.existePersona(anyInt())).thenReturn(true);
             Assertions.assertThrows(DateIsBeforeException.class, () -> {
                 SolicitudRenting solicitudRenting = creaSolicitudFicticia();
