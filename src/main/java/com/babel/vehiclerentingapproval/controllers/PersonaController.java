@@ -32,6 +32,9 @@ public class PersonaController {
      */
     PersonaService personaService;
 
+    private static final String DESCRIPCION = "descripcion";
+    private static final String STATUS = "status";
+
     public PersonaController(PersonaService personaService) {
         this.personaService = personaService;
     }
@@ -63,31 +66,31 @@ public class PersonaController {
         try {
             personaCreada=this.personaService.addPersona(persona);
         } catch (RequiredMissingFieldException e) {
-            map.put("status", HttpStatus.BAD_REQUEST);
+            map.put(STATUS, HttpStatus.BAD_REQUEST);
             map.put("descripcion", "Comprueba los datos de entrada");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
         } catch (WrongLenghtFieldException e) {
-            map.put("status", HttpStatus.BAD_REQUEST);
+            map.put(STATUS, HttpStatus.BAD_REQUEST);
             map.put("descripcion", "Comprueba los datos de entrada");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
         }catch (DireccionNotFoundException e){
-            map.put("status", HttpStatus.BAD_REQUEST);
+            map.put(STATUS, HttpStatus.BAD_REQUEST);
             map.put("descripcion", "Direccion no encontrada");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
         }catch (DniFoundException e){
-            map.put("status", HttpStatus.BAD_REQUEST);
+            map.put(STATUS, HttpStatus.BAD_REQUEST);
             map.put("descripcion", "El NIF de la persona ya existe en la base de datos");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
-            map.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
-            map.put("description", "Error del sistema");
+            map.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR);
+            map.put(DESCRIPCION, "Error del sistema");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
         }
 
-        map.put("status", HttpStatus.OK);
-        map.put("description", "Persona añadida.");
+        map.put(STATUS, HttpStatus.OK);
+        map.put(DESCRIPCION, "Persona añadida.");
         map.put("id", personaCreada.getPersonaId());
         return ResponseEntity.ok(personaCreada);
     }
@@ -114,13 +117,13 @@ public class PersonaController {
 
         try {
             lista = this.personaService.viewPersonaProducto(id);
-            map.put("status", HttpStatus.OK);
-            map.put("description", "Productos contratados por una persona.");
+            map.put(STATUS, HttpStatus.OK);
+            map.put(DESCRIPCION, "Productos contratados por una persona.");
             map.put("Lista de productos contratados por una persona",lista);
             return new ResponseEntity<Object>(map,HttpStatus.OK);
         } catch (PersonaNotFoundException e) {
-            map.put("status", HttpStatus.NOT_FOUND);
-            map.put("description", "Persona no encontrada en la base de datos");
+            map.put(STATUS, HttpStatus.NOT_FOUND);
+            map.put(DESCRIPCION, "Persona no encontrada en la base de datos");
             return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
         }
     }
@@ -150,15 +153,15 @@ public class PersonaController {
         try{
             persona.setPersonaId(id);
             this.personaService.modificarPersona(persona);
-            map.put("status", HttpStatus.OK);
+            map.put(STATUS, HttpStatus.OK);
             map.put("descripcion", "La persona se ha modificado correctamente en la base de datos");
             return new ResponseEntity<Object>(map, HttpStatus.OK);
         }catch(PersonaNotFoundException e){
-            map.put("status", HttpStatus.NOT_FOUND);
+            map.put(STATUS, HttpStatus.NOT_FOUND);
             map.put("descripcion", "La persona que se intenta modificar no existe en la base de datos");
             return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
         } catch (DireccionNotFoundException e) {
-            map.put("status", HttpStatus.BAD_REQUEST);
+            map.put(STATUS, HttpStatus.BAD_REQUEST);
             map.put("descripcion", "La direccion no existe en la base de datos");
             return new ResponseEntity<Object>(map, HttpStatus.BAD_REQUEST);
         }
