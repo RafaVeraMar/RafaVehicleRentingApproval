@@ -314,7 +314,7 @@ public class PersonaServiceImpl implements PersonaService {
      * @return boolean
      */
     public boolean existePersona(int personaId){
-        boolean existe = true;
+        var existe = true;
         if(personaMapper.existePersona(personaId)==0){
             existe = false;
         }
@@ -329,7 +329,7 @@ public class PersonaServiceImpl implements PersonaService {
      * @return boolean
      */
     public boolean existeDireccion(int direccionId){
-        boolean existe = true;
+        var existe = true;
         if(this.direccionMapper.existeDireccion(direccionId)==0){
             existe = false;
         }
@@ -343,7 +343,7 @@ public class PersonaServiceImpl implements PersonaService {
      * @return boolean
      */
     public boolean existeNif(String nif){
-        boolean existe = false;
+        var existe = false;
         if(this.personaMapper.existeNif(nif)!=0){
             existe = true;
         }
