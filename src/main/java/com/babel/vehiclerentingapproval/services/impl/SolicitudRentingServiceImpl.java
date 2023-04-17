@@ -1,8 +1,10 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
 import com.babel.vehiclerentingapproval.exceptions.*;
+import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
+import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
 import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
@@ -26,12 +28,13 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private final TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
     private final PersonaService personaService;
     private final CodigoResolucionValidator codigoResolucionValidator;
-
-    public SolicitudRentingServiceImpl(SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaService personaService, CodigoResolucionValidator codigoResolucionValidator) {
+    private final PersonaMapper personaMapper;
+    public SolicitudRentingServiceImpl(SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaService personaService, CodigoResolucionValidator codigoResolucionValidator, PersonaMapper personaMapper) {
         this.solicitudRentingMapper = solicitudRentingMapper;
         this.tipoResultadoSolicitudMapper = tipoResultadoSolicitudMapper;
         this.personaService = personaService;
         this.codigoResolucionValidator = codigoResolucionValidator;
+        this.personaMapper = personaMapper;
 
     }
 
@@ -144,11 +147,13 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws EstadoSolicitudNotFoundException cuando el estado de la solicitud no sea uno de los valores válidos posibles.
      */
     @Override
-    public void modificaEstadoSolicitud(Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException {
+    public void modificaEstadoSolicitud(Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws RequestApiValidationException {
 
         List<String> posiblesEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
         int existeEstado = this.solicitudRentingMapper.existeSolicitud(solicitudId);
         SolicitudRenting solicitud = this.solicitudRentingMapper.getSolicitudByID(solicitudId);
+
+        String email = this.personaMapper.getEmail(solicitud.getPersona().getPersonaId());
 
         if (!posiblesEstados.contains(nuevoEstado.getCodResultado())) {
             throw new EstadoSolicitudNotFoundException();
@@ -158,7 +163,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         }
 
         this.solicitudRentingMapper.modificaEstadoSolicitud(solicitudId, nuevoEstado);
-        EmailServiceImpl.SendMail("Su solicitud se encuentra: " + this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId),solicitud.getPersona().getEmail(),"Cambios en tu solicitud");
+        EmailServiceImpl.SendMail("Su solicitud se encuentra: " + this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId),email,"Cambios en tu solicitud");
 
     }
 
