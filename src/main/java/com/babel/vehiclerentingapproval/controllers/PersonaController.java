@@ -120,11 +120,11 @@ public class PersonaController {
             map.put(STATUS, HttpStatus.OK);
             map.put(DESCRIPCION, "Productos contratados por una persona.");
             map.put("Lista de productos contratados por una persona",lista);
-            return new ResponseEntity<Object>(map,HttpStatus.OK);
+            return new ResponseEntity<>(map,HttpStatus.OK);
         } catch (PersonaNotFoundException e) {
             map.put(STATUS, HttpStatus.NOT_FOUND);
             map.put(DESCRIPCION, "Persona no encontrada en la base de datos");
-            return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
         }
     }
 
