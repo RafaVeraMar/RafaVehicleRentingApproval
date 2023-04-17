@@ -6,13 +6,16 @@ import com.babel.vehiclerentingapproval.models.Direccion;
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
-import com.babel.vehiclerentingapproval.services.impl.PersonaServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -77,4 +80,46 @@ public class PersonaServiceImplTest {
         });
     }
 
+    @Test
+    public void modificarTelefono_should_throwPersonaNotFoundException_when_idPersonaNoExisteEnBaseDeDatos() {
+
+        when(personaMapper.existePersona(anyInt())).thenReturn(0);
+        Assertions.assertThrows(PersonaNotFoundException.class, ( ) -> {
+            personaService.modificarTelefono(createPersona());
+        });
+    }
+
+    private boolean existePersonaMockFalse(Integer personaId){
+        return false;
+    }
+
+    private Persona createPersona ( ) throws ParseException {
+        Persona persona = new Persona();
+        persona.setNombre("Juan");
+        persona.setApellido1("Francés");
+        persona.setApellido2("Atúñez");
+        persona.setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-1980"));
+
+        Direccion domicilio = new Direccion();
+
+        domicilio.setNombreCalle("Gran via");
+        domicilio.setNumero("120");
+        domicilio.setCodPostal("36201");
+        domicilio.setMunicipio("Pontevedra");
+
+
+        Direccion notificacion = new Direccion();
+
+        domicilio.setNombreCalle("Plaza nueva");
+        domicilio.setNumero("44");
+        domicilio.setCodPostal("41001");
+        domicilio.setMunicipio("Sevilla");
+
+
+        persona.setDireccionDomicilio(domicilio);
+        persona.setDireccionDomicilioSameAsNotificacion(true);
+        persona.setDireccionNotificacion(notificacion);
+
+        return persona;
+    }
 }
