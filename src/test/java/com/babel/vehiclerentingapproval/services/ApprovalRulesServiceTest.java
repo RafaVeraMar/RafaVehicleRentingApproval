@@ -52,7 +52,7 @@ public class ApprovalRulesServiceTest {
         this.renta = this.createRentaMock();
         this.clienteExistenteGaranteMapper = Mockito.mock(ClienteExistenteGaranteMapper.class);
 
-        this.service = new ApprovalRulesServiceImpl(this.scoringRatingMapper, this.employmentSeniorityMapper, this.inversionIngresosMapper, this.personaMapper, this.rentaMapper, this.salariedMapper, this.impagosCuotaMapper, this.garantiaMapper, this.clienteExistenteGaranteMapper);
+        this.service = new ApprovalRulesServiceImpl(this.scoringRatingMapper, this.employmentSeniorityMapper, this.inversionIngresosMapper, this.salariedMapper, this.impagosCuotaMapper, this.garantiaMapper, this.clienteExistenteGaranteMapper);
     }
 
     private SolicitudRenting createSolicitudMock() throws ParseException {

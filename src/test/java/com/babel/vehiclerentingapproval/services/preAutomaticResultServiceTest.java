@@ -59,8 +59,8 @@ class preAutomaticResultServiceTest {
         this.denyRulesService = new DenyRulesServicesImpl();
 
         this.approvalRulesService = new ApprovalRulesServiceImpl(this.scoringRatingMapper,
-                this.employmentSeniorityMapper, this.inversionIngresosMapper, this.personaMapper,
-                this.rentaMapper, this.salariedMapper, this.impagosCuotaMapper, this.garantiaMapper, this.clienteExistenteGaranteMapper);
+                this.employmentSeniorityMapper, this.inversionIngresosMapper, this.salariedMapper,
+                this.impagosCuotaMapper, this.garantiaMapper, this.clienteExistenteGaranteMapper);
         this.calculateAutomaticResult = new CalculateAutomaticResultImpl(this.denyRulesService,this.approvalRulesService,this.automaticResultMapper);
     }
 
