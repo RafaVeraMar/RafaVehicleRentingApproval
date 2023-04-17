@@ -156,7 +156,7 @@ public class SolicitudRentingController {
             respuesta.put("Status", HttpStatus.INTERNAL_SERVER_ERROR);
             respuesta.put(campoDescripcion, "Error interno.");
         }
-        return new ResponseEntity<Object>(respuesta, (HttpStatus) respuesta.get("Status"));
+        return new ResponseEntity<>(respuesta, (HttpStatus) respuesta.get("Status"));
     }
 
     /**
