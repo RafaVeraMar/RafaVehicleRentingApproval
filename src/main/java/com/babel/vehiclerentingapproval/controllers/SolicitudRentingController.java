@@ -35,7 +35,7 @@ public class SolicitudRentingController {
 
 
     private final SolicitudRentingService solicitud;
-    private SolicitudRentingMapper solicitudRentingMapper;
+
 
     public SolicitudRentingController(SolicitudRentingService solicitud) {
         this.solicitud = solicitud;
@@ -173,8 +173,8 @@ public class SolicitudRentingController {
     })
     @Parameter(name = "id", description = "ID de la solicitud a cancelar", required = true)
     @PutMapping("/{id}")
-    ResponseEntity cancelarSolicitud(@PathVariable int id) {
-        Map<String, Object> respuesta = new HashMap<String, Object>();
+    public ResponseEntity cancelarSolicitud(@PathVariable int id) {
+        Map<String, Object> respuesta = new HashMap<>();
         try {
             this.solicitud.cancelarSolicitud(id);
             respuesta.put("Status", HttpStatus.OK);
