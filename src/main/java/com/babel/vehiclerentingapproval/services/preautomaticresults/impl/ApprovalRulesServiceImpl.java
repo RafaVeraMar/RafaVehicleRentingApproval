@@ -139,7 +139,7 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
      */
     @Override
     public Boolean validateCIFCliente(SolicitudRenting solicitudRenting) {
-        boolean encontrado = false;
+        var encontrado = false;
         String cadena;
         var cifSol = this.salariedMapper.obtenerCIFSolicitud(solicitudRenting);
         List<String> listaCIF = this.salariedMapper.obtenerCIFInforma();

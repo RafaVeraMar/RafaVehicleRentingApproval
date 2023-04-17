@@ -18,7 +18,6 @@ public class CalculateAutomaticResultImpl implements CalculateAutomaticResult {
 
     private DenyRulesService denyRulesService;
     private ApprovalRulesService approvalRulesService;
-    private AutomaticResultMapper automaticResultMapper;
 
     /**
      * Constructor encargado de dar forma al objeto de tipo CalculateAutomaticResult
@@ -30,7 +29,6 @@ public class CalculateAutomaticResultImpl implements CalculateAutomaticResult {
     public CalculateAutomaticResultImpl(DenyRulesService denyRulesService, ApprovalRulesService approvalRulesService, AutomaticResultMapper automaticResultMapper) {
         this.denyRulesService = denyRulesService;
         this.approvalRulesService = approvalRulesService;
-        this.automaticResultMapper = automaticResultMapper;
     }
 
     /**
@@ -40,13 +38,15 @@ public class CalculateAutomaticResultImpl implements CalculateAutomaticResult {
      */
     @Override
     public Boolean findAnyDeny(SolicitudRenting solicitudRenting) {
-        if (!denyRulesService.validateClientAge(solicitudRenting) &&
-                !denyRulesService.validateClientAgePlusPlazo(solicitudRenting) &&
-                !denyRulesService.validateScoringTitular(solicitudRenting)) {
-            return true;
+        boolean resultado;
+        if (Boolean.FALSE.equals(denyRulesService.validateClientAge(solicitudRenting)) &&
+                Boolean.FALSE.equals(denyRulesService.validateClientAgePlusPlazo(solicitudRenting)) &&
+                Boolean.FALSE.equals(denyRulesService.validateScoringTitular(solicitudRenting))) {
+            resultado = true;
         } else {
-            return false;
+            resultado = false;
         }
+        return resultado;
     }
 
     /**
@@ -56,8 +56,7 @@ public class CalculateAutomaticResultImpl implements CalculateAutomaticResult {
      */
     @Override
     public Boolean findAllApproval(SolicitudRenting solicitudRenting) {
-        //TODO
-        // Probar con && validatefindPersonasByCodResultado(solicitudRenting)
+        boolean resultado;
         if (approvalRulesService.validateCIFCliente(solicitudRenting) &&
                 approvalRulesService.validateInversion(solicitudRenting) &&
                 approvalRulesService.validateInversionIngresos(solicitudRenting) &&
@@ -67,10 +66,11 @@ public class CalculateAutomaticResultImpl implements CalculateAutomaticResult {
                 approvalRulesService.validateYearsExperience(solicitudRenting) &&
                 approvalRulesService.validateClienteNoAprobadoConGarantias(solicitudRenting) &&
                 approvalRulesService.validateClienteNoRechazadoPreviamente(solicitudRenting)) {
-            return true;
+            resultado = true;
         } else {
-            return false;
+            resultado = false;
         }
+        return resultado;
     }
 
     /**
@@ -80,8 +80,7 @@ public class CalculateAutomaticResultImpl implements CalculateAutomaticResult {
      */
     @Override
     public Boolean findAnyApproval(SolicitudRenting solicitudRenting) {
-        //TODO
-        // Probar con && validatefindPersonasByCodResultado(solicitudRenting)
+        boolean resultado;
         if (this.approvalRulesService.validateCIFCliente(solicitudRenting) ||
                 this.approvalRulesService.validateInversion(solicitudRenting) ||
                 this.approvalRulesService.validateInversionIngresos(solicitudRenting) ||
@@ -91,10 +90,11 @@ public class CalculateAutomaticResultImpl implements CalculateAutomaticResult {
                 this.approvalRulesService.validateYearsExperience(solicitudRenting) ||
                 this.approvalRulesService.validateClienteNoAprobadoConGarantias(solicitudRenting) ||
                 this.approvalRulesService.validateClienteNoRechazadoPreviamente(solicitudRenting)) {
-            return true;
+            resultado = true;
         } else {
-            return false;
+            resultado = false;
         }
+        return resultado;
     }
 
     /**
@@ -110,21 +110,17 @@ public class CalculateAutomaticResultImpl implements CalculateAutomaticResult {
     @Override
     public String totalResult(SolicitudRenting solicitudRenting) {
 
-        String result = "";
+        var result = "";
 
-        if (this.findAnyDeny(solicitudRenting)) {
+        if (Boolean.TRUE.equals(this.findAnyDeny(solicitudRenting))) {
             if (this.findAllApproval(solicitudRenting)) {
-           //     this.automaticResultMapper.updateCodResolucion(solicitudRenting);
                 result = "AA";
-            } else if (this.findAnyApproval(solicitudRenting)) {
-            //    this.automaticResultMapper.updateCodResolucion(solicitudRenting);
+            } else if (Boolean.TRUE.equals(this.findAnyApproval(solicitudRenting))) {
                 result = "PA";
             } else {
-            //    this.automaticResultMapper.updateCodResolucion(solicitudRenting);
                 result = "DM";
             }
         } else {
-        //    this.automaticResultMapper.updateCodResolucion(solicitudRenting);
             result = "DM";
 
 
