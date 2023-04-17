@@ -83,7 +83,7 @@ public class SolicitudRentingServiceImplTest {
     @Nested
     class TestsVerEstadoSolicitud {
         @Test
-        public void verEstadoSolicitud_shouldThrow_EstadoSolicitudNotFoundException_when_codSolicitudNull_or_idNotExists ( ) {
+        void verEstadoSolicitud_shouldThrow_EstadoSolicitudNotFoundException_when_codSolicitudNull_or_idNotExists ( ) {
             Mockito.when(tipoResultadoSolicitudMapper.existeCodigoResolucion(anyInt())).thenReturn(0);
             Assertions.assertThrows(EstadoSolicitudNotFoundException.class, ( ) -> {
                 String estado = solicitudService.verEstadoSolicitud(anyInt());
@@ -91,7 +91,7 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        public void verEstadoSolicitud_shouldNotThrow_EstadoSolicitudNotFoundException_when_codSolicitudNull_and_idNotExists ( ) {
+        void verEstadoSolicitud_shouldNotThrow_EstadoSolicitudNotFoundException_when_codSolicitudNull_and_idNotExists ( ) {
             Mockito.when(tipoResultadoSolicitudMapper.existeCodigoResolucion(anyInt())).thenReturn(1);
             Mockito.when(tipoResultadoSolicitudMapper.codigoValido(anyString())).thenReturn(1);
             Mockito.when(tipoResultadoSolicitudMapper.getResultadoSolicitud(anyInt())).thenReturn(creaTipoResultadoFicticia());
@@ -102,7 +102,7 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        public void verEstadoSolicitud_shouldThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid ( ) {
+        void verEstadoSolicitud_shouldThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid ( ) {
             Mockito.when(tipoResultadoSolicitudMapper.codigoValido(anyString())).thenReturn(0);
             Assertions.assertThrows(EstadoSolicitudInvalidException.class, ( ) -> {
                 codigoResolucionValidator.validarCodResolucion(anyString());
@@ -110,7 +110,7 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        public void verEstadoSolicitud_shouldNotThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid ( ) {
+        void verEstadoSolicitud_shouldNotThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid ( ) {
             Mockito.when(tipoResultadoSolicitudMapper.codigoValido(anyString())).thenReturn(1);
 
             Assertions.assertDoesNotThrow(( ) -> {

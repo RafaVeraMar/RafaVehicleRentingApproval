@@ -1,7 +1,6 @@
 package com.babel.vehiclerentingapproval.controllers;
 
 
-import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudInvalidException;
 import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundException;
@@ -41,6 +40,8 @@ public class SolicitudRentingController {
         this.solicitud = solicitud;
     }
 
+    String campoDescripcion = "Descripcion";
+
 
     /**
      * Añade una nueva solicitud de renting y devuelve un objeto ResponseEntity con la información
@@ -74,13 +75,13 @@ public class SolicitudRentingController {
             solicitud.addSolicitudRenting(solicitudRenting);
             respuesta.put("Status", HttpStatus.OK);
             respuesta.put("Id", solicitudRenting.getSolicitudId());
-            respuesta.put("Descripcion:", "Solicitud creada correctamente");
+            respuesta.put(campoDescripcion, "Solicitud creada correctamente");
         } catch (RequestApiValidationException e) {
             respuesta.put("Status", e.getStatusCode());
-            respuesta.put("Descripcion:", e.getExternalMessage());
+            respuesta.put(campoDescripcion, e.getExternalMessage());
         } catch (Exception e) {
             respuesta.put("Status", HttpStatus.INTERNAL_SERVER_ERROR);
-            respuesta.put("Descripcion:", "Error interno, intentelo de nuevo mas tarde.");
+            respuesta.put(campoDescripcion, "Error interno, intentelo de nuevo mas tarde.");
         }
         return new ResponseEntity<Object>(respuesta, (HttpStatus)respuesta.get("Status"));
     }
@@ -100,33 +101,33 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(mediaType = "application/json"))
     })
     @Parameter(name = "id", description = "ID de la solicitud a consultar", required = true)
-    ResponseEntity<Object> verEstadoSolicitud(@PathVariable String id) {
-        Map<String, Object> respuesta = new HashMap<String, Object>();
+    public ResponseEntity<Object> verEstadoSolicitud(@PathVariable String id) {
+        Map<String, Object> respuesta = new HashMap<>();
         try {
-            int idSolicitud = Integer.parseInt(id);
+            var idSolicitud = Integer.parseInt(id);
             String estado = this.solicitud.verEstadoSolicitud(idSolicitud);
 
             respuesta.put("Status",HttpStatus.OK);
             respuesta.put("Id",id);
-            respuesta.put("Descripcion",estado);
+            respuesta.put(campoDescripcion,estado);
         }
         catch (NumberFormatException e){
             respuesta.put("Status",HttpStatus.BAD_REQUEST);
             respuesta.put("Id",id);
-            respuesta.put("Descripcion","Error: el formato de ID es inválido");
+            respuesta.put(campoDescripcion,"Error: el formato de ID es inválido");
         }
         catch (RequestApiValidationException e) {
             respuesta.put("Status", e.getStatusCode());
             respuesta.put("Id", id);
-            respuesta.put("Descripcion:", e.getExternalMessage());
+            respuesta.put(campoDescripcion, e.getExternalMessage());
         }
         catch (Exception e){
             respuesta.put("Status",HttpStatus.INTERNAL_SERVER_ERROR);
             respuesta.put("Id",id);
-            respuesta.put("Descripcion","Error: Ha ocurrido un error interno en el servidor ");
+            respuesta.put(campoDescripcion,"Error: Ha ocurrido un error interno en el servidor ");
         }
 
-        return new ResponseEntity<Object>(respuesta,(HttpStatus)respuesta.get("Status"));
+        return new ResponseEntity<>(respuesta,(HttpStatus)respuesta.get("Status"));
     }
 
     /**
