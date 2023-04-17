@@ -1,5 +1,6 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
@@ -18,16 +19,19 @@ public class EmailServiceImpl {
         // Do nothing
     }
 
+
     /**
      * Metodo que envía un correo electrónico.
      * @param mensaje el mensaje del correo electrónico
      * @param destino el correo electrónico del destinatario
      * @param asunto el asunto del correo electrónico
      */
-    public static void SendMail(String mensaje,String destino, String asunto) {
+    public static void SendMail(String mensaje, String destino, String asunto) {
         //usuario y contraseña del usuario de google que vayamos a utilizar
         String Username = "solicitudrenting@gmail.com";
-        String Password = "hswrinyhboucvsss";
+        //String Password = "hswrinyhboucvsss";
+        var clave = new getKey();
+
 
 
         //propiedades del mensaje
@@ -45,11 +49,13 @@ public class EmailServiceImpl {
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 
+
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                     @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(Username, Password);
+                        return new PasswordAuthentication(Username, clave.getClave() );
+                        //return new PasswordAuthentication(Username, Password );
                     }
                 });
 
@@ -69,5 +75,7 @@ public class EmailServiceImpl {
             throw new RuntimeException(e);
         }
     }
+
+
 }
 
