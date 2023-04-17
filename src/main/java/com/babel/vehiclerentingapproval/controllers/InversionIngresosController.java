@@ -41,7 +41,7 @@ public class InversionIngresosController {
         boolean t7 = this.approvalService.validateClienteNoAprobadoConGarantias(solicitudRentingl);
         boolean t8 = this.approvalService.validatefindPersonasByCodResultado(solicitudRentingl);
         boolean t9 = this.approvalService.validateClienteNoRechazadoPreviamente(solicitudRentingl);
-        ArrayList<Boolean> lista = new ArrayList<Boolean>();
+        ArrayList<Boolean> lista = new ArrayList<>();
 
 
         lista.add(t);

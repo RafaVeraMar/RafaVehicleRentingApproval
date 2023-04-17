@@ -6,7 +6,6 @@ import com.babel.vehiclerentingapproval.persistance.database.mappers.RentaMapper
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.ProfesionService;
 import com.babel.vehiclerentingapproval.services.RentaService;
-import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import org.springframework.stereotype.Service;
 /**
  * Esta clase es la implementación del método crear del CRUD y del metodo para validar y comprobar las renta.
