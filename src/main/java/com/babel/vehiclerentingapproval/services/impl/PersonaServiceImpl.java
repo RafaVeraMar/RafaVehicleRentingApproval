@@ -152,9 +152,9 @@ public class PersonaServiceImpl implements PersonaService {
      */
     private void addPersonaDireccion(Persona persona){
 
-        TipoVia tipoVia=this.tipoViaMapper.getTipoVia(persona.getDireccionDomicilio().getTipoViaId().getTipoViaId());
+        var tipoVia=this.tipoViaMapper.getTipoVia(persona.getDireccionDomicilio().getTipoViaId().getTipoViaId());
         persona.getDireccionDomicilio().setTipoViaId(tipoVia);
-        Provincia provincia = this.provinciaMapper.getProvincia(persona.getDireccionDomicilio().getProvincia().getCodProvincia());
+        var provincia = this.provinciaMapper.getProvincia(persona.getDireccionDomicilio().getProvincia().getCodProvincia());
         persona.getDireccionDomicilio().setProvinciaCod(provincia);
         this.direccionMapper.insertDireccion(persona.getDireccionDomicilio());
 
@@ -212,11 +212,11 @@ public class PersonaServiceImpl implements PersonaService {
         List<TelefonoContacto> telefonosAntiguos = telefonoMapper.listarTelefonos(persona.getPersonaId());
 
         //Borramos telefonos pertenecientes al usuario
-        for (int i = 0; i < telefonosAntiguos.size(); i++) {
+        for (var i = 0; i < telefonosAntiguos.size(); i++) {
             this.telefonoMapper.deleteTelefono(persona.getPersonaId(), telefonosAntiguos.get(i));
         }
         //Añadimos los telefonos del usuario
-        for (int i = 0;i<telefonos.size();i++) {
+        for (var i = 0;i<telefonos.size();i++) {
             this.telefonoMapper.addTelefono(telefonos.get(i),persona);
         }
 
@@ -314,10 +314,11 @@ public class PersonaServiceImpl implements PersonaService {
      * @return boolean
      */
     public boolean existePersona(int personaId){
+        boolean existe = true;
         if(personaMapper.existePersona(personaId)==0){
-            return false;
+            existe = false;
         }
-        return true;
+        return existe;
     }
 
     /**
@@ -328,11 +329,11 @@ public class PersonaServiceImpl implements PersonaService {
      * @return boolean
      */
     public boolean existeDireccion(int direccionId){
+        boolean existe = true;
         if(this.direccionMapper.existeDireccion(direccionId)==0){
-            return false;
-        }else{
-            return true;
+            existe = false;
         }
+        return existe;
     }
 
     /**
@@ -342,9 +343,10 @@ public class PersonaServiceImpl implements PersonaService {
      * @return boolean
      */
     public boolean existeNif(String nif){
+        boolean existe = false;
         if(this.personaMapper.existeNif(nif)!=0){
-            return true;
+            existe = true;
         }
-        return false;
+        return existe;
     }
 }
