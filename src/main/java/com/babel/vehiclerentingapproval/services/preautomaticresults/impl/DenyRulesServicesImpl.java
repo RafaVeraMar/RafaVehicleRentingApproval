@@ -4,11 +4,10 @@ import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.services.preautomaticresults.DenyRulesService;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -45,10 +44,12 @@ public class DenyRulesServicesImpl implements DenyRulesService {
     public Boolean validateClientAge(SolicitudRenting solicitudRenting) {
 
         Date fechaNacimiento = solicitudRenting.getPersona().getFechaNacimiento();
-        int anyo = fechaNacimiento.getYear() + 1900;
-        int day = fechaNacimiento.getDate();
-        int month = fechaNacimiento.getMonth() + 1;
-        LocalDate fechaConcreta = LocalDate.of(anyo, month, day);
+        LocalDate fechaNacimientoLocalDate = fechaNacimiento.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int anyo = fechaNacimientoLocalDate.getYear();
+        int day = fechaNacimientoLocalDate.getDayOfMonth();
+        int month = fechaNacimientoLocalDate.getMonthValue();
+
+        var fechaConcreta = LocalDate.of(anyo, month, day);
         long anios = ChronoUnit.YEARS.between(fechaConcreta, fechaActual);
         if (anios < anyosMayor) {
             return true;
