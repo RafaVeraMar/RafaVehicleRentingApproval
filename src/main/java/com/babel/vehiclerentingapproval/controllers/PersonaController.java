@@ -60,7 +60,7 @@ public class PersonaController {
 
     ResponseEntity addPersona(@RequestBody Persona persona){
         Persona personaCreada;
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         try {
             personaCreada=this.personaService.addPersona(persona);
         } catch (RequiredMissingFieldException e) {
