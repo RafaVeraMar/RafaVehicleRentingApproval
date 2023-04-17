@@ -27,7 +27,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private final PersonaService personaService;
     private final CodigoResolucionValidator codigoResolucionValidator;
 
-    public SolicitudRentingServiceImpl(SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaService personaService, CodigoResolucionValidator codigoResolucionValidator) {
+    public SolicitudRentingServiceImpl (SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaService personaService, CodigoResolucionValidator codigoResolucionValidator) {
         this.solicitudRentingMapper = solicitudRentingMapper;
         this.tipoResultadoSolicitudMapper = tipoResultadoSolicitudMapper;
         this.personaService = personaService;
@@ -49,7 +49,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @see #validateFecha(SolicitudRenting)
      */
     @Override
-    public SolicitudRenting addSolicitudRenting(SolicitudRenting solicitudRenting) throws RequestApiValidationException {
+    public SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) throws RequestApiValidationException {
         validatePersona(solicitudRenting.getPersona().getPersonaId());
         validateNumVehiculos(solicitudRenting);
         validateInversion(solicitudRenting);
@@ -75,12 +75,13 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
     /**
      * Devuelve el estado de una solicitud de renting a partir de su id
+     *
      * @param idSolicitud el ID de la solicitud a consultar
      * @return el estado de la solicitud como una cadena de caracteres
      * @throws RequestApiValidationException si la id de la solicitud no existe, el codigo de resolucion es nulo, o no es valido
      */
     @Override
-    public String verEstadoSolicitud(int idSolicitud) throws RequestApiValidationException {
+    public String verEstadoSolicitud (int idSolicitud) throws RequestApiValidationException {
         int codigoExiste = tipoResultadoSolicitudMapper.existeCodigoResolucion(idSolicitud);
 
         validarCodResolucionExiste(codigoExiste);
@@ -95,12 +96,13 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
     /**
      * Comprueba que el codigo de resolucion de la solicitud existe.
+     *
      * @param codResolucion Valor encontrado al hacer la consulta en la base de datos
      * @throws EstadoSolicitudNotFoundException si el codigo de resolución es nulo o el id de la solicitud no existe
      */
-    private void validarCodResolucionExiste(int codResolucion) throws EstadoSolicitudNotFoundException{
+    private void validarCodResolucionExiste (int codResolucion) throws EstadoSolicitudNotFoundException {
 
-        if(codResolucion == 0){ //idSolicitud or codResolucion null
+        if (codResolucion == 0) { //idSolicitud or codResolucion null
             throw new EstadoSolicitudNotFoundException();
         }
 
@@ -108,11 +110,12 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
     /**
      * Método que comprueba si el codigo de la resolución es válido
+     *
      * @param CodResolucion el codigo de la resolucion
      * @throws EstadoSolicitudInvalidException si el codigo de resolucion no es valido
      * @see CodigoResolucionValidatorImpl
      */
-    private void validarCodigoResolucion(String CodResolucion) throws EstadoSolicitudInvalidException{
+    private void validarCodigoResolucion (String CodResolucion) throws EstadoSolicitudInvalidException {
         this.codigoResolucionValidator.validarCodResolucion(CodResolucion);
 
     }
@@ -125,7 +128,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws RequestApiValidationException
      */
 
-    public SolicitudRenting getSolicitudById(int id) throws RequestApiValidationException {
+    public SolicitudRenting getSolicitudById (int id) throws RequestApiValidationException {
         SolicitudRenting solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
         validateSolicitudRenting(solicitudRenting);
         return solicitudRenting;
@@ -137,14 +140,14 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @param solicitudId ID de solicitud de renting.
      * @param nuevoEstado Nuevo estado de solicitud rentinh por validar.
      * @return void (llamada a base de datos (mapper) para modificar el estado.
+     * @throws SolicitudRentingNotFoundException cuando no exista el ID de la solicitud.
+     * @throws EstadoSolicitudNotFoundException  cuando el estado de la solicitud no sea uno de los valores válidos posibles.
      * @see #getListaEstados()
      * @see SolicitudRentingService
      * @see SolicitudRentingMapper
-     * @throws SolicitudRentingNotFoundException cuando no exista el ID de la solicitud.
-     * @throws EstadoSolicitudNotFoundException cuando el estado de la solicitud no sea uno de los valores válidos posibles.
      */
     @Override
-    public void modificaEstadoSolicitud(Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException {
+    public void modificaEstadoSolicitud (Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException {
 
         List<String> posiblesEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
         int existeEstado = this.solicitudRentingMapper.existeSolicitud(solicitudId);
@@ -167,7 +170,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @return List<String> (llamada a base de datos (mapper) para recoger posibles estados.
      */
     @Override
-    public List<String> getListaEstados() {
+    public List<String> getListaEstados ( ) {
         List<String> listaEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
         return listaEstados;
     }
@@ -180,7 +183,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      */
     private int lenghtNumber (BigInteger number) {
         if (number != null) {
-            String numeroString = number.toString();
+            var numeroString = number.toString();
             return numeroString.length();
         }
         return 0;
@@ -272,7 +275,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws WrongLenghtFieldException      si el valor de 'plazo' tiene más de 38 dígitos
      * @throws InputIsNegativeOrZeroException si el valor de 'plazo' es negativo o igual a cero
      */
-    private void validatePlazo (SolicitudRenting solicitudRenting) throws WrongLenghtFieldException, InputIsNegativeOrZeroException, InputIsNullOrIsEmpty {
+    private void validatePlazo (SolicitudRenting solicitudRenting) throws WrongLenghtFieldException, InputIsNegativeOrZeroException {
         if (solicitudRenting.getPlazo() != null) {
             if (lenghtNumber(solicitudRenting.getPlazo()) > 38) {
                 throw new WrongLenghtFieldException("Plazo");
@@ -293,15 +296,15 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws DateIsBeforeException si 'fechaInicioVigor' es anterior a 'fechaResolucion'
      */
     private void validateFecha (SolicitudRenting solicitudRenting) throws DateIsBeforeException {
-        if (solicitudRenting.getFechaInicioVigor() != null && solicitudRenting.getFechaResolucion() != null) {
-            if (solicitudRenting.getFechaInicioVigor().before(solicitudRenting.getFechaResolucion())) {
-                throw new DateIsBeforeException("fechaInicioVigo", "fechaResolucion");
-            }
+        if ((solicitudRenting.getFechaInicioVigor() != null && solicitudRenting.getFechaResolucion() != null)
+                && (solicitudRenting.getFechaInicioVigor().before(solicitudRenting.getFechaResolucion()))) {
+            throw new DateIsBeforeException("fechaInicioVigo", "fechaResolucion");
         }
     }
 
     /**
      * Servicio que se encarga de cancelar la solicitud de renting asociada al id que se le pasa como parametro, solicitud que encontramos gracias al uso del metodo getSolicitudById
+     *
      * @param id de la solicitud de renting
      * @throws SolicitudRentingNotFoundException que recoge la excepcion cuando la solicitud de renting es nula, si la solicitud no es nula la devuelve cancelada
      */
@@ -317,7 +320,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @param solicitudRenting solicitud a comprobar si es nula
      * @throws SolicitudRentingNotFoundException
      */
-    public void validateSolicitudRenting(SolicitudRenting solicitudRenting) throws SolicitudRentingNotFoundException {
+    public void validateSolicitudRenting (SolicitudRenting solicitudRenting) throws SolicitudRentingNotFoundException {
         if (solicitudRenting == null) {
             throw new SolicitudRentingNotFoundException();
         }

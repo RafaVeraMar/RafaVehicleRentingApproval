@@ -1,7 +1,6 @@
 package com.babel.vehiclerentingapproval.controllers;
 
 
-import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudInvalidException;
 import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundException;
@@ -37,7 +36,7 @@ public class SolicitudRentingController {
     private final SolicitudRentingService solicitud;
     private SolicitudRentingMapper solicitudRentingMapper;
 
-    public SolicitudRentingController(SolicitudRentingService solicitud) {
+    public SolicitudRentingController (SolicitudRentingService solicitud) {
         this.solicitud = solicitud;
     }
 
@@ -68,8 +67,8 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "400", description = "La fecha de inicio de vigor, no puede ser anterior a la fecha de resolucion", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "400", description = "Los datos de entrada tienen que ser mayor que 0", content = @Content(mediaType = "application/json")),
     })
-    ResponseEntity addSolicitudRenting(@RequestBody SolicitudRenting solicitudRenting) {
-        Map<String, Object> respuesta = new HashMap<String, Object>();
+    public ResponseEntity<Object> addSolicitudRenting (@RequestBody SolicitudRenting solicitudRenting) {
+        Map<String, Object> respuesta = new HashMap<>();
         try {
             solicitud.addSolicitudRenting(solicitudRenting);
             respuesta.put("Status", HttpStatus.OK);
@@ -87,6 +86,7 @@ public class SolicitudRentingController {
 
     /**
      * Endpoint para ver el estado de una solicitud de renting
+     *
      * @param id ID de la solicitud de renting
      * @return Objeto ResponseEntity con el estado HTTP de la solicitud, el id proporcionado y el estado de la solicitud o la descripción del error
      */
@@ -100,33 +100,30 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(mediaType = "application/json"))
     })
     @Parameter(name = "id", description = "ID de la solicitud a consultar", required = true)
-    ResponseEntity<Object> verEstadoSolicitud(@PathVariable String id) {
+    ResponseEntity<Object> verEstadoSolicitud (@PathVariable String id) {
         Map<String, Object> respuesta = new HashMap<String, Object>();
         try {
             int idSolicitud = Integer.parseInt(id);
             String estado = this.solicitud.verEstadoSolicitud(idSolicitud);
 
-            respuesta.put("Status",HttpStatus.OK);
-            respuesta.put("Id",id);
-            respuesta.put("Descripcion",estado);
-        }
-        catch (NumberFormatException e){
-            respuesta.put("Status",HttpStatus.BAD_REQUEST);
-            respuesta.put("Id",id);
-            respuesta.put("Descripcion","Error: el formato de ID es inválido");
-        }
-        catch (RequestApiValidationException e) {
+            respuesta.put("Status", HttpStatus.OK);
+            respuesta.put("Id", id);
+            respuesta.put("Descripcion", estado);
+        } catch (NumberFormatException e) {
+            respuesta.put("Status", HttpStatus.BAD_REQUEST);
+            respuesta.put("Id", id);
+            respuesta.put("Descripcion", "Error: el formato de ID es inválido");
+        } catch (RequestApiValidationException e) {
             respuesta.put("Status", e.getStatusCode());
             respuesta.put("Id", id);
             respuesta.put("Descripcion:", e.getExternalMessage());
-        }
-        catch (Exception e){
-            respuesta.put("Status",HttpStatus.INTERNAL_SERVER_ERROR);
-            respuesta.put("Id",id);
-            respuesta.put("Descripcion","Error: Ha ocurrido un error interno en el servidor ");
+        } catch (Exception e) {
+            respuesta.put("Status", HttpStatus.INTERNAL_SERVER_ERROR);
+            respuesta.put("Id", id);
+            respuesta.put("Descripcion", "Error: Ha ocurrido un error interno en el servidor ");
         }
 
-        return new ResponseEntity<Object>(respuesta,(HttpStatus)respuesta.get("Status"));
+        return new ResponseEntity<Object>(respuesta, (HttpStatus)respuesta.get("Status"));
     }
 
     /**
@@ -142,7 +139,7 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "404", description = "ID de solicitud no encontrado", content = @Content(mediaType = "application/json"))
     })
     @Parameter(name = "id", description = "ID para comprobar si existe la solicitud", required = true)
-    ResponseEntity muestraSolicitudPorId(@PathVariable int id) throws RequestApiValidationException {
+    ResponseEntity muestraSolicitudPorId (@PathVariable int id) throws RequestApiValidationException {
         Map<String, Object> respuesta = new HashMap<String, Object>();
         try {
             this.solicitud.getSolicitudById(id);
@@ -156,12 +153,13 @@ public class SolicitudRentingController {
             respuesta.put("Status", HttpStatus.INTERNAL_SERVER_ERROR);
             respuesta.put("Descripcion: ", "Error interno.");
         }
-        return new ResponseEntity<Object>(respuesta, (HttpStatus) respuesta.get("Status"));
+        return new ResponseEntity<Object>(respuesta, (HttpStatus)respuesta.get("Status"));
     }
 
     /**
-     *  Metodo que se encarga de cancelar la solicitud de renting asociada al id de esta, que se pasa como parametro en la funcion.
-     *  Ademas se implementa la documentacion con swagger
+     * Metodo que se encarga de cancelar la solicitud de renting asociada al id de esta, que se pasa como parametro en la funcion.
+     * Ademas se implementa la documentacion con swagger
+     *
      * @param id es la id de la solicitud de renting que queremos cancelar
      * @return se devuelve un json en el que se informa de que la solicitud ha sido cancelada
      */
@@ -173,7 +171,7 @@ public class SolicitudRentingController {
     })
     @Parameter(name = "id", description = "ID de la solicitud a cancelar", required = true)
     @PutMapping("/{id}")
-    ResponseEntity cancelarSolicitud(@PathVariable int id) {
+    ResponseEntity cancelarSolicitud (@PathVariable int id) {
         Map<String, Object> respuesta = new HashMap<String, Object>();
         try {
             this.solicitud.cancelarSolicitud(id);
@@ -189,11 +187,12 @@ public class SolicitudRentingController {
             respuesta.put("Id", id);
             respuesta.put("Descripcion", "Error: No ha introducido una id valida ");
         }
-        return new ResponseEntity<Object>(respuesta, (HttpStatus) respuesta.get("Status"));
+        return new ResponseEntity<Object>(respuesta, (HttpStatus)respuesta.get("Status"));
     }
 
     /**
      * Endpoint para actualizar el estado de una solicitud de renting
+     *
      * @param solicitudId ID de la solicitud de renting
      * @param nuevoEstado valor del nuevo estado de la solicitud de renting
      * @return Objeto ResponseEntity que devuelve un Json con el código de la operación REST, ID de solicitud y código de resolución
@@ -205,7 +204,7 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "407", description = "No se encuentra la solicitud buscada.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "408", description = "Estado de solicitud no valido.", content = {@Content(mediaType = "application/json")})
     })
-    ResponseEntity<Object> updateEstadoSolicitud(@PathVariable Integer solicitudId, @RequestBody TipoResultadoSolicitud nuevoEstado) {
+    ResponseEntity<Object> updateEstadoSolicitud (@PathVariable Integer solicitudId, @RequestBody TipoResultadoSolicitud nuevoEstado) {
         Map<String, Object> respuestaJson = new HashMap<String, Object>();
         try {
             this.solicitud.modificaEstadoSolicitud(solicitudId, nuevoEstado);
