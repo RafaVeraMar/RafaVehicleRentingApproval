@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.*;
  */
 @Mapper
 public interface SolicitudRentingMapper {
-    public final static String CANCELAR = "CA";
+    public final String CANCELAR = "CA";
 
     /**
      * Mapper con el que actualizamos en la base de datos la solicitud cuando sea cancelada, cambiando solamente el campo de codigo de resolucion y la fecha en la que se ha establecido esa resolucion
