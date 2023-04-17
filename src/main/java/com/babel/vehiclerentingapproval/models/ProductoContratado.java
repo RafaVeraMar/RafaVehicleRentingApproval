@@ -53,6 +53,13 @@ public class ProductoContratado {
     private EstadoProductoContratado estado;
 
     /**
+     * Metodo constructor de la clase vacio
+     */
+    public ProductoContratado() {
+
+    }
+
+    /**
      * Metodo constructor de la clase con todos los atributos no nulos como parametros
      * @param idProductoContratado id del producto contratado
      * @param idProducto id del producto
@@ -179,5 +186,18 @@ public class ProductoContratado {
      */
     public void setEstado(EstadoProductoContratado estado) {
         this.estado = estado;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductoContratado{" +
+                "idProductoContratado=" + getIdProductoContratado() +
+                ", idProducto=" + getIdProducto() +
+                ", alias='" + getAlias() + '\'' +
+                ", importeNominal=" + getImporteNominal() +
+                ", fechaAlta=" + getFechaAlta() +
+                ", fechaBaja=" + getFechaBaja() +
+                ", estado=" + getEstado() +
+                '}';
     }
 }

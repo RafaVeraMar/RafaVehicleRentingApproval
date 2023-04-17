@@ -206,4 +206,20 @@ public class Renta {
     public void setFechaInicioEmpleo(Date fechaInicioEmpleo) {
         this.fechaInicioEmpleo = fechaInicioEmpleo;
     }
+
+    @Override
+    public String toString() {
+        return "Renta{" +
+                "rentaId=" + getRentaId() +
+                ", persona=" + getPersona() +
+                ", profesion=" + getProfesion() +
+                ", anio=" + getAnio() +
+                ", importeNeto=" + getImporteNeto() +
+                ", importeBruto=" + getImporteBruto() +
+                ", isCuentaPropia=" + getIsCuentaPropia() +
+                ", iae='" + getIae() + '\'' +
+                ", cifEmpleador='" + getCifEmpleador() + '\'' +
+                ", fechaInicioEmpleo=" + getFechaInicioEmpleo() +
+                '}';
+    }
 }

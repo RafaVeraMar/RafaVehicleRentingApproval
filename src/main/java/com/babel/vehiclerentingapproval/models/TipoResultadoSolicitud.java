@@ -15,6 +15,9 @@ public class TipoResultadoSolicitud {
      */
     private String descripcion;
 
+    public TipoResultadoSolicitud() {
+    }
+
     /**
      * Metodo público que se encarga de mostrar el valor del codigo de resultado, de tipo String
      * @return devuelve el codigo de resultado
@@ -45,5 +48,13 @@ public class TipoResultadoSolicitud {
      */
     public void setDescripcion (String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    @Override
+    public String toString() {
+        return "TipoResultadoSolicitud{" +
+                "codResultado='" + getCodResultado() + '\'' +
+                ", descripcion='" + getDescripcion() + '\'' +
+                '}';
     }
 }

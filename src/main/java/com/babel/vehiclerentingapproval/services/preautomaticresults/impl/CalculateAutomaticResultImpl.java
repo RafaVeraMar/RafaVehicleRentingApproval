@@ -120,7 +120,7 @@ public class CalculateAutomaticResultImpl implements CalculateAutomaticResult {
         var result = "";
 
         if (Boolean.TRUE.equals(this.findAnyDeny(solicitudRenting))) {
-            if (this.findAllApproval(solicitudRenting)) {
+            if (Boolean.TRUE.equals(this.findAllApproval(solicitudRenting))) {
                 result = "AA";
             } else if (Boolean.TRUE.equals(this.findAnyApproval(solicitudRenting))) {
                 result = "PA";

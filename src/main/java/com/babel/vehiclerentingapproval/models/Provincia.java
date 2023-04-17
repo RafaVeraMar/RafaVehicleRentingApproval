@@ -23,6 +23,11 @@ public class Provincia {
     @NotBlank
     @Size(max=50)
     private String nombre;
+    /**
+     * Constructor del objeto Provincia vacio
+     */
+    public Provincia() {
+    }
 
     /**
      * Constructor del objeto Provincia, pasandole como parametro los atributos indicados anteriomente
@@ -61,5 +66,13 @@ public class Provincia {
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    @Override
+    public String toString() {
+        return "Provincia{" +
+                "codProvincia='" + getCodProvincia() + '\'' +
+                ", nombre='" + getNombre() + '\'' +
+                '}';
     }
 }
