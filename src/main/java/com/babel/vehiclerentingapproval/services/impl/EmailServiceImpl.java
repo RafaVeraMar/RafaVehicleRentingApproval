@@ -29,8 +29,7 @@ public class EmailServiceImpl {
     public static void SendMail(String mensaje, String destino, String asunto) {
         //usuario y contraseña del usuario de google que vayamos a utilizar
         String Username = "solicitudrenting@gmail.com";
-        //String Password = "hswrinyhboucvsss";
-        var clave = new getKey();
+        String Password = "hswrinyhboucvsss";
 
 
 
@@ -54,8 +53,7 @@ public class EmailServiceImpl {
                 new javax.mail.Authenticator() {
                     @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(Username, clave.getClave() );
-                        //return new PasswordAuthentication(Username, Password );
+                        return new PasswordAuthentication(Username, Password );
                     }
                 });
 
