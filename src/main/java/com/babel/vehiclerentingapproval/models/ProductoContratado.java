@@ -180,4 +180,17 @@ public class ProductoContratado {
     public void setEstado(EstadoProductoContratado estado) {
         this.estado = estado;
     }
+
+    @Override
+    public String toString() {
+        return "ProductoContratado{" +
+                "idProductoContratado=" + idProductoContratado +
+                ", idProducto=" + idProducto +
+                ", alias='" + alias + '\'' +
+                ", importeNominal=" + importeNominal +
+                ", fechaAlta=" + fechaAlta +
+                ", fechaBaja=" + fechaBaja +
+                ", estado=" + estado +
+                '}';
+    }
 }
