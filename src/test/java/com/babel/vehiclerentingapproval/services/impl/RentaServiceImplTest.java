@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class RentaServiceImplTest {
+class RentaServiceImplTest {
     RentaService rentaService;
     RentaMapper rentaMapper;
     ProfesionService profesionService;
@@ -61,7 +61,7 @@ public class RentaServiceImplTest {
     }
 
     @Test
-    public void addRenta_should_throwProfesionNotFoundException_when_profesionIdNoExiste ( ) {
+    void addRenta_should_throwProfesionNotFoundException_when_profesionIdNoExiste ( ) {
         Assertions.assertThrows(ProfesionNotFoundException.class, ( ) -> {
             Renta renta = createRenta();
 
@@ -76,7 +76,7 @@ public class RentaServiceImplTest {
 
 
     @Test
-    public void addRenta_should_throwPersonaNotFoundException_when_personaIdNoExiste ( ) {
+    void addRenta_should_throwPersonaNotFoundException_when_personaIdNoExiste ( ) {
         Assertions.assertThrows(PersonaNotFoundException.class, ( ) -> {
             Renta renta = createRenta();
             Persona persona = createPersona();
@@ -91,7 +91,7 @@ public class RentaServiceImplTest {
     }
 
     @Test
-    public void addRenta_should_throwRentaFoundException_when_rentaIdExiste ( ) {
+    void addRenta_should_throwRentaFoundException_when_rentaIdExiste ( ) {
         Assertions.assertThrows(RentaFoundException.class, ( ) -> {
             Renta renta = createRenta();
             Persona persona = createPersona();

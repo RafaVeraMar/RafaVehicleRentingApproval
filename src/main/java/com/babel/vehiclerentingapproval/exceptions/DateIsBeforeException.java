@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
  * RequestApiValidationException para proporcionar un mensaje específico y un código de estado HTTP.
  */
 public class DateIsBeforeException extends RequestApiValidationException {
-    private static final String externalMessage = "La %s no puede ser anterior a %s";
+    private static final String EXTERNAL_MESSAGE = "La %s no puede ser anterior a %s";
     private static final HttpStatus statusCode = HttpStatus.BAD_REQUEST;
 
     /**
@@ -19,7 +19,7 @@ public class DateIsBeforeException extends RequestApiValidationException {
      * @param fechaDos nombre del campo que contiene la segunda fecha
      */
     public DateIsBeforeException (String fechaUno, String fechaDos) {
-        super(externalMessage, statusCode, new String[]{fechaUno, fechaDos});
+        super(EXTERNAL_MESSAGE, statusCode, new String[]{fechaUno, fechaDos});
     }
 
 

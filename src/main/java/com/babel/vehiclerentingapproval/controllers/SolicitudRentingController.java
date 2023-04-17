@@ -35,7 +35,8 @@ public class SolicitudRentingController {
     private final SolicitudRentingService solicitud;
     private final static String CAMPO_DESCRIPCION = "Descripcion";
 
-    public SolicitudRentingController(SolicitudRentingService solicitud) {
+
+    public SolicitudRentingController (SolicitudRentingService solicitud) {
         this.solicitud = solicitud;
     }
 
@@ -65,8 +66,8 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "400", description = "La fecha de inicio de vigor, no puede ser anterior a la fecha de resolucion", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "400", description = "Los datos de entrada tienen que ser mayor que 0", content = @Content(mediaType = "application/json")),
     })
-    ResponseEntity addSolicitudRenting(@RequestBody SolicitudRenting solicitudRenting) {
-        Map<String, Object> respuesta = new HashMap<String, Object>();
+    public ResponseEntity<Object> addSolicitudRenting (@RequestBody SolicitudRenting solicitudRenting) {
+        Map<String, Object> respuesta = new HashMap<>();
         try {
             solicitud.addSolicitudRenting(solicitudRenting);
             respuesta.put(STATUS, HttpStatus.OK);
@@ -84,6 +85,7 @@ public class SolicitudRentingController {
 
     /**
      * Endpoint para ver el estado de una solicitud de renting
+     *
      * @param id ID de la solicitud de renting
      * @return Objeto ResponseEntity con el estado HTTP de la solicitud, el id proporcionado y el estado de la solicitud o la descripción del error
      */
@@ -157,8 +159,9 @@ public class SolicitudRentingController {
     }
 
     /**
-     *  Metodo que se encarga de cancelar la solicitud de renting asociada al id de esta, que se pasa como parametro en la funcion.
-     *  Ademas se implementa la documentacion con swagger
+     * Metodo que se encarga de cancelar la solicitud de renting asociada al id de esta, que se pasa como parametro en la funcion.
+     * Ademas se implementa la documentacion con swagger
+     *
      * @param id es la id de la solicitud de renting que queremos cancelar
      * @return se devuelve un json en el que se informa de que la solicitud ha sido cancelada
      */
@@ -191,6 +194,7 @@ public class SolicitudRentingController {
 
     /**
      * Endpoint para actualizar el estado de una solicitud de renting
+     *
      * @param solicitudId ID de la solicitud de renting
      * @param nuevoEstado valor del nuevo estado de la solicitud de renting
      * @return Objeto ResponseEntity que devuelve un Json con el código de la operación REST, ID de solicitud y código de resolución
@@ -202,7 +206,7 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "407", description = "No se encuentra la solicitud buscada.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "408", description = "Estado de solicitud no valido.", content = {@Content(mediaType = "application/json")})
     })
-    ResponseEntity<Object> updateEstadoSolicitud(@PathVariable Integer solicitudId, @RequestBody TipoResultadoSolicitud nuevoEstado) {
+    ResponseEntity<Object> updateEstadoSolicitud (@PathVariable Integer solicitudId, @RequestBody TipoResultadoSolicitud nuevoEstado) {
         Map<String, Object> respuestaJson = new HashMap<String, Object>();
         try {
             this.solicitud.modificaEstadoSolicitud(solicitudId, nuevoEstado);
@@ -217,7 +221,7 @@ public class SolicitudRentingController {
             return new ResponseEntity<Object>(respuestaJson, HttpStatus.NOT_FOUND);
         } catch (EstadoSolicitudNotFoundException e) {
             respuestaJson.put(STATUS, 408);
-            respuestaJson.put("Descripcion", "Error: Estado de solicitud: " + nuevoEstado.getCodResultado() + ", no valido");
+            respuestaJson.put("CAMPO_DESCRIPCION", "Error: Estado de solicitud: " + nuevoEstado.getCodResultado() + ", no valido");
             respuestaJson.put("Id", solicitudId);
             respuestaJson.put("CodigoResolucion", nuevoEstado.getCodResultado());
             respuestaJson.put(CAMPO_DESCRIPCION, nuevoEstado.getDescripcion());

@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
  */
 public class InputIsNullOrIsEmpty extends RequestApiValidationException {
 
-    private static final String externalMessage = "El campo %s no puede ser nulo o estar vacio.";
+    private static final String EXTERNAL_MESSAGE = "El campo %s no puede ser nulo o estar vacio.";
     private static final HttpStatus statusCode = HttpStatus.BAD_REQUEST;
 
     /**
@@ -19,6 +19,6 @@ public class InputIsNullOrIsEmpty extends RequestApiValidationException {
      * @param args nombre del campo que contiene el valor nulo o vacío
      */
     public InputIsNullOrIsEmpty (String args) {
-        super(externalMessage, statusCode, new String[]{args});
+        super(EXTERNAL_MESSAGE, statusCode, new String[]{args});
     }
 }
