@@ -89,7 +89,6 @@ public class DenyRulesServiceTests {
         this.solicitud.getPersona().setFechaNacimiento(null);
         Assertions.assertThrows(NullPointerException.class, () -> {
             boolean validationClientAge = service.validateClientAge(solicitud);
-            Assertions.assertFalse(validationClientAge);
         });
     }
 
