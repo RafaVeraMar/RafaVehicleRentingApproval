@@ -192,7 +192,6 @@ class ApprovalRulesServiceTest {
         Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn(null);
         Assertions.assertThrows(NullPointerException.class, () -> {
             boolean validateCIFCliente = service.validateCIFCliente(this.solicitud);
-            Assertions.assertFalse(validateCIFCliente);
         });
     }
 
