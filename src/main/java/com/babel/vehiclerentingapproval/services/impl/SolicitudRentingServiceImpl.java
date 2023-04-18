@@ -1,7 +1,6 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
 import com.babel.vehiclerentingapproval.exceptions.*;
-import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
@@ -32,7 +31,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
     private final PersonaMapper personaMapper;
 
-    public SolicitudRentingServiceImpl(SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaService personaService, CodigoResolucionValidator codigoResolucionValidator, PersonaMapper personaMapper) {
+    public SolicitudRentingServiceImpl (SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaService personaService, CodigoResolucionValidator codigoResolucionValidator, PersonaMapper personaMapper) {
         this.solicitudRentingMapper = solicitudRentingMapper;
         this.tipoResultadoSolicitudMapper = tipoResultadoSolicitudMapper;
         this.personaService = personaService;
@@ -168,7 +167,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
         String email = this.personaMapper.getEmail(solicitud.getPersona().getPersonaId());
         try {
-            EmailServiceImpl.sendMail("Su solicitud se encuentra: " + this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId),email,"Cambios en tu solicitud");
+            EmailServiceImpl.sendMail("Su solicitud se encuentra: " + this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId), email, "Cambios en tu solicitud");
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
