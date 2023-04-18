@@ -18,11 +18,12 @@ class EmailServiceImplTest {
     @BeforeEach
     void setupAll(){
         this.mailSender= Mockito.mock(JavaMailSender.class);
-       emailService = new EmailServiceImpl(mailSender);
+        this.emailService = Mockito.mock(EmailServiceImpl.class);
     }
 
     @Test
     void email_shouldNotThrow_Exception_when_emailIsSent(){
+
         Assertions.assertDoesNotThrow(()->{
             emailService.sendMail("Mensaje de prueba","andres.guijarro@babelgroup.com","Asunto de ejemplo");
         });

@@ -152,7 +152,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @see SolicitudRentingMapper
      */
     @Override
-    public void modificaEstadoSolicitud (Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException {
+    public void modificaEstadoSolicitud (Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException, FailedSendingEmail {
 
         List<String> posiblesEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
         int existeEstado = this.solicitudRentingMapper.existeSolicitud(solicitudId);
@@ -169,7 +169,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         try {
             EmailServiceImpl.sendMail("Su solicitud se encuentra: " + this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId), email, "Cambios en tu solicitud");
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            throw new FailedSendingEmail(solicitud.getPersona().getPersonaId(),email);
         }
 
         this.solicitudRentingMapper.modificaEstadoSolicitud(solicitudId, nuevoEstado);
