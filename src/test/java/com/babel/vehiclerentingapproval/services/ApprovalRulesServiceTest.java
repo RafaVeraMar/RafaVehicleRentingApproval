@@ -202,7 +202,7 @@ class ApprovalRulesServiceTest {
         //this.renta.setFechaInicioEmpleo(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2016"));
         Assertions.assertThrows(NullPointerException.class, () -> {
             boolean validateCIFCliente = service.validateCIFCliente(this.solicitud);
-            Assertions.assertFalse(validateCIFCliente);
+            //Assertions.assertFalse(validateCIFCliente);
         });
     }
 
