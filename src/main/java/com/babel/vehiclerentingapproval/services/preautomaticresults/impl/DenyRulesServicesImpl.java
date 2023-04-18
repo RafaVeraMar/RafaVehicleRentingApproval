@@ -4,10 +4,8 @@ import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.services.preautomaticresults.DenyRulesService;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
@@ -22,19 +20,19 @@ public class DenyRulesServicesImpl implements DenyRulesService {
     /**
      * Contiene la fecha de hoy
      */
-    private static final LocalDate fechaActual = LocalDate.now();
+    private static final LocalDate FECHACTUAL = LocalDate.now();
     /**
      * Constante que contiene la mayoría de edad legal
      */
-    private static final int anyosMayor = 18;
+    private static final int ANYOSMAYOR = 18;
     /**
      * Constante que contiene el límite de scoring para la solicitud del renting
      */
-    private static final int scoringRating = 6;
+    private static final int SCORINGRATING = 6;
     /**
      * Constante con el plazo de años máximo a añadir al plazo
      */
-    private static final int anyosPlazo = 80;
+    private static final int ANYOSPLAZO = 80;
 
     /**
      * Este método comprueba la edad del cliente (que se recoge en la solicitudRenting) y comprueba si es menor o mayor que 18 años
@@ -45,16 +43,20 @@ public class DenyRulesServicesImpl implements DenyRulesService {
     public Boolean validateClientAge(SolicitudRenting solicitudRenting) {
 
         Date fechaNacimiento = solicitudRenting.getPersona().getFechaNacimiento();
-        int anyo = fechaNacimiento.getYear() + 1900;
-        int day = fechaNacimiento.getDate();
-        int month = fechaNacimiento.getMonth() + 1;
-        LocalDate fechaConcreta = LocalDate.of(anyo, month, day);
-        long anios = ChronoUnit.YEARS.between(fechaConcreta, fechaActual);
-        if (anios < anyosMayor) {
-            return true;
+        var fechaNacimientoLocalDate = fechaNacimiento.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int anyo = fechaNacimientoLocalDate.getYear();
+        int day = fechaNacimientoLocalDate.getDayOfMonth();
+        int month = fechaNacimientoLocalDate.getMonthValue();
+
+        var fechaConcreta = LocalDate.of(anyo, month, day);
+        long anios = ChronoUnit.YEARS.between(fechaConcreta, FECHACTUAL);
+        boolean resultado;
+        if (anios < ANYOSMAYOR) {
+            resultado = true;
         } else {
-            return false;
+            resultado = false;
         }
+        return resultado;
     }
     /**
      * Este método comprueba la puntuación del cliente (que se recoge en la solicitudRenting) y comprueba si es menor o mayor que una constante definida
@@ -63,12 +65,14 @@ public class DenyRulesServicesImpl implements DenyRulesService {
      */
     @Override
     public Boolean validateScoringTitular(SolicitudRenting solicitudRenting) {
-        if (solicitudRenting.getPersona().getScoring() >= scoringRating) {
-            return true;
+        boolean resultado;
+        if (solicitudRenting.getPersona().getScoring() >= SCORINGRATING) {
+            resultado = true;
 
         } else {
-            return false;
+            resultado = false;
         }
+        return resultado;
     }
     /**
      * Este método comprueba que el plazo de la solicitud supera o no un tiempo límite definido
@@ -78,16 +82,19 @@ public class DenyRulesServicesImpl implements DenyRulesService {
     @Override
     public Boolean validateClientAgePlusPlazo(SolicitudRenting solicitudRenting) {
         Date fechaNacimiento = solicitudRenting.getPersona().getFechaNacimiento();
-        int anyo = fechaNacimiento.getYear() + 1900;
-        int day = fechaNacimiento.getDate();
-        int month = fechaNacimiento.getMonth() + 1;
-        LocalDate fechaConcreta = LocalDate.of(anyo, month, day);
-        long anios = ChronoUnit.YEARS.between(fechaConcreta, fechaActual);
-        if (anios + solicitudRenting.getPlazo().intValue() >= anyosPlazo) {
-            return true;
+        var fechaNacimientoLocalDate = fechaNacimiento.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int anyo = fechaNacimientoLocalDate.getYear();
+        int day = fechaNacimientoLocalDate.getDayOfMonth();
+        int month = fechaNacimientoLocalDate.getMonthValue();
+        var fechaConcreta = LocalDate.of(anyo, month, day);
+        long anios = ChronoUnit.YEARS.between(fechaConcreta, FECHACTUAL);
+        boolean resultado;
+        if (anios + solicitudRenting.getPlazo().intValue() >= ANYOSPLAZO) {
+            resultado = true;
         } else {
-            return false;
+            resultado = false;
         }
+        return resultado;
     }
 
 }

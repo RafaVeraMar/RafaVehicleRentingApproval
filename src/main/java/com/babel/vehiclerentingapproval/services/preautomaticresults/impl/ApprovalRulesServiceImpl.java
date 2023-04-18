@@ -31,15 +31,7 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
      * Contiene un mapper que realiza las acciones relacionadas con la inversion de una solicitud de renting
      */
     private InversionIngresosMapper inversionIngresosMapper;
-    /**
-     * Contiene un mapper que realiza las acciones relacionadas con una persona
-     */
-    private PersonaMapper personaMapper;
-    /**
-     * Contiene un mapper que realiza las acciones relacionadas con una renta
-     */
 
-    private RentaMapper rentaMapper;
     /**
      * Contiene un mapper que realiza las acciones relacionadas con el salario de una persona
      */
@@ -59,21 +51,19 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     /**
      * Constante que contiene la minima inversión que puede tener una solicitud renting para cumplir la regla
      */
-    private static final int inversionMayor = 80000;
+    private static final int INVERSIONMAYOR = 80000;
     /**
      * Constante que contiene el scoring que la persona no puede superar para cumplir la regla
      */
-    private static final int scoringRating = 5;
+    private static final int SCORINGRATING = 5;
 
     /**
      * Constructor de la clase approvalRulesServiceImpl que inicializa los atributos de la clase
      */
-    public ApprovalRulesServiceImpl(ScoringRatingMapper scoringRatingMapper, EmploymentSeniorityMapper employmentSeniorityMapper, InversionIngresosMapper inversionIngresosMapper, PersonaMapper personaMapper, RentaMapper rentaMapper, SalariedMapper salariedMapper, ImpagosCuotaMapper impagosCuotaMapper, ApprovalClienteMapper approvalClienteMapper, ClienteExistenteGaranteMapper clienteExistenteGaranteMapper) {
+    public ApprovalRulesServiceImpl(ScoringRatingMapper scoringRatingMapper, EmploymentSeniorityMapper employmentSeniorityMapper, InversionIngresosMapper inversionIngresosMapper, SalariedMapper salariedMapper, ImpagosCuotaMapper impagosCuotaMapper, ApprovalClienteMapper approvalClienteMapper, ClienteExistenteGaranteMapper clienteExistenteGaranteMapper) {
         this.scoringRatingMapper = scoringRatingMapper;
         this.employmentSeniorityMapper = employmentSeniorityMapper;
         this.inversionIngresosMapper = inversionIngresosMapper;
-        this.personaMapper = personaMapper;
-        this.rentaMapper = rentaMapper;
         this.salariedMapper = salariedMapper;
         this.impagosCuotaMapper = impagosCuotaMapper;
         this.approvalClienteMapper = approvalClienteMapper;
@@ -100,7 +90,7 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
      */
     @Override
     public Boolean validateInversion(SolicitudRenting solicitudRenting) {
-        return this.inversionIngresosMapper.obtenerInversionSolicitud(solicitudRenting) > inversionMayor;
+        return this.inversionIngresosMapper.obtenerInversionSolicitud(solicitudRenting) > INVERSIONMAYOR;
     }
     /**
      * Método que comprueba si el scoring de un cliente es menor que el rating de scoring establecido
@@ -111,7 +101,7 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     public Boolean validateScoringPersona(SolicitudRenting solicitudRenting) {
         float valorScoring = this.scoringRatingMapper.obtenercScoringPersona(solicitudRenting);
         boolean resultado;
-        if (valorScoring < scoringRating) {
+        if (valorScoring < SCORINGRATING) {
             resultado = true;
         } else {
             resultado = false;
@@ -139,7 +129,7 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
      */
     @Override
     public Boolean validateCIFCliente(SolicitudRenting solicitudRenting) {
-        boolean encontrado = false;
+        var encontrado = false;
         String cadena;
         var cifSol = this.salariedMapper.obtenerCIFSolicitud(solicitudRenting);
         List<String> listaCIF = this.salariedMapper.obtenerCIFInforma();
@@ -163,7 +153,7 @@ public class ApprovalRulesServiceImpl implements ApprovalRulesService {
     @Override
     public Boolean validateNationality(SolicitudRenting solicitudRenting) {
         String nacionalidad = solicitudRenting.getPersona().getNacionalidad().getIsoAlfa_2();
-        boolean espanol = false;
+        var espanol = false;
 
         if (nacionalidad != null && nacionalidad.equalsIgnoreCase("ES")) {
             espanol = true;

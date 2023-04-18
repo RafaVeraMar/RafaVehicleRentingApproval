@@ -306,6 +306,27 @@ public class Persona {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "Persona{" +
+                "personaId=" + getPersonaId() +
+                ", nombre='" + getNombre() + '\'' +
+                ", apellido1='" + getApellido1() + '\'' +
+                ", apellido2='" + getApellido2() + '\'' +
+                ", direccionDomicilioId=" + getDireccionDomicilio().getDireccionId() +
+                ", direccionNotificacionId=" + getDireccionNotificacion().getDireccionId() +
+                ", direccionDomicilioSameAsNotificacion=" + isDireccionDomicilioSameAsNotificacion() +
+                ", nif='" + getNif() + '\'' +
+                ", fechaNacimiento=" + getFechaNacimiento().toString() +
+                ", nacionalidadIsoAlfa2=" + getNacionalidad().getIsoAlfa_2() +
+                ", scoring=" + getScoring() +
+                ", fechaScoring=" + getFechaScoring().toString() +
+                ", telefonos=" + getTelefonos().toString() +
+                ", productosContratados=" + getProductosContratados().toString() +
+                ", email='" + getEmail() + '\'' +
+                '}';
+    }
 }
 
 

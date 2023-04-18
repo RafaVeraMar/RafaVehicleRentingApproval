@@ -27,6 +27,12 @@ public class Profesion {
     private String descripcion;
 
     /**
+     * Constructor del objeto Profesion vacio
+     */
+    public Profesion() {
+    }
+
+    /**
      * Constructor del objeto Profesion, con los parametros explicados anteriormente
      * @param profesionId
      * @param descripcion
@@ -62,5 +68,13 @@ public class Profesion {
      */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    @Override
+    public String toString() {
+        return "Profesion{" +
+                "profesionId=" + getProfesionId() +
+                ", descripcion='" + getDescripcion() + '\'' +
+                '}';
     }
 }

@@ -24,7 +24,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 
-public class preAutomaticResultService {
+class PreAutomaticResultServiceTest {
     ApprovalRulesService approvalRulesService;
     DenyRulesService denyRulesService;
     CalculateAutomaticResult calculateAutomaticResult;
@@ -59,8 +59,8 @@ public class preAutomaticResultService {
         this.denyRulesService = new DenyRulesServicesImpl();
 
         this.approvalRulesService = new ApprovalRulesServiceImpl(this.scoringRatingMapper,
-                this.employmentSeniorityMapper, this.inversionIngresosMapper, this.personaMapper,
-                this.rentaMapper, this.salariedMapper, this.impagosCuotaMapper, this.garantiaMapper, this.clienteExistenteGaranteMapper);
+                this.employmentSeniorityMapper, this.inversionIngresosMapper, this.salariedMapper,
+                this.impagosCuotaMapper, this.garantiaMapper, this.clienteExistenteGaranteMapper);
         this.calculateAutomaticResult = new CalculateAutomaticResultImpl(this.denyRulesService,this.approvalRulesService,this.automaticResultMapper);
     }
 
@@ -104,7 +104,7 @@ public class preAutomaticResultService {
     }
 
     @Test
-    public void validateFindAnyDeny_shouldBeTrue_whenAllFalse() throws ParseException {
+     void validateFindAnyDeny_shouldBeTrue_whenAllFalse() throws ParseException {
         this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2000"));
         this.solicitud.getPersona().setScoring(1);
         BigInteger num2 = BigInteger.valueOf(10);
@@ -115,7 +115,7 @@ public class preAutomaticResultService {
 
     }
     @Test
-    public void validateFindAnyDeny_shouldBeFalse_whenAnyTrue() throws ParseException {
+     void validateFindAnyDeny_shouldBeFalse_whenAnyTrue() throws ParseException {
         this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2016"));
         this.solicitud.getPersona().setScoring(1);
         BigInteger num2 = BigInteger.valueOf(10);
@@ -127,7 +127,7 @@ public class preAutomaticResultService {
     }
 
     @Test
-    public void validateFindAllApproval_shouldBeTrue_whenAllTrue() throws ParseException {
+     void validateFindAllApproval_shouldBeTrue_whenAllTrue() throws ParseException {
         this.solicitud.setInversion(10000f);
         Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(90000f);
         Mockito.when(inversionIngresosMapper.obtenerInversionSolicitud(solicitud)).thenReturn(90000f);
@@ -151,7 +151,7 @@ public class preAutomaticResultService {
 
     }
     @Test
-    public void validateFindAllApproval_shouldBeFalse_whenAnyFalse() throws ParseException {
+     void validateFindAllApproval_shouldBeFalse_whenAnyFalse() throws ParseException {
         this.solicitud.setInversion(90000f);
         Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(90000f);
         Mockito.when(inversionIngresosMapper.obtenerInversionSolicitud(solicitud)).thenReturn(90000f);
@@ -176,7 +176,7 @@ public class preAutomaticResultService {
     }
 
     @Test
-    public void validateFindAnyApproval_shouldBeTrue_whenAnyTrue() throws ParseException {
+     void validateFindAnyApproval_shouldBeTrue_whenAnyTrue() throws ParseException {
         this.solicitud.setInversion(10000f);
         Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(90000f);
         Mockito.when(inversionIngresosMapper.obtenerInversionSolicitud(solicitud)).thenReturn(90000f);
@@ -200,7 +200,7 @@ public class preAutomaticResultService {
 
     }
     @Test
-    public void validateFindAnyApproval_shouldBeFalse_whenAnyFalse() throws ParseException {
+     void validateFindAnyApproval_shouldBeFalse_whenAnyFalse() throws ParseException {
         this.solicitud.setInversion(90000f);
         Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(90000f);
         Mockito.when(inversionIngresosMapper.obtenerInversionSolicitud(solicitud)).thenReturn(90000f);
@@ -224,14 +224,11 @@ public class preAutomaticResultService {
 
     }
 
-    public void validateTotalResult() throws ParseException {
+     void validateTotalResult() throws ParseException {
         this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2000"));
         this.solicitud.getPersona().setScoring(1);
         BigInteger num2 = BigInteger.valueOf(10);
         this.solicitud.setPlazo(num2);
-        ////
-
-
     }
 
 }

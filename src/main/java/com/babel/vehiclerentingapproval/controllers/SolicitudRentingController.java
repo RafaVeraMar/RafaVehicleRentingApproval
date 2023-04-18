@@ -31,16 +31,14 @@ import java.util.Map;
 @RequestMapping("/solicitud")
 public class SolicitudRentingController {
 
-
+    private final static String STATUS = "Status";
     private final SolicitudRentingService solicitud;
+    private final static String CAMPO_DESCRIPCION = "Descripcion";
 
 
-    public SolicitudRentingController(SolicitudRentingService solicitud) {
+    public SolicitudRentingController (SolicitudRentingService solicitud) {
         this.solicitud = solicitud;
     }
-
-    String campoDescripcion = "Descripcion";
-
 
     /**
      * Añade una nueva solicitud de renting y devuelve un objeto ResponseEntity con la información
@@ -68,25 +66,26 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "400", description = "La fecha de inicio de vigor, no puede ser anterior a la fecha de resolucion", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "400", description = "Los datos de entrada tienen que ser mayor que 0", content = @Content(mediaType = "application/json")),
     })
-    ResponseEntity addSolicitudRenting(@RequestBody SolicitudRenting solicitudRenting) {
-        Map<String, Object> respuesta = new HashMap<String, Object>();
+    public ResponseEntity<Object> addSolicitudRenting (@RequestBody SolicitudRenting solicitudRenting) {
+        Map<String, Object> respuesta = new HashMap<>();
         try {
             solicitud.addSolicitudRenting(solicitudRenting);
-            respuesta.put("Status", HttpStatus.OK);
+            respuesta.put(STATUS, HttpStatus.OK);
             respuesta.put("Id", solicitudRenting.getSolicitudId());
-            respuesta.put(campoDescripcion, "Solicitud creada correctamente");
+            respuesta.put(CAMPO_DESCRIPCION, "Solicitud creada correctamente");
         } catch (RequestApiValidationException e) {
-            respuesta.put("Status", e.getStatusCode());
-            respuesta.put(campoDescripcion, e.getExternalMessage());
+            respuesta.put(STATUS, e.getStatusCode());
+            respuesta.put(CAMPO_DESCRIPCION, e.getExternalMessage());
         } catch (Exception e) {
-            respuesta.put("Status", HttpStatus.INTERNAL_SERVER_ERROR);
-            respuesta.put(campoDescripcion, "Error interno, intentelo de nuevo mas tarde.");
+            respuesta.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR);
+            respuesta.put(CAMPO_DESCRIPCION, "Error interno, intentelo de nuevo mas tarde.");
         }
-        return new ResponseEntity<Object>(respuesta, (HttpStatus)respuesta.get("Status"));
+        return new ResponseEntity<Object>(respuesta, (HttpStatus)respuesta.get(STATUS));
     }
 
     /**
      * Endpoint para ver el estado de una solicitud de renting
+     *
      * @param id ID de la solicitud de renting
      * @return Objeto ResponseEntity con el estado HTTP de la solicitud, el id proporcionado y el estado de la solicitud o la descripción del error
      */
@@ -106,27 +105,27 @@ public class SolicitudRentingController {
             var idSolicitud = Integer.parseInt(id);
             String estado = this.solicitud.verEstadoSolicitud(idSolicitud);
 
-            respuesta.put("Status",HttpStatus.OK);
+            respuesta.put(STATUS,HttpStatus.OK);
             respuesta.put("Id",id);
-            respuesta.put(campoDescripcion,estado);
+            respuesta.put(CAMPO_DESCRIPCION,estado);
         }
         catch (NumberFormatException e){
-            respuesta.put("Status",HttpStatus.BAD_REQUEST);
+            respuesta.put(STATUS,HttpStatus.BAD_REQUEST);
             respuesta.put("Id",id);
-            respuesta.put(campoDescripcion,"Error: el formato de ID es inválido");
+            respuesta.put(CAMPO_DESCRIPCION,"Error: el formato de ID es inválido");
         }
         catch (RequestApiValidationException e) {
-            respuesta.put("Status", e.getStatusCode());
+            respuesta.put(STATUS, e.getStatusCode());
             respuesta.put("Id", id);
-            respuesta.put(campoDescripcion, e.getExternalMessage());
+            respuesta.put(CAMPO_DESCRIPCION, e.getExternalMessage());
         }
         catch (Exception e){
-            respuesta.put("Status",HttpStatus.INTERNAL_SERVER_ERROR);
+            respuesta.put(STATUS,HttpStatus.INTERNAL_SERVER_ERROR);
             respuesta.put("Id",id);
-            respuesta.put(campoDescripcion,"Error: Ha ocurrido un error interno en el servidor ");
+            respuesta.put(CAMPO_DESCRIPCION,"Error: Ha ocurrido un error interno en el servidor ");
         }
 
-        return new ResponseEntity<>(respuesta,(HttpStatus)respuesta.get("Status"));
+        return new ResponseEntity<>(respuesta,(HttpStatus)respuesta.get(STATUS));
     }
 
     /**
@@ -146,22 +145,23 @@ public class SolicitudRentingController {
         Map<String, Object> respuesta = new HashMap<>();
         try {
             this.solicitud.getSolicitudById(id);
-            respuesta.put("Status", HttpStatus.OK);
+            respuesta.put(STATUS, HttpStatus.OK);
             respuesta.put("Solicitud: ", solicitud.getSolicitudById(id));
         } catch (RequestApiValidationException e) {
-            respuesta.put("Status", e.getStatusCode());
+            respuesta.put(STATUS, e.getStatusCode());
             respuesta.put("Id", id);
-            respuesta.put(campoDescripcion, e.getExternalMessage());
+            respuesta.put(CAMPO_DESCRIPCION, e.getExternalMessage());
         } catch (Exception e) {
-            respuesta.put("Status", HttpStatus.INTERNAL_SERVER_ERROR);
-            respuesta.put(campoDescripcion, "Error interno.");
+            respuesta.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR);
+            respuesta.put(CAMPO_DESCRIPCION, "Error interno.");
         }
-        return new ResponseEntity<>(respuesta, (HttpStatus) respuesta.get("Status"));
+        return new ResponseEntity<>(respuesta, (HttpStatus) respuesta.get(STATUS));
     }
 
     /**
-     *  Metodo que se encarga de cancelar la solicitud de renting asociada al id de esta, que se pasa como parametro en la funcion.
-     *  Ademas se implementa la documentacion con swagger
+     * Metodo que se encarga de cancelar la solicitud de renting asociada al id de esta, que se pasa como parametro en la funcion.
+     * Ademas se implementa la documentacion con swagger
+     *
      * @param id es la id de la solicitud de renting que queremos cancelar
      * @return se devuelve un json en el que se informa de que la solicitud ha sido cancelada
      */
@@ -177,23 +177,24 @@ public class SolicitudRentingController {
         Map<String, Object> respuesta = new HashMap<>();
         try {
             this.solicitud.cancelarSolicitud(id);
-            respuesta.put("Status", HttpStatus.OK);
+            respuesta.put(STATUS, HttpStatus.OK);
             respuesta.put("Id", id);
-            respuesta.put(campoDescripcion, "Solicitud cancelada");
+            respuesta.put(CAMPO_DESCRIPCION, "Solicitud cancelada");
         } catch (RequestApiValidationException e) {
-            respuesta.put("Status", e.getStatusCode());
+            respuesta.put(STATUS, e.getStatusCode());
             respuesta.put("Id", id);
-            respuesta.put(campoDescripcion, "El id de solicitud no es válido");
+            respuesta.put(CAMPO_DESCRIPCION, "El id de solicitud no es válido");
         } catch (Exception e) {
-            respuesta.put("Status", HttpStatus.INTERNAL_SERVER_ERROR);
+            respuesta.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR);
             respuesta.put("Id", id);
-            respuesta.put(campoDescripcion, "Error: No ha introducido una id valida ");
+            respuesta.put(CAMPO_DESCRIPCION, "Error: No ha introducido una id valida ");
         }
-        return new ResponseEntity<>(respuesta, (HttpStatus) respuesta.get("Status"));
+        return new ResponseEntity<>(respuesta, (HttpStatus) respuesta.get(STATUS));
     }
 
     /**
      * Endpoint para actualizar el estado de una solicitud de renting
+     *
      * @param solicitudId ID de la solicitud de renting
      * @param nuevoEstado valor del nuevo estado de la solicitud de renting
      * @return Objeto ResponseEntity que devuelve un Json con el código de la operación REST, ID de solicitud y código de resolución
@@ -205,30 +206,30 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "407", description = "No se encuentra la solicitud buscada.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "408", description = "Estado de solicitud no valido.", content = {@Content(mediaType = "application/json")})
     })
-    ResponseEntity<Object> updateEstadoSolicitud(@PathVariable Integer solicitudId, @RequestBody TipoResultadoSolicitud nuevoEstado) {
+    ResponseEntity<Object> updateEstadoSolicitud (@PathVariable Integer solicitudId, @RequestBody TipoResultadoSolicitud nuevoEstado) {
         Map<String, Object> respuestaJson = new HashMap<String, Object>();
         try {
             this.solicitud.modificaEstadoSolicitud(solicitudId, nuevoEstado);
-            respuestaJson.put("Status", HttpStatus.OK);
+            respuestaJson.put(STATUS, HttpStatus.OK);
             respuestaJson.put("Id", solicitudId);
-            respuestaJson.put(campoDescripcion, "La solicitud ha sido modificada y se ha notificado al usuario");
+            respuestaJson.put(CAMPO_DESCRIPCION, "La solicitud ha sido modificada y se ha notificado al usuario");
             return new ResponseEntity<Object>(respuestaJson, HttpStatus.OK);
         } catch (SolicitudRentingNotFoundException e) {
-            respuestaJson.put("Status", 407);
+            respuestaJson.put(STATUS, 407);
             respuestaJson.put("Id", solicitudId);
-            respuestaJson.put(campoDescripcion, "Error: No se encuentra la solicitud buscada, intentelo mas tarde");
+            respuestaJson.put(CAMPO_DESCRIPCION, "Error: No se encuentra la solicitud buscada, intentelo mas tarde");
             return new ResponseEntity<Object>(respuestaJson, HttpStatus.NOT_FOUND);
         } catch (EstadoSolicitudNotFoundException e) {
-            respuestaJson.put("Status", 408);
-            respuestaJson.put("Descripcion", "Error: Estado de solicitud: " + nuevoEstado.getCodResultado() + ", no valido");
+            respuestaJson.put(STATUS, 408);
+            respuestaJson.put("CAMPO_DESCRIPCION", "Error: Estado de solicitud: " + nuevoEstado.getCodResultado() + ", no valido");
             respuestaJson.put("Id", solicitudId);
             respuestaJson.put("CodigoResolucion", nuevoEstado.getCodResultado());
-            respuestaJson.put(campoDescripcion, nuevoEstado.getDescripcion());
+            respuestaJson.put(CAMPO_DESCRIPCION, nuevoEstado.getDescripcion());
             return new ResponseEntity<Object>(respuestaJson, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            respuestaJson.put("Status", HttpStatus.INTERNAL_SERVER_ERROR);
+            respuestaJson.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR);
             respuestaJson.put("Id", solicitudId);
-            respuestaJson.put(campoDescripcion, "Error: Fallo interno en el servidor, disculpad las molestias");
+            respuestaJson.put(CAMPO_DESCRIPCION, "Error: Fallo interno en el servidor, disculpad las molestias");
             return new ResponseEntity<Object>(respuestaJson, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

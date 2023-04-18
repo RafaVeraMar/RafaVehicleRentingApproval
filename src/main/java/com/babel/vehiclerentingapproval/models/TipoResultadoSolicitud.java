@@ -14,6 +14,12 @@ public class TipoResultadoSolicitud {
      * Parametro que almacena la descripcion del tipo de resultado de la solicitud, de tipo String
      */
     private String descripcion;
+    /**
+     * Constructor vacío
+     */
+    public TipoResultadoSolicitud() {
+        //Constructor intencionadamente vacío para el uso de todos los setters en los tests
+    }
 
     /**
      * Metodo público que se encarga de mostrar el valor del codigo de resultado, de tipo String
@@ -45,5 +51,13 @@ public class TipoResultadoSolicitud {
      */
     public void setDescripcion (String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    @Override
+    public String toString() {
+        return "TipoResultadoSolicitud{" +
+                "codResultado='" + getCodResultado() + '\'' +
+                ", descripcion='" + getDescripcion() + '\'' +
+                '}';
     }
 }
