@@ -1,6 +1,10 @@
 package com.babel.vehiclerentingapproval.controllers.impl;
 
 import com.babel.vehiclerentingapproval.controllers.PersonaController;
+import com.babel.vehiclerentingapproval.exceptions.DireccionNotFoundException;
+import com.babel.vehiclerentingapproval.exceptions.DniFoundException;
+import com.babel.vehiclerentingapproval.exceptions.RequiredMissingFieldException;
+import com.babel.vehiclerentingapproval.exceptions.WrongLenghtFieldException;
 import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
@@ -11,6 +15,7 @@ import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import javax.sound.midi.Soundbank;
 import java.text.ParseException;
 
 import static org.junit.Assert.assertEquals;
@@ -41,7 +46,7 @@ public class PersonaControllerImpl {
 
     }
 
-/*    private Persona personaficticia() throws ParseException {
+    private Persona personaficticia() throws ParseException {
         Persona personaFicticia = new Persona();
         Direccion direccionFicticia = new Direccion();
         direccionFicticia.setDireccionId(1);
@@ -59,56 +64,60 @@ public class PersonaControllerImpl {
         personaFicticia.setDireccionDomicilioSameAsNotificacion(false);
         personaFicticia.setNif("4444444E");
         personaFicticia.setNacionalidad(new Pais("AD", 20, "AND", "Andorra", 2));
-        System.out.println(personaFicticia);
-        return personaFicticia;
-    }
-    @Test
-    void testAddPersonaSuccess() throws Exception {
-        PersonaController personaController = new PersonaController(personaService);
-        Persona persona = personaficticia();
-        //Mockito.when(personaService.existePersona(anyInt())).thenReturn(true);
-        Persona person1 = personaService.addPersona(persona);
-        ResponseEntity response = personaController.addPersona(persona);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-    }
-*/
-    private Persona personaficticia() throws ParseException {
-        Persona personaFicticia = new Persona();
-        Direccion direccionFicticia = new Direccion();
-        direccionFicticia.setDireccionId(1);
-        direccionFicticia.setTipoViaId(new TipoVia(1,"Alameda"));
-        direccionFicticia.setNombreCalle("Alosno");
-        direccionFicticia.setNumero("5");
-        direccionFicticia.setCodPostal("21006");
-        direccionFicticia.setMunicipio("Huelva");
-        direccionFicticia.setProvinciaCod(new Provincia("02", "Albacete"));
-        personaFicticia.setPersonaId(1);
-        personaFicticia.setNombre("Migue");
-        personaFicticia.setApellido1("Estevez");
-        personaFicticia.setDireccionDomicilio(direccionFicticia);
-        personaFicticia.setDireccionNotificacion(direccionFicticia);
-        personaFicticia.setDireccionDomicilioSameAsNotificacion(false);
-        personaFicticia.setNif("4444444E");
-        personaFicticia.setNacionalidad(new Pais("AD", 20, "AND", "Andorra", 2));
-        System.out.println(personaFicticia);
         return personaFicticia;
     }
 
     @Test
     void testAddPersonaSuccess() throws Exception {
+        PersonaService personaService = Mockito.mock(PersonaService.class);
         PersonaController personaController = new PersonaController(personaService);
         Persona persona = personaficticia();
 
-        // Verifica que el objeto personaService no sea nulo antes de llamar a addPersona
-        assertNotNull(personaService);
+        // Configurar el comportamiento de personaService.addPersona()
+        Mockito.when(personaService.addPersona(persona)).thenReturn(persona);
 
-
-        Persona person1 = personaService.addPersona(persona);
-
-        // Verifica que el objeto response no sea nulo antes de hacer la aserción
         ResponseEntity response = personaController.addPersona(persona);
-        assertNotNull(response);
+
         assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void testAddPersonaRequiredFieldMissing() throws Exception {
+        PersonaService personaService = Mockito.mock(PersonaService.class);
+        PersonaController personaController = new PersonaController(personaService);
+        Persona persona = personaficticia();
+        when(personaService.addPersona(persona)).thenThrow(new RequiredMissingFieldException());
+        ResponseEntity response = personaController.addPersona(persona);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
+    void testAddPersonaDniAlreadyExists() throws Exception {
+        PersonaService personaService = Mockito.mock(PersonaService.class);
+        PersonaController personaController = new PersonaController(personaService);
+        Persona persona = personaficticia();
+        when(personaService.addPersona(persona)).thenThrow(new DniFoundException());
+        ResponseEntity response = personaController.addPersona(persona);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+    @Test
+    void testAddPersonaDireccionNotFound() throws Exception {
+        PersonaService personaService = Mockito.mock(PersonaService.class);
+        PersonaController personaController = new PersonaController(personaService);
+        Persona persona = personaficticia();
+        when(personaService.addPersona(persona)).thenThrow(new DireccionNotFoundException());
+        ResponseEntity response = personaController.addPersona(persona);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
+    void testAddPersonaWrongLengthField() throws Exception {
+        PersonaService personaService = Mockito.mock(PersonaService.class);
+        PersonaController personaController = new PersonaController(personaService);
+        Persona persona = personaficticia();
+        when(personaService.addPersona(persona)).thenThrow(new WrongLenghtFieldException());
+        ResponseEntity response = personaController.addPersona(persona);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
 }

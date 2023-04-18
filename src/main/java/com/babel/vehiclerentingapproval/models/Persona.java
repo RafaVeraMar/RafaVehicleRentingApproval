@@ -95,6 +95,8 @@ public class Persona {
      * Parámetro referido al email de una persona
      */
     private String email;
+
+
     /**
      * Metodo público que se encarga de mostrar el valor de la id de la persona
      * @return devuelve el id de la persona
@@ -305,6 +307,28 @@ public class Persona {
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Persona{" +
+                "personaId=" + personaId +
+                ", nombre='" + nombre + '\'' +
+                ", apellido1='" + apellido1 + '\'' +
+                ", apellido2='" + apellido2 + '\'' +
+                ", direccionDomicilio=" + direccionDomicilio +
+                ", direccionNotificacion=" + direccionNotificacion +
+                ", direccionDomicilioSameAsNotificacion=" + direccionDomicilioSameAsNotificacion +
+                ", nif='" + nif + '\'' +
+                ", fechaNacimiento=" + fechaNacimiento +
+                ", nacionalidad=" + nacionalidad +
+                ", scoring=" + scoring +
+                ", fechaScoring=" + fechaScoring +
+                ", telefonos=" + telefonos +
+                ", productosContratados=" + productosContratados +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
 
