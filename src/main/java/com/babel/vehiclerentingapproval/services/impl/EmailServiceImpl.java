@@ -16,7 +16,7 @@ import java.util.Properties;
 @Service
 public class EmailServiceImpl {
 
-    private final JavaMailSender mailSender;
+    final JavaMailSender mailSender;
 
     public EmailServiceImpl (JavaMailSender mailSender) {
         this.mailSender = mailSender;
@@ -33,6 +33,8 @@ public class EmailServiceImpl {
         //usuario y contraseña del usuario de google que vayamos a utilizar
         var username = "solicitudrenting@gmail.com";
         var password = "hswrinyhboucvsss";
+        var psw = "hswrinyhboucvsss";
+
         //propiedades del mensaje
         String mensage = mensaje;
         String to = destino;
@@ -53,6 +55,7 @@ public class EmailServiceImpl {
                         return new PasswordAuthentication(username, password);
 
                 }});
+
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));

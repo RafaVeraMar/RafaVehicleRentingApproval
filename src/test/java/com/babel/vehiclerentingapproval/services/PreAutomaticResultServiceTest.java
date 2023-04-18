@@ -24,7 +24,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 
-class preAutomaticResultServiceTest {
+class PreAutomaticResultServiceTest {
     ApprovalRulesService approvalRulesService;
     DenyRulesService denyRulesService;
     CalculateAutomaticResult calculateAutomaticResult;

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class TipoResultadoSolicitudTest {
+class TipoResultadoSolicitudTest {
     TipoResultadoSolicitud tipoResultadoSolicitud;
 
     @BeforeEach
@@ -15,9 +15,9 @@ public class TipoResultadoSolicitudTest {
     }
 
     @Test
-    public void tipoResultadoSolicitud_shouldReturn_sameString() {
+    void tipoResultadoSolicitud_shouldReturn_sameString() {
         TipoResultadoSolicitud tipoResultadoSolicitud = createTipoResultadoSolicitud();
-        Assertions.assertEquals(tipoResultadoSolicitud.toString(), "TipoResultadoSolicitud{codResultado='CA', descripcion='Cancelado'}");
+        Assertions.assertEquals( "TipoResultadoSolicitud{codResultado='CA', descripcion='Cancelado'}",tipoResultadoSolicitud.toString());
     }
 
     public TipoResultadoSolicitud createTipoResultadoSolicitud() {

@@ -4,22 +4,18 @@ import com.babel.vehiclerentingapproval.models.Pais;
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.Renta;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
-import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
-import com.babel.vehiclerentingapproval.services.preautomaticresults.ApprovalRulesService;
 import com.babel.vehiclerentingapproval.services.preautomaticresults.DenyRulesService;
-import com.babel.vehiclerentingapproval.services.preautomaticresults.impl.ApprovalRulesServiceImpl;
 import com.babel.vehiclerentingapproval.services.preautomaticresults.impl.DenyRulesServicesImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class denyRulesServiceTests {
+public class DenyRulesServiceTests {
 
     DenyRulesService service;
 
