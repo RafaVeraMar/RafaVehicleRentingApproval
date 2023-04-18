@@ -31,8 +31,8 @@ import java.util.Map;
 @RequestMapping("/solicitud")
 public class SolicitudRentingController {
 
-    private final String STATUS = "Status";
-    private final String DESCRIPCION = "Descripcion";
+    private static final String STATUS = "Status";
+    private static final String DESCRIPCION = "Descripcion";
     private final SolicitudRentingService solicitud;
 
 
