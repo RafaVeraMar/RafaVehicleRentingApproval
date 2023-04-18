@@ -15,7 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DenyRulesServiceTests {
+class DenyRulesServiceTests {
 
     DenyRulesService service;
 
@@ -89,17 +89,17 @@ public class DenyRulesServiceTests {
         this.solicitud.getPersona().setFechaNacimiento(null);
         Assertions.assertThrows(NullPointerException.class, () -> {
             boolean validationClientAge = service.validateClientAge(solicitud);
-            Assertions.assertFalse(validationClientAge);
+            //Assertions.assertFalse(validationClientAge);
         });
     }
 
     @Test
-    public void validateClientAge_shouldBeTrue_whenisEmpty() throws ParseException {
+     void validateClientAge_shouldBeTrue_whenisEmpty() throws ParseException {
         String fechaNacimientoStr = "";
         if (fechaNacimientoStr.isEmpty()) {
             Assertions.assertThrows(NullPointerException.class, () -> {
                 boolean validateClientAge = service.validateClientAge(solicitud);
-                Assertions.assertFalse(validateClientAge);
+                //Assertions.assertFalse(validateClientAge);
             });
         } else {
             this.solicitud.getPersona().setFechaNacimiento(new Date(Long.MIN_VALUE));
@@ -109,7 +109,7 @@ public class DenyRulesServiceTests {
 
     //validateScoringTitular
     @Test
-    public void validateScoringTitular_shouldBeTrue_whenScoringMayororEqual6(){
+     void validateScoringTitular_shouldBeTrue_whenScoringMayororEqual6(){
 
         this.solicitud.getPersona().setScoring(10);
         boolean validateScoringTitular = service.validateScoringTitular(solicitud);
@@ -117,7 +117,7 @@ public class DenyRulesServiceTests {
     }
 
     @Test
-    public void validateScoringTitular_shouldBeTrue_whenScoringMinor6(){
+     void validateScoringTitular_shouldBeTrue_whenScoringMinor6(){
 
         this.solicitud.getPersona().setScoring(3);
         boolean validateScoringTitular = service.validateScoringTitular(solicitud);
@@ -125,7 +125,7 @@ public class DenyRulesServiceTests {
     }
 
     @Test
-    public void validateClientAgePlusPlazo_shouldBeTrue_whenMayor80() throws ParseException {
+     void validateClientAgePlusPlazo_shouldBeTrue_whenMayor80() throws ParseException {
 
         this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2016"));
         BigInteger num2 = BigInteger.valueOf(100);
@@ -135,7 +135,7 @@ public class DenyRulesServiceTests {
     }
 
     @Test
-    public void validateClientAgePlusPlazo_shouldBeFalse_whenMinor80() throws ParseException {
+     void validateClientAgePlusPlazo_shouldBeFalse_whenMinor80() throws ParseException {
         this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2000"));
         BigInteger num2 = BigInteger.valueOf(10);
         solicitud.setPlazo(num2);
@@ -144,17 +144,17 @@ public class DenyRulesServiceTests {
     }
 
     @Test
-    public void validateClientAgePlusPlazo_shouldBeFalse_whenNull() {
+     void validateClientAgePlusPlazo_shouldBeFalse_whenNull() {
         this.solicitud.getPersona().setFechaNacimiento(null);
         this.solicitud.setPlazo(null);
         Assertions.assertThrows(NullPointerException.class, () -> {
             boolean validateClientAgePlusPlazo = service.validateClientAgePlusPlazo(solicitud);
-            Assertions.assertFalse(validateClientAgePlusPlazo);
+            //Assertions.assertFalse(validateClientAgePlusPlazo);
         });
     }
 
     @Test
-    public void validateClientAgePlusPlazo_shouldBeTrue_whenisEmpty() throws ParseException {
+     void validateClientAgePlusPlazo_shouldBeTrue_whenisEmpty() throws ParseException {
         String fechaNacimientoStr = "";
         if (fechaNacimientoStr.isEmpty()) {
             Assertions.assertThrows(NullPointerException.class, () -> {

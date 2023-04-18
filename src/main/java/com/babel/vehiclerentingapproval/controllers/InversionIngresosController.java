@@ -30,7 +30,7 @@ public class InversionIngresosController {
      * @return un objeto ResponseEntity que contiene una lista de booleanos,
      */
     @GetMapping("")
-    public ResponseEntity makeProofs(@RequestParam SolicitudRenting solicitudRentingl) {
+    public ResponseEntity<ArrayList<Boolean>> makeProofs(@RequestParam SolicitudRenting solicitudRentingl) {
         boolean t = this.approvalService.validateInversionIngresos(solicitudRentingl);
         boolean t1 = this.approvalService.validateScoringPersona(solicitudRentingl);
         boolean t2 = this.approvalService.validateCIFCliente(solicitudRentingl);
