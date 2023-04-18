@@ -2,6 +2,7 @@ package com.babel.vehiclerentingapproval.services.impl;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -32,7 +33,6 @@ public class EmailServiceImpl {
     public static void sendMail (String mensaje, String destino, String asunto) throws MessagingException {
         //usuario y contraseña del usuario de google que vayamos a utilizar
         var username = "solicitudrenting@gmail.com";
-        var password = "hswrinyhboucvsss";
         var psw = "hswrinyhboucvsss";
 
         //propiedades del mensaje
@@ -52,9 +52,10 @@ public class EmailServiceImpl {
                 new javax.mail.Authenticator() {
                     @Override
                     protected PasswordAuthentication getPasswordAuthentication ( ) {
-                        return new PasswordAuthentication(username, password);
+                        return new PasswordAuthentication(username, psw);
 
-                }});
+                    }
+                });
 
         try {
             Message message = new MimeMessage(session);
