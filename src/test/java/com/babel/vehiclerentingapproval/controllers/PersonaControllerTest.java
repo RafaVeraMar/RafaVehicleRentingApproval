@@ -1,9 +1,6 @@
 package com.babel.vehiclerentingapproval.controllers;
 
-import com.babel.vehiclerentingapproval.exceptions.DireccionNotFoundException;
-import com.babel.vehiclerentingapproval.exceptions.DniFoundException;
-import com.babel.vehiclerentingapproval.exceptions.RequiredMissingFieldException;
-import com.babel.vehiclerentingapproval.exceptions.WrongLenghtFieldException;
+import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
@@ -117,5 +114,32 @@ public class PersonaControllerTest {
         ResponseEntity response = personaController.addPersona(persona);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
+
+    @Test
+    void testViewPersonaProductoSuccess() throws Exception {
+        PersonaService personaService = Mockito.mock(PersonaService.class);
+        PersonaController personaController = new PersonaController(personaService);
+        Persona persona = personaficticia();
+
+        // Configurar el comportamiento de personaService.addPersona()
+        Mockito.when(personaService.viewPersonaProducto(persona.getPersonaId())).thenReturn(persona.getProductosContratados());
+
+        ResponseEntity response = personaController.viewPersonaProducto(persona.getPersonaId());
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void testViewPersonaProductoRequiredFieldMissing() throws Exception {
+        PersonaService personaService = Mockito.mock(PersonaService.class);
+        PersonaController personaController = new PersonaController(personaService);
+        Persona persona = personaficticia();
+        when(personaService.viewPersonaProducto(persona.getPersonaId())).thenThrow(new PersonaNotFoundException());
+        ResponseEntity response = personaController.viewPersonaProducto(persona.getPersonaId());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+
+
 
 }
