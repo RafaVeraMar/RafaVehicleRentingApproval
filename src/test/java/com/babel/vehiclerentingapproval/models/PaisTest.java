@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class PaisTest {
+class PaisTest {
     Pais pais;
 
     @BeforeEach
@@ -15,9 +15,9 @@ public class PaisTest {
     }
 
     @Test
-    public void pais_shouldReturn_sameString() {
+    void pais_shouldReturn_sameString() {
         Pais pais = createPais();
-        Assertions.assertEquals(pais.toString(), "Pais{isoAlfa_2='1', isoNum_3=2, isoAlfa_3='ES', nombre='España', orden=4}");
+        Assertions.assertEquals("Pais{isoAlfa_2='1', isoNum_3=2, isoAlfa_3='ES', nombre='España', orden=4}",pais.toString());
     }
 
     public Pais createPais() {

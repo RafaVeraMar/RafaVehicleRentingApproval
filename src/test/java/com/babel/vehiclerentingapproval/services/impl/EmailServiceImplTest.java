@@ -12,7 +12,7 @@ import javax.mail.MessagingException;
 import javax.mail.SendFailedException;
 
 @SpringBootTest
-public class EmailServiceImplTest {
+class EmailServiceImplTest {
     EmailServiceImpl emailService;
     JavaMailSender mailSender;
     @BeforeEach
@@ -22,14 +22,14 @@ public class EmailServiceImplTest {
     }
 
     @Test
-    public void email_shouldNotThrow_Exception_when_emailIsSent(){
+    void email_shouldNotThrow_Exception_when_emailIsSent(){
         Assertions.assertDoesNotThrow(()->{
             emailService.sendMail("Mensaje de prueba","andres.guijarro@babelgroup.com","Asunto de ejemplo");
         });
     }
 
     @Test
-    public void email_shouldThrow_MessagingException_when_emailIsWrong(){
+    void email_shouldThrow_MessagingException_when_emailIsWrong(){
         Assertions.assertThrows(MessagingException.class,()->{
             emailService.sendMail("Mensaje de prueba","emailErroneo","Asunto de ejemplo");
         });

@@ -14,8 +14,11 @@ public class TipoResultadoSolicitud {
      * Parametro que almacena la descripcion del tipo de resultado de la solicitud, de tipo String
      */
     private String descripcion;
-
+    /**
+     * Constructor vacío
+     */
     public TipoResultadoSolicitud() {
+        //Constructor intencionadamente vacío para el uso de todos los setters en los tests
     }
 
     /**

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class DireccionTest {
+class DireccionTest {
     Direccion direccion;
 
     @BeforeEach
@@ -15,9 +15,9 @@ public class DireccionTest {
 
     }
     @Test
-    public void direccion_shouldReturn_sameString(){
+    void direccion_shouldReturn_sameString(){
         Direccion direccion = createDireccion();
-        Assertions.assertEquals(direccion.toString(),"Direccion{direccionId=1, tipoViaId=1', descripcionTipoVia=Via de ejemplo', nombreCalle='Calle ficticia', numero='22', piso='33', puerta='G', escalera='derecha', otroDato='Fachada amarilla', codPostal='41001', municipio='Sevilla', codProvincia=SE', codProvincia=Sevilla'}");
+        Assertions.assertEquals("Direccion{direccionId=1, tipoViaId=1', descripcionTipoVia=Via de ejemplo', nombreCalle='Calle ficticia', numero='22', piso='33', puerta='G', escalera='derecha', otroDato='Fachada amarilla', codPostal='41001', municipio='Sevilla', codProvincia=SE', codProvincia=Sevilla'}",direccion.toString());
     }
 
     public Direccion createDireccion(){

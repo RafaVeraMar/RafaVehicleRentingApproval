@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class TipoViaTest {
+class TipoViaTest {
     TipoVia tipoVia;
 
     @BeforeEach
@@ -15,9 +15,9 @@ public class TipoViaTest {
     }
 
     @Test
-    public void tipoVia_shouldReturn_sameString() {
+    void tipoVia_shouldReturn_sameString() {
         TipoVia tipoVia = createTipoVia();
-        Assertions.assertEquals(tipoVia.toString(), "TipoVia{tipoViaId=2, descripcion='Calle'}");
+        Assertions.assertEquals( "TipoVia{tipoViaId=2, descripcion='Calle'}",tipoVia.toString());
     }
 
     public TipoVia createTipoVia() {
