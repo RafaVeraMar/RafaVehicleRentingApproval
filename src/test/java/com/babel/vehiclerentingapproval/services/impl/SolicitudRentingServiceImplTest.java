@@ -147,7 +147,7 @@ public class SolicitudRentingServiceImplTest {
     @Nested
     class TestsModificaEstadoSolicitud {
         @Test
-        public void modificaEstadoSolicitud_shouldThrow_EstadoSolicitudNotFoundException_when_codSolicitudNotExist() {
+        void modificaEstadoSolicitud_shouldThrow_EstadoSolicitudNotFoundException_when_codSolicitudNotExist() {
 
             Mockito.when(tipoResultadoSolicitudMapper.getListaEstados()).thenReturn(creaListaMock());
             when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(1);
@@ -161,7 +161,7 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        public void modificaEstadoSolicitud_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists() {
+        void modificaEstadoSolicitud_shouldThrow_SolicitudRentingNotFoundException_when_solicitudIdNotExists() {
             Mockito.when(tipoResultadoSolicitudMapper.getListaEstados()).thenReturn(creaListaMock());
             when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(0);
             Assertions.assertThrows(SolicitudRentingNotFoundException.class, () -> {
