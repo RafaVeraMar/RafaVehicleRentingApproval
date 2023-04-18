@@ -54,8 +54,7 @@ public interface SolicitudRentingService {
      * @throws EstadoSolicitudNotFoundException
      * @throws SolicitudRentingNotFoundException
      */
-    void modificaEstadoSolicitud (Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws EstadoSolicitudNotFoundException, SolicitudRentingNotFoundException, MessagingException;
-
+    void modificaEstadoSolicitud (Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws EstadoSolicitudNotFoundException, SolicitudRentingNotFoundException;
     /**
      * Interfaz que enlaza la implementacion del servicio de {@link com.babel.vehiclerentingapproval.services.impl.SolicitudRentingServiceImpl}
      *

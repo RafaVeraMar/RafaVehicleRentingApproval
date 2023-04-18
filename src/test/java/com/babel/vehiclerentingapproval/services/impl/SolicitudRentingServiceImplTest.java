@@ -2,6 +2,7 @@ package com.babel.vehiclerentingapproval.services.impl;
 
 import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.*;
+import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
 import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
@@ -29,6 +30,7 @@ public class SolicitudRentingServiceImplTest {
     SolicitudRentingMapper solicitudRentingMapper;
     CodigoResolucionValidator codigoResolucionValidator;
     PersonaService personaService;
+    PersonaMapper personaMapper;
 
 
     @BeforeEach
@@ -37,7 +39,7 @@ public class SolicitudRentingServiceImplTest {
         solicitudRentingMapper = Mockito.mock(SolicitudRentingMapper.class);
         personaService = Mockito.mock(PersonaService.class);
         codigoResolucionValidator = new CodigoResolucionValidatorImpl(tipoResultadoSolicitudMapper);
-        solicitudService = new SolicitudRentingServiceImpl(solicitudRentingMapper, tipoResultadoSolicitudMapper, personaService, codigoResolucionValidator);
+        solicitudService = new SolicitudRentingServiceImpl(solicitudRentingMapper, tipoResultadoSolicitudMapper, personaService, codigoResolucionValidator, personaMapper);
 
 
     }

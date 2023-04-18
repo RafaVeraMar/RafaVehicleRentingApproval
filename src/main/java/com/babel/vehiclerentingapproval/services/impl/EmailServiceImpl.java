@@ -2,7 +2,6 @@ package com.babel.vehiclerentingapproval.services.impl;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -34,7 +33,6 @@ public class EmailServiceImpl {
         //usuario y contraseña del usuario de google que vayamos a utilizar
         var username = "solicitudrenting@gmail.com";
         var password = "hswrinyhboucvsss";
-
         //propiedades del mensaje
         String mensage = mensaje;
         String to = destino;
@@ -47,13 +45,14 @@ public class EmailServiceImpl {
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+
         var session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                     @Override
                     protected PasswordAuthentication getPasswordAuthentication ( ) {
                         return new PasswordAuthentication(username, password);
-                    }
-                });
+
+                }});
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
@@ -66,5 +65,7 @@ public class EmailServiceImpl {
             throw new MessagingException(e.getMessage());
         }
     }
+
+
 }
 
