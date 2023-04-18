@@ -9,7 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 @SpringBootTest
-public class ProductoContratadoTest {
+class ProductoContratadoTest {
     ProductoContratado productoContratado;
 
     @BeforeEach
@@ -18,9 +18,9 @@ public class ProductoContratadoTest {
     }
 
     @Test
-    public void productoContratado_shouldReturn_sameString() throws ParseException {
+    void productoContratado_shouldReturn_sameString() throws ParseException {
         ProductoContratado productoContratado = createProductoContratado();
-        Assertions.assertEquals(productoContratado.toString(), "ProductoContratado{idProductoContratado=10, idProducto=2, alias='Coche', importeNominal=100, fechaAlta=Mon Dec 29 00:00:00 CET 1980, fechaBaja=Tue Dec 30 00:00:00 CET 1980, estado=VIGENTE}");
+        Assertions.assertEquals( "ProductoContratado{idProductoContratado=10, idProducto=2, alias='Coche', importeNominal=100, fechaAlta=Mon Dec 29 00:00:00 CET 1980, fechaBaja=Tue Dec 30 00:00:00 CET 1980, estado=VIGENTE}",productoContratado.toString());
     }
 
     public ProductoContratado createProductoContratado() throws ParseException {

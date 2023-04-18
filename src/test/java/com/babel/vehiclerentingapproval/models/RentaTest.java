@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
-public class RentaTest {
+class RentaTest {
     Renta renta;
 
     @BeforeEach
@@ -20,9 +20,9 @@ public class RentaTest {
     }
 
     @Test
-    public void renta_shouldReturn_sameString() throws ParseException {
+    void renta_shouldReturn_sameString() throws ParseException {
         Renta renta = createRenta();
-        Assertions.assertEquals(renta.toString(), "Renta{rentaId=1, persona=Persona{personaId=0, nombre='Juan', apellido1='Francés', apellido2='Atúñez', direccionDomicilioId=0, direccionNotificacionId=0, direccionDomicilioSameAsNotificacion=true, nif='null', fechaNacimiento=Mon Dec 29 00:00:00 CET 1980, nacionalidadIsoAlfa2=ES, scoring=0, fechaScoring=Fri Dec 29 00:00:00 CET 2000, telefonos=[TelefonoContacto{telefonoId=1, telefono='677645552'}], productosContratados=[ProductoContratado{idProductoContratado=1, idProducto=2, alias='Coche', importeNominal=100, fechaAlta=Sat Dec 30 00:00:00 CET 2000, fechaBaja=null, estado=null}], email='null'}, profesion=Profesion{profesionId=2, descripcion='Ingeniero'}, anio=2022, importeNeto=500.32, importeBruto=600.32, isCuentaPropia=1, iae='7873', cifEmpleador='null', fechaInicioEmpleo=Tue Dec 29 00:00:00 CET 1981}");
+        Assertions.assertEquals( "Renta{rentaId=1, persona=Persona{personaId=0, nombre='Juan', apellido1='Francés', apellido2='Atúñez', direccionDomicilioId=0, direccionNotificacionId=0, direccionDomicilioSameAsNotificacion=true, nif='null', fechaNacimiento=Mon Dec 29 00:00:00 CET 1980, nacionalidadIsoAlfa2=ES, scoring=0, fechaScoring=Fri Dec 29 00:00:00 CET 2000, telefonos=[TelefonoContacto{telefonoId=1, telefono='677645552'}], productosContratados=[ProductoContratado{idProductoContratado=1, idProducto=2, alias='Coche', importeNominal=100, fechaAlta=Sat Dec 30 00:00:00 CET 2000, fechaBaja=null, estado=null}], email='null'}, profesion=Profesion{profesionId=2, descripcion='Ingeniero'}, anio=2022, importeNeto=500.32, importeBruto=600.32, isCuentaPropia=1, iae='7873', cifEmpleador='null', fechaInicioEmpleo=Tue Dec 29 00:00:00 CET 1981}",renta.toString());
     }
 
     public Renta createRenta() throws ParseException {

@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 
 @SpringBootTest
-public class ProfesionTest {
+class ProfesionTest {
     Profesion profesion;
 
     @BeforeEach
@@ -16,9 +16,9 @@ public class ProfesionTest {
     }
 
     @Test
-    public void profesion_shouldReturn_sameString() {
+    void profesion_shouldReturn_sameString() {
         Profesion profesion = createProfesion();
-        Assertions.assertEquals(profesion.toString(), "Profesion{profesionId=2, descripcion='Ingeniero'}");
+        Assertions.assertEquals( "Profesion{profesionId=2, descripcion='Ingeniero'}",profesion.toString());
     }
 
     public Profesion createProfesion() {
