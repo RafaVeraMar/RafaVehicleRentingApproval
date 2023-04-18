@@ -159,7 +159,7 @@ class DenyRulesServiceTests {
         if (fechaNacimientoStr.isEmpty()) {
             Assertions.assertThrows(NullPointerException.class, () -> {
                 boolean validateClientAgePlusPlazo = service.validateClientAgePlusPlazo(solicitud);
-                Assertions.assertFalse(validateClientAgePlusPlazo);
+                //Assertions.assertFalse(validateClientAgePlusPlazo);
             });
         } else {
             this.solicitud.getPersona().setFechaNacimiento(new Date(Long.MIN_VALUE));        }

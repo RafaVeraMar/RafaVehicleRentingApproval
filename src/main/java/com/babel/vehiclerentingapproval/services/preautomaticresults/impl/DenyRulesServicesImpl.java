@@ -50,11 +50,13 @@ public class DenyRulesServicesImpl implements DenyRulesService {
 
         var fechaConcreta = LocalDate.of(anyo, month, day);
         long anios = ChronoUnit.YEARS.between(fechaConcreta, FECHACTUAL);
+        boolean resultado;
         if (anios < ANYOSMAYOR) {
-            return true;
+            resultado = true;
         } else {
-            return false;
+            resultado = false;
         }
+        return resultado;
     }
     /**
      * Este método comprueba la puntuación del cliente (que se recoge en la solicitudRenting) y comprueba si es menor o mayor que una constante definida
@@ -63,12 +65,14 @@ public class DenyRulesServicesImpl implements DenyRulesService {
      */
     @Override
     public Boolean validateScoringTitular(SolicitudRenting solicitudRenting) {
+        boolean resultado;
         if (solicitudRenting.getPersona().getScoring() >= SCORINGRATING) {
-            return true;
+            resultado = true;
 
         } else {
-            return false;
+            resultado = false;
         }
+        return resultado;
     }
     /**
      * Este método comprueba que el plazo de la solicitud supera o no un tiempo límite definido
@@ -84,11 +88,13 @@ public class DenyRulesServicesImpl implements DenyRulesService {
         int month = fechaNacimientoLocalDate.getMonthValue();
         var fechaConcreta = LocalDate.of(anyo, month, day);
         long anios = ChronoUnit.YEARS.between(fechaConcreta, FECHACTUAL);
+        boolean resultado;
         if (anios + solicitudRenting.getPlazo().intValue() >= ANYOSPLAZO) {
-            return true;
+            resultado = true;
         } else {
-            return false;
+            resultado = false;
         }
+        return resultado;
     }
 
 }
