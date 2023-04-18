@@ -127,7 +127,7 @@ class PreAutomaticResultServiceTest {
     }
 
     @Test
-    public void validateFindAllApproval_shouldBeTrue_whenAllTrue() throws ParseException {
+     void validateFindAllApproval_shouldBeTrue_whenAllTrue() throws ParseException {
         this.solicitud.setInversion(10000f);
         Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(90000f);
         Mockito.when(inversionIngresosMapper.obtenerInversionSolicitud(solicitud)).thenReturn(90000f);
@@ -151,7 +151,7 @@ class PreAutomaticResultServiceTest {
 
     }
     @Test
-    public void validateFindAllApproval_shouldBeFalse_whenAnyFalse() throws ParseException {
+     void validateFindAllApproval_shouldBeFalse_whenAnyFalse() throws ParseException {
         this.solicitud.setInversion(90000f);
         Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(90000f);
         Mockito.when(inversionIngresosMapper.obtenerInversionSolicitud(solicitud)).thenReturn(90000f);
@@ -176,7 +176,7 @@ class PreAutomaticResultServiceTest {
     }
 
     @Test
-    public void validateFindAnyApproval_shouldBeTrue_whenAnyTrue() throws ParseException {
+     void validateFindAnyApproval_shouldBeTrue_whenAnyTrue() throws ParseException {
         this.solicitud.setInversion(10000f);
         Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(90000f);
         Mockito.when(inversionIngresosMapper.obtenerInversionSolicitud(solicitud)).thenReturn(90000f);
@@ -200,7 +200,7 @@ class PreAutomaticResultServiceTest {
 
     }
     @Test
-    public void validateFindAnyApproval_shouldBeFalse_whenAnyFalse() throws ParseException {
+     void validateFindAnyApproval_shouldBeFalse_whenAnyFalse() throws ParseException {
         this.solicitud.setInversion(90000f);
         Mockito.when(inversionIngresosMapper.obtenerImporteNetoRenta(solicitud)).thenReturn(90000f);
         Mockito.when(inversionIngresosMapper.obtenerInversionSolicitud(solicitud)).thenReturn(90000f);
@@ -224,14 +224,11 @@ class PreAutomaticResultServiceTest {
 
     }
 
-    public void validateTotalResult() throws ParseException {
+     void validateTotalResult() throws ParseException {
         this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2000"));
         this.solicitud.getPersona().setScoring(1);
         BigInteger num2 = BigInteger.valueOf(10);
         this.solicitud.setPlazo(num2);
-        ////
-
-
     }
 
 }
