@@ -148,14 +148,14 @@ public class ApprovalRulesServiceTest {
     }
 
     @Test
-    public void validateScoring_should_beTrue_when_minor5() {
+     void validateScoring_should_beTrue_when_minor5() {
         Mockito.when(scoringRatingMapper.obtenercScoringPersona(solicitud)).thenReturn(1f);
         boolean validateScoring = service.validateScoringPersona(this.solicitud);
         Assertions.assertTrue(validateScoring);
     }
 
     @Test
-    public void validateScoring_should_beFalse_when_major5() {
+     void validateScoring_should_beFalse_when_major5() {
         Mockito.when(scoringRatingMapper.obtenercScoringPersona(solicitud)).thenReturn(10f);
         boolean validateScoring = service.validateScoringPersona(this.solicitud);
         Assertions.assertFalse(validateScoring);
@@ -203,7 +203,7 @@ public class ApprovalRulesServiceTest {
     }
 
     @Test
-    public void validateCIFCliente_should_beFalse_when_isNull() {
+     void validateCIFCliente_should_beFalse_when_isNull() {
 
         Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn(null);
         Assertions.assertThrows(NullPointerException.class, () -> {
@@ -267,7 +267,7 @@ public class ApprovalRulesServiceTest {
     }
 
     @Test
-    public void validateCIFCliente_should_beTrue_when_isNotNull() {
+     void validateCIFCliente_should_beTrue_when_isNotNull() {
         Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn("N0676766J");
         Assertions.assertDoesNotThrow(() -> {
             boolean validateCIFCliente = service.validateCIFCliente(this.solicitud);
