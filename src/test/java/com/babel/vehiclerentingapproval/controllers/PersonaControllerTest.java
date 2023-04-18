@@ -1,6 +1,5 @@
-package com.babel.vehiclerentingapproval.controllers.impl;
+package com.babel.vehiclerentingapproval.controllers;
 
-import com.babel.vehiclerentingapproval.controllers.PersonaController;
 import com.babel.vehiclerentingapproval.exceptions.DireccionNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.DniFoundException;
 import com.babel.vehiclerentingapproval.exceptions.RequiredMissingFieldException;
@@ -15,14 +14,13 @@ import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import javax.sound.midi.Soundbank;
 import java.text.ParseException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
-public class PersonaControllerImpl {
+public class PersonaControllerTest {
     PersonaMapper personaMapper;
 
     DireccionMapper direccionMapper;
