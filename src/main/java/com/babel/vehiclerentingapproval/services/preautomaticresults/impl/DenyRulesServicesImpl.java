@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -44,7 +43,7 @@ public class DenyRulesServicesImpl implements DenyRulesService {
     public Boolean validateClientAge(SolicitudRenting solicitudRenting) {
 
         Date fechaNacimiento = solicitudRenting.getPersona().getFechaNacimiento();
-        LocalDate fechaNacimientoLocalDate = fechaNacimiento.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        var fechaNacimientoLocalDate = fechaNacimiento.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         int anyo = fechaNacimientoLocalDate.getYear();
         int day = fechaNacimientoLocalDate.getDayOfMonth();
         int month = fechaNacimientoLocalDate.getMonthValue();
