@@ -78,10 +78,11 @@ public class DenyRulesServicesImpl implements DenyRulesService {
     @Override
     public Boolean validateClientAgePlusPlazo(SolicitudRenting solicitudRenting) {
         Date fechaNacimiento = solicitudRenting.getPersona().getFechaNacimiento();
-        int anyo = fechaNacimiento.getYear() + 1900;
-        int day = fechaNacimiento.getDate();
-        int month = fechaNacimiento.getMonth() + 1;
-        LocalDate fechaConcreta = LocalDate.of(anyo, month, day);
+        var fechaNacimientoLocalDate = fechaNacimiento.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int anyo = fechaNacimientoLocalDate.getYear();
+        int day = fechaNacimientoLocalDate.getDayOfMonth();
+        int month = fechaNacimientoLocalDate.getMonthValue();
+        var fechaConcreta = LocalDate.of(anyo, month, day);
         long anios = ChronoUnit.YEARS.between(fechaConcreta, FECHACTUAL);
         if (anios + solicitudRenting.getPlazo().intValue() >= ANYOSPLAZO) {
             return true;
