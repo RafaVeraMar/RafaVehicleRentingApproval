@@ -17,7 +17,7 @@ import java.util.Properties;
 @Service
 public class EmailServiceImpl {
 
-    private final JavaMailSender mailSender;
+    final JavaMailSender mailSender;
 
     public EmailServiceImpl (JavaMailSender mailSender) {
         this.mailSender = mailSender;
@@ -33,7 +33,7 @@ public class EmailServiceImpl {
     public static void sendMail (String mensaje, String destino, String asunto) throws MessagingException {
         //usuario y contraseña del usuario de google que vayamos a utilizar
         var username = "solicitudrenting@gmail.com";
-        var password = "hswrinyhboucvsss";
+        var psw = "hswrinyhboucvsss";
 
         //propiedades del mensaje
         String mensage = mensaje;
@@ -51,7 +51,7 @@ public class EmailServiceImpl {
                 new javax.mail.Authenticator() {
                     @Override
                     protected PasswordAuthentication getPasswordAuthentication ( ) {
-                        return new PasswordAuthentication(username, password);
+                        return new PasswordAuthentication(username, psw);
                     }
                 });
         try {
