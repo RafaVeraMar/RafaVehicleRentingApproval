@@ -97,12 +97,20 @@ class ApprovalRulesServiceTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"ES", "IT", ""})
+    @ValueSource(strings = {"ES"})
     void validateNationality_should_beTrue_when_ES(String arg) {
         this.solicitud.getPersona().getNacionalidad().setIsoAlfa_2(arg);
         boolean validationNationality = service.validateNationality(this.solicitud);
 
         Assertions.assertTrue(validationNationality);
+    }
+    @ParameterizedTest
+    @ValueSource(strings = {"IT",""})
+    void validateNationality_should_beTrue_when_IT_And_Empty(String arg) {
+        this.solicitud.getPersona().getNacionalidad().setIsoAlfa_2(arg);
+        boolean validationNationality = service.validateNationality(this.solicitud);
+
+        Assertions.assertFalse(validationNationality);
     }
 
     @Test

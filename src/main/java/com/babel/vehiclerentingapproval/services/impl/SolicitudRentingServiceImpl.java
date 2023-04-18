@@ -183,8 +183,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      */
     @Override
     public List<String> getListaEstados ( ) {
-        List<String> listaEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
-        return listaEstados;
+        return this.tipoResultadoSolicitudMapper.getListaEstados();
     }
 
     /**
