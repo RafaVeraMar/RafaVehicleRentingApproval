@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
-public class SolicitudRentingTest {
+class SolicitudRentingTest {
     SolicitudRenting solicitudRenting;
 
     @BeforeEach
@@ -21,9 +21,9 @@ public class SolicitudRentingTest {
     }
 
     @Test
-    public void solicitudRenting_shouldReturn_sameString() throws ParseException {
+    void solicitudRenting_shouldReturn_sameString() throws ParseException {
         SolicitudRenting solicitudRenting = createSolicitudRenting();
-        Assertions.assertEquals(solicitudRenting.toString(), "SolicitudRenting{solicitudId=1, persona=null, fechaSolicitud=null, numVehiculos=2, inversion=10.33, cuota=null, plazo=2, fechaInicioVigor=null, fechaResolucion=null, tipoResultadoSolicitud=null}");
+        Assertions.assertEquals("SolicitudRenting{solicitudId=1, persona=null, fechaSolicitud=null, numVehiculos=2, inversion=10.33, cuota=null, plazo=2, fechaInicioVigor=null, fechaResolucion=null, tipoResultadoSolicitud=null}",solicitudRenting.toString());
     }
 
     public SolicitudRenting createSolicitudRenting() {

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
-public class ResolucionSolicitudTest {
+class ResolucionSolicitudTest {
     ResolucionSolicitud resolucionSolicitud;
 
     @BeforeEach
@@ -20,9 +20,9 @@ public class ResolucionSolicitudTest {
     }
 
     @Test
-    public void resolucionSolicitud_shouldReturn_sameString() throws ParseException {
+    void resolucionSolicitud_shouldReturn_sameString() throws ParseException {
         ResolucionSolicitud resolucionSolicitud = createResolucionSolicitud();
-        Assertions.assertEquals(resolucionSolicitud.toString(), "ResolucionSolicitud{codigoResultado='CA', descripcion='Cancelado'}");
+        Assertions.assertEquals( "ResolucionSolicitud{codigoResultado='CA', descripcion='Cancelado'}",resolucionSolicitud.toString());
     }
 
     public ResolucionSolicitud createResolucionSolicitud(){

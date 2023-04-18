@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class TelefonoContactoTest {
+class TelefonoContactoTest {
     TelefonoContacto telefonoContacto;
 
     @BeforeEach
@@ -15,9 +15,9 @@ public class TelefonoContactoTest {
     }
 
     @Test
-    public void telefonoContacto_shouldReturn_sameString() {
+    void telefonoContacto_shouldReturn_sameString() {
         TelefonoContacto telefonoContacto = createTelefonoContacto();
-        Assertions.assertEquals(telefonoContacto.toString(), "TelefonoContacto{telefonoId=1, telefono='666447337'}");
+        Assertions.assertEquals( "TelefonoContacto{telefonoId=1, telefono='666447337'}",telefonoContacto.toString());
     }
 
     public TelefonoContacto createTelefonoContacto() {

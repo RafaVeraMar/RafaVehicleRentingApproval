@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
-public class PersonaTest {
+class PersonaTest {
     Persona persona;
     @BeforeEach
     void setupAll() {
@@ -20,9 +20,9 @@ public class PersonaTest {
     }
 
     @Test
-    public void persona_shouldReturn_sameString() throws ParseException {
+    void persona_shouldReturn_sameString() throws ParseException {
         Persona persona = createPersona();
-        Assertions.assertEquals(persona.toString(), "Persona{personaId=0, nombre='Juan', apellido1='Francés', apellido2='Atúñez', direccionDomicilioId=0, direccionNotificacionId=0, direccionDomicilioSameAsNotificacion=true, nif='null', fechaNacimiento=Mon Dec 29 00:00:00 CET 1980, nacionalidadIsoAlfa2=ES, scoring=0, fechaScoring=Fri Dec 29 00:00:00 CET 2000, telefonos=[TelefonoContacto{telefonoId=1, telefono='677645552'}], productosContratados=[ProductoContratado{idProductoContratado=1, idProducto=2, alias='Coche', importeNominal=100, fechaAlta=Fri Dec 29 00:00:00 CET 2000, fechaBaja=null, estado=null}], email='email@email.com'}");
+        Assertions.assertEquals( "Persona{personaId=0, nombre='Juan', apellido1='Francés', apellido2='Atúñez', direccionDomicilioId=0, direccionNotificacionId=0, direccionDomicilioSameAsNotificacion=true, nif='null', fechaNacimiento=Mon Dec 29 00:00:00 CET 1980, nacionalidadIsoAlfa2=ES, scoring=0, fechaScoring=Fri Dec 29 00:00:00 CET 2000, telefonos=[TelefonoContacto{telefonoId=1, telefono='677645552'}], productosContratados=[ProductoContratado{idProductoContratado=1, idProducto=2, alias='Coche', importeNominal=100, fechaAlta=Fri Dec 29 00:00:00 CET 2000, fechaBaja=null, estado=null}], email='email@email.com'}",persona.toString());
     }
 
     public Persona createPersona() throws ParseException {
