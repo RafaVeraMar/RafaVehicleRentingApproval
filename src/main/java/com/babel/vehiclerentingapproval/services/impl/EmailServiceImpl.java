@@ -19,7 +19,6 @@ public class EmailServiceImpl {
         // Do nothing
     }
 
-
     /**
      * Metodo que envía un correo electrónico.
      * @param mensaje el mensaje del correo electrónico
@@ -30,9 +29,7 @@ public class EmailServiceImpl {
         //usuario y contraseña del usuario de google que vayamos a utilizar
         String Username = "solicitudrenting@gmail.com";
         String Password = "hswrinyhboucvsss";
-
-
-
+        
         //propiedades del mensaje
 
         String Mensage = mensaje;
