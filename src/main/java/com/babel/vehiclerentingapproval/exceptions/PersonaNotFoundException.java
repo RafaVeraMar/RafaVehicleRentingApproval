@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 public class PersonaNotFoundException extends RequestApiValidationException {
     private static final String EXTERNAL_MESSAGE = "La persona con id: %s no existe.";
 
-    private static final HttpStatus statusCode = HttpStatus.BAD_REQUEST;
+    private static final HttpStatus statusCode = HttpStatus.NOT_FOUND;
 
     /**
      * Crea una nueva instancia de PersonaNotFoundException con el ID de la persona no encontrada.
@@ -27,6 +27,5 @@ public class PersonaNotFoundException extends RequestApiValidationException {
      */
     public PersonaNotFoundException ( ) {
         super(EXTERNAL_MESSAGE, statusCode);
-
     }
 }
