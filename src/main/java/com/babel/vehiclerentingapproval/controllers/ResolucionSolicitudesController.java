@@ -23,7 +23,8 @@ import java.util.Map;
 @Tag(name = "Listar tipos de solicitudes", description = "Endpoint que devuelve una lista de los tipos de solicitudes existentes en la base de datos.")
 @RestController
 public class ResolucionSolicitudesController {
-
+    final static String DESCRIPCION = "descripcion";
+    final static String STATUS = "status";
     private ResolucionSolicitudesService resolucionSolicitudesService;
 
     public ResolucionSolicitudesController(ResolucionSolicitudesService resolucionSolicitudesService) {
@@ -49,16 +50,16 @@ public class ResolucionSolicitudesController {
     public ResponseEntity<Object> listarTiposResolucion() {
         Map<String, Object> map = new HashMap<>();
         try {
-            map.put("status", HttpStatus.OK);
-            map.put("descripcion", "listarTiposResolucion correcto");
+            map.put(STATUS, HttpStatus.OK);
+            map.put(DESCRIPCION, "listarTiposResolucion correcto");
             return ResponseEntity.ok(this.resolucionSolicitudesService.getTipoResolucionesSolicitudes());
         } catch (ResolucionSolicitudesNotFoundException e) {
-            map.put("status", HttpStatus.NOT_FOUND);
-            map.put("descripcion", "No existen elementos en la base de datos");
+            map.put(STATUS, HttpStatus.NOT_FOUND);
+            map.put(DESCRIPCION, "No existen elementos en la base de datos");
             return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            map.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
-            map.put("descripcion", "Error interno del servidor");
+            map.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR);
+            map.put(DESCRIPCION, "Error interno del servidor");
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

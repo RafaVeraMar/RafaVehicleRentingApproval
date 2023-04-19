@@ -26,7 +26,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class ResolucionSolicitudesControllerTest {
+class ResolucionSolicitudesControllerTest {
     ResolucionSolicitudesService resolucionSolicitudesService;
     ResolucionSolicitudesMapper resolucionSolicitudesMapper;
 
