@@ -93,4 +93,8 @@ public interface PersonaService {
      * @return
      */
     boolean existeDireccion(int direccionId);
+
+    public boolean existeNif(String nif);
+
+    public void validateNif (String nif) throws DniFoundException;
 }
