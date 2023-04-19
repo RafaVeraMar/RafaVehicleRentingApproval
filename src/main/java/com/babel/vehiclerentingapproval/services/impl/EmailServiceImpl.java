@@ -1,5 +1,7 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
+import com.babel.vehiclerentingapproval.exceptions.FailedSendingEmail;
+import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +32,7 @@ public class EmailServiceImpl {
      * @param destino el correo electrónico del destinatario
      * @param asunto  el asunto del correo electrónico
      */
-    public static void sendMail (String mensaje, String destino, String asunto) throws MessagingException {
+    public static boolean sendMail (String mensaje, String destino, String asunto) throws MessagingException {
         //usuario y contraseña del usuario de google que vayamos a utilizar
         var username = "solicitudrenting@gmail.com";
         var psw = "hswrinyhboucvsss";
@@ -65,9 +67,11 @@ public class EmailServiceImpl {
             message.setSubject(subject);
             message.setText(mensage);
             Transport.send(message);
+            return true;
         } catch (MessagingException e) {
             throw new MessagingException(e.getMessage());
         }
+
     }
 
 

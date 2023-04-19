@@ -15,5 +15,5 @@ public interface EmailService {
      * @param destino el correo electrónico del destinatario
      * @param asunto  el asunto del correo electrónico
      */
-    public void sendMail (String mensaje, String destino, String asunto);
+    boolean sendMail (String mensaje, String destino, String asunto);
 }

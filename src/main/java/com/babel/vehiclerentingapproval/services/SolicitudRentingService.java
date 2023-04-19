@@ -7,6 +7,7 @@ import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundExcep
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 /**
@@ -54,7 +55,7 @@ public interface SolicitudRentingService {
      * @throws EstadoSolicitudNotFoundException
      * @throws SolicitudRentingNotFoundException
      */
-    void modificaEstadoSolicitud (Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws EstadoSolicitudNotFoundException, SolicitudRentingNotFoundException, FailedSendingEmail;
+    void modificaEstadoSolicitud (Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws EstadoSolicitudNotFoundException, SolicitudRentingNotFoundException, FailedSendingEmail, MessagingException;
 
     /**
      * Interfaz que enlaza la implementacion del servicio de {@link com.babel.vehiclerentingapproval.services.impl.SolicitudRentingServiceImpl}

@@ -9,6 +9,7 @@ import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResulta
 import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -152,7 +153,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @see SolicitudRentingMapper
      */
     @Override
-    public void modificaEstadoSolicitud (Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException, FailedSendingEmail {
+    public void modificaEstadoSolicitud (Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException, FailedSendingEmail, MessagingException {
 
         List<String> posiblesEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
         int existeEstado = this.solicitudRentingMapper.existeSolicitud(solicitudId);
@@ -166,16 +167,25 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         }
 
         String email = this.personaMapper.getEmail(solicitud.getPersona().getPersonaId());
-        try {
-            EmailServiceImpl.sendMail("Su solicitud se encuentra: " + this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId), email, "Cambios en tu solicitud");
-        } catch (MessagingException e) {
-            throw new FailedSendingEmail(solicitud.getPersona().getPersonaId(),email);
-        }
+        validateEmail(email);
 
+        EmailServiceImpl.sendMail("Su solicitud se encuentra: " + this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId), email, "Cambios en tu solicitud");
         this.solicitudRentingMapper.modificaEstadoSolicitud(solicitudId, nuevoEstado);
-
     }
 
+
+    private void validateEmail(String email) throws FailedSendingEmail{
+        boolean boolExisteArroba = true;
+        char caracter = '@';
+        if(email.indexOf(caracter)==-1){
+            boolExisteArroba=false;
+        }
+        if(email==null || boolExisteArroba==false){
+            throw new FailedSendingEmail("Failed");
+        }
+
+
+    }
     /**
      * Modifica únicamete el estado de una solicitud de renting, se comprueba a través de la base de datos que el nuevo estado sea uno de los valores posible.
      *
