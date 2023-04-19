@@ -107,6 +107,29 @@ class RentaServiceImplTest {
         });
     }
 
+    @Test
+    void addRenta_shouldNotThrow_when_rentaIdNoExiste() {
+        Renta renta;
+        Persona persona;
+        try {
+            renta = createRenta();
+            persona = createPersona();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        Profesion profesion = createProfesion();
+        profesion.setProfesionId(1);
+        renta.setProfesion(profesion);
+        persona.setPersonaId(1);
+        renta.setPersona(persona);
+        renta.setRentaId(100);
+
+
+        Assertions.assertDoesNotThrow(() -> {
+           this.rentaService.addRenta(renta);
+        });
+    }
+
 
     private Renta createRenta ( ) throws ParseException {
         Renta renta = new Renta();
