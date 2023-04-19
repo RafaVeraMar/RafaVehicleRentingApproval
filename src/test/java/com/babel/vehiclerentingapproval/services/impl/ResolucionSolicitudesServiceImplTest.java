@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -22,7 +23,6 @@ class ResolucionSolicitudesServiceImplTest {
 
     @BeforeEach
     void setupAll ( ) {
-
         solicitudesMapper = Mockito.mock(ResolucionSolicitudesMapper.class);
         when(solicitudesMapper.getTipoResolucionesSolicitudes()).thenReturn(crearListaVacia());
 
@@ -35,15 +35,24 @@ class ResolucionSolicitudesServiceImplTest {
             solicitudesService.getTipoResolucionesSolicitudes();
         });
     }
+    @Test
+    void listar_shouldNotThrow_ResolucionSolicitudesNotFoundException_when_hayDatos() {
+        solicitudesMapper = Mockito.mock(ResolucionSolicitudesMapper.class);
+        when(solicitudesMapper.getTipoResolucionesSolicitudes()).thenReturn(crearListaConElementos());
+        solicitudesService = new ResolucionSolicitudesServiceImpl(solicitudesMapper);
 
+        Assertions.assertDoesNotThrow(() -> {
+            solicitudesService.getTipoResolucionesSolicitudes();
+        });
+    }
     private List<ResolucionSolicitud> crearListaConElementos ( ) {
-        List<ResolucionSolicitud> lista = new ArrayList<ResolucionSolicitud>();
+        List<ResolucionSolicitud> lista = new ArrayList<>();
         lista.add(new ResolucionSolicitud("AA", "Aprobada"));
         return lista;
     }
 
     private List<ResolucionSolicitud> crearListaVacia ( ) {
-        List<ResolucionSolicitud> lista = new ArrayList<ResolucionSolicitud>();
+        List<ResolucionSolicitud> lista = new ArrayList<>();
         return lista;
     }
 }
