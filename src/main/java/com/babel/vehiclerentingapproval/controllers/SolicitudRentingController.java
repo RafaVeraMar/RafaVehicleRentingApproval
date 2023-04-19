@@ -100,10 +100,10 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(mediaType = "application/json"))
     })
     @Parameter(name = "id", description = "ID de la solicitud a consultar", required = true)
-    public ResponseEntity<Object> verEstadoSolicitud(@PathVariable String id) {
+    public ResponseEntity<Object> verEstadoSolicitud(@PathVariable int id) {
         Map<String, Object> respuesta = new HashMap<>();
         try {
-            var idSolicitud = Integer.parseInt(id);
+            var idSolicitud = id;
             String estado = this.solicitud.verEstadoSolicitud(idSolicitud);
 
             respuesta.put(STATUS,HttpStatus.OK);
