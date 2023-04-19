@@ -140,7 +140,7 @@ class PreAutomaticResultServiceTest {
         listaValores.add("45442L");
         Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn("45442L");
         Mockito.when(salariedMapper.obtenerCIFInforma()).thenReturn(listaValores);
-        this.solicitud.getPersona().getNacionalidad().setIsoAlfa_2("ES");
+        this.solicitud.getPersona().getNacionalidad().setIsoAlfa2("ES");
         Mockito.when(employmentSeniorityMapper.obtenerFechaInicioEmpleoSolicitud(solicitud)).thenReturn(10f);
         Mockito.when(garantiaMapper.existeClienteAprobadoConGarantias(anyInt())).thenReturn(1);
         Mockito.when(garantiaMapper.existeClienteRechazadoPreviamente(anyInt())).thenReturn(1);
@@ -164,7 +164,7 @@ class PreAutomaticResultServiceTest {
         listaValores.add("45442L");
         Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn("45442L");
         Mockito.when(salariedMapper.obtenerCIFInforma()).thenReturn(listaValores);
-        this.solicitud.getPersona().getNacionalidad().setIsoAlfa_2("ES");
+        this.solicitud.getPersona().getNacionalidad().setIsoAlfa2("ES");
         Mockito.when(employmentSeniorityMapper.obtenerFechaInicioEmpleoSolicitud(solicitud)).thenReturn(10f);
         Mockito.when(garantiaMapper.existeClienteAprobadoConGarantias(anyInt())).thenReturn(1);
         Mockito.when(garantiaMapper.existeClienteRechazadoPreviamente(anyInt())).thenReturn(1);
@@ -189,7 +189,7 @@ class PreAutomaticResultServiceTest {
         listaValores.add("45442L");
         Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn("45442L");
         Mockito.when(salariedMapper.obtenerCIFInforma()).thenReturn(listaValores);
-        this.solicitud.getPersona().getNacionalidad().setIsoAlfa_2("ES");
+        this.solicitud.getPersona().getNacionalidad().setIsoAlfa2("ES");
         Mockito.when(employmentSeniorityMapper.obtenerFechaInicioEmpleoSolicitud(solicitud)).thenReturn(10f);
         Mockito.when(garantiaMapper.existeClienteAprobadoConGarantias(anyInt())).thenReturn(1);
         Mockito.when(garantiaMapper.existeClienteRechazadoPreviamente(anyInt())).thenReturn(1);
@@ -213,7 +213,7 @@ class PreAutomaticResultServiceTest {
         listaValores.add("45442L");
         Mockito.when(salariedMapper.obtenerCIFSolicitud(solicitud)).thenReturn("45442L");
         Mockito.when(salariedMapper.obtenerCIFInforma()).thenReturn(listaValores);
-        this.solicitud.getPersona().getNacionalidad().setIsoAlfa_2("ES");
+        this.solicitud.getPersona().getNacionalidad().setIsoAlfa2("ES");
         Mockito.when(employmentSeniorityMapper.obtenerFechaInicioEmpleoSolicitud(solicitud)).thenReturn(10f);
         Mockito.when(garantiaMapper.existeClienteAprobadoConGarantias(anyInt())).thenReturn(1);
         Mockito.when(garantiaMapper.existeClienteRechazadoPreviamente(anyInt())).thenReturn(1);

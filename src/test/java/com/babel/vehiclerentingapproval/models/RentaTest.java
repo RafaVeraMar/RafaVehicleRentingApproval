@@ -76,7 +76,7 @@ class RentaTest {
         persona.setDireccionNotificacion(notificacion);
 
         Pais nacionalidad = new Pais();
-        nacionalidad.setIsoAlfa_2("ES");
+        nacionalidad.setIsoAlfa2("ES");
         persona.setNacionalidad(nacionalidad);
 
         persona.setFechaScoring(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2000"));

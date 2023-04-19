@@ -321,7 +321,7 @@ public class Persona {
                 ", direccionDomicilioSameAsNotificacion=" + isDireccionDomicilioSameAsNotificacion() +
                 ", nif='" + getNif() + '\'' +
                 ", fechaNacimiento=" + getFechaNacimiento().toString() +
-                ", nacionalidadIsoAlfa2=" + getNacionalidad().getIsoAlfa_2() +
+                ", nacionalidadIsoAlfa2=" + getNacionalidad().getIsoAlfa2() +
                 ", scoring=" + getScoring() +
                 ", fechaScoring=" + getFechaScoring().toString() +
                 ", telefonos=" + getTelefonos().toString() +
