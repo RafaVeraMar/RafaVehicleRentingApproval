@@ -23,8 +23,8 @@ import java.util.Map;
 @Tag(name = "Listar tipos de solicitudes", description = "Endpoint que devuelve una lista de los tipos de solicitudes existentes en la base de datos.")
 @RestController
 public class ResolucionSolicitudesController {
-    final static String DESCRIPCION = "descripcion";
-    final static String STATUS = "status";
+    final String DESCRIPCION = "descripcion";
+    final String STATUS = "status";
     private ResolucionSolicitudesService resolucionSolicitudesService;
 
     public ResolucionSolicitudesController(ResolucionSolicitudesService resolucionSolicitudesService) {
