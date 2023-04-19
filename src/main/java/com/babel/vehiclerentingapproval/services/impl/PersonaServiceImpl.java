@@ -72,7 +72,7 @@ public class PersonaServiceImpl implements PersonaService {
 
         this.addPersonaDireccion(persona);
 
-        var pais = this.paisMapper.getPais(persona.getNacionalidad().getIsoAlfa_2());
+        var pais = this.paisMapper.getPais(persona.getNacionalidad().getIsoAlfa2());
 
         persona.setNacionalidad(pais);
         this.personaMapper.insertPersona(persona);

@@ -22,7 +22,7 @@ public interface PersonaMapper {
      * @see Persona
      * @param persona objeto Persona a insertar
      */
-    @Insert("INSERT INTO PERSONA (NOMBRE, APELLIDO1, APELLIDO2, DIRECCION_DOMICILIO_ID, DIRECCION_NOTIFICACION_ID, NIF, FECHA_NACIMIENTO, NACIONALIDAD, EMAIL) VALUES (#{nombre}, #{apellido1}, #{apellido2}, #{direccionDomicilio.direccionId}, #{direccionNotificacion.direccionId}, #{nif}, #{fechaNacimiento, jdbcType=DATE}, #{nacionalidad.isoAlfa_2},#{email})")
+    @Insert("INSERT INTO PERSONA (NOMBRE, APELLIDO1, APELLIDO2, DIRECCION_DOMICILIO_ID, DIRECCION_NOTIFICACION_ID, NIF, FECHA_NACIMIENTO, NACIONALIDAD, EMAIL) VALUES (#{nombre}, #{apellido1}, #{apellido2}, #{direccionDomicilio.direccionId}, #{direccionNotificacion.direccionId}, #{nif}, #{fechaNacimiento, jdbcType=DATE}, #{nacionalidad.isoAlfa2},#{email})")
     @Options(useGeneratedKeys = true, keyProperty = "personaId", keyColumn = "PERSONA_ID")
     void insertPersona(Persona persona);
     /**
@@ -67,7 +67,7 @@ public interface PersonaMapper {
      */
     @Update("UPDATE PERSONA SET NOMBRE=#{nombre}, APELLIDO1=#{apellido1}, APELLIDO2=#{apellido2},"+
             "DIRECCION_DOMICILIO_ID=#{direccionDomicilio.direccionId}, DIRECCION_NOTIFICACION_ID=#{direccionNotificacion.direccionId},"+
-            "NIF=#{nif},FECHA_NACIMIENTO=#{fechaNacimiento,jdbcType=DATE},NACIONALIDAD=#{nacionalidad.isoAlfa_2},"+
+            "NIF=#{nif},FECHA_NACIMIENTO=#{fechaNacimiento,jdbcType=DATE},NACIONALIDAD=#{nacionalidad.isoAlfa2},"+
             "SCORING=#{scoring}, FECHA_SCORING=#{fechaScoring, jdbcType=DATE}, EMAIL=#{email} "+
             "WHERE PERSONA_ID=#{personaId}")
     void updatePersona(Persona persona);
