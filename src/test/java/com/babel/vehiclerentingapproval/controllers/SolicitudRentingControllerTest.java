@@ -121,7 +121,7 @@ public class SolicitudRentingControllerTest {
         // Configurar el comportamiento de personaService.addPersona()
         Mockito.when(solicitudRentingService.verEstadoSolicitud(solicitudRenting.getSolicitudId())).thenReturn("1");
 
-        ResponseEntity response = solicitudRentingController.verEstadoSolicitud(solicitudRenting.getSolicitudId());
+        ResponseEntity response = solicitudRentingController.verEstadoSolicitud(String.valueOf(solicitudRenting.getSolicitudId()));
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
@@ -131,7 +131,7 @@ public class SolicitudRentingControllerTest {
         SolicitudRentingController solicitudRentingController = new SolicitudRentingController(solicitudRentingService);
         SolicitudRenting solicitudRenting = creaSolicitudFicticia();
         when(solicitudRentingService.verEstadoSolicitud(solicitudRenting.getSolicitudId())).thenThrow(new NumberFormatException());
-        ResponseEntity response = solicitudRentingController.verEstadoSolicitud(solicitudRenting.getSolicitudId());
+        ResponseEntity response = solicitudRentingController.verEstadoSolicitud(String.valueOf(solicitudRenting.getSolicitudId()));
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
     @Test
@@ -140,7 +140,7 @@ public class SolicitudRentingControllerTest {
         SolicitudRentingController solicitudRentingController = new SolicitudRentingController(solicitudRentingService);
         SolicitudRenting solicitudRenting = creaSolicitudFicticia();
         when(solicitudRentingService.verEstadoSolicitud(solicitudRenting.getSolicitudId())).thenThrow(new EstadoSolicitudNotFoundException());
-        ResponseEntity response = solicitudRentingController.verEstadoSolicitud(solicitudRenting.getSolicitudId());
+        ResponseEntity response = solicitudRentingController.verEstadoSolicitud(String.valueOf(solicitudRenting.getSolicitudId()));
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
     @Test
