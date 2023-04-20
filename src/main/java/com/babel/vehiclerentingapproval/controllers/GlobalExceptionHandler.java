@@ -53,34 +53,34 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({RequiredMissingFieldException.class, WrongLenghtFieldException.class})
     public ResponseEntity<Object> handleBadRequestException(Exception ex) {
-        Map<String, Object> map = new HashMap<>();
-        map.put(STATUS, HttpStatus.BAD_REQUEST);
-        map.put(DESCRIPCION, "Comprueba los datos de entrada");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put(STATUS, HttpStatus.BAD_REQUEST);
+        respuesta.put(DESCRIPCION, "Comprueba los datos de entrada");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuesta);
     }
 
     @ExceptionHandler(DireccionNotFoundException.class)
     public ResponseEntity<Object> handleDireccionNotFoundException(Exception ex) {
-        Map<String, Object> map = new HashMap<>();
-        map.put(STATUS, HttpStatus.BAD_REQUEST);
-        map.put(DESCRIPCION, "Direccion no encontrada");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put(STATUS, HttpStatus.BAD_REQUEST);
+        respuesta.put(DESCRIPCION, "Direccion no encontrada");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuesta);
     }
 
     @ExceptionHandler(DniFoundException.class)
     public ResponseEntity<Object> handleDniFoundException(Exception ex) {
-        Map<String, Object> map = new HashMap<>();
-        map.put(STATUS, HttpStatus.BAD_REQUEST);
-        map.put(DESCRIPCION, "El NIF de la persona ya existe en la base de datos");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put(STATUS, HttpStatus.BAD_REQUEST);
+        respuesta.put(DESCRIPCION, "El NIF de la persona ya existe en la base de datos");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuesta);
     }
 
     @ExceptionHandler(PersonaNotFoundException.class)
     public ResponseEntity<Object> handlePersonaNotFoundException(Exception ex) {
-        Map<String, Object> map = new HashMap<>();
-        map.put(STATUS, HttpStatus.NOT_FOUND);
-        map.put(DESCRIPCION, "Persona no encontrada en la base de datos");
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put(STATUS, HttpStatus.NOT_FOUND);
+        respuesta.put(DESCRIPCION, "Persona no encontrada en la base de datos");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(respuesta);
     }
 
 
