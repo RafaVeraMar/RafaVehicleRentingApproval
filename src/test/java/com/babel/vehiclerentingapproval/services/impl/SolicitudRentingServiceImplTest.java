@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import javax.mail.MessagingException;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -225,7 +226,7 @@ public class SolicitudRentingServiceImplTest {
         }
 
         @Test
-        void modificaEstadoSolicitud_shouldNotThrow_SolicitudRentingNotFoundException_when_emailExists() throws ParseException {
+        void modificaEstadoSolicitud_shouldNotThrow_SolicitudRentingNotFoundException_when_emailExists() throws ParseException, MessagingException {
             Mockito.when(tipoResultadoSolicitudMapper.getListaEstados()).thenReturn(creaListaMock());
             when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(1);
             when(solicitudRentingMapper.getSolicitudByID(anyInt())).thenReturn(creaSolicitudFicticia());

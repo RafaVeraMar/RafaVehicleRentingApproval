@@ -2,6 +2,8 @@ package com.babel.vehiclerentingapproval.services.impl;
 
 import com.babel.vehiclerentingapproval.exceptions.FailedSendingEmail;
 import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
+import com.babel.vehiclerentingapproval.services.EmailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +19,7 @@ import java.util.Properties;
  * @author enrique.munoz@babelgroup.com
  */
 @Service
-public class EmailServiceImpl {
-
+public class EmailServiceImpl implements EmailService {
     final JavaMailSender mailSender;
 
     public EmailServiceImpl (JavaMailSender mailSender) {
