@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -53,7 +52,7 @@ class PersonaTest {
         persona.setDireccionNotificacion(notificacion);
 
         Pais nacionalidad = new Pais();
-        nacionalidad.setIsoAlfa_2("ES");
+        nacionalidad.setIsoAlfa2("ES");
         persona.setNacionalidad(nacionalidad);
 
         persona.setFechaScoring(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2000"));

@@ -23,10 +23,11 @@ import java.util.Map;
 @Tag(name = "Listar tipos de solicitudes", description = "Endpoint que devuelve una lista de los tipos de solicitudes existentes en la base de datos.")
 @RestController
 public class ResolucionSolicitudesController {
-
+    public static final String DESCRIPCION = "descripcion";
+    public static final String STATUS = "status";
     private ResolucionSolicitudesService resolucionSolicitudesService;
 
-    public ResolucionSolicitudesController (ResolucionSolicitudesService resolucionSolicitudesService) {
+    public ResolucionSolicitudesController(ResolucionSolicitudesService resolucionSolicitudesService) {
         this.resolucionSolicitudesService = resolucionSolicitudesService;
     }
 
@@ -46,17 +47,19 @@ public class ResolucionSolicitudesController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Existen datos en la base de datos y se devuelven.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "204", description = "No existen tipos de solicitudes en la base de datos.", content = {@Content(mediaType = "application/json")})
     })
-    public ResponseEntity<Object> listarTiposResolucion ( ) {
+    public ResponseEntity<Object> listarTiposResolucion() {
         Map<String, Object> map = new HashMap<>();
         try {
+            map.put(STATUS, HttpStatus.OK);
+            map.put(DESCRIPCION, "listarTiposResolucion correcto");
             return ResponseEntity.ok(this.resolucionSolicitudesService.getTipoResolucionesSolicitudes());
         } catch (ResolucionSolicitudesNotFoundException e) {
-            map.put("status", HttpStatus.NOT_FOUND);
-            map.put("descripcion", "No existen elementos en la base de datos");
-            return new ResponseEntity<>(map, HttpStatus.NO_CONTENT);
+            map.put(STATUS, HttpStatus.NOT_FOUND);
+            map.put(DESCRIPCION, "No existen elementos en la base de datos");
+            return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            map.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
-            map.put("descripcion", "Error interno del servidor");
+            map.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR);
+            map.put(DESCRIPCION, "Error interno del servidor");
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

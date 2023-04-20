@@ -257,7 +257,14 @@ public class SolicitudRentingServiceImplTest {
 
     @Nested
     class TestInsertSolicitudRenting {
-
+        @Test
+        void insertarSolicitudRenting_shouldThrow_PersonaNotFoundException_when_idPersonaNotExist(){
+            when(personaService.existePersona(anyInt())).thenReturn(false);
+            Assertions.assertThrows(PersonaNotFoundException.class, () -> {
+                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+                solicitudService.addSolicitudRenting(solicitudRenting);
+            });
+        }
         @Test
         void insertarSolicitudRenting_shouldThrow_WrongLenghtFieldException_when_NumberVehiculosIsTooBig ( ) {
             when(personaService.existePersona(anyInt())).thenReturn(true);
@@ -399,6 +406,17 @@ public class SolicitudRentingServiceImplTest {
             });
         }
 
+        @Test
+        void insertarSolicitudRenting_shouldNotThrow_when_PlazoIsNull ( ) {
+            Mockito.when(personaService.existePersona(anyInt())).thenReturn(true);
+            Assertions.assertDoesNotThrow(() -> {
+                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+                BigInteger bigInteger = BigInteger.ZERO;
+                solicitudRenting.setPlazo(null);
+                solicitudService.addSolicitudRenting(solicitudRenting);
+            });
+        }
+
 
         @Test
         void insertarSolicitudRenting_shouldThrow_DateIsBeforeException_when_FechaInicio_IsBefore_with_FechaResolucion ( ) {
@@ -407,6 +425,38 @@ public class SolicitudRentingServiceImplTest {
                 SolicitudRenting solicitudRenting = creaSolicitudFicticia();
                 solicitudRenting.setFechaInicioVigor(new SimpleDateFormat("dd-MM-yyyy").parse("27-12-2023"));
                 solicitudRenting.setFechaResolucion(new SimpleDateFormat("dd-MM-yyyy").parse("28-12-2023"));
+                solicitudService.addSolicitudRenting(solicitudRenting);
+            });
+        }
+
+        @Test
+        void insertarSolicitudRenting_shouldNotThrow_DateIsBeforeException_when_FechaInicio_IsNotBefore_with_FechaResolucion ( ) {
+            Mockito.when(personaService.existePersona(anyInt())).thenReturn(true);
+            Assertions.assertDoesNotThrow(() -> {
+                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+                solicitudRenting.setFechaInicioVigor(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-2023"));
+                solicitudRenting.setFechaResolucion(new SimpleDateFormat("dd-MM-yyyy").parse("28-12-2023"));
+                solicitudService.addSolicitudRenting(solicitudRenting);
+            });
+        }
+
+        @Test
+        void insertarSolicitudRenting_shoulNotThrow_DateIsBeforeException_when_FechaInicio_IsNull ( ) {
+            Mockito.when(personaService.existePersona(anyInt())).thenReturn(true);
+            Assertions.assertDoesNotThrow(() -> {
+                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+                solicitudRenting.setFechaInicioVigor(null);
+                solicitudRenting.setFechaResolucion(new SimpleDateFormat("dd-MM-yyyy").parse("28-12-2023"));
+                solicitudService.addSolicitudRenting(solicitudRenting);
+            });
+        }
+        @Test
+        void insertarSolicitudRenting_shouldNotThrow_DateIsBeforeException_when_FechaResolucion_IsNull ( ) {
+            Mockito.when(personaService.existePersona(anyInt())).thenReturn(true);
+            Assertions.assertDoesNotThrow(() -> {
+                SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+                solicitudRenting.setFechaInicioVigor(new SimpleDateFormat("dd-MM-yyyy").parse("28-12-2023"));
+                solicitudRenting.setFechaResolucion(null);
                 solicitudService.addSolicitudRenting(solicitudRenting);
             });
         }
