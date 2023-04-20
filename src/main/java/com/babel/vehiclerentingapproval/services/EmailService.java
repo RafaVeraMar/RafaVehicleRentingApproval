@@ -1,5 +1,6 @@
 package com.babel.vehiclerentingapproval.services;
 
+
 /**
  * Esta interfaz define un método para enviar correos electrónicos
  *

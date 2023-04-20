@@ -32,7 +32,7 @@ public class EmailServiceImpl {
      * @param destino el correo electrónico del destinatario
      * @param asunto  el asunto del correo electrónico
      */
-    public static boolean sendMail (String mensaje, String destino, String asunto) throws MessagingException {
+    public boolean sendMail (String mensaje, String destino, String asunto) throws MessagingException {
         //usuario y contraseña del usuario de google que vayamos a utilizar
         var username = "solicitudrenting@gmail.com";
         var psw = "hswrinyhboucvsss";
