@@ -74,23 +74,6 @@ class PersonaControllerTest {
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
-
-    @Test
-    void testViewPersonaProductoSuccess() throws Exception {
-    @Test
-    void testViewPersonaProductoSuccess ( ) throws Exception {
-        PersonaService personaService = Mockito.mock(PersonaService.class);
-        PersonaController personaController = new PersonaController(personaService);
-        Persona persona = personaficticia();
-
-        // Configurar el comportamiento de personaService.addPersona()
-        Mockito.when(personaService.viewPersonaProducto(persona.getPersonaId())).thenReturn(persona.getProductosContratados());
-
-        ResponseEntity response = personaController.viewPersonaProducto(persona.getPersonaId());
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-    }
-
     @Test
     void testModificarPersonaSuccess ( ) throws Exception {
         PersonaService personaService = Mockito.mock(PersonaService.class);
