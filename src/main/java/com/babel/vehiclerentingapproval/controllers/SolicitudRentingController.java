@@ -98,10 +98,8 @@ public class SolicitudRentingController {
         Map<String, Object> respuesta = new HashMap<>();
         var idSolicitud = Integer.parseInt(id);
         String estado = this.solicitud.verEstadoSolicitud(idSolicitud);
-        respuesta.put(STATUS, HttpStatus.OK);
-        respuesta.put("Id", id);
-        respuesta.put(DESCRIPCION, estado);
-        return new ResponseEntity<>(respuesta, (HttpStatus)respuesta.get(STATUS));
+        respuesta.put("Estado", estado);
+        return new ResponseEntity<>(respuesta,HttpStatus.OK);
     }
 
     /**
@@ -143,10 +141,8 @@ public class SolicitudRentingController {
     public ResponseEntity<Object> cancelarSolicitud (@PathVariable int id) throws RequestApiValidationException {
         Map<String, Object> respuesta = new HashMap<>();
         this.solicitud.cancelarSolicitud(id);
-        respuesta.put(STATUS, HttpStatus.OK);
-        respuesta.put("Id", id);
         respuesta.put(DESCRIPCION, "Solicitud cancelada");
-        return new ResponseEntity<>(respuesta, (HttpStatus)respuesta.get(STATUS));
+        return new ResponseEntity<>(respuesta,HttpStatus.OK);
     }
 
     /**
