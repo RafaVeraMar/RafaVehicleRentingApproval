@@ -79,6 +79,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private void existIdPersona (int idPersona) {
         if (!personaService.existePersona(idPersona)) {
             throw new PersonaNotFoundException(idPersona, HttpStatus.NOT_FOUND);
+
         }
     }
 
@@ -178,7 +179,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
         String email = this.personaMapper.getEmail(solicitud.getPersona().getPersonaId());
         if (email == null || email.indexOf('@') == -1) {
-            throw new FailedSendingEmail("Failed");
+            throw new FailedSendingEmail(HttpStatus.BAD_REQUEST,"Failed");
         }
         var estadoSolicitud = this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId);
         emailService.sendMail("Su solicitud se encuentra: " + estadoSolicitud, email, "Cambios en tu solicitud");

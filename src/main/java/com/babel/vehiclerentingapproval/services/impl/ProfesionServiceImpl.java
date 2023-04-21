@@ -3,6 +3,7 @@ package com.babel.vehiclerentingapproval.services.impl;
 import com.babel.vehiclerentingapproval.exceptions.ProfesionNotFoundException;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.ProfesionMapper;
 import com.babel.vehiclerentingapproval.services.ProfesionService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,7 +28,7 @@ public class ProfesionServiceImpl implements ProfesionService {
      */
     public void validateProfesion (int profesionId) throws ProfesionNotFoundException {
         if (!existeProfesion(profesionId)) {
-            throw new ProfesionNotFoundException();
+            throw new ProfesionNotFoundException(HttpStatus.NOT_FOUND);
         }
     }
 
