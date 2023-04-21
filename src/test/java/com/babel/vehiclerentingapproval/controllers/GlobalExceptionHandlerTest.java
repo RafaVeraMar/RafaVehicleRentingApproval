@@ -10,7 +10,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class GlobalExceptionHandlerTest {
+class GlobalExceptionHandlerTest {
     private GlobalExceptionHandler globalExceptionHandler;
 
     @BeforeEach
@@ -19,7 +19,7 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void testHandleRequestApiValidationException() {
+    void testHandleRequestApiValidationException() {
         RequestApiValidationException e = new RequestApiValidationException("message", HttpStatus.BAD_REQUEST, new String[]{"externalMessage"});
         ResponseEntity<Object> response = globalExceptionHandler.handleRequestApiValidationException(e);
         Map<String, Object> expected = new HashMap<>();
@@ -29,7 +29,7 @@ public class GlobalExceptionHandlerTest {
         //(expected, response.getBody());
     }
     @Test
-    public void testHandleHandleException() {
+    void testHandleHandleException() {
         RequestApiValidationException e = new RequestApiValidationException("message", HttpStatus.INTERNAL_SERVER_ERROR, new String[]{"externalMessage"});
         ResponseEntity<Object> response = globalExceptionHandler.handleException(e);
         Map<String, Object> expected = new HashMap<>();
