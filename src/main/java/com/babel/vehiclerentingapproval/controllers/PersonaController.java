@@ -18,14 +18,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Esta clase define la documentación Swagger con el métodos para hacer el CRUD de Persona
+ * y sus rutas para poder acceder desde PostMan.
+ *
+ * @author: enrique.munoz@babelgroup.com
+ */
 @Tag(name = "Operaciones con persona", description = "Endpoint para operar con una persona en la base de datos a partir de unos datos de entrada.")
 @RestController
 public class PersonaController {
-
     /**
      * Contiene un servicio que realiza las acciones relacionadas con persona
      */
     PersonaService personaService;
+
+    private static final String DESCRIPCION = "descripcion";
+    private static final String STATUS = "status";
 
     public PersonaController(PersonaService personaService) {
         this.personaService = personaService;
@@ -52,13 +60,32 @@ public class PersonaController {
             @ApiResponse(responseCode = "400", description = "Comprueba los datos de entrada.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Error del servidor.", content = {@Content(mediaType = "application/json")})
     })
-    public ResponseEntity<Object> addPersona(@RequestBody Persona persona) throws DireccionNotFoundException, PersonaNotFoundException, RequiredMissingFieldException, DniFoundException, WrongLenghtFieldException {
-        Persona personaCreada = this.personaService.addPersona(persona);
+    public ResponseEntity<Object> addPersona (@RequestBody Persona persona) {
+        Persona personaCreada;
         Map<String, Object> map = new HashMap<>();
-        map.put("status", HttpStatus.OK);
-        map.put("descripcion", "Persona añadida.");
+        try {
+            personaCreada = this.personaService.addPersona(persona);
+        } catch (RequiredMissingFieldException | WrongLenghtFieldException e) {
+            map.put(STATUS, HttpStatus.BAD_REQUEST);
+            map.put(DESCRIPCION, "Comprueba los datos de entrada");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
+        } catch (DireccionNotFoundException e) {
+            map.put(STATUS, HttpStatus.BAD_REQUEST);
+            map.put(DESCRIPCION, "Direccion no encontrada");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
+        } catch (DniFoundException e) {
+            map.put(STATUS, HttpStatus.BAD_REQUEST);
+            map.put(DESCRIPCION, "El NIF de la persona ya existe en la base de datos");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
+        } catch (Exception e) {
+            map.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR);
+            map.put(DESCRIPCION, "Error del sistema");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
+        }
+        map.put(STATUS, HttpStatus.OK);
+        map.put(DESCRIPCION, "Persona añadida.");
         map.put("id", personaCreada.getPersonaId());
-        return ResponseEntity.ok(map);
+        return ResponseEntity.ok(personaCreada);
     }
 
     /**
@@ -78,13 +105,21 @@ public class PersonaController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Se han obtenido con éxito los productos contratados por una persona.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "404", description = "La persona no existe.", content = {@Content(mediaType = "application/json")}),
     })
-    public ResponseEntity<Object> viewPersonaProducto(@PathVariable("id") int id) throws PersonaNotFoundException {
-        List<ProductoContratado> lista = this.personaService.viewPersonaProducto(id);
+    public ResponseEntity<Object> viewPersonaProducto(@PathVariable("id") int id){
+        List<ProductoContratado> lista;
         Map<String, Object> map = new HashMap<>();
-        map.put("status", HttpStatus.OK);
-        map.put("descripcion", "Productos contratados por una persona.");
-        map.put("Lista de productos contratados por una persona", lista);
-        return ResponseEntity.ok(map);
+
+        try {
+            lista = this.personaService.viewPersonaProducto(id);
+            map.put(STATUS, HttpStatus.OK);
+            map.put(DESCRIPCION, "Productos contratados por una persona.");
+            map.put("Lista de productos contratados por una persona",lista);
+            return new ResponseEntity<>(map,HttpStatus.OK);
+        } catch (PersonaNotFoundException e) {
+            map.put(STATUS, HttpStatus.NOT_FOUND);
+            map.put(DESCRIPCION, "Persona no encontrada en la base de datos");
+            return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
+        }
     }
 
     /**
@@ -108,13 +143,23 @@ public class PersonaController {
     @Parameter(name = "persona", description = "JSON de la persona con datos a modificar", required = true)
     @Operation(summary = "Modificar los datos de una persona", description = "Modifica los datos de una persona en la base de datos.")
     @PutMapping("/persona/{id}")
-    public ResponseEntity<Object> modificarPersona (@RequestBody Persona persona, @PathVariable int id) throws DireccionNotFoundException, PersonaNotFoundException {
-        persona.setPersonaId(id);
-        this.personaService.modificarPersona(persona);
+    public ResponseEntity<Object> modificarPersona (@RequestBody Persona persona, @PathVariable int id) {
         Map<String, Object> map = new HashMap<>();
-        map.put("status", HttpStatus.OK);
-        map.put("descripcion", "La persona se ha modificado correctamente en la base de datos");
-        return ResponseEntity.ok(map);
+        try {
+            persona.setPersonaId(id);
+            this.personaService.modificarPersona(persona);
+            map.put(STATUS, HttpStatus.OK);
+            map.put(DESCRIPCION, "La persona se ha modificado correctamente en la base de datos");
+            return new ResponseEntity<>(map, HttpStatus.OK);
+        } catch (PersonaNotFoundException e) {
+            map.put(STATUS, HttpStatus.NOT_FOUND);
+            map.put(DESCRIPCION, "La persona que se intenta modificar no existe en la base de datos");
+            return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
+        } catch (DireccionNotFoundException e) {
+            map.put(STATUS, HttpStatus.BAD_REQUEST);
+            map.put(DESCRIPCION, "La direccion no existe en la base de datos");
+            return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+        }
     }
 
 

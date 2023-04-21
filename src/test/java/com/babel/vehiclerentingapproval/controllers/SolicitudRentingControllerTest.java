@@ -4,7 +4,6 @@ import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
-import com.babel.vehiclerentingapproval.services.EmailService;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import com.babel.vehiclerentingapproval.services.impl.PersonaServiceImpl;
@@ -40,8 +39,9 @@ public class SolicitudRentingControllerTest {
         TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper = Mockito.mock(TipoResultadoSolicitudMapper.class);
         PersonaService personaService = Mockito.mock(PersonaService.class);
         CodigoResolucionValidator codigoResolucionValidator = Mockito.mock(CodigoResolucionValidator.class);
-        EmailService emailService = Mockito.mock(EmailService.class);
-        solicitudRentingService = new SolicitudRentingServiceImpl(solicitudRentingMapper,tipoResultadoSolicitudMapper,personaService,codigoResolucionValidator,personaMapper,emailService);
+        PersonaMapper personaMapper = Mockito.mock(PersonaMapper.class);
+
+        solicitudRentingService = new SolicitudRentingServiceImpl(solicitudRentingMapper,tipoResultadoSolicitudMapper,personaService,codigoResolucionValidator,personaMapper);
     }
     private SolicitudRenting creaSolicitudFicticia() throws ParseException {
         SolicitudRenting solicitudFicticia = new SolicitudRenting();
@@ -95,6 +95,24 @@ public class SolicitudRentingControllerTest {
     }
 
     @Test
+    void testAddSolicitudRentingPersonaNotFound() throws Exception {
+        SolicitudRentingService solicitudRentingService = Mockito.mock(SolicitudRentingService.class);
+        SolicitudRentingController solicitudRentingController = new SolicitudRentingController(solicitudRentingService);
+        SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+        when(solicitudRentingService.addSolicitudRenting(solicitudRenting)).thenThrow(new PersonaNotFoundException());
+        ResponseEntity response = solicitudRentingController.addSolicitudRenting(solicitudRenting);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+    @Test
+    void testAddSolicitudRentingSolicitudRentingNotFound() throws Exception {
+        SolicitudRentingService solicitudRentingService = Mockito.mock(SolicitudRentingService.class);
+        SolicitudRentingController solicitudRentingController = new SolicitudRentingController(solicitudRentingService);
+        SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+        when(solicitudRentingService.addSolicitudRenting(solicitudRenting)).thenThrow(new SolicitudRentingNotFoundException());
+        ResponseEntity response = solicitudRentingController.addSolicitudRenting(solicitudRenting);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+    @Test
     void testVerEstadoSolicitudSuccess() throws Exception {
         SolicitudRentingService solicitudRentingService = Mockito.mock(SolicitudRentingService.class);
         SolicitudRentingController solicitudRentingController = new SolicitudRentingController(solicitudRentingService);
@@ -103,11 +121,28 @@ public class SolicitudRentingControllerTest {
         // Configurar el comportamiento de personaService.addPersona()
         Mockito.when(solicitudRentingService.verEstadoSolicitud(solicitudRenting.getSolicitudId())).thenReturn("1");
 
-        ResponseEntity response = solicitudRentingController.verEstadoSolicitud(String.valueOf(solicitudRenting.getSolicitudId()));
+        ResponseEntity response = solicitudRentingController.verEstadoSolicitud(solicitudRenting.getSolicitudId());
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
-
+    @Test
+    void testVerEstadoSolicitudInvalidFormat() throws Exception {
+        SolicitudRentingService solicitudRentingService = Mockito.mock(SolicitudRentingService.class);
+        SolicitudRentingController solicitudRentingController = new SolicitudRentingController(solicitudRentingService);
+        SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+        when(solicitudRentingService.verEstadoSolicitud(solicitudRenting.getSolicitudId())).thenThrow(new NumberFormatException());
+        ResponseEntity response = solicitudRentingController.verEstadoSolicitud(solicitudRenting.getSolicitudId());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+    @Test
+    void testVerEstadoSolicitudIdNotFound() throws Exception {
+        SolicitudRentingService solicitudRentingService = Mockito.mock(SolicitudRentingService.class);
+        SolicitudRentingController solicitudRentingController = new SolicitudRentingController(solicitudRentingService);
+        SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+        when(solicitudRentingService.verEstadoSolicitud(solicitudRenting.getSolicitudId())).thenThrow(new EstadoSolicitudNotFoundException());
+        ResponseEntity response = solicitudRentingController.verEstadoSolicitud(solicitudRenting.getSolicitudId());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
     @Test
     void testCancelarSolicitudSuccess() throws Exception {
         SolicitudRentingService solicitudRentingService = Mockito.mock(SolicitudRentingService.class);
@@ -120,6 +155,17 @@ public class SolicitudRentingControllerTest {
         ResponseEntity response = solicitudRentingController.cancelarSolicitud(solicitudRenting.getSolicitudId());
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void testCancelarSolicitudInvalidFormat() throws Exception {
+        SolicitudRentingService solicitudRentingService = Mockito.mock(SolicitudRentingService.class);
+        SolicitudRentingController solicitudRentingController = new SolicitudRentingController(solicitudRentingService);
+        SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+
+        Mockito.doThrow(new SolicitudRentingNotFoundException()).when(solicitudRentingService).cancelarSolicitud(solicitudRenting.getSolicitudId());
+        ResponseEntity response = solicitudRentingController.cancelarSolicitud(solicitudRenting.getSolicitudId());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
     @Test
@@ -136,18 +182,27 @@ public class SolicitudRentingControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
+
     @Test
-    void testMuestraSolicitudPorIdSuccess() throws Exception {
+    void testUpdateEstadoSolicitudInvalidFormat() throws Exception {
         SolicitudRentingService solicitudRentingService = Mockito.mock(SolicitudRentingService.class);
         SolicitudRentingController solicitudRentingController = new SolicitudRentingController(solicitudRentingService);
         SolicitudRenting solicitudRenting = creaSolicitudFicticia();
 
-        // Configurar el comportamiento de personaService.addPersona()
-        //Mockito.doNothing().when(solicitudRentingService).getSolicitudById(solicitudRenting.getSolicitudId());
-        Mockito.when(solicitudRentingService.getSolicitudById(solicitudRenting.getSolicitudId())).thenReturn(solicitudRenting);
-
-        ResponseEntity response = solicitudRentingController.muestraSolicitudPorId(solicitudRenting.getSolicitudId());
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        Mockito.doThrow(new SolicitudRentingNotFoundException()).when(solicitudRentingService).modificaEstadoSolicitud(solicitudRenting.getSolicitudId(),solicitudRenting.getTipoResultadoSolicitud());
+        ResponseEntity response = solicitudRentingController.updateEstadoSolicitud(solicitudRenting.getSolicitudId(),solicitudRenting.getTipoResultadoSolicitud());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
+
+    @Test
+    void testUpdateEstadoSolicitudEstadoNotFound() throws Exception {
+        SolicitudRentingService solicitudRentingService = Mockito.mock(SolicitudRentingService.class);
+        SolicitudRentingController solicitudRentingController = new SolicitudRentingController(solicitudRentingService);
+        SolicitudRenting solicitudRenting = creaSolicitudFicticia();
+
+        Mockito.doThrow(new EstadoSolicitudNotFoundException()).when(solicitudRentingService).modificaEstadoSolicitud(solicitudRenting.getSolicitudId(),solicitudRenting.getTipoResultadoSolicitud());
+        ResponseEntity response = solicitudRentingController.updateEstadoSolicitud(solicitudRenting.getSolicitudId(),solicitudRenting.getTipoResultadoSolicitud());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
 }

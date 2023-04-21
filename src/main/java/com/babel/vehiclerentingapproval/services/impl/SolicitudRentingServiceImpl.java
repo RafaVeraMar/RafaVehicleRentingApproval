@@ -7,10 +7,8 @@ import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapp
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
 import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
-import com.babel.vehiclerentingapproval.services.EmailService;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -32,15 +30,13 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private final CodigoResolucionValidator codigoResolucionValidator;
 
     private final PersonaMapper personaMapper;
-    private final EmailService emailService;
 
-    public SolicitudRentingServiceImpl (SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaService personaService, CodigoResolucionValidator codigoResolucionValidator, PersonaMapper personaMapper, EmailService emailService) {
+    public SolicitudRentingServiceImpl (SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaService personaService, CodigoResolucionValidator codigoResolucionValidator, PersonaMapper personaMapper) {
         this.solicitudRentingMapper = solicitudRentingMapper;
         this.tipoResultadoSolicitudMapper = tipoResultadoSolicitudMapper;
         this.personaService = personaService;
         this.codigoResolucionValidator = codigoResolucionValidator;
         this.personaMapper = personaMapper;
-        this.emailService = emailService;
 
     }
 
@@ -156,7 +152,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @see SolicitudRentingMapper
      */
     @Override
-    public void modificaEstadoSolicitud (Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException, FailedSendingEmail, MessagingException {
+    public void modificaEstadoSolicitud (Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException {
 
         List<String> posiblesEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
         int existeEstado = this.solicitudRentingMapper.existeSolicitud(solicitudId);
@@ -170,31 +166,16 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         }
 
         String email = this.personaMapper.getEmail(solicitud.getPersona().getPersonaId());
-        //validateEmail(email);
-        if(email==null || email.indexOf('@')==-1) {
-            throw new FailedSendingEmail("Failed");
+        try {
+            EmailServiceImpl.sendMail("Su solicitud se encuentra: " + this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId), email, "Cambios en tu solicitud");
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
         }
-        var estadoSolicitud = this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId);
-        emailService.sendMail("Su solicitud se encuentra: " + estadoSolicitud, email, "Cambios en tu solicitud");
+
         this.solicitudRentingMapper.modificaEstadoSolicitud(solicitudId, nuevoEstado);
-    }
-
-
-    private int validateEmail(String email) throws FailedSendingEmail{
-        boolean boolExisteArroba = true;
-        char caracter = '@';
-        if(email.indexOf(caracter)==-1){
-            boolExisteArroba=false;
-        }
-        if(email==null || boolExisteArroba==false){
-            //throw new FailedSendingEmail("Failed");
-            return 0;
-        }else{
-            return 1;
-        }
-
 
     }
+
     /**
      * Modifica únicamete el estado de una solicitud de renting, se comprueba a través de la base de datos que el nuevo estado sea uno de los valores posible.
      *
