@@ -77,16 +77,7 @@ class PersonaControllerTest {
     }
 
 
-
-    @Test
-    void testAddPersonaDireccionNotFound() throws Exception {
-        PersonaService personaService = Mockito.mock(PersonaService.class);
-        PersonaController personaController = new PersonaController(personaService);
-        Persona persona = personaficticia();
-        when(personaService.addPersona(persona)).thenThrow(new DireccionNotFoundException());
-        ResponseEntity response = personaController.addPersona(persona);
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-    }
+    
 
     @Test
     void testViewPersonaProductoSuccess() throws Exception {

@@ -19,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,5 @@ class ResolucionSolicitudesControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
-
-
 
 }

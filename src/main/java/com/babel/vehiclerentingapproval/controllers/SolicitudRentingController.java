@@ -28,6 +28,7 @@ import java.util.Map;
  *
  * @author @author miguel.sdela@babelgroup.com, javier.serrano@babelgroup.com, ramon.vazquez@babelgroup.com, alvaro.aleman@babelgroup.com, javier.roldan@babelgroup.com
  */
+@ControllerAdvice
 @RestController
 @Tag(name = "Operaciones con Solicitud Renting", description = "Endpoint permite operar con las solicitudes de renting.")
 @RequestMapping("/solicitud")

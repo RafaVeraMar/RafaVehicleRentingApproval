@@ -40,7 +40,6 @@ public class SolicitudRentingControllerTest {
         TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper = Mockito.mock(TipoResultadoSolicitudMapper.class);
         PersonaService personaService = Mockito.mock(PersonaService.class);
         CodigoResolucionValidator codigoResolucionValidator = Mockito.mock(CodigoResolucionValidator.class);
-        PersonaMapper personaMapper = Mockito.mock(PersonaMapper.class);
         EmailService emailService = Mockito.mock(EmailService.class);
         solicitudRentingService = new SolicitudRentingServiceImpl(solicitudRentingMapper,tipoResultadoSolicitudMapper,personaService,codigoResolucionValidator,personaMapper,emailService);
     }
