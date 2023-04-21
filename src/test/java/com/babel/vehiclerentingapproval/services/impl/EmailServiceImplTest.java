@@ -52,35 +52,5 @@ class EmailServiceImplTest {
         solicitudService = new SolicitudRentingServiceImpl(solicitudRentingMapper, tipoResultadoSolicitudMapper, personaService, codigoResolucionValidator, personaMapper,emailService);
 
     }
-    /*
-    @Test
-    void email_shouldNotThrow_Exception_when_emailIsSent() throws MessagingException {
-        String dest = "blabla@gmail.com";
-        String message = "Buenas";
-        String asunto = "Importante";
 
-
-
-        //Assertions.assertDoesNotThrow(() -> {
-       //     EmailServiceImpl.sendMail(message,dest,asunto);
-        //});
-
-        //Assertions.assertTrue(EmailServiceImpl.sendMail(message,dest,asunto));
-    }
-    private List<String> creaListaMock() {
-        List<String> listaMock = new ArrayList<>();
-        listaMock.add("AA");
-        return listaMock;
-    }
-    private boolean devuelveTrue(String email){
-        return true;
-    }
-
-    @Test
-    void email_shouldThrow_MessagingException_when_emailIsWrong() throws MessagingException, RequestApiValidationException {
-        String dest = "blabla@gmail.com";
-        String message = "Buenas";
-        String asunto = "Importante";
-    }
-*/
 }
