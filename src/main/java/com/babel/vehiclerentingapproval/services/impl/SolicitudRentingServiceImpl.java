@@ -10,6 +10,7 @@ import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
 import com.babel.vehiclerentingapproval.services.EmailService;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -65,7 +66,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         validatePlazo(solicitudRenting);
         validateFecha(solicitudRenting);
         solicitudRentingMapper.insertSolicitudRenting(solicitudRenting);
-        solicitudRenting.setPersona(personaService.existPerson(solicitudRenting.getPersona().getPersonaId()));
+        solicitudRenting.setPersona(personaService.invalidPersonId(solicitudRenting.getPersona().getPersonaId()));
         return solicitudRenting.getSolicitudId();
     }
 
@@ -77,7 +78,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      */
     private void existIdPersona (int idPersona) {
         if (!personaService.existePersona(idPersona)) {
-            throw new PersonaNotFoundException(idPersona);
+            throw new PersonaNotFoundException(idPersona, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -245,13 +246,13 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      */
     private void validateNumVehiculos (SolicitudRenting solicitudRenting) {
         if (lenghtNumber(solicitudRenting.getNumVehiculos()) > 38) {
-            throw new WrongLenghtFieldException("numVehiculos");
+            throw new WrongLenghtFieldException("numVehiculos", HttpStatus.BAD_REQUEST);
         }
         if (solicitudRenting.getNumVehiculos() == null) {
-            throw new InputIsNullOrIsEmpty("numVehivulos");
+            throw new InputIsNullOrIsEmpty("numVehivulos", HttpStatus.BAD_REQUEST);
         }
         if (solicitudRenting.getNumVehiculos().signum() == -1 || solicitudRenting.getNumVehiculos().signum() == 0) {
-            throw new InputIsNegativeOrZeroException("numVehiculos");
+            throw new InputIsNegativeOrZeroException("numVehiculos", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -267,10 +268,10 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      */
     private void validateInversion (SolicitudRenting solicitudRenting) {
         if (solicitudRenting.getInversion() == null) {
-            throw new InputIsNullOrIsEmpty("inversion");
+            throw new InputIsNullOrIsEmpty("inversion", HttpStatus.BAD_REQUEST);
         }
         if (solicitudRenting.getInversion() < 1) {
-            throw new InputIsNegativeOrZeroException("inversion");
+            throw new InputIsNegativeOrZeroException("inversion", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -286,10 +287,10 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      */
     private void validateCuota (SolicitudRenting solicitudRenting) {
         if (solicitudRenting.getCuota() == null) {
-            throw new InputIsNullOrIsEmpty("cuota");
+            throw new InputIsNullOrIsEmpty("cuota", HttpStatus.BAD_REQUEST);
         }
         if (solicitudRenting.getCuota() < 1) {
-            throw new InputIsNegativeOrZeroException("cuota");
+            throw new InputIsNegativeOrZeroException("cuota", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -308,10 +309,10 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private void validatePlazo (SolicitudRenting solicitudRenting) {
         if (solicitudRenting.getPlazo() != null) {
             if (lenghtNumber(solicitudRenting.getPlazo()) > 38) {
-                throw new WrongLenghtFieldException("Plazo");
+                throw new WrongLenghtFieldException("Plazo", HttpStatus.BAD_REQUEST);
             }
             if (solicitudRenting.getPlazo().signum() == -1 || solicitudRenting.getPlazo().signum() == 0) {
-                throw new InputIsNegativeOrZeroException("plazo");
+                throw new InputIsNegativeOrZeroException("plazo", HttpStatus.BAD_REQUEST);
             }
         }
     }
@@ -328,7 +329,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private void validateFecha (SolicitudRenting solicitudRenting) {
         if ((solicitudRenting.getFechaInicioVigor() != null && solicitudRenting.getFechaResolucion() != null)
                 && (solicitudRenting.getFechaInicioVigor().before(solicitudRenting.getFechaResolucion()))) {
-            throw new DateIsBeforeException("fechaInicioVigo", "fechaResolucion");
+            throw new DateIsBeforeException("fechaInicioVigo", "fechaResolucion", HttpStatus.BAD_REQUEST);
         }
     }
 

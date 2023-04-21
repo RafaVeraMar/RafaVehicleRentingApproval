@@ -68,15 +68,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuesta);
     }
 
-    @ExceptionHandler(PersonaNotFoundException.class)
-    public ResponseEntity<Object> handlePersonaNotFoundException (Exception ex) {
-        Map<String, Object> respuesta = new HashMap<>();
-        respuesta.put(STATUS, HttpStatus.NOT_FOUND);
-        respuesta.put(DESCRIPCION, "Persona no encontrada en la base de datos");
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(respuesta);
-    }
-
-
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseEntity<Object> handleException (Exception e) {
