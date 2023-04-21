@@ -91,14 +91,4 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(respuesta, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(ResolucionSolicitudesNotFoundException.class)
-    @ResponseBody
-    public ResponseEntity<Object> handleResolucionSolicitudesNotFoundException (ResolucionSolicitudesNotFoundException e) {
-        Map<String, Object> respuesta = new HashMap<>();
-        respuesta.put("status", HttpStatus.NOT_FOUND);
-        respuesta.put("descripcion", "No existen elementos en la base de datos");
-
-        return new ResponseEntity<>(respuesta, HttpStatus.NOT_FOUND);
-    }
-
 }
