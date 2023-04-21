@@ -173,7 +173,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
             throw new EstadoSolicitudNotFoundException(HttpStatus.NOT_FOUND);
         }
         if (existeEstado == 0) {
-            throw new SolicitudRentingNotFoundException();
+            throw new SolicitudRentingNotFoundException(HttpStatus.NOT_FOUND);
         }
 
         String email = this.personaMapper.getEmail(solicitud.getPersona().getPersonaId());
@@ -343,7 +343,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      */
     public void validateSolicitudRenting(SolicitudRenting solicitudRenting) throws SolicitudRentingNotFoundException {
         if (solicitudRenting == null) {
-            throw new SolicitudRentingNotFoundException();
+            throw new SolicitudRentingNotFoundException(HttpStatus.NOT_FOUND);
         }
     }
 

@@ -11,9 +11,8 @@ import org.springframework.http.HttpStatus;
  */
 public class ResolucionSolicitudesNotFoundException extends RequestApiValidationException {
     private static final String EXTERNAL_MESSAGE = "No existe resolución de la solicitud buscada";
-    private static final HttpStatus statusCode = HttpStatus.NOT_FOUND;
 
-    public ResolucionSolicitudesNotFoundException() {
+    public ResolucionSolicitudesNotFoundException(HttpStatus statusCode) {
         super(EXTERNAL_MESSAGE, statusCode);
     }
 }
