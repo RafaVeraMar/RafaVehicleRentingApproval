@@ -21,10 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Esta clase define la documentación Swagger con el métodos para hacer el CRUD (Post) de las Renta
- * y sus rutas para poder acceder desde PostMan.
+ * Esta clase define el endpoint de operaciones con rentas.
  *
- * @author: andres.guijarro@babelgroup.com
+ * @author andres.guijarro@babelgroup.com, ismael.mesa@babelgroup.com, miguel.sdela@babelgroup.com
  */
 
 @Tag(name = "Añadir renta", description = "Endpoint que dado un ID de persona y una renta (ambos en JSON) añade la renta a esa persona a la base de datos.")

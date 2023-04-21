@@ -17,14 +17,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * Esta clase define el endpoint de operaciones con personas.
+ *
+ * @author andres.guijarro@babelgroup.com, enrique.munoz@babelgroup.com, tomas.prados@babelgroup.com
+ */
 @Tag(name = "Operaciones con persona", description = "Endpoint para operar con una persona en la base de datos a partir de unos datos de entrada.")
 @RestController
 public class PersonaController {
 
-    /**
-     * Contiene un servicio que realiza las acciones relacionadas con persona
-     */
+
     PersonaService personaService;
 
     public PersonaController(PersonaService personaService) {
