@@ -21,6 +21,8 @@ public class DateIsBeforeException extends RequestApiValidationException {
     public DateIsBeforeException (String fechaUno, String fechaDos) {
         super(EXTERNAL_MESSAGE, statusCode, new String[]{fechaUno, fechaDos});
     }
-
-
+    
+    public DateIsBeforeException (String fechaInicioVigor, String fechaResolucion, HttpStatus badRequest) {
+        super(EXTERNAL_MESSAGE, badRequest, new String[]{fechaInicioVigor, fechaResolucion});
+    }
 }

@@ -42,21 +42,10 @@ public class SolicitudRentingController {
     }
 
     /**
-     * Añade una nueva solicitud de renting y devuelve un objeto ResponseEntity con la información
-     * de la solicitud creada, incluido su ID.
-     * <p>
-     * El método maneja las siguientes excepciones:
-     * - PersonaNotFoundException si la persona asociada a la solicitud no existe.
-     * - WrongLenghtFieldException si los datos de entrada sobrepasan la longitud máxima.
-     * - InputIsNullOrIsEmpty si alguno de los datos es nulo o no se ha rellenado.
-     * - DateIsBeforeException si la fecha de inicio de vigor es anterior a la fecha de resolución.
-     * - InputIsNegativeOrZeroException si los datos de entrada tienen que ser mayores que 0.
-     * <p>
-     * En caso de cualquier otra excepción, se devuelve un error interno.
+     * Añade una nueva solicitud de renting y devuelve la respuesta con el ID de la solicitud creada.
      *
-     * @param solicitudRenting la solicitud de renting que se va a añadir
-     * @return un objeto ResponseEntity que contiene la información de la solicitud creada,
-     * incluido su ID, y el código de estado HTTP
+     * @param solicitudRenting objeto SolicitudRenting que contiene la información de la solicitud
+     * @return ResponseEntity<Object> que contiene la respuesta con el ID de la solicitud creada y el HttpStatus
      */
     @PostMapping("")
     @Operation(summary = "Introducir una nueva solicitud de renting", description = "Devuelve el id de la solicitud si se ha introducido correctamente")
@@ -67,13 +56,11 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "400", description = "La fecha de inicio de vigor, no puede ser anterior a la fecha de resolucion", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "400", description = "Los datos de entrada tienen que ser mayor que 0", content = @Content(mediaType = "application/json")),
     })
-    public ResponseEntity<Object> addSolicitudRenting (@RequestBody SolicitudRenting solicitudRenting) throws RequestApiValidationException {
+    public ResponseEntity<Object> addSolicitudRenting (@RequestBody SolicitudRenting solicitudRenting) {
         Map<String, Object> respuesta = new HashMap<>();
         solicitud.addSolicitudRenting(solicitudRenting);
-        respuesta.put(STATUS, HttpStatus.OK);
-        respuesta.put("Id", solicitudRenting.getSolicitudId());
-        respuesta.put(DESCRIPCION, "Solicitud creada correctamente");
-        return new ResponseEntity<>(respuesta, (HttpStatus)respuesta.get(STATUS));
+        respuesta.put("id", solicitudRenting.getSolicitudId());
+        return new ResponseEntity<>(respuesta, HttpStatus.CREATED);
     }
 
     /**

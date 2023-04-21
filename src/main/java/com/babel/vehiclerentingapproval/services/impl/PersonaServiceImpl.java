@@ -8,6 +8,7 @@ import com.babel.vehiclerentingapproval.models.ProductoContratado;
 import com.babel.vehiclerentingapproval.models.TelefonoContacto;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -101,9 +102,9 @@ public class PersonaServiceImpl implements PersonaService {
      * @throws PersonaNotFoundException
      */
     @Override
-    public Persona existPerson (int idPersona) throws RequestApiValidationException {
+    public Persona invalidPersonId (int idPersona) throws RequestApiValidationException {
         if (idPersona < 0) {
-            throw new PersonaNotFoundException(idPersona);
+            throw new PersonaNotFoundException(idPersona, HttpStatus.NOT_FOUND);
         }
         return null;
     }
@@ -263,7 +264,7 @@ public class PersonaServiceImpl implements PersonaService {
             throw new RequiredMissingFieldException();
         }
         if (persona.getNombre().length() > 50) {
-            throw new WrongLenghtFieldException("nombre");
+            throw new WrongLenghtFieldException("nombre", HttpStatus.BAD_REQUEST);
         }
     }
 
