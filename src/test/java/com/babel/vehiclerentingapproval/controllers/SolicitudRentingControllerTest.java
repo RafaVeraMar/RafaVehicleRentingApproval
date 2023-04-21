@@ -1,13 +1,13 @@
 package com.babel.vehiclerentingapproval.controllers;
 
-import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.*;
-import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
+import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
+import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
+import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
 import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
 import com.babel.vehiclerentingapproval.services.EmailService;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
-import com.babel.vehiclerentingapproval.services.impl.PersonaServiceImpl;
 import com.babel.vehiclerentingapproval.services.impl.SolicitudRentingServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,29 +20,28 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class SolicitudRentingControllerTest {
+class SolicitudRentingControllerTest {
     SolicitudRentingController solicitudRentingController;
     SolicitudRentingService solicitudRentingService;
     SolicitudRentingMapper solicitudRentingMapper;
     PersonaMapper personaMapper;
 
     @BeforeEach
-    void setupAll(){
-        solicitudRentingMapper= Mockito.mock(SolicitudRentingMapper.class);
+    void setupAll() {
+        solicitudRentingMapper = Mockito.mock(SolicitudRentingMapper.class);
         when(solicitudRentingMapper.existeSolicitud(1)).thenReturn(1);
-        personaMapper= Mockito.mock(PersonaMapper.class);
+        personaMapper = Mockito.mock(PersonaMapper.class);
         when(personaMapper.existePersona(1)).thenReturn(1);
 
         TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper = Mockito.mock(TipoResultadoSolicitudMapper.class);
         PersonaService personaService = Mockito.mock(PersonaService.class);
         CodigoResolucionValidator codigoResolucionValidator = Mockito.mock(CodigoResolucionValidator.class);
         EmailService emailService = Mockito.mock(EmailService.class);
-        solicitudRentingService = new SolicitudRentingServiceImpl(solicitudRentingMapper,tipoResultadoSolicitudMapper,personaService,codigoResolucionValidator,personaMapper,emailService);
+        solicitudRentingService = new SolicitudRentingServiceImpl(solicitudRentingMapper, tipoResultadoSolicitudMapper, personaService, codigoResolucionValidator, personaMapper, emailService);
     }
+
     private SolicitudRenting creaSolicitudFicticia() throws ParseException {
         SolicitudRenting solicitudFicticia = new SolicitudRenting();
         Persona personaFicticia = new Persona();
@@ -129,13 +128,14 @@ public class SolicitudRentingControllerTest {
         SolicitudRenting solicitudRenting = creaSolicitudFicticia();
 
         // Configurar el comportamiento de personaService.addPersona()
-        Mockito.doNothing().when(solicitudRentingService).modificaEstadoSolicitud(solicitudRenting.getSolicitudId(),solicitudRenting.getTipoResultadoSolicitud());
+        Mockito.doNothing().when(solicitudRentingService).modificaEstadoSolicitud(solicitudRenting.getSolicitudId(), solicitudRenting.getTipoResultadoSolicitud());
 
 
-        ResponseEntity response = solicitudRentingController.updateEstadoSolicitud(solicitudRenting.getSolicitudId(),solicitudRenting.getTipoResultadoSolicitud());
+        ResponseEntity response = solicitudRentingController.updateEstadoSolicitud(solicitudRenting.getSolicitudId(), solicitudRenting.getTipoResultadoSolicitud());
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
+
     @Test
     void testMuestraSolicitudPorIdSuccess() throws Exception {
         SolicitudRentingService solicitudRentingService = Mockito.mock(SolicitudRentingService.class);
