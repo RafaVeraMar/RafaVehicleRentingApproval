@@ -1,8 +1,5 @@
 package com.babel.vehiclerentingapproval.controllers;
 
-import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundException;
-import com.babel.vehiclerentingapproval.exceptions.PersonaNotFoundException;
-import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundException;
 import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
@@ -12,7 +9,6 @@ import com.babel.vehiclerentingapproval.services.EmailService;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import com.babel.vehiclerentingapproval.services.impl.SolicitudRentingServiceImpl;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
