@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -92,9 +93,8 @@ public class SolicitudRentingController {
     })
     @Parameter(name = "id", description = "ID de la solicitud a consultar", required = true)
     public ResponseEntity<Object> verEstadoSolicitud (@PathVariable String id) throws RequestApiValidationException {
-        Map<String, Object> respuesta = new HashMap<>();
         String estado = this.solicitud.verEstadoSolicitud(id);
-        respuesta.put("Estado", estado);
+        Map<String, Object> respuesta = Collections.singletonMap("Estado", estado);
         return new ResponseEntity<>(respuesta,HttpStatus.OK);
 
 
