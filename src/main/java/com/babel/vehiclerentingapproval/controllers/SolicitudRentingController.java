@@ -96,10 +96,6 @@ public class SolicitudRentingController {
         String estado = this.solicitud.verEstadoSolicitud(id);
         Map<String, Object> respuesta = Collections.singletonMap("Estado", estado);
         return new ResponseEntity<>(respuesta,HttpStatus.OK);
-
-
-
-
     }
 
     /**
