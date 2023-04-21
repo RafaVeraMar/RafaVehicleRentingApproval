@@ -1,6 +1,9 @@
 package com.babel.vehiclerentingapproval.controllers;
 
-import com.babel.vehiclerentingapproval.exceptions.*;
+import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundException;
+import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
+import com.babel.vehiclerentingapproval.exceptions.ResolucionSolicitudesNotFoundException;
+import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -92,29 +95,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(respuesta, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(ProfesionNotFoundException.class)
+    @ExceptionHandler(ResolucionSolicitudesNotFoundException.class)
     @ResponseBody
-    public ResponseEntity<Object> handleProfesionNotFoundException (ProfesionNotFoundException e) {
-        Map<String, Object> map = new HashMap<>();
-        map.put(STATUS, HttpStatus.BAD_REQUEST);
-        map.put(DESCRIPCION, "Profesion no encontrada en la base de datos");
-        return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Object> handleResolucionSolicitudesNotFoundException (ResolucionSolicitudesNotFoundException e) {
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put("status", HttpStatus.NOT_FOUND);
+        respuesta.put("descripcion", "No existen elementos en la base de datos");
+
+        return new ResponseEntity<>(respuesta, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(PersonaNotFoundException.class)
-    @ResponseBody
-    public ResponseEntity<Object> handlePersonaNotFoundException (PersonaNotFoundException e) {
-        Map<String, Object> map = new HashMap<>();
-        map.put(STATUS, HttpStatus.NOT_FOUND);
-        map.put(DESCRIPCION, "Persona no encontrada en la base de datos");
-        return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
-    }
-    @ExceptionHandler(RentaFoundException.class)
-    @ResponseBody
-    public ResponseEntity<Object> handleRentaFoundException (RentaFoundException e) {
-        Map<String, Object> map = new HashMap<>();
-        map.put(STATUS, HttpStatus.NOT_ACCEPTABLE);
-        map.put(DESCRIPCION, "La renta ya existe en la base de datos");
-        return new ResponseEntity<>(map, HttpStatus.NOT_ACCEPTABLE);
-    }
 }
