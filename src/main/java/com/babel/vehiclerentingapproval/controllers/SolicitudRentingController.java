@@ -116,11 +116,7 @@ public class SolicitudRentingController {
     })
     @Parameter(name = "id", description = "ID para comprobar si existe la solicitud", required = true)
     public ResponseEntity<Object> muestraSolicitudPorId (@PathVariable("id") int id) throws RequestApiValidationException {
-        Map<String, Object> respuesta = new HashMap<>();
-        this.solicitud.getSolicitudById(id);
-        respuesta.put(STATUS, HttpStatus.OK);
-        respuesta.put("Solicitud: ", solicitud.getSolicitudById(id));
-        return new ResponseEntity<>(respuesta, (HttpStatus)respuesta.get(STATUS));
+        return solicitud != null ? ResponseEntity.ok(Collections.singletonMap("Solicitud", this.solicitud.getSolicitudById(id))) : ResponseEntity.notFound().build();
     }
 
     /**
@@ -139,10 +135,8 @@ public class SolicitudRentingController {
     @Parameter(name = "id", description = "ID de la solicitud a cancelar", required = true)
     @PutMapping("/{id}")
     public ResponseEntity<Object> cancelarSolicitud (@PathVariable int id) throws RequestApiValidationException {
-        Map<String, Object> respuesta = new HashMap<>();
         this.solicitud.cancelarSolicitud(id);
-        respuesta.put(DESCRIPCION, "Solicitud cancelada");
-        return new ResponseEntity<>(respuesta,HttpStatus.OK);
+        return ResponseEntity.ok(Collections.singletonMap("descripcion", "Solicitud cancelada"));
     }
 
     /**
