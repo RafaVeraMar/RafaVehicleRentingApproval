@@ -64,14 +64,4 @@ class ResolucionSolicitudesControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
-        List<ResolucionSolicitud> listaTest = crearListaVacia();
-
-        Mockito.when(resolucionSolicitudesService.getTipoResolucionesSolicitudes()).thenThrow(new ResolucionSolicitudesNotFoundException());
-
-        ResponseEntity response = resolucionSolicitudesController.listarTiposResolucion();
-
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    }
-
-
 }

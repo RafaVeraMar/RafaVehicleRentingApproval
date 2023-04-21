@@ -1,9 +1,6 @@
 package com.babel.vehiclerentingapproval.controllers;
 
-import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundException;
-import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
-import com.babel.vehiclerentingapproval.exceptions.ResolucionSolicitudesNotFoundException;
-import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundException;
+import com.babel.vehiclerentingapproval.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
