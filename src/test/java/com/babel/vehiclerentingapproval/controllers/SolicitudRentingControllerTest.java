@@ -100,7 +100,7 @@ class SolicitudRentingControllerTest {
         SolicitudRenting solicitudRenting = creaSolicitudFicticia();
 
         // Configurar el comportamiento de personaService.addPersona()
-        Mockito.when(solicitudRentingService.verEstadoSolicitud(solicitudRenting.getSolicitudId())).thenReturn("1");
+        Mockito.when(solicitudRentingService.verEstadoSolicitud(String.valueOf(solicitudRenting.getSolicitudId()))).thenReturn("1");
 
         ResponseEntity response = solicitudRentingController.verEstadoSolicitud(String.valueOf(solicitudRenting.getSolicitudId()));
 

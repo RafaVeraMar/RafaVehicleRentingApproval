@@ -1,10 +1,7 @@
 package com.babel.vehiclerentingapproval.controllers;
 
 
-import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundException;
-import com.babel.vehiclerentingapproval.exceptions.FailedSendingEmail;
-import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
-import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundException;
+import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
@@ -96,10 +93,13 @@ public class SolicitudRentingController {
     @Parameter(name = "id", description = "ID de la solicitud a consultar", required = true)
     public ResponseEntity<Object> verEstadoSolicitud (@PathVariable String id) throws RequestApiValidationException {
         Map<String, Object> respuesta = new HashMap<>();
-        var idSolicitud = Integer.parseInt(id);
-        String estado = this.solicitud.verEstadoSolicitud(idSolicitud);
+        String estado = this.solicitud.verEstadoSolicitud(id);
         respuesta.put("Estado", estado);
         return new ResponseEntity<>(respuesta,HttpStatus.OK);
+
+
+
+
     }
 
     /**
