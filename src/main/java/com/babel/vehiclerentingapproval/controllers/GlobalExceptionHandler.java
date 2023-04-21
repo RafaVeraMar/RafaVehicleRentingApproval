@@ -2,6 +2,7 @@ package com.babel.vehiclerentingapproval.controllers;
 
 import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
+import com.babel.vehiclerentingapproval.exceptions.ResolucionSolicitudesNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,4 +60,15 @@ public class GlobalExceptionHandler {
         respuesta.put("descripcion", "Error: Ha ocurrido un error interno en el servidor");
         return new ResponseEntity<>(respuesta, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(ResolucionSolicitudesNotFoundException.class)
+    @ResponseBody
+    public ResponseEntity<Object> handleResolucionSolicitudesNotFoundException (ResolucionSolicitudesNotFoundException e) {
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put("status", HttpStatus.NOT_FOUND);
+        respuesta.put("descripcion", "No existen elementos en la base de datos");
+
+        return new ResponseEntity<>(respuesta, HttpStatus.NOT_FOUND);
+    }
+
 }
