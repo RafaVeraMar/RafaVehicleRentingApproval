@@ -1,10 +1,7 @@
 package com.babel.vehiclerentingapproval.controllers;
 
 
-import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundException;
-import com.babel.vehiclerentingapproval.exceptions.FailedSendingEmail;
-import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
-import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundException;
+import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
@@ -19,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,21 +42,10 @@ public class SolicitudRentingController {
     }
 
     /**
-     * Añade una nueva solicitud de renting y devuelve un objeto ResponseEntity con la información
-     * de la solicitud creada, incluido su ID.
-     * <p>
-     * El método maneja las siguientes excepciones:
-     * - PersonaNotFoundException si la persona asociada a la solicitud no existe.
-     * - WrongLenghtFieldException si los datos de entrada sobrepasan la longitud máxima.
-     * - InputIsNullOrIsEmpty si alguno de los datos es nulo o no se ha rellenado.
-     * - DateIsBeforeException si la fecha de inicio de vigor es anterior a la fecha de resolución.
-     * - InputIsNegativeOrZeroException si los datos de entrada tienen que ser mayores que 0.
-     * <p>
-     * En caso de cualquier otra excepción, se devuelve un error interno.
+     * Añade una nueva solicitud de renting y devuelve la respuesta con el ID de la solicitud creada.
      *
-     * @param solicitudRenting la solicitud de renting que se va a añadir
-     * @return un objeto ResponseEntity que contiene la información de la solicitud creada,
-     * incluido su ID, y el código de estado HTTP
+     * @param solicitudRenting objeto SolicitudRenting que contiene la información de la solicitud
+     * @return ResponseEntity<Object> que contiene la respuesta con el ID de la solicitud creada y el HttpStatus
      */
     @PostMapping("")
     @Operation(summary = "Introducir una nueva solicitud de renting", description = "Devuelve el id de la solicitud si se ha introducido correctamente")
@@ -69,13 +56,11 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "400", description = "La fecha de inicio de vigor, no puede ser anterior a la fecha de resolucion", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "400", description = "Los datos de entrada tienen que ser mayor que 0", content = @Content(mediaType = "application/json")),
     })
-    public ResponseEntity<Object> addSolicitudRenting (@RequestBody SolicitudRenting solicitudRenting) throws RequestApiValidationException {
+    public ResponseEntity<Object> addSolicitudRenting (@RequestBody SolicitudRenting solicitudRenting) {
         Map<String, Object> respuesta = new HashMap<>();
         solicitud.addSolicitudRenting(solicitudRenting);
-        respuesta.put(STATUS, HttpStatus.OK);
-        respuesta.put("Id", solicitudRenting.getSolicitudId());
-        respuesta.put(DESCRIPCION, "Solicitud creada correctamente");
-        return new ResponseEntity<>(respuesta, (HttpStatus)respuesta.get(STATUS));
+        respuesta.put("id", solicitudRenting.getSolicitudId());
+        return new ResponseEntity<>(respuesta, HttpStatus.CREATED);
     }
 
     /**
@@ -95,10 +80,8 @@ public class SolicitudRentingController {
     })
     @Parameter(name = "id", description = "ID de la solicitud a consultar", required = true)
     public ResponseEntity<Object> verEstadoSolicitud (@PathVariable String id) throws RequestApiValidationException {
-        Map<String, Object> respuesta = new HashMap<>();
-        var idSolicitud = Integer.parseInt(id);
-        String estado = this.solicitud.verEstadoSolicitud(idSolicitud);
-        respuesta.put("Estado", estado);
+        String estado = this.solicitud.verEstadoSolicitud(id);
+        Map<String, Object> respuesta = Collections.singletonMap("Estado", estado);
         return new ResponseEntity<>(respuesta,HttpStatus.OK);
     }
 
@@ -116,11 +99,7 @@ public class SolicitudRentingController {
     })
     @Parameter(name = "id", description = "ID para comprobar si existe la solicitud", required = true)
     public ResponseEntity<Object> muestraSolicitudPorId (@PathVariable("id") int id) throws RequestApiValidationException {
-        Map<String, Object> respuesta = new HashMap<>();
-        this.solicitud.getSolicitudById(id);
-        respuesta.put(STATUS, HttpStatus.OK);
-        respuesta.put("Solicitud: ", solicitud.getSolicitudById(id));
-        return new ResponseEntity<>(respuesta, (HttpStatus)respuesta.get(STATUS));
+        return solicitud != null ? ResponseEntity.ok(Collections.singletonMap("Solicitud", this.solicitud.getSolicitudById(id))) : ResponseEntity.notFound().build();
     }
 
     /**
@@ -139,10 +118,8 @@ public class SolicitudRentingController {
     @Parameter(name = "id", description = "ID de la solicitud a cancelar", required = true)
     @PutMapping("/{id}")
     public ResponseEntity<Object> cancelarSolicitud (@PathVariable int id) throws RequestApiValidationException {
-        Map<String, Object> respuesta = new HashMap<>();
         this.solicitud.cancelarSolicitud(id);
-        respuesta.put(DESCRIPCION, "Solicitud cancelada");
-        return new ResponseEntity<>(respuesta,HttpStatus.OK);
+        return ResponseEntity.ok(Collections.singletonMap("descripcion", "Solicitud cancelada"));
     }
 
     /**

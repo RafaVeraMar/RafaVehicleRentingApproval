@@ -37,6 +37,7 @@ public class RequestApiValidationException extends RuntimeException {
         this.externalMessage = String.format(externalMessage, args);
         this.statusCode = statusCode;
     }
+
     /**
      * Obtiene el mensaje de error específico.
      *

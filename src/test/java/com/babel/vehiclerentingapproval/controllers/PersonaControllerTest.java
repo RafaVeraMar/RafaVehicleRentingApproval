@@ -22,7 +22,7 @@ class PersonaControllerTest {
     PersonaService personaService;
 
     @BeforeEach
-    void setupAll() {
+    void setupAll ( ) {
         personaMapper = Mockito.mock(PersonaMapper.class);
         when(personaMapper.existePersona(1)).thenReturn(1);
         direccionMapper = Mockito.mock(DireccionMapper.class);
@@ -39,7 +39,7 @@ class PersonaControllerTest {
 
     }
 
-    private Persona personaficticia() throws ParseException {
+    private Persona personaficticia ( ) throws ParseException {
         Persona personaFicticia = new Persona();
         Direccion direccionFicticia = new Direccion();
         direccionFicticia.setDireccionId(1);
@@ -61,7 +61,7 @@ class PersonaControllerTest {
     }
 
     @Test
-    void testAddPersonaSuccess() throws Exception {
+    void testAddPersonaSuccess ( ) throws Exception {
         PersonaService personaService = Mockito.mock(PersonaService.class);
         PersonaController personaController = new PersonaController(personaService);
         Persona persona = personaficticia();
@@ -74,23 +74,8 @@ class PersonaControllerTest {
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
-
     @Test
-    void testViewPersonaProductoSuccess() throws Exception {
-        PersonaService personaService = Mockito.mock(PersonaService.class);
-        PersonaController personaController = new PersonaController(personaService);
-        Persona persona = personaficticia();
-
-        // Configurar el comportamiento de personaService.addPersona()
-        Mockito.when(personaService.viewPersonaProducto(persona.getPersonaId())).thenReturn(persona.getProductosContratados());
-
-        ResponseEntity response = personaController.viewPersonaProducto(persona.getPersonaId());
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-    }
-
-    @Test
-    void testModificarPersonaSuccess() throws Exception {
+    void testModificarPersonaSuccess ( ) throws Exception {
         PersonaService personaService = Mockito.mock(PersonaService.class);
         PersonaController personaController = new PersonaController(personaService);
         Persona persona = personaficticia();

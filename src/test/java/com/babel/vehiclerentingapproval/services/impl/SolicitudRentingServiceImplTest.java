@@ -96,7 +96,7 @@ public class SolicitudRentingServiceImplTest {
         void verEstadoSolicitud_shouldThrow_EstadoSolicitudNotFoundException_when_codSolicitudNull_or_idNotExists() {
             Mockito.when(tipoResultadoSolicitudMapper.existeCodigoResolucion(anyInt())).thenReturn(0);
             Assertions.assertThrows(EstadoSolicitudNotFoundException.class, () -> {
-                String estado = solicitudService.verEstadoSolicitud(anyInt());
+                String estado = solicitudService.verEstadoSolicitud("1");
             });
         }
 
@@ -107,7 +107,7 @@ public class SolicitudRentingServiceImplTest {
             Mockito.when(tipoResultadoSolicitudMapper.getResultadoSolicitud(anyInt())).thenReturn(creaTipoResultadoFicticia());
 
             Assertions.assertDoesNotThrow(() -> {
-                String estado = solicitudService.verEstadoSolicitud(anyInt());
+                String estado = solicitudService.verEstadoSolicitud("1");
             });
         }
 
@@ -125,6 +125,13 @@ public class SolicitudRentingServiceImplTest {
 
             Assertions.assertDoesNotThrow(() -> {
                 codigoResolucionValidator.validarCodResolucion(anyString());
+            });
+        }
+
+        @Test
+        void verEstadoSolicitud_shouldThrow_IdIncorrectFormatException_when_idSolicitudisNotParseabletoInteger(){
+            Assertions.assertThrows(IdIncorrectFormatException.class, () -> {
+                String estado = solicitudService.verEstadoSolicitud("err");
             });
         }
 

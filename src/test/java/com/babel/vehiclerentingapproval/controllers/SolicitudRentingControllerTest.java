@@ -28,6 +28,8 @@ class SolicitudRentingControllerTest {
     SolicitudRentingMapper solicitudRentingMapper;
     PersonaMapper personaMapper;
 
+    EmailService emailService;
+
     @BeforeEach
     void setupAll() {
         solicitudRentingMapper = Mockito.mock(SolicitudRentingMapper.class);
@@ -80,17 +82,17 @@ class SolicitudRentingControllerTest {
     }
 
     @Test
-    void testAddSolicitudRentingSuccess() throws Exception {
+    void testAddSolicitudRentingSuccess ( ) throws Exception {
         SolicitudRentingService solicitudRentingService = Mockito.mock(SolicitudRentingService.class);
         SolicitudRentingController solicitudRentingController = new SolicitudRentingController(solicitudRentingService);
         SolicitudRenting solicitudRenting = creaSolicitudFicticia();
 
         // Configurar el comportamiento de personaService.addPersona()
-        Mockito.when(solicitudRentingService.addSolicitudRenting(solicitudRenting)).thenReturn(solicitudRenting);
+        Mockito.when(solicitudRentingService.addSolicitudRenting(solicitudRenting)).thenReturn(solicitudRenting.getSolicitudId());
 
         ResponseEntity response = solicitudRentingController.addSolicitudRenting(solicitudRenting);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
     @Test
@@ -100,7 +102,7 @@ class SolicitudRentingControllerTest {
         SolicitudRenting solicitudRenting = creaSolicitudFicticia();
 
         // Configurar el comportamiento de personaService.addPersona()
-        Mockito.when(solicitudRentingService.verEstadoSolicitud(solicitudRenting.getSolicitudId())).thenReturn("1");
+        Mockito.when(solicitudRentingService.verEstadoSolicitud(String.valueOf(solicitudRenting.getSolicitudId()))).thenReturn("1");
 
         ResponseEntity response = solicitudRentingController.verEstadoSolicitud(String.valueOf(solicitudRenting.getSolicitudId()));
 
@@ -108,7 +110,7 @@ class SolicitudRentingControllerTest {
     }
 
     @Test
-    void testCancelarSolicitudSuccess() throws Exception {
+    void testCancelarSolicitudSuccess ( ) throws Exception {
         SolicitudRentingService solicitudRentingService = Mockito.mock(SolicitudRentingService.class);
         SolicitudRentingController solicitudRentingController = new SolicitudRentingController(solicitudRentingService);
         SolicitudRenting solicitudRenting = creaSolicitudFicticia();

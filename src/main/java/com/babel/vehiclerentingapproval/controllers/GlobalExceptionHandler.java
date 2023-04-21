@@ -1,6 +1,6 @@
 package com.babel.vehiclerentingapproval.controllers;
 
-import com.babel.vehiclerentingapproval.exceptions.*;
+import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -32,10 +32,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RequestApiValidationException.class)
     @ResponseBody
     public ResponseEntity<Object> handleRequestApiValidationException (RequestApiValidationException e) {
-        Map<String, Object> respuesta = new HashMap<>();
-        respuesta.put(STATUS, e.getStatusCode());
-        respuesta.put(DESCRIPCION, e.getExternalMessage());
-        return new ResponseEntity<>(respuesta, e.getStatusCode());
+        return new ResponseEntity<>(Map.of(DESCRIPCION, e.getExternalMessage(), STATUS, e.getStatusCode()), e.getStatusCode());
     }
 
     /**
