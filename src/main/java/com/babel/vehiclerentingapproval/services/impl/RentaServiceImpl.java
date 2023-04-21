@@ -9,6 +9,7 @@ import com.babel.vehiclerentingapproval.persistance.database.mappers.RentaMapper
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.ProfesionService;
 import com.babel.vehiclerentingapproval.services.RentaService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 /**
@@ -59,7 +60,7 @@ public class RentaServiceImpl implements RentaService {
      */
     public void validateRenta (int rentaId) throws RentaFoundException {
         if (this.existeRenta(rentaId)) {
-            throw new RentaFoundException();
+            throw new RentaFoundException(HttpStatus.NOT_FOUND);
         }
     }
 

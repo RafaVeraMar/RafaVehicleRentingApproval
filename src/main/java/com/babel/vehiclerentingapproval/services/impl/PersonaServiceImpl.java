@@ -261,7 +261,7 @@ public class PersonaServiceImpl implements PersonaService {
      */
     public void validateNombre (Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
         if ((persona.getNombre() == null) || persona.getNombre().isEmpty()) {
-            throw new RequiredMissingFieldException();
+            throw new RequiredMissingFieldException(HttpStatus.BAD_REQUEST);
         }
         if (persona.getNombre().length() > 50) {
             throw new WrongLenghtFieldException("nombre", HttpStatus.BAD_REQUEST);
@@ -302,7 +302,7 @@ public class PersonaServiceImpl implements PersonaService {
             throw new PersonaNotFoundException();
         }
         if (!existeDireccion(persona.getDireccionDomicilio().getDireccionId()) || !existeDireccion(persona.getDireccionNotificacion().getDireccionId())) { //Si no existe alguna direcicon
-            throw new DireccionNotFoundException();
+            throw new DireccionNotFoundException(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -318,7 +318,7 @@ public class PersonaServiceImpl implements PersonaService {
      */
     public void validateNif (String nif) throws DniFoundException {
         if (existeNif(nif)) {
-            throw new DniFoundException();
+            throw new DniFoundException(HttpStatus.NOT_FOUND);
         }
     }
 

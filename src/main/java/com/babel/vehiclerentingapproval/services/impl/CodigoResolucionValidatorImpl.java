@@ -35,7 +35,7 @@ public class CodigoResolucionValidatorImpl implements CodigoResolucionValidator 
     @Override
     public void validarCodResolucion(String codResolucion) throws EstadoSolicitudInvalidException {
         if(this.tipoResultadoSolicitudMapper.codigoValido(codResolucion) != 1){
-            throw new EstadoSolicitudInvalidException( HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new EstadoSolicitudInvalidException(HttpStatus.BAD_REQUEST);
         }
     }
 }

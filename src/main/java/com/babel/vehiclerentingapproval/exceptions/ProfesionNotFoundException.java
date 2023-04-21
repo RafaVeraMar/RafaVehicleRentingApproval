@@ -11,14 +11,13 @@ import org.springframework.http.HttpStatus;
 public class ProfesionNotFoundException extends RequestApiValidationException {
 
     private static final String EXTERNAL_MESSAGE = "La profesion %s no existe";
-    private static final HttpStatus statusCode = HttpStatus.BAD_REQUEST;
 
     /**
      * Crea una nueva instancia de ProfesionNotFoundException con el ID de la profesión no encontrada.
      *
      * @param profesionId ID de la profesión que no se encuentra
      */
-    public ProfesionNotFoundException (int profesionId) {
+    public ProfesionNotFoundException (HttpStatus statusCode ,int profesionId) {
         super(EXTERNAL_MESSAGE, statusCode, new String[]{String.valueOf(profesionId)});
     }
 
@@ -26,7 +25,7 @@ public class ProfesionNotFoundException extends RequestApiValidationException {
      * Crea una nueva instancia de ProfesionNotFoundException sin especificar el ID de la profesión.
      * Utilice este constructor cuando no se requiera información adicional sobre el ID de la profesión no encontrada.
      */
-    public ProfesionNotFoundException ( ) {
+    public ProfesionNotFoundException (HttpStatus statusCode) {
         super(EXTERNAL_MESSAGE, statusCode);
     }
 }
