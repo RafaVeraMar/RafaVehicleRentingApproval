@@ -9,9 +9,8 @@ import org.springframework.http.HttpStatus;
  */
 public class EstadoSolicitudInvalidException extends RequestApiValidationException{
     private static final String EXTERNALMESSAGE = "El estado de resolución no es válido";
-    private static final HttpStatus STATUSCODE = HttpStatus.INTERNAL_SERVER_ERROR;
 
-    public EstadoSolicitudInvalidException() {
-        super(EXTERNALMESSAGE, STATUSCODE);
+    public EstadoSolicitudInvalidException(HttpStatus statusCode) {
+        super(EXTERNALMESSAGE, statusCode);
     }
 }

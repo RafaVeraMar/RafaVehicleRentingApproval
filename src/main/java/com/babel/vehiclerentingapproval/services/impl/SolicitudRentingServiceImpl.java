@@ -90,12 +90,19 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws RequestApiValidationException si la id de la solicitud no existe, el codigo de resolucion es nulo, o no es valido
      */
     @Override
-    public String verEstadoSolicitud(int idSolicitud) throws RequestApiValidationException {
-        int codigoExiste = tipoResultadoSolicitudMapper.existeCodigoResolucion(idSolicitud);
+    public String verEstadoSolicitud(String idSolicitud) throws RequestApiValidationException {
+        int id;
+        try{
+            id = Integer.parseInt(idSolicitud);
+        }
+        catch (NumberFormatException e){
+            throw new IdIncorrectFormatException(HttpStatus.BAD_REQUEST);
+        }
+        int codigoExiste = tipoResultadoSolicitudMapper.existeCodigoResolucion(id);
 
         validarCodResolucionExiste(codigoExiste);
 
-        TipoResultadoSolicitud resultadoSolicitud = this.tipoResultadoSolicitudMapper.getResultadoSolicitud(idSolicitud);
+        TipoResultadoSolicitud resultadoSolicitud = this.tipoResultadoSolicitudMapper.getResultadoSolicitud(id);
         this.validarCodigoResolucion(resultadoSolicitud.getCodResultado());
 
         return resultadoSolicitud.getDescripcion();
@@ -112,7 +119,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private void validarCodResolucionExiste(int codResolucion) throws EstadoSolicitudNotFoundException {
 
         if (codResolucion == 0) { //idSolicitud or codResolucion null
-            throw new EstadoSolicitudNotFoundException();
+            throw new EstadoSolicitudNotFoundException(HttpStatus.NOT_FOUND);
         }
 
     }
@@ -163,7 +170,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         SolicitudRenting solicitud = this.solicitudRentingMapper.getSolicitudByID(solicitudId);
 
         if (!posiblesEstados.contains(nuevoEstado.getCodResultado())) {
-            throw new EstadoSolicitudNotFoundException();
+            throw new EstadoSolicitudNotFoundException(HttpStatus.NOT_FOUND);
         }
         if (existeEstado == 0) {
             throw new SolicitudRentingNotFoundException(HttpStatus.NOT_FOUND);
