@@ -4,6 +4,7 @@ import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
+import com.babel.vehiclerentingapproval.services.EmailService;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import com.babel.vehiclerentingapproval.services.impl.PersonaServiceImpl;
@@ -40,8 +41,8 @@ public class SolicitudRentingControllerTest {
         PersonaService personaService = Mockito.mock(PersonaService.class);
         CodigoResolucionValidator codigoResolucionValidator = Mockito.mock(CodigoResolucionValidator.class);
         PersonaMapper personaMapper = Mockito.mock(PersonaMapper.class);
-
-        solicitudRentingService = new SolicitudRentingServiceImpl(solicitudRentingMapper,tipoResultadoSolicitudMapper,personaService,codigoResolucionValidator,personaMapper);
+        EmailService emailService = Mockito.mock(EmailService.class);
+        solicitudRentingService = new SolicitudRentingServiceImpl(solicitudRentingMapper,tipoResultadoSolicitudMapper,personaService,codigoResolucionValidator,personaMapper,emailService);
     }
     private SolicitudRenting creaSolicitudFicticia() throws ParseException {
         SolicitudRenting solicitudFicticia = new SolicitudRenting();
