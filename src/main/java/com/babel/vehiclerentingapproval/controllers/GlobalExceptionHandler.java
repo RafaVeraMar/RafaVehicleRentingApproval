@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(SolicitudRentingNotFoundException.class)
     @ResponseBody
-    public Throwable handleSolicitudRentingNotFoundException (SolicitudRentingNotFoundException e) {
+    public ResponseEntity<Object> handleSolicitudRentingNotFoundException (SolicitudRentingNotFoundException e) {
         Map<String, Object> respuesta = new HashMap<>();
         respuesta.put(STATUS, HttpStatus.NOT_FOUND);
         respuesta.put(DESCRIPCION, "Error: No se encuentra la solicitud buscada, inténtelo más tarde");
