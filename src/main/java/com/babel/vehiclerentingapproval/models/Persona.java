@@ -309,7 +309,7 @@ public class Persona {
         this.email = email;
     }
     
-    @Override
+   /* @Override
     public String toString() {
         return "Persona{" +
                 "personaId=" + getPersonaId() +
@@ -329,6 +329,8 @@ public class Persona {
                 ", email='" + getEmail() + '\'' +
                 '}';
     }
+
+    */
 }
 
 
