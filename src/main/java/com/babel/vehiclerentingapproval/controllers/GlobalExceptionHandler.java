@@ -7,27 +7,45 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.HashMap;
 import java.util.Map;
+/**
+ * Manejador global de excepciones.
+ */
+
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
     private static final String DESCRIPCION = "Descripcion: ";
     private static final String STATUS = "status: ";
 
+
+    /**
+     * Metodo que maneja todas las excepciones personalizadas, ya que RequestApiValidationException es la excepción padre de la que
+     * heredan el resto de excepciones creadas.
+     * <p>
+     *
+     * @param e Excepción que hereda de RequestApiValidationException
+     * @return un objeto ResponseEntity que contiene la respuesta y el código de error de la excepción lanzada
+     * @see RequestApiValidationException
+     */
     @ExceptionHandler(RequestApiValidationException.class)
     @ResponseBody
     public ResponseEntity<Object> handleRequestApiValidationException (RequestApiValidationException e) {
         return new ResponseEntity<>(Map.of(DESCRIPCION, e.getExternalMessage(), STATUS, e.getStatusCode()), e.getStatusCode());
     }
 
+    /**
+     * Metodo que maneja el resto de excepciones que puedan generarse que no sean excepciones personalizadas creadas
+     * para esta aplicación.
+     * <p>
+     *
+     * @param e Excepción genérica
+     * @return un objeto ResponseEntity que contiene una descripción y estado de error interno del servidor.
+     */
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseEntity<Object> handleException (Exception e) {
-        Map<String, Object> respuesta = new HashMap<>();
-        respuesta.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR);
-        respuesta.put(DESCRIPCION, "Error: Ha ocurrido un error interno en el servidor");
-        return new ResponseEntity<>(respuesta, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(Map.of(DESCRIPCION, "Error: Ha ocurrido un error interno en el servidor", STATUS, HttpStatus.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
