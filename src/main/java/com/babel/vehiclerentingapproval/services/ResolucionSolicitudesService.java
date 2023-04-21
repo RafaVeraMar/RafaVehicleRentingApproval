@@ -5,6 +5,17 @@ import com.babel.vehiclerentingapproval.models.ResolucionSolicitud;
 
 import java.util.List;
 
+/**
+ * Esta interfaz define un método para recuperar la lista de codigos de resoluciones de solicitudes de la base de datos. .
+ *
+ * @author andres.guijarro@babelgroup.com
+ */
 public interface ResolucionSolicitudesService {
-    public List<ResolucionSolicitud> getTipoResolucionesSolicitudes() throws ResolucionSolicitudesNotFoundException;
+    /**
+     * Método que recupera los codigos de resolucion de solicitudes.
+     *
+     * @throws ResolucionSolicitudesNotFoundException si no existe ninguna
+     * @see ResolucionSolicitud
+     */
+    public List<ResolucionSolicitud> getTipoResolucionesSolicitudes ( ) throws ResolucionSolicitudesNotFoundException;
 }

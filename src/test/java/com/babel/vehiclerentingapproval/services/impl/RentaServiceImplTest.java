@@ -11,7 +11,6 @@ import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.ProfesionService;
 import com.babel.vehiclerentingapproval.services.RentaService;
-import com.babel.vehiclerentingapproval.services.RentaServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,25 +20,22 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class RentaServiceImplTest {
+class RentaServiceImplTest {
     RentaService rentaService;
     RentaMapper rentaMapper;
     ProfesionService profesionService;
     PersonaService personaService;
 
 
-
     @BeforeEach
-    void setUpAll() throws ProfesionNotFoundException {
+    void setUpAll ( ) throws ProfesionNotFoundException {
 
         ProfesionMapper profesionMapper = Mockito.mock(ProfesionMapper.class);
         when(profesionMapper.existeProfesion(100)).thenReturn(0);
         when(profesionMapper.existeProfesion(1)).thenReturn(1);
-
 
 
         rentaMapper = Mockito.mock(RentaMapper.class);
@@ -57,16 +53,16 @@ public class RentaServiceImplTest {
         PaisMapper paisMapper = Mockito.mock(PaisMapper.class);
 
 
-        personaService = new PersonaServiceImpl(direccionMapper,personaMapper,telefonoMapper,tipoViaMapper,provinciaMapper,paisMapper);
+        personaService = new PersonaServiceImpl(direccionMapper, personaMapper, telefonoMapper, tipoViaMapper, provinciaMapper, paisMapper);
         profesionService = new ProfesionServiceImpl(profesionMapper);
 
 
-        rentaService = new RentaServiceImpl(rentaMapper,personaService, profesionService);
+        rentaService = new RentaServiceImpl(rentaMapper, personaService, profesionService);
     }
 
     @Test
-    public void addRenta_should_throwProfesionNotFoundException_when_profesionIdNoExiste(){
-        Assertions.assertThrows(ProfesionNotFoundException.class,() ->{
+    void addRenta_should_throwProfesionNotFoundException_when_profesionIdNoExiste ( ) {
+        Assertions.assertThrows(ProfesionNotFoundException.class, ( ) -> {
             Renta renta = createRenta();
 
             Profesion profesion = createProfesion();
@@ -80,8 +76,8 @@ public class RentaServiceImplTest {
 
 
     @Test
-    public void addRenta_should_throwPersonaNotFoundException_when_personaIdNoExiste(){
-        Assertions.assertThrows(PersonaNotFoundException.class,() ->{
+    void addRenta_should_throwPersonaNotFoundException_when_personaIdNoExiste ( ) {
+        Assertions.assertThrows(PersonaNotFoundException.class, ( ) -> {
             Renta renta = createRenta();
             Persona persona = createPersona();
 
@@ -95,8 +91,8 @@ public class RentaServiceImplTest {
     }
 
     @Test
-    public void addRenta_should_throwRentaFoundException_when_rentaIdExiste(){
-        Assertions.assertThrows(RentaFoundException.class,() ->{
+    void addRenta_should_throwRentaFoundException_when_rentaIdExiste ( ) {
+        Assertions.assertThrows(RentaFoundException.class, ( ) -> {
             Renta renta = createRenta();
             Persona persona = createPersona();
             Profesion profesion = createProfesion();
@@ -111,9 +107,31 @@ public class RentaServiceImplTest {
         });
     }
 
+    @Test
+    void addRenta_shouldNotThrow_when_rentaIdNoExiste() {
+        Renta renta;
+        Persona persona;
+        try {
+            renta = createRenta();
+            persona = createPersona();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        Profesion profesion = createProfesion();
+        profesion.setProfesionId(1);
+        renta.setProfesion(profesion);
+        persona.setPersonaId(1);
+        renta.setPersona(persona);
+        renta.setRentaId(100);
 
 
-    private Renta createRenta() throws ParseException {
+        Assertions.assertDoesNotThrow(() -> {
+           this.rentaService.addRenta(renta);
+        });
+    }
+
+
+    private Renta createRenta ( ) throws ParseException {
         Renta renta = new Renta();
 
 
@@ -131,13 +149,13 @@ public class RentaServiceImplTest {
     }
 
 
-    private Profesion createProfesion(){
-        Profesion profesion = new Profesion(1,null);
+    private Profesion createProfesion ( ) {
+        Profesion profesion = new Profesion(1, null);
         return profesion;
     }
 
-    private Persona createPersona() throws ParseException {
-        Persona persona=new Persona();
+    private Persona createPersona ( ) throws ParseException {
+        Persona persona = new Persona();
         persona.setNombre("Juan");
         persona.setApellido1("Francés");
         persona.setApellido2("Atúñez");
@@ -157,7 +175,6 @@ public class RentaServiceImplTest {
         domicilio.setNumero("44");
         domicilio.setCodPostal("41001");
         domicilio.setMunicipio("Sevilla");
-
 
 
         persona.setDireccionDomicilio(domicilio);

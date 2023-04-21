@@ -1,9 +1,19 @@
 package com.babel.vehiclerentingapproval.services;
 
-import java.io.IOException;
-import java.util.Map;
-
+/**
+ * Esta interfaz define un método para enviar correos electrónicos
+ *
+ * @author andres.guijarro@babelgroup.com
+ * @author enrique.munoz@babelgroup.com
+ */
 
 public interface EmailService {
-    public void SendMail(String mensaje,String destino, String asunto);
+    /**
+     * Metodo que envía un correo electrónico.
+     *
+     * @param mensaje el mensaje del correo electrónico
+     * @param destino el correo electrónico del destinatario
+     * @param asunto  el asunto del correo electrónico
+     */
+    public void sendMail (String mensaje, String destino, String asunto);
 }

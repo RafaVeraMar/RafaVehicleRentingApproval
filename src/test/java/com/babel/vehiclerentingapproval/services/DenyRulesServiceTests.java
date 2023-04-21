@@ -4,22 +4,18 @@ import com.babel.vehiclerentingapproval.models.Pais;
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.models.Renta;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
-import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
-import com.babel.vehiclerentingapproval.services.preautomaticresults.ApprovalRulesService;
 import com.babel.vehiclerentingapproval.services.preautomaticresults.DenyRulesService;
-import com.babel.vehiclerentingapproval.services.preautomaticresults.impl.ApprovalRulesServiceImpl;
 import com.babel.vehiclerentingapproval.services.preautomaticresults.impl.DenyRulesServicesImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class denyRulesServiceTests {
+class DenyRulesServiceTests {
 
     DenyRulesService service;
 
@@ -73,7 +69,7 @@ public class denyRulesServiceTests {
     }
 
     @Test
-    public void validateClientAge_shouldBeTrue_whenMinor18() throws ParseException {
+     void validateClientAge_shouldBeTrue_whenMinor18() throws ParseException {
 
         this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2016"));
         boolean validationClientAge = service.validateClientAge(solicitud);
@@ -81,7 +77,7 @@ public class denyRulesServiceTests {
     }
 
     @Test
-    public void validateClientAge_shouldBeFalse_whenMajor18() throws ParseException {
+     void validateClientAge_shouldBeFalse_whenMajor18() throws ParseException {
 
         this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2000"));
         boolean validationClientAge = service.validateClientAge(solicitud);
@@ -89,21 +85,21 @@ public class denyRulesServiceTests {
     }
 
     @Test
-    public void validateClientAge_shouldBeFalse_whenNull() {
+     void validateClientAge_shouldBeFalse_whenNull() {
         this.solicitud.getPersona().setFechaNacimiento(null);
         Assertions.assertThrows(NullPointerException.class, () -> {
             boolean validationClientAge = service.validateClientAge(solicitud);
-            Assertions.assertFalse(validationClientAge);
+            //Assertions.assertFalse(validationClientAge);
         });
     }
 
     @Test
-    public void validateClientAge_shouldBeTrue_whenisEmpty() throws ParseException {
+     void validateClientAge_shouldBeTrue_whenisEmpty() throws ParseException {
         String fechaNacimientoStr = "";
         if (fechaNacimientoStr.isEmpty()) {
             Assertions.assertThrows(NullPointerException.class, () -> {
                 boolean validateClientAge = service.validateClientAge(solicitud);
-                Assertions.assertFalse(validateClientAge);
+                //Assertions.assertFalse(validateClientAge);
             });
         } else {
             this.solicitud.getPersona().setFechaNacimiento(new Date(Long.MIN_VALUE));
@@ -113,7 +109,7 @@ public class denyRulesServiceTests {
 
     //validateScoringTitular
     @Test
-    public void validateScoringTitular_shouldBeTrue_whenScoringMayororEqual6(){
+     void validateScoringTitular_shouldBeTrue_whenScoringMayororEqual6(){
 
         this.solicitud.getPersona().setScoring(10);
         boolean validateScoringTitular = service.validateScoringTitular(solicitud);
@@ -121,7 +117,7 @@ public class denyRulesServiceTests {
     }
 
     @Test
-    public void validateScoringTitular_shouldBeTrue_whenScoringMinor6(){
+     void validateScoringTitular_shouldBeTrue_whenScoringMinor6(){
 
         this.solicitud.getPersona().setScoring(3);
         boolean validateScoringTitular = service.validateScoringTitular(solicitud);
@@ -129,7 +125,7 @@ public class denyRulesServiceTests {
     }
 
     @Test
-    public void validateClientAgePlusPlazo_shouldBeTrue_whenMayor80() throws ParseException {
+     void validateClientAgePlusPlazo_shouldBeTrue_whenMayor80() throws ParseException {
 
         this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2016"));
         BigInteger num2 = BigInteger.valueOf(100);
@@ -139,7 +135,7 @@ public class denyRulesServiceTests {
     }
 
     @Test
-    public void validateClientAgePlusPlazo_shouldBeFalse_whenMinor80() throws ParseException {
+     void validateClientAgePlusPlazo_shouldBeFalse_whenMinor80() throws ParseException {
         this.solicitud.getPersona().setFechaNacimiento(new SimpleDateFormat("dd-MM-yyyy").parse("13-06-2000"));
         BigInteger num2 = BigInteger.valueOf(10);
         solicitud.setPlazo(num2);
@@ -148,22 +144,22 @@ public class denyRulesServiceTests {
     }
 
     @Test
-    public void validateClientAgePlusPlazo_shouldBeFalse_whenNull() {
+     void validateClientAgePlusPlazo_shouldBeFalse_whenNull() {
         this.solicitud.getPersona().setFechaNacimiento(null);
         this.solicitud.setPlazo(null);
         Assertions.assertThrows(NullPointerException.class, () -> {
             boolean validateClientAgePlusPlazo = service.validateClientAgePlusPlazo(solicitud);
-            Assertions.assertFalse(validateClientAgePlusPlazo);
+            //Assertions.assertFalse(validateClientAgePlusPlazo);
         });
     }
 
     @Test
-    public void validateClientAgePlusPlazo_shouldBeTrue_whenisEmpty() throws ParseException {
+     void validateClientAgePlusPlazo_shouldBeTrue_whenisEmpty() throws ParseException {
         String fechaNacimientoStr = "";
         if (fechaNacimientoStr.isEmpty()) {
             Assertions.assertThrows(NullPointerException.class, () -> {
                 boolean validateClientAgePlusPlazo = service.validateClientAgePlusPlazo(solicitud);
-                Assertions.assertFalse(validateClientAgePlusPlazo);
+                //Assertions.assertFalse(validateClientAgePlusPlazo);
             });
         } else {
             this.solicitud.getPersona().setFechaNacimiento(new Date(Long.MIN_VALUE));        }
