@@ -1,5 +1,7 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
+
+import com.babel.vehiclerentingapproval.services.EmailService;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +17,10 @@ import java.util.Properties;
  * @author enrique.munoz@babelgroup.com
  */
 @Service
-public class EmailServiceImpl {
-
+public class EmailServiceImpl implements EmailService {
     final JavaMailSender mailSender;
 
-    public EmailServiceImpl (JavaMailSender mailSender) {
+    public EmailServiceImpl(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
 
@@ -30,7 +31,7 @@ public class EmailServiceImpl {
      * @param destino el correo electrónico del destinatario
      * @param asunto  el asunto del correo electrónico
      */
-    public static void sendMail (String mensaje, String destino, String asunto) throws MessagingException {
+    public boolean sendMail(String mensaje, String destino, String asunto) throws MessagingException {
         //usuario y contraseña del usuario de google que vayamos a utilizar
         var username = "solicitudrenting@gmail.com";
         var psw = "hswrinyhboucvsss";
@@ -51,7 +52,7 @@ public class EmailServiceImpl {
         var session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                     @Override
-                    protected PasswordAuthentication getPasswordAuthentication ( ) {
+                    protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(username, psw);
 
                     }
@@ -65,9 +66,11 @@ public class EmailServiceImpl {
             message.setSubject(subject);
             message.setText(mensage);
             Transport.send(message);
+            return true;
         } catch (MessagingException e) {
             throw new MessagingException(e.getMessage());
         }
+
     }
 
 
