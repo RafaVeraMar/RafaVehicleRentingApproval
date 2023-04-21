@@ -12,9 +12,8 @@ import org.springframework.http.HttpStatus;
  */
 public class DireccionNotFoundException extends RequestApiValidationException {
     private static final String EXTERNAL_MESSAGE = "No se encuentra dirección buscada";
-    private static final HttpStatus statusCode = HttpStatus.NOT_FOUND;
 
-    public DireccionNotFoundException() {
+    public DireccionNotFoundException(HttpStatus statusCode) {
         super(EXTERNAL_MESSAGE, statusCode);
     }
 }

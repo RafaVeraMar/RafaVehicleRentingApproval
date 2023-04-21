@@ -320,7 +320,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private void validateFecha (SolicitudRenting solicitudRenting) {
         if ((solicitudRenting.getFechaInicioVigor() != null && solicitudRenting.getFechaResolucion() != null)
                 && (solicitudRenting.getFechaInicioVigor().before(solicitudRenting.getFechaResolucion()))) {
-            throw new DateIsBeforeException("fechaInicioVigo", "fechaResolucion", HttpStatus.BAD_REQUEST);
+            throw new DateIsBeforeException("fechaInicioVigo", "fechaResolucion",HttpStatus.BAD_REQUEST);
         }
     }
 
