@@ -12,9 +12,8 @@ import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    private static final String DESCRIPCION = "descripcion";
-    private static final String STATUS = "status";
-
+    private static final String DESCRIPCION = "Descripcion: ";
+    private static final String STATUS = "status: ";
     @ExceptionHandler(RequestApiValidationException.class)
     @ResponseBody
     public ResponseEntity<Object> handleRequestApiValidationException (RequestApiValidationException e) {
@@ -26,7 +25,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(SolicitudRentingNotFoundException.class)
     @ResponseBody
-    public ResponseEntity<Object> handleSolicitudRentingNotFoundException (SolicitudRentingNotFoundException e) {
+    public Throwable handleSolicitudRentingNotFoundException (SolicitudRentingNotFoundException e) {
         Map<String, Object> respuesta = new HashMap<>();
         respuesta.put(STATUS, HttpStatus.NOT_FOUND);
         respuesta.put(DESCRIPCION, "Error: No se encuentra la solicitud buscada, inténtelo más tarde");
@@ -91,5 +90,31 @@ public class GlobalExceptionHandler {
         respuesta.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR);
         respuesta.put(DESCRIPCION, "Error: Ha ocurrido un error interno en el servidor");
         return new ResponseEntity<>(respuesta, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ProfesionNotFoundException.class)
+    @ResponseBody
+    public ResponseEntity<Object> handleProfesionNotFoundException (ProfesionNotFoundException e) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(STATUS, HttpStatus.BAD_REQUEST);
+        map.put(DESCRIPCION, "Profesion no encontrada en la base de datos");
+        return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(PersonaNotFoundException.class)
+    @ResponseBody
+    public ResponseEntity<Object> handlePersonaNotFoundException (PersonaNotFoundException e) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(STATUS, HttpStatus.NOT_FOUND);
+        map.put(DESCRIPCION, "Persona no encontrada en la base de datos");
+        return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(RentaFoundException.class)
+    @ResponseBody
+    public ResponseEntity<Object> handleRentaFoundException (RentaFoundException e) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(STATUS, HttpStatus.NOT_ACCEPTABLE);
+        map.put(DESCRIPCION, "La renta ya existe en la base de datos");
+        return new ResponseEntity<>(map, HttpStatus.NOT_ACCEPTABLE);
     }
 }
