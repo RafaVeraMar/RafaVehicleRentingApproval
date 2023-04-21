@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,7 +38,7 @@ public class RentaController {
     private static final String DESCRIPCION = "Descripcion: ";
     private static final String STATUS = "status: ";
 
-    public RentaController (RentaService rentaService) {
+    public RentaController(RentaService rentaService) {
         this.rentaService = rentaService;
     }
 
@@ -66,7 +65,7 @@ public class RentaController {
     })
     @Parameter(name = "personaId", description = "ID de una persona existente en la base de datos.", required = true)
     @Parameter(name = "renta", description = "Objeto Renta a insertar", required = true)
-    public ResponseEntity<Object> addRenta (@RequestBody Renta renta) throws ProfesionNotFoundException,PersonaNotFoundException,RentaFoundException{
+    public ResponseEntity<Object> addRenta(@RequestBody Renta renta) throws ProfesionNotFoundException, PersonaNotFoundException, RentaFoundException {
         Renta rentaActualizada;
         Map<String, Object> map = new HashMap<>();
         rentaActualizada = this.rentaService.addRenta(renta);

@@ -1,8 +1,6 @@
 package com.babel.vehiclerentingapproval.services;
 
 
-import org.springframework.stereotype.Service;
-
 import javax.mail.MessagingException;
 
 /**
@@ -19,5 +17,5 @@ public interface EmailService {
      * @param destino el correo electrónico del destinatario
      * @param asunto  el asunto del correo electrónico
      */
-    boolean sendMail (String mensaje, String destino, String asunto) throws MessagingException;
+    boolean sendMail(String mensaje, String destino, String asunto) throws MessagingException;
 }

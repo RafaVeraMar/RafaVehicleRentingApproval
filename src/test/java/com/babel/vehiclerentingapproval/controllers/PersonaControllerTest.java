@@ -1,6 +1,5 @@
 package com.babel.vehiclerentingapproval.controllers;
 
-import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import java.text.ParseException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 class PersonaControllerTest {
@@ -73,11 +71,9 @@ class PersonaControllerTest {
 
         ResponseEntity response = personaController.addPersona(persona);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
-
-    
 
     @Test
     void testViewPersonaProductoSuccess() throws Exception {
@@ -105,6 +101,6 @@ class PersonaControllerTest {
 
         ResponseEntity response = personaController.modificarPersona(persona, persona.getPersonaId());
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
     }
 }
