@@ -71,10 +71,8 @@ public class SolicitudRentingController {
     public ResponseEntity<Object> addSolicitudRenting (@RequestBody SolicitudRenting solicitudRenting) throws RequestApiValidationException {
         Map<String, Object> respuesta = new HashMap<>();
         solicitud.addSolicitudRenting(solicitudRenting);
-        respuesta.put(STATUS, HttpStatus.OK);
-        respuesta.put("Id", solicitudRenting.getSolicitudId());
-        respuesta.put(DESCRIPCION, "Solicitud creada correctamente");
-        return new ResponseEntity<>(respuesta, (HttpStatus)respuesta.get(STATUS));
+        respuesta.put("id", solicitudRenting.getSolicitudId());
+        return new ResponseEntity<>(respuesta, HttpStatus.CREATED);
     }
 
     /**

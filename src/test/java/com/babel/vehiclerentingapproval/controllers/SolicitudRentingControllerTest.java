@@ -90,11 +90,11 @@ public class SolicitudRentingControllerTest {
         SolicitudRenting solicitudRenting = creaSolicitudFicticia();
 
         // Configurar el comportamiento de personaService.addPersona()
-        Mockito.when(solicitudRentingService.addSolicitudRenting(solicitudRenting)).thenReturn(solicitudRenting);
+        Mockito.when(solicitudRentingService.addSolicitudRenting(solicitudRenting)).thenReturn(solicitudRenting.getSolicitudId());
 
         ResponseEntity response = solicitudRentingController.addSolicitudRenting(solicitudRenting);
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
     @Test

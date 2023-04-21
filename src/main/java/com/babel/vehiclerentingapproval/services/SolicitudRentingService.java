@@ -26,7 +26,7 @@ public interface SolicitudRentingService {
      * @return SolicitudRenting agregada y actualizada con el ID generado en el sistema
      * @throws RequestApiValidationException si la solicitud no cumple con los criterios de validación
      */
-    SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) throws RequestApiValidationException;
+    int addSolicitudRenting (SolicitudRenting solicitudRenting) throws RequestApiValidationException;
 
     /**
      * Método que devuelve el estado de una solicitud
