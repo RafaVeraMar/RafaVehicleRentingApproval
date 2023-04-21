@@ -6,6 +6,7 @@ import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapp
 import com.babel.vehiclerentingapproval.persistance.database.mappers.SolicitudRentingMapper;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
 import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
+import com.babel.vehiclerentingapproval.services.EmailService;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
 import org.junit.jupiter.api.Assertions;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import javax.mail.MessagingException;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,14 +34,20 @@ public class SolicitudRentingServiceImplTest {
     PersonaService personaService;
     PersonaMapper personaMapper;
 
+    EmailService emailService;
+
 
     @BeforeEach
     void setUpAll() {
         tipoResultadoSolicitudMapper = Mockito.mock(TipoResultadoSolicitudMapper.class);
         solicitudRentingMapper = Mockito.mock(SolicitudRentingMapper.class);
+        personaMapper = Mockito.mock(PersonaMapper.class);
         personaService = Mockito.mock(PersonaService.class);
         codigoResolucionValidator = new CodigoResolucionValidatorImpl(tipoResultadoSolicitudMapper);
-        solicitudService = new SolicitudRentingServiceImpl(solicitudRentingMapper, tipoResultadoSolicitudMapper, personaService, codigoResolucionValidator, personaMapper);
+
+        emailService = Mockito.mock(EmailService.class);
+
+        solicitudService = new SolicitudRentingServiceImpl(solicitudRentingMapper, tipoResultadoSolicitudMapper, personaService, codigoResolucionValidator, personaMapper,emailService);
 
 
     }
@@ -166,6 +174,72 @@ public class SolicitudRentingServiceImplTest {
             when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(0);
             Assertions.assertThrows(SolicitudRentingNotFoundException.class, () -> {
                 int id = -1;
+                TipoResultadoSolicitud tipoResultadoSolicitud = new TipoResultadoSolicitud();
+                tipoResultadoSolicitud.setCodResultado("AA");
+                tipoResultadoSolicitud.setDescripcion("");
+                solicitudService.modificaEstadoSolicitud(id, tipoResultadoSolicitud);
+            });
+        }
+
+        @Test
+        void modificaEstadoSolicitud_shouldThrow_SolicitudFailedSendingEmail_when_emailIsNull() throws ParseException {
+            Mockito.when(tipoResultadoSolicitudMapper.getListaEstados()).thenReturn(creaListaMock());
+            when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(1);
+            when(solicitudRentingMapper.getSolicitudByID(anyInt())).thenReturn(creaSolicitudFicticia());
+            Mockito.when(personaMapper.getEmail(anyInt())).thenReturn(null);
+
+
+            String dest = "blablagmail.com";
+            String message = "Buenas";
+            String asunto = "Importante";
+            when(tipoResultadoSolicitudMapper.getEstadoSolicitud(anyInt())).thenReturn("");
+            //Mockito.when(emailService.sendMail(message,dest,asunto)).thenReturn();
+            Assertions.assertThrows(FailedSendingEmail.class, () -> {
+                int id = 1;
+                TipoResultadoSolicitud tipoResultadoSolicitud = new TipoResultadoSolicitud();
+                tipoResultadoSolicitud.setCodResultado("AA");
+                tipoResultadoSolicitud.setDescripcion("");
+                solicitudService.modificaEstadoSolicitud(id, tipoResultadoSolicitud);
+            });
+        }
+
+        @Test
+        void modificaEstadoSolicitud_shouldThrow_SolicitudFailedSendingEmail_when_emailHasNotArroba() throws ParseException {
+            Mockito.when(tipoResultadoSolicitudMapper.getListaEstados()).thenReturn(creaListaMock());
+            when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(1);
+            when(solicitudRentingMapper.getSolicitudByID(anyInt())).thenReturn(creaSolicitudFicticia());
+            Mockito.when(personaMapper.getEmail(anyInt())).thenReturn("blabla");
+
+            String dest = "blablagmail.com";
+            String message = "Buenas";
+            String asunto = "Importante";
+            when(tipoResultadoSolicitudMapper.getEstadoSolicitud(anyInt())).thenReturn("");
+            //Mockito.when(emailService.sendMail(message,dest,asunto)).thenReturn();
+            Assertions.assertThrows(FailedSendingEmail.class, () -> {
+                int id = 1;
+                TipoResultadoSolicitud tipoResultadoSolicitud = new TipoResultadoSolicitud();
+                tipoResultadoSolicitud.setCodResultado("AA");
+                tipoResultadoSolicitud.setDescripcion("");
+                solicitudService.modificaEstadoSolicitud(id, tipoResultadoSolicitud);
+            });
+
+        }
+
+        @Test
+        void modificaEstadoSolicitud_shouldNotThrow_SolicitudRentingNotFoundException_when_emailExists() throws ParseException, MessagingException {
+            Mockito.when(tipoResultadoSolicitudMapper.getListaEstados()).thenReturn(creaListaMock());
+            when(solicitudRentingMapper.existeSolicitud(anyInt())).thenReturn(1);
+            when(solicitudRentingMapper.getSolicitudByID(anyInt())).thenReturn(creaSolicitudFicticia());
+            Mockito.when(personaMapper.getEmail(anyInt())).thenReturn("blabla@gmail.com");
+
+
+            String dest = "blabla@gmail.com";
+            String message = "Buenas";
+            String asunto = "Importante";
+            when(tipoResultadoSolicitudMapper.getEstadoSolicitud(anyInt())).thenReturn("");
+            Mockito.when(emailService.sendMail(message, dest, asunto)).thenReturn(true);
+            Assertions.assertDoesNotThrow(() -> {
+                int id = 1;
                 TipoResultadoSolicitud tipoResultadoSolicitud = new TipoResultadoSolicitud();
                 tipoResultadoSolicitud.setCodResultado("AA");
                 tipoResultadoSolicitud.setDescripcion("");

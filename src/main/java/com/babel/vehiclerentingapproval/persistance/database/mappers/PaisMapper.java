@@ -18,8 +18,8 @@ public interface PaisMapper {
      * @param pais Objeto Pais a insertar
      * @see Pais
      */
-    @Insert("INSERT INTO PAIS (ISO_ALFA_2, ISO_NUM_3, ISO_ALFA_3, NOMBRE, ORDEN) VALUES (#{isoAlfa_2}, #{isoNum_3}, #{isoAlfa_3}, #{nombre}, #{orden, jdbcType=VARCHAR})")
-    @Options(useGeneratedKeys = true, keyProperty = "isoAlfa_2", keyColumn = "ISO_ALFA_2")
+    @Insert("INSERT INTO PAIS (ISO_ALFA_2, ISO_NUM_3, ISO_ALFA_3, NOMBRE, ORDEN) VALUES (#{isoAlfa2}, #{isoNum3}, #{isoAlfa3}, #{nombre}, #{orden, jdbcType=VARCHAR})")
+    @Options(useGeneratedKeys = true, keyProperty = "isoAlfa2", keyColumn = "ISO_ALFA_2")
     void insertPais(Pais pais);
     /**
      * Consulta que recupera un Pais en la base de datos
