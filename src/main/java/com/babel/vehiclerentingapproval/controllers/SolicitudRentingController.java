@@ -2,6 +2,7 @@ package com.babel.vehiclerentingapproval.controllers;
 
 
 import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundException;
+import com.babel.vehiclerentingapproval.exceptions.FailedSendingEmail;
 import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundException;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -93,7 +95,7 @@ public class SolicitudRentingController {
     @Parameter(name = "id", description = "ID de la solicitud a consultar", required = true)
     public ResponseEntity<Object> verEstadoSolicitud (@PathVariable String id) throws RequestApiValidationException {
         Map<String, Object> respuesta = new HashMap<>();
-        var idSolicitud =Integer.parseInt(id);
+        var idSolicitud = Integer.parseInt(id);
         String estado = this.solicitud.verEstadoSolicitud(idSolicitud);
         respuesta.put(STATUS, HttpStatus.OK);
         respuesta.put("Id", id);
@@ -160,7 +162,7 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "407", description = "No se encuentra la solicitud buscada.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "408", description = "Estado de solicitud no valido.", content = {@Content(mediaType = "application/json")})
     })
-    public ResponseEntity<Object> updateEstadoSolicitud (@PathVariable Integer solicitudId, @RequestBody TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException {
+    public ResponseEntity<Object> updateEstadoSolicitud (@PathVariable Integer solicitudId, @RequestBody TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException, FailedSendingEmail, MessagingException {
         Map<String, Object> respuestaJson = new HashMap<>();
         this.solicitud.modificaEstadoSolicitud(solicitudId, nuevoEstado);
         respuestaJson.put(STATUS, HttpStatus.OK);
