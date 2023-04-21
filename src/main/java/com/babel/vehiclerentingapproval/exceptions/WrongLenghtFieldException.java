@@ -22,6 +22,6 @@ public class WrongLenghtFieldException extends RequestApiValidationException {
     }
 
     public WrongLenghtFieldException (String numVehiculos, HttpStatus badRequest) {
-        super(EXTERNAL_MESSAGE, badRequest);
+        super(EXTERNAL_MESSAGE, badRequest, new String[]{numVehiculos});
     }
 }
