@@ -4,10 +4,11 @@ import org.springframework.http.HttpStatus;
 
 /**
  * La clase RequestApiValidationException representa una excepción personalizada para la validación
- * de solicitudes de API. Esta excepción extiende la clase Exception y contiene información adicional
+ * de solicitudes de API. Esta excepción es principal, es decir, es el padre del resto de excepciones personalizadas de la
+ * aplicación. Extiende la clase RuntimeException y contiene información adicional
  * como un mensaje de error específico y un código de estado HTTP.
  */
-public class RequestApiValidationException extends Exception {
+public class RequestApiValidationException extends RuntimeException {
 
     private final String externalMessage;
     private final HttpStatus statusCode;
