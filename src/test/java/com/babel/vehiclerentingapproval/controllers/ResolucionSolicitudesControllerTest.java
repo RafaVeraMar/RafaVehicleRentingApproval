@@ -19,7 +19,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,5 +62,21 @@ class ResolucionSolicitudesControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
+    @Test
+    void testListarTipoNoContent() throws Exception {
+        resolucionSolicitudesService = Mockito.mock(ResolucionSolicitudesService.class);
+        ResolucionSolicitudesController resolucionSolicitudesController = new ResolucionSolicitudesController(resolucionSolicitudesService);
+
+        List<ResolucionSolicitud> listaTest = crearListaVacia();
+
+
+        Mockito.when(resolucionSolicitudesService.getTipoResolucionesSolicitudes()).thenThrow(new ResolucionSolicitudesNotFoundException());
+
+
+        ResponseEntity response = resolucionSolicitudesController.listarTiposResolucion();
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
 
 }

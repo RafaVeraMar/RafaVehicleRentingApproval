@@ -1,5 +1,9 @@
 package com.babel.vehiclerentingapproval.controllers;
 
+import com.babel.vehiclerentingapproval.exceptions.PersonaNotFoundException;
+import com.babel.vehiclerentingapproval.exceptions.ProfesionNotFoundException;
+import com.babel.vehiclerentingapproval.exceptions.RentaFoundException;
+import com.babel.vehiclerentingapproval.exceptions.RequiredMissingFieldException;
 import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
@@ -20,7 +24,7 @@ import java.text.SimpleDateFormat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-class RentaControllerTest {
+public class RentaControllerTest {
 
 
     RentaMapper rentaMapper;
@@ -29,7 +33,6 @@ class RentaControllerTest {
     PersonaService personaService;
 
     ProfesionService profesionService;
-
     @BeforeEach
     void setupAll() {
 
@@ -55,7 +58,6 @@ class RentaControllerTest {
         rentaService = new RentaServiceImpl(rentaMapper, personaService, profesionService);
 
     }
-
     private Renta createRenta() throws ParseException {
         Renta renta = new Renta();
 
@@ -72,7 +74,6 @@ class RentaControllerTest {
 
         return renta;
     }
-
     private Persona personaficticia() throws ParseException {
         Persona personaFicticia = new Persona();
         Direccion direccionFicticia = new Direccion();
@@ -98,7 +99,6 @@ class RentaControllerTest {
         Profesion profesion = new Profesion(1, null);
         return profesion;
     }
-
     @Test
     void testAddRentaSuccess() throws Exception {
         RentaService rentaService = Mockito.mock(RentaService.class);
@@ -112,6 +112,32 @@ class RentaControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
-
+    @Test
+    void testAddRentaProfesionNotFoundException() throws Exception {
+        RentaService rentaService = Mockito.mock(RentaService.class);
+        RentaController rentaController = new RentaController(rentaService);
+        Renta renta = createRenta();
+        when(rentaService.addRenta(renta)).thenThrow(new ProfesionNotFoundException());
+        ResponseEntity response = rentaController.addRenta(renta);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+    @Test
+    void testAddRentaPersonaNotFoundException() throws Exception {
+        RentaService rentaService = Mockito.mock(RentaService.class);
+        RentaController rentaController = new RentaController(rentaService);
+        Renta renta = createRenta();
+        when(rentaService.addRenta(renta)).thenThrow(new PersonaNotFoundException());
+        ResponseEntity response = rentaController.addRenta(renta);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+    @Test
+    void testAddRentaRentaFoundException() throws Exception {
+        RentaService rentaService = Mockito.mock(RentaService.class);
+        RentaController rentaController = new RentaController(rentaService);
+        Renta renta = createRenta();
+        when(rentaService.addRenta(renta)).thenThrow(new RentaFoundException());
+        ResponseEntity response = rentaController.addRenta(renta);
+        assertEquals(HttpStatus.NOT_ACCEPTABLE, response.getStatusCode());
+    }
 
 }

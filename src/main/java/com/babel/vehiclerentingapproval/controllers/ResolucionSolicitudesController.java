@@ -9,8 +9,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +21,6 @@ import java.util.Map;
  * @author andres.guijarro@babelgroup.com
  */
 @Tag(name = "Listar tipos de solicitudes", description = "Endpoint que devuelve una lista de los tipos de solicitudes existentes en la base de datos.")
-@ControllerAdvice
 @RestController
 public class ResolucionSolicitudesController {
     public static final String DESCRIPCION = "descripcion";
@@ -45,16 +42,25 @@ public class ResolucionSolicitudesController {
      * @return un objeto ResponseEntity que contiene la información de la solicitud creada, que contiene los codigos de
      * resolución que existen
      */
-    @ExceptionHandler(ResolucionSolicitudesNotFoundException.class)
     @GetMapping("/listarTiposResolucion")
     @Operation(summary = "Listar los tipos de resolucion de solicitudes", description = "Lista los tipos de resolucion de solicitudes existentes en la base de datos")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Existen datos en la base de datos y se devuelven.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "204", description = "No existen tipos de solicitudes en la base de datos.", content = {@Content(mediaType = "application/json")})
     })
-    public ResponseEntity<Object> listarTiposResolucion() throws ResolucionSolicitudesNotFoundException {
+    public ResponseEntity<Object> listarTiposResolucion() {
         Map<String, Object> map = new HashMap<>();
-        map.put(STATUS, HttpStatus.OK);
-        map.put(DESCRIPCION, "listarTiposResolucion correcto");
-        return ResponseEntity.ok(this.resolucionSolicitudesService.getTipoResolucionesSolicitudes());
+        try {
+            map.put(STATUS, HttpStatus.OK);
+            map.put(DESCRIPCION, "listarTiposResolucion correcto");
+            return ResponseEntity.ok(this.resolucionSolicitudesService.getTipoResolucionesSolicitudes());
+        } catch (ResolucionSolicitudesNotFoundException e) {
+            map.put(STATUS, HttpStatus.NOT_FOUND);
+            map.put(DESCRIPCION, "No existen elementos en la base de datos");
+            return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            map.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR);
+            map.put(DESCRIPCION, "Error interno del servidor");
+            return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

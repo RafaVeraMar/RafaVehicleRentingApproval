@@ -1,14 +1,12 @@
 package com.babel.vehiclerentingapproval.services;
 
-
-import javax.mail.MessagingException;
-
 /**
  * Esta interfaz define un método para enviar correos electrónicos
  *
  * @author andres.guijarro@babelgroup.com
  * @author enrique.munoz@babelgroup.com
  */
+
 public interface EmailService {
     /**
      * Metodo que envía un correo electrónico.
@@ -17,5 +15,5 @@ public interface EmailService {
      * @param destino el correo electrónico del destinatario
      * @param asunto  el asunto del correo electrónico
      */
-    boolean sendMail(String mensaje, String destino, String asunto) throws MessagingException;
+    public void sendMail (String mensaje, String destino, String asunto);
 }

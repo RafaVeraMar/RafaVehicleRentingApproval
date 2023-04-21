@@ -1,5 +1,6 @@
 package com.babel.vehiclerentingapproval.controllers;
 
+import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import java.text.ParseException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 class PersonaControllerTest {
@@ -71,9 +73,48 @@ class PersonaControllerTest {
 
         ResponseEntity response = personaController.addPersona(persona);
 
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
+    @Test
+    void testAddPersonaRequiredFieldMissing() throws Exception {
+        PersonaService personaService = Mockito.mock(PersonaService.class);
+        PersonaController personaController = new PersonaController(personaService);
+        Persona persona = personaficticia();
+        when(personaService.addPersona(persona)).thenThrow(new RequiredMissingFieldException());
+        ResponseEntity response = personaController.addPersona(persona);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
+    void testAddPersonaDniAlreadyExists() throws Exception {
+        PersonaService personaService = Mockito.mock(PersonaService.class);
+        PersonaController personaController = new PersonaController(personaService);
+        Persona persona = personaficticia();
+        when(personaService.addPersona(persona)).thenThrow(new DniFoundException());
+        ResponseEntity response = personaController.addPersona(persona);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
+    void testAddPersonaDireccionNotFound() throws Exception {
+        PersonaService personaService = Mockito.mock(PersonaService.class);
+        PersonaController personaController = new PersonaController(personaService);
+        Persona persona = personaficticia();
+        when(personaService.addPersona(persona)).thenThrow(new DireccionNotFoundException());
+        ResponseEntity response = personaController.addPersona(persona);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
+    void testAddPersonaWrongLengthField() throws Exception {
+        PersonaService personaService = Mockito.mock(PersonaService.class);
+        PersonaController personaController = new PersonaController(personaService);
+        Persona persona = personaficticia();
+        when(personaService.addPersona(persona)).thenThrow(new WrongLenghtFieldException());
+        ResponseEntity response = personaController.addPersona(persona);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
 
     @Test
     void testViewPersonaProductoSuccess() throws Exception {
@@ -90,6 +131,16 @@ class PersonaControllerTest {
     }
 
     @Test
+    void testViewPersonaProductoRequiredFieldMissing() throws Exception {
+        PersonaService personaService = Mockito.mock(PersonaService.class);
+        PersonaController personaController = new PersonaController(personaService);
+        Persona persona = personaficticia();
+        when(personaService.viewPersonaProducto(persona.getPersonaId())).thenThrow(new PersonaNotFoundException());
+        ResponseEntity response = personaController.viewPersonaProducto(persona.getPersonaId());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
     void testModificarPersonaSuccess() throws Exception {
         PersonaService personaService = Mockito.mock(PersonaService.class);
         PersonaController personaController = new PersonaController(personaService);
@@ -101,6 +152,28 @@ class PersonaControllerTest {
 
         ResponseEntity response = personaController.modificarPersona(persona, persona.getPersonaId());
 
-        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
+
+    @Test
+    void testModificarPersonaPersonaNotFound() throws Exception {
+        PersonaService personaService = Mockito.mock(PersonaService.class);
+        PersonaController personaController = new PersonaController(personaService);
+        Persona persona = personaficticia();
+        Mockito.doThrow(new PersonaNotFoundException()).doNothing().when(personaService).modificarPersona(persona);
+        ResponseEntity response = personaController.modificarPersona(persona, persona.getPersonaId());
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+    @Test
+    void testModificarPersonaDireccionNotFound() throws Exception {
+        PersonaService personaService = Mockito.mock(PersonaService.class);
+        PersonaController personaController = new PersonaController(personaService);
+        Persona persona = personaficticia();
+        Mockito.doThrow(new DireccionNotFoundException()).doNothing().when(personaService).modificarPersona(persona);
+        ResponseEntity response = personaController.modificarPersona(persona, persona.getPersonaId());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+
 }
