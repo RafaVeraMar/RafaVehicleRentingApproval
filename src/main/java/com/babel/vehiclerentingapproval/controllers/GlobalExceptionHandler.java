@@ -51,16 +51,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(respuesta, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({RequiredMissingFieldException.class, WrongLenghtFieldException.class})
-    public ResponseEntity<Object> handleBadRequestException(Exception ex) {
-        Map<String, Object> respuesta = new HashMap<>();
-        respuesta.put(STATUS, HttpStatus.BAD_REQUEST);
-        respuesta.put(DESCRIPCION, "Comprueba los datos de entrada");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(respuesta);
-    }
-
     @ExceptionHandler(DireccionNotFoundException.class)
-    public ResponseEntity<Object> handleDireccionNotFoundException(Exception ex) {
+    public ResponseEntity<Object> handleDireccionNotFoundException (Exception ex) {
         Map<String, Object> respuesta = new HashMap<>();
         respuesta.put(STATUS, HttpStatus.BAD_REQUEST);
         respuesta.put(DESCRIPCION, "Direccion no encontrada");
@@ -68,7 +60,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DniFoundException.class)
-    public ResponseEntity<Object> handleDniFoundException(Exception ex) {
+    public ResponseEntity<Object> handleDniFoundException (Exception ex) {
         Map<String, Object> respuesta = new HashMap<>();
         respuesta.put(STATUS, HttpStatus.BAD_REQUEST);
         respuesta.put(DESCRIPCION, "El NIF de la persona ya existe en la base de datos");
@@ -76,7 +68,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(PersonaNotFoundException.class)
-    public ResponseEntity<Object> handlePersonaNotFoundException(Exception ex) {
+    public ResponseEntity<Object> handlePersonaNotFoundException (Exception ex) {
         Map<String, Object> respuesta = new HashMap<>();
         respuesta.put(STATUS, HttpStatus.NOT_FOUND);
         respuesta.put(DESCRIPCION, "Persona no encontrada en la base de datos");

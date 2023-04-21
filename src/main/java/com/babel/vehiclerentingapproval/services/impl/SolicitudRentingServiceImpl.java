@@ -10,7 +10,6 @@ import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
 import com.babel.vehiclerentingapproval.services.EmailService;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -58,7 +57,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @see #validateFecha(SolicitudRenting)
      */
     @Override
-    public SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) throws RequestApiValidationException {
+    public SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) {
         validatePersona(solicitudRenting.getPersona().getPersonaId());
         validateNumVehiculos(solicitudRenting);
         validateInversion(solicitudRenting);
@@ -76,7 +75,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @param idPersona el identificador de la persona a verificar
      * @throws PersonaNotFoundException si no se encuentra una persona con el identificador proporcionado
      */
-    private void existIdPersona (int idPersona) throws PersonaNotFoundException {
+    private void existIdPersona (int idPersona) {
         if (!personaService.existePersona(idPersona)) {
             throw new PersonaNotFoundException(idPersona);
         }
@@ -171,7 +170,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
         String email = this.personaMapper.getEmail(solicitud.getPersona().getPersonaId());
         //validateEmail(email);
-        if(email==null || email.indexOf('@')==-1) {
+        if (email == null || email.indexOf('@') == -1) {
             throw new FailedSendingEmail("Failed");
         }
         var estadoSolicitud = this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId);
@@ -180,21 +179,22 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     }
 
 
-    private int validateEmail(String email) throws FailedSendingEmail{
+    private int validateEmail (String email) throws FailedSendingEmail {
         boolean boolExisteArroba = true;
         char caracter = '@';
-        if(email.indexOf(caracter)==-1){
-            boolExisteArroba=false;
+        if (email.indexOf(caracter) == -1) {
+            boolExisteArroba = false;
         }
-        if(email==null || boolExisteArroba==false){
+        if (email == null || boolExisteArroba == false) {
             //throw new FailedSendingEmail("Failed");
             return 0;
-        }else{
+        } else {
             return 1;
         }
 
 
     }
+
     /**
      * Modifica únicamete el estado de una solicitud de renting, se comprueba a través de la base de datos que el nuevo estado sea uno de los valores posible.
      *
@@ -226,7 +226,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws PersonaNotFoundException Si no se encuentra una persona con el ID especificado.
      * @see #existIdPersona(int)
      */
-    private void validatePersona (int idPersona) throws PersonaNotFoundException {
+    private void validatePersona (int idPersona) {
         existIdPersona(idPersona);
     }
 

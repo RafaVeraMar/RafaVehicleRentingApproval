@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
  * de solicitudes de API. Esta excepción extiende la clase Exception y contiene información adicional
  * como un mensaje de error específico y un código de estado HTTP.
  */
-public class RequestApiValidationException extends Exception {
+public class RequestApiValidationException extends RuntimeException {
 
     private final String externalMessage;
     private final HttpStatus statusCode;
@@ -36,6 +36,7 @@ public class RequestApiValidationException extends Exception {
         this.externalMessage = String.format(externalMessage, args);
         this.statusCode = statusCode;
     }
+
     /**
      * Obtiene el mensaje de error específico.
      *
