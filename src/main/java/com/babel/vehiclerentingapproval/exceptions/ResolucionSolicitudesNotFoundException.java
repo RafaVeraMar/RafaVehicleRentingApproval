@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 
 /**
  * Esta clase excepción se lanza como resultado de la validacion de los datos
- * de la base de datos cuando no se encuentra ninguna resolución de solicitudes. extiende de la clase RuntimeException.
+ * de la base de datos cuando no se encuentra ninguna resolución de solicitudes. Extiende de la clase RuntimeException.
  * @see RuntimeException
  * @author andres.guijarro@babelgroup.com
  */
