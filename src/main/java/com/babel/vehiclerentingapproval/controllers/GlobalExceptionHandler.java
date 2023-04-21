@@ -45,7 +45,6 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ResponseEntity<Object> handleNumberFormatException (NumberFormatException e) {
         Map<String, Object> respuesta = new HashMap<>();
-        respuesta.put(STATUS, HttpStatus.BAD_REQUEST);
         respuesta.put(DESCRIPCION, "Error: el formato de ID es inválido");
         return new ResponseEntity<>(respuesta, HttpStatus.BAD_REQUEST);
     }
