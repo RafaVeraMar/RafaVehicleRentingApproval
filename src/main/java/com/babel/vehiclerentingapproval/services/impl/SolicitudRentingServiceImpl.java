@@ -10,6 +10,7 @@ import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
 import com.babel.vehiclerentingapproval.services.EmailService;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -95,7 +96,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
             id = Integer.parseInt(idSolicitud);
         }
         catch (NumberFormatException e){
-            throw new IdIncorrectFormatException();
+            throw new IdIncorrectFormatException(HttpStatus.BAD_REQUEST);
         }
         int codigoExiste = tipoResultadoSolicitudMapper.existeCodigoResolucion(id);
 
@@ -118,7 +119,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private void validarCodResolucionExiste(int codResolucion) throws EstadoSolicitudNotFoundException {
 
         if (codResolucion == 0) { //idSolicitud or codResolucion null
-            throw new EstadoSolicitudNotFoundException();
+            throw new EstadoSolicitudNotFoundException(HttpStatus.NOT_FOUND);
         }
 
     }
@@ -169,7 +170,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         SolicitudRenting solicitud = this.solicitudRentingMapper.getSolicitudByID(solicitudId);
 
         if (!posiblesEstados.contains(nuevoEstado.getCodResultado())) {
-            throw new EstadoSolicitudNotFoundException();
+            throw new EstadoSolicitudNotFoundException(HttpStatus.NOT_FOUND);
         }
         if (existeEstado == 0) {
             throw new SolicitudRentingNotFoundException();
