@@ -57,7 +57,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @see #validateFecha(SolicitudRenting)
      */
     @Override
-    public SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) {
+    public int addSolicitudRenting (SolicitudRenting solicitudRenting) {
         validatePersona(solicitudRenting.getPersona().getPersonaId());
         validateNumVehiculos(solicitudRenting);
         validateInversion(solicitudRenting);
@@ -243,7 +243,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws InputIsNegativeOrZeroException si el valor de 'numVehiculos' es negativo o igual a cero
      * @see #lenghtNumber(BigInteger)
      */
-    private void validateNumVehiculos (SolicitudRenting solicitudRenting) throws WrongLenghtFieldException, InputIsNullOrIsEmpty, InputIsNegativeOrZeroException {
+    private void validateNumVehiculos (SolicitudRenting solicitudRenting) {
         if (lenghtNumber(solicitudRenting.getNumVehiculos()) > 38) {
             throw new WrongLenghtFieldException("numVehiculos");
         }
@@ -265,7 +265,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws InputIsNullOrIsEmpty           si el valor de 'inversion' es nulo o vacío
      * @throws InputIsNegativeOrZeroException si el valor de 'inversion' es negativo o igual a cero
      */
-    private void validateInversion (SolicitudRenting solicitudRenting) throws InputIsNullOrIsEmpty, InputIsNegativeOrZeroException {
+    private void validateInversion (SolicitudRenting solicitudRenting) {
         if (solicitudRenting.getInversion() == null) {
             throw new InputIsNullOrIsEmpty("inversion");
         }
@@ -284,7 +284,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws InputIsNullOrIsEmpty           si el valor de 'cuota' es nulo o vacío
      * @throws InputIsNegativeOrZeroException si el valor de 'cuota' es negativo o igual a cero
      */
-    private void validateCuota (SolicitudRenting solicitudRenting) throws InputIsNullOrIsEmpty, InputIsNegativeOrZeroException {
+    private void validateCuota (SolicitudRenting solicitudRenting) {
         if (solicitudRenting.getCuota() == null) {
             throw new InputIsNullOrIsEmpty("cuota");
         }
@@ -305,7 +305,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws WrongLenghtFieldException      si el valor de 'plazo' tiene más de 38 dígitos
      * @throws InputIsNegativeOrZeroException si el valor de 'plazo' es negativo o igual a cero
      */
-    private void validatePlazo (SolicitudRenting solicitudRenting) throws WrongLenghtFieldException, InputIsNegativeOrZeroException {
+    private void validatePlazo (SolicitudRenting solicitudRenting) {
         if (solicitudRenting.getPlazo() != null) {
             if (lenghtNumber(solicitudRenting.getPlazo()) > 38) {
                 throw new WrongLenghtFieldException("Plazo");
@@ -325,7 +325,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @param solicitudRenting el objeto SolicitudRenting cuyas fechas se van a validar
      * @throws DateIsBeforeException si 'fechaInicioVigor' es anterior a 'fechaResolucion'
      */
-    private void validateFecha (SolicitudRenting solicitudRenting) throws DateIsBeforeException {
+    private void validateFecha (SolicitudRenting solicitudRenting) {
         if ((solicitudRenting.getFechaInicioVigor() != null && solicitudRenting.getFechaResolucion() != null)
                 && (solicitudRenting.getFechaInicioVigor().before(solicitudRenting.getFechaResolucion()))) {
             throw new DateIsBeforeException("fechaInicioVigo", "fechaResolucion");
