@@ -51,6 +51,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(respuesta, HttpStatus.BAD_REQUEST);
     }
 
+
     @ExceptionHandler(DireccionNotFoundException.class)
     public ResponseEntity<Object> handleDireccionNotFoundException (Exception ex) {
         Map<String, Object> respuesta = new HashMap<>();
