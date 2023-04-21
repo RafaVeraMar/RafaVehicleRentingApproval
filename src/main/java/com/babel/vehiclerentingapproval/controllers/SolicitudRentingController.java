@@ -98,10 +98,8 @@ public class SolicitudRentingController {
         Map<String, Object> respuesta = new HashMap<>();
         var idSolicitud = Integer.parseInt(id);
         String estado = this.solicitud.verEstadoSolicitud(idSolicitud);
-        respuesta.put(STATUS, HttpStatus.OK);
-        respuesta.put("Id", id);
-        respuesta.put(DESCRIPCION, estado);
-        return new ResponseEntity<>(respuesta, (HttpStatus)respuesta.get(STATUS));
+        respuesta.put("Estado", estado);
+        return new ResponseEntity<>(respuesta,HttpStatus.OK);
     }
 
     /**
