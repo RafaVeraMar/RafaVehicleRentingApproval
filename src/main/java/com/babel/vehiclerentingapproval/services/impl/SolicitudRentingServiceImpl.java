@@ -10,6 +10,7 @@ import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
 import com.babel.vehiclerentingapproval.services.EmailService;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -165,7 +166,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
             throw new EstadoSolicitudNotFoundException();
         }
         if (existeEstado == 0) {
-            throw new SolicitudRentingNotFoundException();
+            throw new SolicitudRentingNotFoundException(HttpStatus.NOT_FOUND);
         }
 
         String email = this.personaMapper.getEmail(solicitud.getPersona().getPersonaId());
@@ -335,7 +336,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      */
     public void validateSolicitudRenting(SolicitudRenting solicitudRenting) throws SolicitudRentingNotFoundException {
         if (solicitudRenting == null) {
-            throw new SolicitudRentingNotFoundException();
+            throw new SolicitudRentingNotFoundException(HttpStatus.NOT_FOUND);
         }
     }
 
