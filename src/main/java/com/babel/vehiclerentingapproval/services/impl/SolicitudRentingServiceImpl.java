@@ -118,7 +118,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @param codResolucion Valor encontrado al hacer la consulta en la base de datos
      * @throws EstadoSolicitudNotFoundException si el codigo de resolución es nulo o el id de la solicitud no existe
      */
-    private void validarCodResolucionExiste(int codResolucion) throws EstadoSolicitudNotFoundException {
+    private void validarCodResolucionExiste(int codResolucion) throws RequestApiValidationException {
 
         if (codResolucion == 0) { //idSolicitud or codResolucion null
             throw new EstadoSolicitudNotFoundException(HttpStatus.NOT_FOUND);
