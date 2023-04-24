@@ -56,9 +56,8 @@ public class PersonaController {
     })
     public ResponseEntity<Object> addPersona(@RequestBody Persona persona) {
         var personaCreada = this.personaService.addPersona(persona);
-        Map<String, Object> map = new HashMap<>();
-        map.put("id", personaCreada.getPersonaId());
-        return new ResponseEntity<>(map, HttpStatus.CREATED);
+        return new ResponseEntity<>(Map.of("id",personaCreada.getPersonaId()),HttpStatus.CREATED);
+        
     }
 
     /**
