@@ -135,9 +135,9 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "407", description = "No se encuentra la solicitud buscada.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "408", description = "Estado de solicitud no valido.", content = {@Content(mediaType = "application/json")})
     })
-    public ResponseEntity<Object> updateEstadoSolicitud (@PathVariable Integer solicitudId, @RequestBody TipoResultadoSolicitud nuevoEstado) throws SolicitudRentingNotFoundException, EstadoSolicitudNotFoundException, FailedSendingEmail, MessagingException {
+    public ResponseEntity<Object> updateEstadoSolicitud (@PathVariable Integer solicitudId, @RequestBody TipoResultadoSolicitud nuevoEstado) throws MessagingException {
         Map<String, Object> respuestaJson = new HashMap<>();
-        this.solicitud.modificaEstadoSolicitud(solicitudId, nuevoEstado);
+        solicitud.modificaEstadoSolicitud(solicitudId, nuevoEstado);
         respuestaJson.put(STATUS, HttpStatus.OK);
         respuestaJson.put("Id", solicitudId);
         respuestaJson.put(DESCRIPCION, "La solicitud ha sido modificada y se ha notificado al usuario");
