@@ -1,9 +1,6 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
-import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudInvalidException;
-import com.babel.vehiclerentingapproval.exceptions.PersonaNotFoundException;
-import com.babel.vehiclerentingapproval.exceptions.ProfesionNotFoundException;
-import com.babel.vehiclerentingapproval.exceptions.RentaFoundException;
+import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.Renta;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.RentaMapper;
 import com.babel.vehiclerentingapproval.services.PersonaService;
@@ -44,7 +41,7 @@ public class RentaServiceImpl implements RentaService {
      * @see #validateRenta(int)
      */
     @Override
-    public Renta addRenta (Renta renta) throws ProfesionNotFoundException, PersonaNotFoundException, RentaFoundException {
+    public Renta addRenta (Renta renta) throws RequestApiValidationException {
         this.profesionService.validateProfesion(renta.getProfesion().getProfesionId());
         this.personaService.validatePersona(renta.getPersona().getPersonaId());
         this.validateRenta(renta.getRentaId());
@@ -58,7 +55,7 @@ public class RentaServiceImpl implements RentaService {
      * @param rentaId es el id de la renta
      * @throws RentaFoundException lanza una excepcion cuando la renta ya existe en la base de datos.
      */
-    public void validateRenta (int rentaId) throws RentaFoundException {
+    public void validateRenta (int rentaId) throws RequestApiValidationException {
         if (this.existeRenta(rentaId)) {
             throw new RentaFoundException(HttpStatus.NOT_FOUND);
         }

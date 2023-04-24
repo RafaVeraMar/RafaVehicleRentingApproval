@@ -297,7 +297,7 @@ public class PersonaServiceImpl implements PersonaService {
      * @see #existePersona(int)
      * @see #existeDireccion(int)
      */
-    private void validatePersonaExistente (Persona persona) throws PersonaNotFoundException, DireccionNotFoundException {
+    private void validatePersonaExistente (Persona persona) throws RequestApiValidationException {
         if (!existePersona(persona.getPersonaId())) {
             throw new PersonaNotFoundException();
         }
@@ -316,7 +316,7 @@ public class PersonaServiceImpl implements PersonaService {
      * @return void
      * @see #existeNif(String)
      */
-    public void validateNif (String nif) throws DniFoundException {
+    public void validateNif (String nif) throws RequestApiValidationException {
         if (existeNif(nif)) {
             throw new DniFoundException(HttpStatus.NOT_FOUND);
         }

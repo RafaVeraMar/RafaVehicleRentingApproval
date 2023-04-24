@@ -1,5 +1,6 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
+import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import com.babel.vehiclerentingapproval.exceptions.ResolucionSolicitudesNotFoundException;
 import com.babel.vehiclerentingapproval.models.ResolucionSolicitud;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.ResolucionSolicitudesMapper;
@@ -46,7 +47,7 @@ public class ResolucionSolicitudesServiceImpl implements ResolucionSolicitudesSe
      *
      * @throws ResolucionSolicitudesNotFoundException si no se encuentran codigos de resolución de solicitudes en la base de datos.
      */
-    private void existenSolicitudes ( ) throws ResolucionSolicitudesNotFoundException {
+    private void existenSolicitudes ( ) throws RequestApiValidationException {
         if (resolucionSolicitudesMapper.getTipoResolucionesSolicitudes().isEmpty()) {
             throw new ResolucionSolicitudesNotFoundException(HttpStatus.NOT_FOUND);
         }

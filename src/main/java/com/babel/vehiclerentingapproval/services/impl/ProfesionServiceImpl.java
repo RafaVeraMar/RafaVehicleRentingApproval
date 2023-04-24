@@ -1,6 +1,7 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
 import com.babel.vehiclerentingapproval.exceptions.ProfesionNotFoundException;
+import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.ProfesionMapper;
 import com.babel.vehiclerentingapproval.services.ProfesionService;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class ProfesionServiceImpl implements ProfesionService {
      * @param profesionId id de la profesion a buscar
      * @return si es valida como profesion
      */
-    public void validateProfesion (int profesionId) throws ProfesionNotFoundException {
+    public void validateProfesion (int profesionId) throws RequestApiValidationException {
         if (!existeProfesion(profesionId)) {
             throw new ProfesionNotFoundException(HttpStatus.NOT_FOUND);
         }
