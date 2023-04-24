@@ -21,8 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Esta clase define la documentación Swagger con los métodos para hacer el CRUD (Crear, Ver, Modificar y Cancelar) de las Solicitudes de Renting
- * y sus rutas para poder acceder desde PostMan.
+ * Esta clase define el endpoint para operar con las solicitudes de renting
  *
  * @author @author miguel.sdela@babelgroup.com, javier.serrano@babelgroup.com, ramon.vazquez@babelgroup.com, alvaro.aleman@babelgroup.com, javier.roldan@babelgroup.com
  */
