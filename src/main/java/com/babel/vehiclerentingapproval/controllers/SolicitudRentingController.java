@@ -78,7 +78,7 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(mediaType = "application/json"))
     })
     @Parameter(name = "id", description = "ID de la solicitud a consultar", required = true)
-    public ResponseEntity<Object> verEstadoSolicitud (@PathVariable String id) throws RequestApiValidationException {
+    public ResponseEntity<Object> verEstadoSolicitud (@PathVariable String id) {
         String estado = this.solicitud.verEstadoSolicitud(id);
         Map<String, Object> respuesta = Collections.singletonMap("Estado", estado);
         return new ResponseEntity<>(respuesta,HttpStatus.OK);
@@ -116,7 +116,7 @@ public class SolicitudRentingController {
     })
     @Parameter(name = "id", description = "ID de la solicitud a cancelar", required = true)
     @PutMapping("/{id}")
-    public ResponseEntity<Object> cancelarSolicitud (@PathVariable int id) throws RequestApiValidationException {
+    public ResponseEntity<Object> cancelarSolicitud (@PathVariable int id) {
         this.solicitud.cancelarSolicitud(id);
         return ResponseEntity.ok(Collections.singletonMap("descripcion", "Solicitud cancelada"));
     }

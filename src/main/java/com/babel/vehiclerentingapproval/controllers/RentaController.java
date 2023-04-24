@@ -64,7 +64,7 @@ public class RentaController {
     })
     @Parameter(name = "personaId", description = "ID de una persona existente en la base de datos.", required = true)
     @Parameter(name = "renta", description = "Objeto Renta a insertar", required = true)
-    public ResponseEntity<Object> addRenta(@RequestBody Renta renta) throws ProfesionNotFoundException, PersonaNotFoundException, RentaFoundException {
+    public ResponseEntity<Object> addRenta(@RequestBody Renta renta) {
         Renta rentaActualizada;
         Map<String, Object> map = new HashMap<>();
         rentaActualizada = this.rentaService.addRenta(renta);

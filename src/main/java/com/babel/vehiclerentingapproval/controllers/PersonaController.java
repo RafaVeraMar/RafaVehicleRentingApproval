@@ -54,7 +54,7 @@ public class PersonaController {
             @ApiResponse(responseCode = "400", description = "Comprueba los datos de entrada.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Error del servidor.", content = {@Content(mediaType = "application/json")})
     })
-    public ResponseEntity<Object> addPersona(@RequestBody Persona persona) throws DireccionNotFoundException, PersonaNotFoundException, RequiredMissingFieldException, DniFoundException, WrongLenghtFieldException {
+    public ResponseEntity<Object> addPersona(@RequestBody Persona persona) {
         var personaCreada = this.personaService.addPersona(persona);
         Map<String, Object> map = new HashMap<>();
         map.put("id", personaCreada.getPersonaId());
@@ -78,7 +78,7 @@ public class PersonaController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Se han obtenido con éxito los productos contratados por una persona.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "404", description = "La persona no existe.", content = {@Content(mediaType = "application/json")}),
     })
-    public ResponseEntity<Object> viewPersonaProducto(@PathVariable("id") int id) throws PersonaNotFoundException {
+    public ResponseEntity<Object> viewPersonaProducto(@PathVariable("id") int id) {
         List<ProductoContratado> lista = this.personaService.viewPersonaProducto(id);
         Map<String, Object> map = new HashMap<>();
         map.put("Lista de productos contratados por una persona", lista);
@@ -106,7 +106,7 @@ public class PersonaController {
     @Parameter(name = "persona", description = "JSON de la persona con datos a modificar", required = true)
     @Operation(summary = "Modificar los datos de una persona", description = "Modifica los datos de una persona en la base de datos.")
     @PutMapping("/persona/{id}")
-    public ResponseEntity<Object> modificarPersona(@RequestBody Persona persona, @PathVariable int id) throws DireccionNotFoundException, PersonaNotFoundException {
+    public ResponseEntity<Object> modificarPersona(@RequestBody Persona persona, @PathVariable int id) {
         persona.setPersonaId(id);
         this.personaService.modificarPersona(persona);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
