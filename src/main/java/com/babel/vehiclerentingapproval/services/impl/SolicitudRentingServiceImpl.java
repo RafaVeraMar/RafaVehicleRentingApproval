@@ -92,7 +92,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws RequestApiValidationException si la id de la solicitud no existe, el codigo de resolucion es nulo, o no es valido
      */
     @Override
-    public String verEstadoSolicitud(String idSolicitud) throws RequestApiValidationException {
+    public String verEstadoSolicitud(String idSolicitud)  {
         int id;
         try{
             id = Integer.parseInt(idSolicitud);
@@ -118,7 +118,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @param codResolucion Valor encontrado al hacer la consulta en la base de datos
      * @throws EstadoSolicitudNotFoundException si el codigo de resolución es nulo o el id de la solicitud no existe
      */
-    private void validarCodResolucionExiste(int codResolucion) throws RequestApiValidationException {
+    private void validarCodResolucionExiste(int codResolucion) {
 
         if (codResolucion == 0) { //idSolicitud or codResolucion null
             throw new EstadoSolicitudNotFoundException(HttpStatus.NOT_FOUND);
@@ -133,7 +133,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws EstadoSolicitudInvalidException si el codigo de resolucion no es valido
      * @see CodigoResolucionValidatorImpl
      */
-    private void validarCodigoResolucion(String codResolucion) throws EstadoSolicitudInvalidException {
+    private void validarCodigoResolucion(String codResolucion){
         this.codigoResolucionValidator.validarCodResolucion(codResolucion);
 
     }
@@ -146,7 +146,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws RequestApiValidationException
      */
 
-    public SolicitudRenting getSolicitudById(int id) throws RequestApiValidationException {
+    public SolicitudRenting getSolicitudById(int id){
         var solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
         validateSolicitudRenting(solicitudRenting);
         return solicitudRenting;
@@ -167,7 +167,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
     @Transactional
     @Override
-    public void modificaEstadoSolicitud(Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws RequestApiValidationException, MessagingException{
+    public void modificaEstadoSolicitud(Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws MessagingException{
 
         List<String> posiblesEstados = this.tipoResultadoSolicitudMapper.getListaEstados();
         int existeEstado = this.solicitudRentingMapper.existeSolicitud(solicitudId);
@@ -182,7 +182,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
         String email = this.personaMapper.getEmail(solicitud.getPersona().getPersonaId());
         if (email == null || email.indexOf('@') == -1) {
-            throw new FailedSendingEmail(HttpStatus.BAD_REQUEST,"Failed");
+            throw new FailedSendingEmail(HttpStatus.BAD_REQUEST,email);
         }
         var estadoSolicitud = this.tipoResultadoSolicitudMapper.getEstadoSolicitud(solicitudId);
         emailService.sendMail("Su solicitud se encuentra: " + estadoSolicitud, email, "Cambios en tu solicitud");

@@ -27,7 +27,7 @@ public class ProfesionServiceImpl implements ProfesionService {
      * @param profesionId id de la profesion a buscar
      * @return si es valida como profesion
      */
-    public void validateProfesion (int profesionId) throws RequestApiValidationException {
+    public void validateProfesion (int profesionId){
         if (!existeProfesion(profesionId)) {
             throw new ProfesionNotFoundException(HttpStatus.NOT_FOUND);
         }

@@ -35,7 +35,7 @@ public class ResolucionSolicitudesServiceImpl implements ResolucionSolicitudesSe
      * @see ResolucionSolicitud
      */
     @Override
-    public List<ResolucionSolicitud> getTipoResolucionesSolicitudes ( ) throws ResolucionSolicitudesNotFoundException {
+    public List<ResolucionSolicitud> getTipoResolucionesSolicitudes ( ) {
         List<ResolucionSolicitud> lista;
         this.existenSolicitudes();
         lista = resolucionSolicitudesMapper.getTipoResolucionesSolicitudes();
@@ -47,7 +47,7 @@ public class ResolucionSolicitudesServiceImpl implements ResolucionSolicitudesSe
      *
      * @throws ResolucionSolicitudesNotFoundException si no se encuentran codigos de resolución de solicitudes en la base de datos.
      */
-    private void existenSolicitudes ( ) throws RequestApiValidationException {
+    private void existenSolicitudes ( ) {
         if (resolucionSolicitudesMapper.getTipoResolucionesSolicitudes().isEmpty()) {
             throw new ResolucionSolicitudesNotFoundException(HttpStatus.NOT_FOUND);
         }
