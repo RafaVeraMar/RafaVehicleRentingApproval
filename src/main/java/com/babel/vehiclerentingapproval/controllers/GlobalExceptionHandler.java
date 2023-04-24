@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RequestApiValidationException.class)
     @ResponseBody
     public ResponseEntity<Object> handleRequestApiValidationException (RequestApiValidationException e) {
-        return new ResponseEntity<>(Map.of(DESCRIPCION, e.getExternalMessage(), STATUS, e.getStatusCode()), e.getStatusCode());
+        return new ResponseEntity<>(Map.of(DESCRIPCION, e.getExternalMessage()), e.getStatusCode());
     }
 
     /**
@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseEntity<Object> handleException (Exception e) {
-        return new ResponseEntity<>(Map.of(DESCRIPCION, "Error: Ha ocurrido un error interno en el servidor", STATUS, HttpStatus.INTERNAL_SERVER_ERROR), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(Map.of(DESCRIPCION, "Error: Ha ocurrido un error interno en el servidor"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
