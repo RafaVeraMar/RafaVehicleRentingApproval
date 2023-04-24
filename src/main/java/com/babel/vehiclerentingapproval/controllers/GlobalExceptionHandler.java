@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Map;
+
 /**
  * Manejador global de excepciones.
  */
@@ -16,7 +17,6 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     private static final String DESCRIPCION = "Descripcion: ";
-    private static final String STATUS = "status: ";
 
 
     /**
