@@ -1,6 +1,7 @@
 package com.babel.vehiclerentingapproval.controllers;
 
 import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,7 +14,7 @@ import java.util.Map;
  * Manejador global de excepciones.
  */
 
-
+@Log4j2
 @ControllerAdvice
 public class GlobalExceptionHandler {
     private static final String DESCRIPCION = "Descripcion: ";
@@ -45,6 +46,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseEntity<Object> handleException (Exception e) {
+        log.error("Mensaje de error: " + e.getMessage());
         return new ResponseEntity<>(Map.of(DESCRIPCION, "Error: Ha ocurrido un error. Contacte con el equipo ING BOOTCAMP."), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
