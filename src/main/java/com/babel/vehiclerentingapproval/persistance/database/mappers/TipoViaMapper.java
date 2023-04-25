@@ -1,10 +1,8 @@
 package com.babel.vehiclerentingapproval.persistance.database.mappers;
 
 import com.babel.vehiclerentingapproval.models.TipoVia;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
+
 /**
  * Esta interfaz proporciona metodos de manejo de TipoVia en la base de datos
  *
@@ -29,5 +27,7 @@ public interface TipoViaMapper {
      * @return Objeto TipoVia
      */
     @Select("SELECT TIPO_VIA_ID, DESCRIPCION FROM TIPO_VIA WHERE TIPO_VIA_ID = #{tipoViaId}")
+    @Result(property = "tipoViaId", column = "TIPO_VIA_ID")
+    @Result(property = "descripcion", column = "DESCRIPCION")
     TipoVia getTipoVia(int tipoViaId);
 }

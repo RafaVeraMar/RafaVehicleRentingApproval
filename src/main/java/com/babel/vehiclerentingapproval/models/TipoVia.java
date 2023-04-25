@@ -13,8 +13,7 @@ public class TipoVia {
     /**
      * Parametro que alamcena el identificador del tipo de via, de tipo Integer
      */
-    @NotNull
-    private Integer tipoViaId;
+    private int tipoViaId;
     /**
      * Parametro que almacena la descripcion del tipo de via, de tipo String con un tamaño maximo de 50 caracteres
      */
@@ -41,7 +40,7 @@ public class TipoVia {
      * Metodo público que se encarga de mostrar el valor del identificador del tipo de via, de tipo Integer
      * @return devuelve el identificador del tipo de via
      */
-    public Integer getTipoViaId() {
+    public int getTipoViaId() {
         return tipoViaId;
     }
 
@@ -49,7 +48,7 @@ public class TipoVia {
      * Metodo publico que se encarga de asignar el valor pasado como parametro al identificador del tipo de via
      * @param tipoViaId es el valor que se le va a asignar al parametro indicado del objeto TipoVia
      */
-    public void setTipoViaId(Integer tipoViaId) {
+    public void setTipoViaId(int tipoViaId) {
         this.tipoViaId = tipoViaId;
     }
 
