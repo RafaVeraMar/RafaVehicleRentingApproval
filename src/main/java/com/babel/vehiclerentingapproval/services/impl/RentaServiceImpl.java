@@ -1,6 +1,7 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
-import com.babel.vehiclerentingapproval.exceptions.*;
+import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudInvalidException;
+import com.babel.vehiclerentingapproval.exceptions.RentaFoundException;
 import com.babel.vehiclerentingapproval.models.Renta;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.RentaMapper;
 import com.babel.vehiclerentingapproval.services.PersonaService;
@@ -27,7 +28,7 @@ public class RentaServiceImpl implements RentaService {
     ProfesionService profesionService;
 
     public RentaServiceImpl (RentaMapper rentaMapper, PersonaService personaService, ProfesionService profesionService) {
-        log.info("En el constructor de RentaServiceImpl");
+        log.info("Entrando en el constructor de RentaServiceImpl");
         this.rentaMapper = rentaMapper;
         this.personaService = personaService;
         this.profesionService = profesionService;
