@@ -5,6 +5,7 @@ import com.babel.vehiclerentingapproval.exceptions.ResolucionSolicitudesNotFound
 import com.babel.vehiclerentingapproval.models.ResolucionSolicitud;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.ResolucionSolicitudesMapper;
 import com.babel.vehiclerentingapproval.services.ResolucionSolicitudesService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.List;
  * @author andres.guijarro@babelgroup.com
  * @see ResolucionSolicitudesMapper
  */
+@Log4j2
 @Service
 public class ResolucionSolicitudesServiceImpl implements ResolucionSolicitudesService {
 
@@ -38,6 +40,7 @@ public class ResolucionSolicitudesServiceImpl implements ResolucionSolicitudesSe
     public List<ResolucionSolicitud> getTipoResolucionesSolicitudes ( ) {
         List<ResolucionSolicitud> lista;
         this.existenSolicitudes();
+        log.info("Obteniendo la lista de las resoluciones de las solitudes");
         lista = resolucionSolicitudesMapper.getTipoResolucionesSolicitudes();
         return lista;
     }
@@ -49,6 +52,7 @@ public class ResolucionSolicitudesServiceImpl implements ResolucionSolicitudesSe
      */
     private void existenSolicitudes ( ) {
         if (resolucionSolicitudesMapper.getTipoResolucionesSolicitudes().isEmpty()) {
+            log.error("No existen resoluciones de solicitudes");
             throw new ResolucionSolicitudesNotFoundException(HttpStatus.NOT_FOUND);
         }
     }
