@@ -10,6 +10,8 @@ import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
 import com.babel.vehiclerentingapproval.services.EmailService;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,7 @@ import java.util.List;
  */
 
 @Service
+@Log4j2
 public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private final SolicitudRentingMapper solicitudRentingMapper;
     private final TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
@@ -80,7 +83,6 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private void existIdPersona (int idPersona) {
         if (!personaService.existePersona(idPersona)) {
             throw new PersonaNotFoundException(idPersona, HttpStatus.NOT_FOUND);
-
         }
     }
 
@@ -207,10 +209,12 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @return la cantidad de dígitos en el objeto BigInteger; si el objeto BigInteger es nulo, devuelve 0
      */
     private int lenghtNumber(BigInteger number) {
+        log.info("Procesando el tamaño del numero");
         if (number != null) {
             var numeroString = number.toString();
             return numeroString.length();
         }
+        log.info("Tamaño del numero procesado correctamente");
         return 0;
     }
 
@@ -222,7 +226,9 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @see #existIdPersona(int)
      */
     private void validatePersona (int idPersona) {
+        log.info("procesando el validar persona");
         existIdPersona(idPersona);
+        log.info("La persona fue validada");
     }
 
     /**
@@ -239,15 +245,20 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @see #lenghtNumber(BigInteger)
      */
     private void validateNumVehiculos (SolicitudRenting solicitudRenting) {
+        log.info("Validando el numero de vehiculos de la solicitud");
         if (lenghtNumber(solicitudRenting.getNumVehiculos()) > 38) {
+            log.info("El numero de vehiculos es mayor a 38");
             throw new WrongLenghtFieldException("numVehiculos", HttpStatus.BAD_REQUEST);
         }
         if (solicitudRenting.getNumVehiculos() == null) {
+            log.error("El numero de vehiculos es nulo");
             throw new InputIsNullOrIsEmpty("numVehivulos", HttpStatus.BAD_REQUEST);
         }
         if (solicitudRenting.getNumVehiculos().signum() == -1 || solicitudRenting.getNumVehiculos().signum() == 0) {
+            log.error("El numero de vehiculos es incorrecto");
             throw new InputIsNegativeOrZeroException("numVehiculos", HttpStatus.BAD_REQUEST);
         }
+        log.info("El numero de vehiculos ha sido validado");
     }
 
     /**
@@ -261,12 +272,16 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws InputIsNegativeOrZeroException si el valor de 'inversion' es negativo o igual a cero
      */
     private void validateInversion (SolicitudRenting solicitudRenting) {
+        log.info("Validando la inversion de la solicitud de renting");
         if (solicitudRenting.getInversion() == null) {
+            log.error("la inversion es nula");
             throw new InputIsNullOrIsEmpty("inversion", HttpStatus.BAD_REQUEST);
         }
         if (solicitudRenting.getInversion() < 1) {
+            log.error("la inversion es menor que 1");
             throw new InputIsNegativeOrZeroException("inversion", HttpStatus.BAD_REQUEST);
         }
+        log.info("La inversion ha sido validada");
     }
 
     /**
@@ -280,12 +295,16 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws InputIsNegativeOrZeroException si el valor de 'cuota' es negativo o igual a cero
      */
     private void validateCuota (SolicitudRenting solicitudRenting) {
+        log.info("Validando la couta");
         if (solicitudRenting.getCuota() == null) {
+            log.error("la cuota es nula");
             throw new InputIsNullOrIsEmpty("cuota", HttpStatus.BAD_REQUEST);
         }
         if (solicitudRenting.getCuota() < 1) {
+            log.error("la cuota es menor a 1");
             throw new InputIsNegativeOrZeroException("cuota", HttpStatus.BAD_REQUEST);
         }
+        log.info("La cuota ha sido validada");
     }
 
     /**
@@ -301,14 +320,18 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws InputIsNegativeOrZeroException si el valor de 'plazo' es negativo o igual a cero
      */
     private void validatePlazo (SolicitudRenting solicitudRenting) {
+        log.info("Validando el plazo");
         if (solicitudRenting.getPlazo() != null) {
             if (lenghtNumber(solicitudRenting.getPlazo()) > 38) {
+                log.error("El plazo es mayor a 38");
                 throw new WrongLenghtFieldException("Plazo", HttpStatus.BAD_REQUEST);
             }
             if (solicitudRenting.getPlazo().signum() == -1 || solicitudRenting.getPlazo().signum() == 0) {
+                log.error("El plazo es negativo o 0");
                 throw new InputIsNegativeOrZeroException("plazo", HttpStatus.BAD_REQUEST);
             }
         }
+        log.info("Validado el plazo");
     }
 
     /**
@@ -321,10 +344,13 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @throws DateIsBeforeException si 'fechaInicioVigor' es anterior a 'fechaResolucion'
      */
     private void validateFecha (SolicitudRenting solicitudRenting) {
+        log.info("Validando la fecha");
         if ((solicitudRenting.getFechaInicioVigor() != null && solicitudRenting.getFechaResolucion() != null)
                 && (solicitudRenting.getFechaInicioVigor().before(solicitudRenting.getFechaResolucion()))) {
+            log.error("Error en las fechas de la solicitud");
             throw new DateIsBeforeException("fechaInicioVigo", "fechaResolucion",HttpStatus.BAD_REQUEST);
         }
+        log.info("Las fechas han sido validadas");
     }
 
     /**
@@ -333,10 +359,12 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @param id de la solicitud de renting
      * @throws SolicitudRentingNotFoundException que recoge la excepcion cuando la solicitud de renting es nula, si la solicitud no es nula la devuelve cancelada
      */
-    public void cancelarSolicitud(int id) throws RequestApiValidationException {
+    public void cancelarSolicitud(int id) {
+        log.info("Cancelando la solicitud de renting");
         var solicitudRenting = this.solicitudRentingMapper.getSolicitudByID(id);
         validateSolicitudRenting(solicitudRenting);
         solicitudRentingMapper.cancelarSolicitud(solicitudRenting);
+        log.info("La solicitud ha sido cancelada");
     }
 
     /**
@@ -345,10 +373,13 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @param solicitudRenting solicitud a comprobar si es nula
      * @throws SolicitudRentingNotFoundException
      */
-    public void validateSolicitudRenting(SolicitudRenting solicitudRenting) throws SolicitudRentingNotFoundException {
+    public void validateSolicitudRenting(SolicitudRenting solicitudRenting) {
+        log.info("Validando la solicitud de renting");
         if (solicitudRenting == null) {
+            log.warn("La solicitud no ha sido encontrada");
             throw new SolicitudRentingNotFoundException(HttpStatus.NOT_FOUND);
         }
+        log.info("La solicitud ha sido validada");
     }
 
 }
