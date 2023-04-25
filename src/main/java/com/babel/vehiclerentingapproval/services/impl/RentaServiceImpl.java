@@ -64,7 +64,7 @@ public class RentaServiceImpl implements RentaService {
     public void validateRenta (int rentaId) {
         log.info("Entrando en validateRenta");
         if (this.existeRenta(rentaId)) {
-            log.error("La renta no existe");
+            log.warn("La renta no existe");
             throw new RentaFoundException(HttpStatus.NOT_FOUND);
         }
         log.info("Saliendo de validateRenta");
