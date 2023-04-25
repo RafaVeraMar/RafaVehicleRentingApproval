@@ -8,6 +8,7 @@ import com.babel.vehiclerentingapproval.models.ProductoContratado;
 import com.babel.vehiclerentingapproval.models.TelefonoContacto;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,7 +67,7 @@ public class PersonaServiceImpl implements PersonaService {
      */
     @Override
     @Transactional
-    public Persona addPersona (Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException, DniFoundException {
+    public Persona addPersona (Persona persona) {
         this.validatePersonData(persona);
         this.validateNif(persona.getNif());
 
@@ -101,9 +102,9 @@ public class PersonaServiceImpl implements PersonaService {
      * @throws PersonaNotFoundException
      */
     @Override
-    public Persona existPerson (int idPersona) throws RequestApiValidationException {
+    public Persona invalidPersonId (int idPersona) {
         if (idPersona < 0) {
-            throw new PersonaNotFoundException(idPersona);
+            throw new PersonaNotFoundException(idPersona, HttpStatus.NOT_FOUND);
         }
         return null;
     }
@@ -122,7 +123,7 @@ public class PersonaServiceImpl implements PersonaService {
      * @see #updateEstadoPersonaProducto(List)
      */
     @Override
-    public List<ProductoContratado> viewPersonaProducto (int idPersona) throws PersonaNotFoundException {
+    public List<ProductoContratado> viewPersonaProducto (int idPersona) {
         this.validatePersona(idPersona);
         List<ProductoContratado> listaProductos = this.personaMapper.verProductosContratadosPersona(idPersona);
         this.updateEstadoPersonaProducto(listaProductos);
@@ -189,7 +190,7 @@ public class PersonaServiceImpl implements PersonaService {
      */
     @Override
     @Transactional
-    public void modificarPersona (Persona persona) throws PersonaNotFoundException, DireccionNotFoundException {
+    public void modificarPersona (Persona persona) {
 
         if (persona.isDireccionDomicilioSameAsNotificacion()) {
             persona.setDireccionNotificacion(persona.getDireccionDomicilio());
@@ -214,7 +215,7 @@ public class PersonaServiceImpl implements PersonaService {
      * @see TelefonoMapper
      */
     @Transactional
-    public void modificarTelefono (Persona persona) throws PersonaNotFoundException {
+    public void modificarTelefono (Persona persona){
 
         if (existePersona(persona.getPersonaId())) {
             List<TelefonoContacto> telefonos = persona.getTelefonos();
@@ -243,7 +244,7 @@ public class PersonaServiceImpl implements PersonaService {
      * @return void
      * @see #validateNombre(Persona)
      */
-    public void validatePersonData (Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
+    public void validatePersonData (Persona persona){
         this.validateNombre(persona);
     }
 
@@ -258,12 +259,12 @@ public class PersonaServiceImpl implements PersonaService {
      * @param persona Persona con la informacion referente
      * @return void
      */
-    public void validateNombre (Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException {
+    public void validateNombre (Persona persona){
         if ((persona.getNombre() == null) || persona.getNombre().isEmpty()) {
-            throw new RequiredMissingFieldException();
+            throw new RequiredMissingFieldException(HttpStatus.BAD_REQUEST);
         }
         if (persona.getNombre().length() > 50) {
-            throw new WrongLenghtFieldException("nombre");
+            throw new WrongLenghtFieldException("nombre", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -277,7 +278,7 @@ public class PersonaServiceImpl implements PersonaService {
      * @param personaId Persona con la informacion referente
      * @return void
      */
-    public void validatePersona (int personaId) throws PersonaNotFoundException {
+    public void validatePersona (int personaId) {
         if (!existePersona(personaId)) {
             throw new PersonaNotFoundException();
         }
@@ -296,12 +297,12 @@ public class PersonaServiceImpl implements PersonaService {
      * @see #existePersona(int)
      * @see #existeDireccion(int)
      */
-    private void validatePersonaExistente (Persona persona) throws PersonaNotFoundException, DireccionNotFoundException {
+    private void validatePersonaExistente (Persona persona){
         if (!existePersona(persona.getPersonaId())) {
             throw new PersonaNotFoundException();
         }
         if (!existeDireccion(persona.getDireccionDomicilio().getDireccionId()) || !existeDireccion(persona.getDireccionNotificacion().getDireccionId())) { //Si no existe alguna direcicon
-            throw new DireccionNotFoundException();
+            throw new DireccionNotFoundException(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -315,9 +316,9 @@ public class PersonaServiceImpl implements PersonaService {
      * @return void
      * @see #existeNif(String)
      */
-    public void validateNif (String nif) throws DniFoundException {
+    public void validateNif (String nif)  {
         if (existeNif(nif)) {
-            throw new DniFoundException();
+            throw new DniFoundException(HttpStatus.NOT_FOUND);
         }
     }
 

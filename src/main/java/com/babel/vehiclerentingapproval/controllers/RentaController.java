@@ -21,10 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Esta clase define la documentación Swagger con el métodos para hacer el CRUD (Post) de las Renta
- * y sus rutas para poder acceder desde PostMan.
+ * Esta clase define el endpoint de operaciones con rentas.
  *
- * @author: andres.guijarro@babelgroup.com
+ * @author andres.guijarro@babelgroup.com, ismael.mesa@babelgroup.com, miguel.sdela@babelgroup.com
  */
 
 @Tag(name = "Añadir renta", description = "Endpoint que dado un ID de persona y una renta (ambos en JSON) añade la renta a esa persona a la base de datos.")
@@ -38,7 +37,7 @@ public class RentaController {
     private static final String DESCRIPCION = "Descripcion: ";
     private static final String STATUS = "status: ";
 
-    public RentaController (RentaService rentaService) {
+    public RentaController(RentaService rentaService) {
         this.rentaService = rentaService;
     }
 
@@ -65,28 +64,13 @@ public class RentaController {
     })
     @Parameter(name = "personaId", description = "ID de una persona existente en la base de datos.", required = true)
     @Parameter(name = "renta", description = "Objeto Renta a insertar", required = true)
-    public ResponseEntity<Object> addRenta (@RequestBody Renta renta) {
+    public ResponseEntity<Object> addRenta(@RequestBody Renta renta) {
         Renta rentaActualizada;
         Map<String, Object> map = new HashMap<>();
-        try {
-            rentaActualizada = this.rentaService.addRenta(renta);
-        } catch (ProfesionNotFoundException e) {
-            map.put(STATUS, HttpStatus.BAD_REQUEST);
-            map.put(DESCRIPCION, "Profesion no encontrada en la base de datos");
-            return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
-        } catch (PersonaNotFoundException e) {
-            map.put(STATUS, HttpStatus.NOT_FOUND);
-            map.put(DESCRIPCION, "Persona no encontrada en la base de datos");
-            return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
-        } catch (RentaFoundException e) {
-            map.put(STATUS, HttpStatus.NOT_ACCEPTABLE);
-            map.put(DESCRIPCION, "La renta ya existe en la base de datos");
-            return new ResponseEntity<>(map, HttpStatus.NOT_ACCEPTABLE);
-        }
+        rentaActualizada = this.rentaService.addRenta(renta);
         map.put(STATUS, HttpStatus.OK);
         map.put(DESCRIPCION, "Renta añadida.");
         map.put("id", rentaActualizada.getRentaId());
         return new ResponseEntity<>(map, HttpStatus.OK);
-
     }
 }

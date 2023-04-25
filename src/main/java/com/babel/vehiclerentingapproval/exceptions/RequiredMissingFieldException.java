@@ -12,13 +12,12 @@ import org.springframework.http.HttpStatus;
 public class RequiredMissingFieldException extends RequestApiValidationException {
 
     private static final String EXTERNAL_MESSAGE = "El nombre de la persona no puede estar vacio";
-    private static final HttpStatus statusCode = HttpStatus.BAD_REQUEST;
 
     /**
      * Crea una nueva instancia de RequiredMissingFieldException con el mensaje de error y el
      * código de estado HTTP predeterminados.
      */
-    public RequiredMissingFieldException ( ) {
+    public RequiredMissingFieldException (HttpStatus statusCode ) {
         super(EXTERNAL_MESSAGE, statusCode);
     }
 }

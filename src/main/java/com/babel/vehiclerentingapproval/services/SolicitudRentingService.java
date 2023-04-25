@@ -1,11 +1,13 @@
 package com.babel.vehiclerentingapproval.services;
 
 import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudNotFoundException;
+import com.babel.vehiclerentingapproval.exceptions.FailedSendingEmail;
 import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import com.babel.vehiclerentingapproval.exceptions.SolicitudRentingNotFoundException;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 /**
@@ -24,7 +26,7 @@ public interface SolicitudRentingService {
      * @return SolicitudRenting agregada y actualizada con el ID generado en el sistema
      * @throws RequestApiValidationException si la solicitud no cumple con los criterios de validación
      */
-    SolicitudRenting addSolicitudRenting (SolicitudRenting solicitudRenting) throws RequestApiValidationException;
+    int addSolicitudRenting (SolicitudRenting solicitudRenting);
 
     /**
      * Método que devuelve el estado de una solicitud
@@ -34,7 +36,7 @@ public interface SolicitudRentingService {
      * @throws RequestApiValidationException si la id de la solicitud no existe, el codigo de resolucion es nulo, o no es valido
      * @see RequestApiValidationException
      */
-    public String verEstadoSolicitud (int idSolicitud) throws RequestApiValidationException;
+    public String verEstadoSolicitud (String idSolicitud) throws RequestApiValidationException;
 
     /**
      * Método que devuelve un objeto SolicitudRenting encontrado por su ID
@@ -53,7 +55,7 @@ public interface SolicitudRentingService {
      * @throws EstadoSolicitudNotFoundException
      * @throws SolicitudRentingNotFoundException
      */
-    void modificaEstadoSolicitud (Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws EstadoSolicitudNotFoundException, SolicitudRentingNotFoundException;
+    void modificaEstadoSolicitud (Integer solicitudId, TipoResultadoSolicitud nuevoEstado) throws EstadoSolicitudNotFoundException, SolicitudRentingNotFoundException, FailedSendingEmail, MessagingException;
 
     /**
      * Interfaz que enlaza la implementacion del servicio de {@link com.babel.vehiclerentingapproval.services.impl.SolicitudRentingServiceImpl}

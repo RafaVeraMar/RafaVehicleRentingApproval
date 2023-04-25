@@ -1,8 +1,10 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
 import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudInvalidException;
+import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
 import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,9 +34,9 @@ public class CodigoResolucionValidatorImpl implements CodigoResolucionValidator 
      * @throws EstadoSolicitudInvalidException si el código de resolución no es válido
      */
     @Override
-    public void validarCodResolucion(String codResolucion) throws EstadoSolicitudInvalidException {
+    public void validarCodResolucion(String codResolucion) {
         if(this.tipoResultadoSolicitudMapper.codigoValido(codResolucion) != 1){
-            throw new EstadoSolicitudInvalidException();
+            throw new EstadoSolicitudInvalidException(HttpStatus.BAD_REQUEST);
         }
     }
 }
