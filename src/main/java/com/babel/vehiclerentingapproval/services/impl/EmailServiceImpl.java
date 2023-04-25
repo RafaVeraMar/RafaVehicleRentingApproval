@@ -1,8 +1,12 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
 
+import com.babel.vehiclerentingapproval.exceptions.EmailNotSentException;
+import com.babel.vehiclerentingapproval.exceptions.FailedSendingEmail;
 import com.babel.vehiclerentingapproval.services.EmailService;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +37,8 @@ public class EmailServiceImpl implements EmailService {
      * @param destino el correo electrónico del destinatario
      * @param asunto  el asunto del correo electrónico
      */
-    public boolean sendMail(String mensaje, String destino, String asunto) throws MessagingException {
+    @SneakyThrows
+    public boolean sendMail(String mensaje, String destino, String asunto)  {
         //usuario y contraseña del usuario de google que vayamos a utilizar
         var username = "solicitudrenting@gmail.com";
         var psw = "hswrinyhboucvsss";
@@ -69,9 +74,9 @@ public class EmailServiceImpl implements EmailService {
             message.setText(mensage);
             Transport.send(message);
             return true;
-        } catch (MessagingException e) {
+        } catch (EmailNotSentException e) {
             log.warn("EL Email no ha sido enviado");
-            throw new MessagingException(e.getMessage());
+            throw new EmailNotSentException("No se ha podido enviar el email", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
