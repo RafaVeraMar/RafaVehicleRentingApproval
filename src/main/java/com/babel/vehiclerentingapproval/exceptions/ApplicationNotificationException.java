@@ -3,39 +3,39 @@ package com.babel.vehiclerentingapproval.exceptions;
 import org.springframework.http.HttpStatus;
 
 /**
- * La clase RequestApiValidationException representa una excepción personalizada para la validación
- * de solicitudes de API. Esta excepción es padre del resto de excepciones personalizadas resultado de las
- * validaciones de la aplicación. Extiende la clase ApplicationException y contiene información adicional
+ * La clase ApplicationNotificationException representa una excepción personalizada para el manejo de errores de la aplicación.
+ * Esta excepción es padre del resto de excepciones personalizadas encargadas del manejo de errores.
+ * Extiende la clase ApplicationException y contiene información adicional
  * como un mensaje de error específico y un código de estado HTTP.
  * @see ApplicationException
  */
-public class RequestApiValidationException extends ApplicationException {
+public class ApplicationNotificationException extends ApplicationException {
 
     private final String externalMessage;
     private final HttpStatus statusCode;
 
     /**
-     * Crea una nueva instancia de RequestApiValidationException con el mensaje de error y el código
+     * Crea una nueva instancia de ApplicationNotificationException con el mensaje de error y el código
      * de estado HTTP proporcionados.
      *
      * @param externalMessage el mensaje de error específico
      * @param statusCode      el código de estado HTTP asociado
      */
-    public RequestApiValidationException (String externalMessage, HttpStatus statusCode) {
+    public ApplicationNotificationException (String externalMessage, HttpStatus statusCode) {
         super(externalMessage,statusCode);
         this.externalMessage = externalMessage;
         this.statusCode = statusCode;
     }
 
     /**
-     * Crea una nueva instancia de RequestApiValidationException con el mensaje de error formateado,
+     * Crea una nueva instancia de ApplicationNotificationException con el mensaje de error formateado,
      * el código de estado HTTP y los argumentos proporcionados para formatear el mensaje de error.
      *
      * @param externalMessage el mensaje de error específico
      * @param statusCode      el código de estado HTTP asociado
      * @param args            los argumentos utilizados para formatear el mensaje de error
      */
-    public RequestApiValidationException (String externalMessage, HttpStatus statusCode, String[] args) {
+    public ApplicationNotificationException (String externalMessage, HttpStatus statusCode, String[] args) {
         super(externalMessage,statusCode,args);
         this.externalMessage = String.format(externalMessage, args);
         this.statusCode = statusCode;
