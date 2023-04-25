@@ -4,6 +4,7 @@ import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudInvalidExcepti
 import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
 import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
  * @see TipoResultadoSolicitudMapper
  */
 @Service
+@Log4j2
 public class CodigoResolucionValidatorImpl implements CodigoResolucionValidator {
     TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
 
@@ -35,8 +37,12 @@ public class CodigoResolucionValidatorImpl implements CodigoResolucionValidator 
      */
     @Override
     public void validarCodResolucion(String codResolucion) {
+        log.info("Entrando método validarCodResolucion");
         if(this.tipoResultadoSolicitudMapper.codigoValido(codResolucion) != 1){
+            log.warn("Nueva excepción manejada, estado de solicitud inválido");
             throw new EstadoSolicitudInvalidException(HttpStatus.BAD_REQUEST);
         }
+        log.info("Saliendo método validarCodResolucion sin errores");
+
     }
 }
