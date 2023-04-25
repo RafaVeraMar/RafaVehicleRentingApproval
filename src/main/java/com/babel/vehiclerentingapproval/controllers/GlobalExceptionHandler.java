@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseEntity<Object> handleException (Exception e) {
-        return new ResponseEntity<>(Map.of(DESCRIPCION, "Error: Ha ocurrido un error interno en el servidor"), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(Map.of(DESCRIPCION, "Error: Ha ocurrido un error. Contacte con el equipo ING BOOTCAMP."), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
