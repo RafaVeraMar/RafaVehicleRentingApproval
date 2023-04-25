@@ -2,6 +2,7 @@ package com.babel.vehiclerentingapproval.services.impl;
 
 
 import com.babel.vehiclerentingapproval.services.EmailService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.Properties;
  * @author enrique.munoz@babelgroup.com
  */
 @Service
+@Log4j2
 public class EmailServiceImpl implements EmailService {
     final JavaMailSender mailSender;
 
@@ -68,6 +70,7 @@ public class EmailServiceImpl implements EmailService {
             Transport.send(message);
             return true;
         } catch (MessagingException e) {
+            log.warn("EL Email no ha sido enviado");
             throw new MessagingException(e.getMessage());
         }
 
