@@ -70,6 +70,7 @@ public class PersonaServiceImpl implements PersonaService {
     @Override
     @Transactional
     public Persona addPersona (Persona persona) {
+        log.info("Procesando la adicción de una persona");
         this.validatePersonData(persona);
         this.validateNif(persona.getNif());
 
@@ -80,6 +81,7 @@ public class PersonaServiceImpl implements PersonaService {
         persona.setNacionalidad(pais);
         this.personaMapper.insertPersona(persona);
         this.addTelefonos(persona);
+        log.info("Proceso de de adicción de una persona finalizado");
         return persona;
     }
 
@@ -91,9 +93,11 @@ public class PersonaServiceImpl implements PersonaService {
      * @see TelefonoMapper
      */
     private void addTelefonos (Persona persona) {
+        log.info("Procesando la adicción de los teléfonos de una persona");
         for (TelefonoContacto telefonoContacto : persona.getTelefonos()) {
             this.telefonoMapper.addTelefono(telefonoContacto, persona);
         }
+        log.info("Proceso de adicción de los teléfonos de una persona finalizado");
     }
 
     /**
@@ -105,9 +109,11 @@ public class PersonaServiceImpl implements PersonaService {
      */
     @Override
     public Persona invalidPersonId (int idPersona) {
+        log.info("Procesando la validación de existencia de una persona");
         if (idPersona < 0) {
             throw new PersonaNotFoundException(idPersona, HttpStatus.NOT_FOUND);
         }
+        log.info("Proceso de validación de existencia de una persona finalizado");
         return null;
     }
 
@@ -126,11 +132,11 @@ public class PersonaServiceImpl implements PersonaService {
      */
     @Override
     public List<ProductoContratado> viewPersonaProducto (int idPersona) {
-        //log.info("Procesando los productos contratados por persona");
+        log.info("Procesando la visualización productos contratados por persona");
         this.validatePersona(idPersona);
         List<ProductoContratado> listaProductos = this.personaMapper.verProductosContratadosPersona(idPersona);
         this.updateEstadoPersonaProducto(listaProductos);
-        //log.info("Proceso finalizado");
+        log.info("Proceso de visualización productos contratados por persona finalizado");
         return listaProductos;
     }
 
@@ -141,6 +147,7 @@ public class PersonaServiceImpl implements PersonaService {
      * @return void.
      */
     public void updateEstadoPersonaProducto (List<ProductoContratado> listaProductoPersona) {
+        log.info("Procesando la actualización de los estados de los productos contratados de una persona");
         for (ProductoContratado productoContratado : listaProductoPersona) {
             if (productoContratado.getFechaBaja() == null) {
                 productoContratado.setEstado(EstadoProductoContratado.VIGENTE);
@@ -148,6 +155,7 @@ public class PersonaServiceImpl implements PersonaService {
                 productoContratado.setEstado(EstadoProductoContratado.VENCIDO);
             }
         }
+        log.info("Proceso de actualización de los estados de los productos contratados de una persona finalizado");
     }
 
     /**
@@ -161,7 +169,7 @@ public class PersonaServiceImpl implements PersonaService {
      * @see DireccionMapper
      */
     private Persona addPersonaDireccion (Persona persona) {
-
+        log.info("Procesando la adicción de la dirección de una persona");
         var tipoVia = this.tipoViaMapper.getTipoVia(persona.getDireccionDomicilio().getTipoViaId().getTipoViaId());
         persona.getDireccionDomicilio().setTipoViaId(tipoVia);
         var provincia = this.provinciaMapper.getProvincia(persona.getDireccionDomicilio().getProvincia().getCodProvincia());
@@ -176,6 +184,7 @@ public class PersonaServiceImpl implements PersonaService {
             persona.getDireccionNotificacion().setTipoViaId(tipoVia);
             this.direccionMapper.insertDireccion(persona.getDireccionNotificacion());
         }
+        log.info("Proceso de adicción de la dirección de una persona finalizado");
         return persona;
     }
 
@@ -195,7 +204,7 @@ public class PersonaServiceImpl implements PersonaService {
     @Override
     @Transactional
     public void modificarPersona (Persona persona) {
-
+        log.info("Procesando la modificación de los datos de una persona");
         if (persona.isDireccionDomicilioSameAsNotificacion()) {
             persona.setDireccionNotificacion(persona.getDireccionDomicilio());
         }
@@ -209,6 +218,7 @@ public class PersonaServiceImpl implements PersonaService {
         //Insertamos el resto de cambios
         this.personaMapper.updatePersona(persona);
         this.modificarTelefono(persona);
+        log.info("Proceso de modificación de los datos de una persona finalizado");
     }
 
     /**
@@ -220,7 +230,7 @@ public class PersonaServiceImpl implements PersonaService {
      */
     @Transactional
     public void modificarTelefono (Persona persona){
-
+        log.info("Procesando la modificación de los teléfonos de una persona");
         if (existePersona(persona.getPersonaId())) {
             List<TelefonoContacto> telefonos = persona.getTelefonos();
             List<TelefonoContacto> telefonosAntiguos = telefonoMapper.listarTelefonos(persona.getPersonaId());
@@ -234,6 +244,7 @@ public class PersonaServiceImpl implements PersonaService {
         } else {
             throw new PersonaNotFoundException();
         }
+        log.info("Proceso de modificación de los teléfonos de una persona finalizado");
     }
 
     /**
@@ -249,7 +260,9 @@ public class PersonaServiceImpl implements PersonaService {
      * @see #validateNombre(Persona)
      */
     public void validatePersonData (Persona persona){
+        log.info("Procesando la validación de los datos de una persona");
         this.validateNombre(persona);
+        log.info("Proceso de validación de los datos de una persona finalizado");
     }
 
     /**
@@ -264,12 +277,14 @@ public class PersonaServiceImpl implements PersonaService {
      * @return void
      */
     public void validateNombre (Persona persona){
+        log.info("Procesando la validación del nombre de una persona");
         if ((persona.getNombre() == null) || persona.getNombre().isEmpty()) {
             throw new RequiredMissingFieldException(HttpStatus.BAD_REQUEST);
         }
         if (persona.getNombre().length() > 50) {
             throw new WrongLenghtFieldException("nombre", HttpStatus.BAD_REQUEST);
         }
+        log.info("Proceso de validación del nombre de una persona finalizado");
     }
 
     /**
@@ -283,9 +298,11 @@ public class PersonaServiceImpl implements PersonaService {
      * @return void
      */
     public void validatePersona (int personaId) {
+        log.info("Procesando la validación de los datos de una persona");
         if (!existePersona(personaId)) {
             throw new PersonaNotFoundException();
         }
+        log.info("Proceso de validación de los datos de una persona finalizado");
     }
 
     /**
@@ -302,12 +319,14 @@ public class PersonaServiceImpl implements PersonaService {
      * @see #existeDireccion(int)
      */
     private void validatePersonaExistente (Persona persona){
+        log.info("Procesando la validación de la existencia de una persona");
         if (!existePersona(persona.getPersonaId())) {
             throw new PersonaNotFoundException();
         }
         if (!existeDireccion(persona.getDireccionDomicilio().getDireccionId()) || !existeDireccion(persona.getDireccionNotificacion().getDireccionId())) { //Si no existe alguna direcicon
             throw new DireccionNotFoundException(HttpStatus.NOT_FOUND);
         }
+        log.info("Proceso de validación de la existencia de una persona finalizado");
     }
 
     /**
@@ -321,9 +340,11 @@ public class PersonaServiceImpl implements PersonaService {
      * @see #existeNif(String)
      */
     public void validateNif (String nif)  {
+        log.info("Procesando la validación del dni de una persona");
         if (existeNif(nif)) {
             throw new DniFoundException(HttpStatus.NOT_FOUND);
         }
+        log.info("Proceso de validación del dni de una persona finalizado");
     }
 
     /**
@@ -334,6 +355,7 @@ public class PersonaServiceImpl implements PersonaService {
      * @see PersonaMapper
      */
     public boolean existePersona (int personaId) {
+        log.info("Procesando la validación del id de una persona");
         return personaMapper.existePersona(personaId) != 0;
     }
 
@@ -345,6 +367,7 @@ public class PersonaServiceImpl implements PersonaService {
      * @see DireccionMapper
      */
     public boolean existeDireccion (int direccionId) {
+        log.info("Procesando la validación del id de la dirección de una persona");
         return this.direccionMapper.existeDireccion(direccionId) != 0;
     }
 
@@ -356,6 +379,7 @@ public class PersonaServiceImpl implements PersonaService {
      * @see PersonaMapper
      */
     public boolean existeNif (String nif) {
+        log.info("Procesando la comprobación de existencia del nif de una persona");
         return this.personaMapper.existeNif(nif) != 0;
     }
 }
