@@ -4,6 +4,7 @@ import com.babel.vehiclerentingapproval.exceptions.ProfesionNotFoundException;
 import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.ProfesionMapper;
 import com.babel.vehiclerentingapproval.services.ProfesionService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
  *
  * @author andres.guijarro@babelgroup.com
  */
+@Log4j2
 @Service
 public class ProfesionServiceImpl implements ProfesionService {
 
@@ -29,6 +31,7 @@ public class ProfesionServiceImpl implements ProfesionService {
      */
     public void validateProfesion (int profesionId){
         if (!existeProfesion(profesionId)) {
+            log.error("Profesion no valida");
             throw new ProfesionNotFoundException(HttpStatus.NOT_FOUND);
         }
     }
@@ -41,6 +44,7 @@ public class ProfesionServiceImpl implements ProfesionService {
      */
 
     public boolean existeProfesion (int profesionId) {
+        log.info("Comprobando si existe la profesion");
         return this.profesionMapper.existeProfesion(profesionId) != 0;
     }
 
