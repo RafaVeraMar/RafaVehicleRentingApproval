@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -25,6 +26,7 @@ import java.util.Map;
 @Tag(name = "Listar tipos de solicitudes", description = "Endpoint que devuelve una lista de los tipos de solicitudes existentes en la base de datos.")
 @ControllerAdvice
 @RestController
+@Log4j2
 public class ResolucionSolicitudesController {
     public static final String DESCRIPCION = "descripcion";
     public static final String STATUS = "status";
@@ -52,9 +54,7 @@ public class ResolucionSolicitudesController {
             @ApiResponse(responseCode = "204", description = "No existen tipos de solicitudes en la base de datos.", content = {@Content(mediaType = "application/json")})
     })
     public ResponseEntity<Object> listarTiposResolucion() throws ResolucionSolicitudesNotFoundException {
-        Map<String, Object> map = new HashMap<>();
-        map.put(STATUS, HttpStatus.OK);
-        map.put(DESCRIPCION, "listarTiposResolucion correcto");
+        log.info("Entrando en listarTiposResolucionController");
         return ResponseEntity.ok(this.resolucionSolicitudesService.getTipoResolucionesSolicitudes());
     }
 }

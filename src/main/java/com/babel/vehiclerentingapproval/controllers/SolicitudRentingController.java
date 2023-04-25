@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ import java.util.Map;
 @RestController
 @Tag(name = "Operaciones con Solicitud Renting", description = "Endpoint permite operar con las solicitudes de renting.")
 @RequestMapping("/solicitud")
+@Log4j2
 public class SolicitudRentingController {
 
     private static final String STATUS = "Status";
@@ -56,10 +58,10 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "400", description = "Los datos de entrada tienen que ser mayor que 0", content = @Content(mediaType = "application/json")),
     })
     public ResponseEntity<Object> addSolicitudRenting (@RequestBody SolicitudRenting solicitudRenting) {
-        Map<String, Object> respuesta = new HashMap<>();
+        log.info("Entrando en addSolicitudRenting en SolicitudRentingController");
         solicitud.addSolicitudRenting(solicitudRenting);
-        respuesta.put("id", solicitudRenting.getSolicitudId());
-        return new ResponseEntity<>(respuesta, HttpStatus.CREATED);
+        log.info("Saliendo de addSolicitudRenting en SolicitudRentingController");
+        return new ResponseEntity<>(Map.of("id",solicitudRenting.getSolicitudId()), HttpStatus.CREATED);
     }
 
     /**
@@ -79,9 +81,10 @@ public class SolicitudRentingController {
     })
     @Parameter(name = "id", description = "ID de la solicitud a consultar", required = true)
     public ResponseEntity<Object> verEstadoSolicitud (@PathVariable String id) {
+        log.info("Entrando en verEstadoSolicitud en SolicitudRentingController");
         String estado = this.solicitud.verEstadoSolicitud(id);
-        Map<String, Object> respuesta = Collections.singletonMap("Estado", estado);
-        return new ResponseEntity<>(respuesta,HttpStatus.OK);
+        log.info("Saliendo de verEstadoSolicitud en SolicitudRentingController");
+        return new ResponseEntity<>(Collections.singletonMap("Estado", estado),HttpStatus.OK);
     }
 
     /**
@@ -97,7 +100,8 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "404", description = "ID de solicitud no encontrado", content = @Content(mediaType = "application/json"))
     })
     @Parameter(name = "id", description = "ID para comprobar si existe la solicitud", required = true)
-    public ResponseEntity<Object> muestraSolicitudPorId (@PathVariable("id") int id) throws RequestApiValidationException {
+    public ResponseEntity<Object> muestraSolicitudPorId (@PathVariable("id") int id) {
+        log.info("Entrando en muestraSolicitudPorID en SolicitudRentingController");
         return solicitud != null ? ResponseEntity.ok(Collections.singletonMap("Solicitud", this.solicitud.getSolicitudById(id))) : ResponseEntity.notFound().build();
     }
 
@@ -117,7 +121,9 @@ public class SolicitudRentingController {
     @Parameter(name = "id", description = "ID de la solicitud a cancelar", required = true)
     @PutMapping("/{id}")
     public ResponseEntity<Object> cancelarSolicitud (@PathVariable int id) {
+        log.info("Entrando en cancelarSolicitud en SolicitudRentingController");
         this.solicitud.cancelarSolicitud(id);
+        log.info("Saliendo de cancelarSolicitud en SolicitudRentingController");
         return ResponseEntity.ok(Collections.singletonMap("descripcion", "Solicitud cancelada"));
     }
 
@@ -136,12 +142,10 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "408", description = "Estado de solicitud no valido.", content = {@Content(mediaType = "application/json")})
     })
     public ResponseEntity<Object> updateEstadoSolicitud (@PathVariable Integer solicitudId, @RequestBody TipoResultadoSolicitud nuevoEstado) throws MessagingException {
-        Map<String, Object> respuestaJson = new HashMap<>();
+        log.info("Entrando en updateEstadoSolicitud en SolicitudRentingController");
         solicitud.modificaEstadoSolicitud(solicitudId, nuevoEstado);
-        respuestaJson.put(STATUS, HttpStatus.OK);
-        respuestaJson.put("Id", solicitudId);
-        respuestaJson.put(DESCRIPCION, "La solicitud ha sido modificada y se ha notificado al usuario");
-        return new ResponseEntity<>(respuestaJson, (HttpStatus)respuestaJson.get(STATUS));
+        log.info("Saliendo de updateEstadoSolicitud en SolicitudRentingController");
+        return new ResponseEntity<>(Collections.singletonMap("Id", solicitudId), HttpStatus.OK);
     }
 }
 
