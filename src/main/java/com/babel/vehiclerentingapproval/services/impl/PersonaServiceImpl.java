@@ -8,6 +8,7 @@ import com.babel.vehiclerentingapproval.models.ProductoContratado;
 import com.babel.vehiclerentingapproval.models.TelefonoContacto;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ import java.util.List;
  * @see ProvinciaMapper
  * @see PaisMapper
  */
+@Log4j2
 @Service
 public class PersonaServiceImpl implements PersonaService {
 
@@ -124,9 +126,11 @@ public class PersonaServiceImpl implements PersonaService {
      */
     @Override
     public List<ProductoContratado> viewPersonaProducto (int idPersona) {
+        //log.info("Procesando los productos contratados por persona");
         this.validatePersona(idPersona);
         List<ProductoContratado> listaProductos = this.personaMapper.verProductosContratadosPersona(idPersona);
         this.updateEstadoPersonaProducto(listaProductos);
+        //log.info("Proceso finalizado");
         return listaProductos;
     }
 

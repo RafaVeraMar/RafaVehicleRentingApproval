@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -78,6 +79,7 @@ public class PersonaController {
             @ApiResponse(responseCode = "404", description = "La persona no existe.", content = {@Content(mediaType = "application/json")}),
     })
     public ResponseEntity<Object> viewPersonaProducto(@PathVariable("id") int id) {
+
         List<ProductoContratado> lista = this.personaService.viewPersonaProducto(id);
         Map<String, Object> map = new HashMap<>();
         map.put("Lista de productos contratados por una persona", lista);
