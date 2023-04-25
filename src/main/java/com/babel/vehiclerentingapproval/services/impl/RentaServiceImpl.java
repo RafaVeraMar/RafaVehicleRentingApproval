@@ -6,6 +6,7 @@ import com.babel.vehiclerentingapproval.persistance.database.mappers.RentaMapper
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.ProfesionService;
 import com.babel.vehiclerentingapproval.services.RentaService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
  * @see RentaService
  */
 @Service
+@Log4j2
 public class RentaServiceImpl implements RentaService {
     RentaMapper rentaMapper;
 
@@ -25,9 +27,11 @@ public class RentaServiceImpl implements RentaService {
     ProfesionService profesionService;
 
     public RentaServiceImpl (RentaMapper rentaMapper, PersonaService personaService, ProfesionService profesionService) {
+        log.info("En el constructor de RentaServiceImpl");
         this.rentaMapper = rentaMapper;
         this.personaService = personaService;
         this.profesionService = profesionService;
+        log.info("Saliendo del constructor de RentaServiceImpl");
     }
 
 
@@ -42,10 +46,12 @@ public class RentaServiceImpl implements RentaService {
      */
     @Override
     public Renta addRenta (Renta renta) {
+        log.info("Entrando en addRenta");
         this.profesionService.validateProfesion(renta.getProfesion().getProfesionId());
         this.personaService.validatePersona(renta.getPersona().getPersonaId());
         this.validateRenta(renta.getRentaId());
         this.rentaMapper.addRenta(renta);
+        log.info("Saliendo de addRenta");
         return renta;
     }
 
@@ -56,9 +62,12 @@ public class RentaServiceImpl implements RentaService {
      * @throws RentaFoundException lanza una excepcion cuando la renta ya existe en la base de datos.
      */
     public void validateRenta (int rentaId) {
+        log.info("Entrando en validateRenta");
         if (this.existeRenta(rentaId)) {
+            log.warn("La renta no existe");
             throw new RentaFoundException(HttpStatus.NOT_FOUND);
         }
+        log.info("Saliendo de validateRenta");
     }
 
     /**
@@ -67,6 +76,7 @@ public class RentaServiceImpl implements RentaService {
      * @param rentaId es el id de la renta
      */
     public boolean existeRenta (int rentaId) {
+        log.info("Entrando en existeRenta");
         return this.rentaMapper.existeRenta(rentaId) != 0;
     }
 

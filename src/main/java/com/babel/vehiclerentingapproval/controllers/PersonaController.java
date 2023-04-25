@@ -25,6 +25,7 @@ import java.util.Map;
  */
 @Tag(name = "Operaciones con persona", description = "Endpoint para operar con una persona en la base de datos a partir de unos datos de entrada.")
 @RestController
+@Log4j2
 public class PersonaController {
 
 
@@ -56,7 +57,9 @@ public class PersonaController {
             @ApiResponse(responseCode = "500", description = "Error del servidor.", content = {@Content(mediaType = "application/json")})
     })
     public ResponseEntity<Object> addPersona(@RequestBody Persona persona) {
+        log.info("Entrando en addPersona");
         var personaCreada = this.personaService.addPersona(persona);
+        log.info("Saliendo de addPersona");
         return new ResponseEntity<>(Map.of("id",personaCreada.getPersonaId()),HttpStatus.CREATED);
         
     }
@@ -79,10 +82,11 @@ public class PersonaController {
             @ApiResponse(responseCode = "404", description = "La persona no existe.", content = {@Content(mediaType = "application/json")}),
     })
     public ResponseEntity<Object> viewPersonaProducto(@PathVariable("id") int id) {
-
+        log.info("Entrando en viewPersonaProducto");
         List<ProductoContratado> lista = this.personaService.viewPersonaProducto(id);
         Map<String, Object> map = new HashMap<>();
         map.put("Lista de productos contratados por una persona", lista);
+        log.info("Saliendo de viewPersonaProducto");
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
@@ -108,8 +112,10 @@ public class PersonaController {
     @Operation(summary = "Modificar los datos de una persona", description = "Modifica los datos de una persona en la base de datos.")
     @PutMapping("/persona/{id}")
     public ResponseEntity<Object> modificarPersona(@RequestBody Persona persona, @PathVariable int id) {
+        log.info("Entrando en modificarPersona");
         persona.setPersonaId(id);
         this.personaService.modificarPersona(persona);
+        log.info("Saliendo de modificarPersona");
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 

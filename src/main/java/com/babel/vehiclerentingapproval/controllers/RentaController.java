@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ import java.util.Map;
 
 @Tag(name = "Añadir renta", description = "Endpoint que dado un ID de persona y una renta (ambos en JSON) añade la renta a esa persona a la base de datos.")
 @RestController
+@Log4j2
 public class RentaController {
 
     /**
@@ -65,12 +67,14 @@ public class RentaController {
     @Parameter(name = "personaId", description = "ID de una persona existente en la base de datos.", required = true)
     @Parameter(name = "renta", description = "Objeto Renta a insertar", required = true)
     public ResponseEntity<Object> addRenta(@RequestBody Renta renta) {
+        log.info("Entrando en addRenta");
         Renta rentaActualizada;
         Map<String, Object> map = new HashMap<>();
         rentaActualizada = this.rentaService.addRenta(renta);
         map.put(STATUS, HttpStatus.OK);
         map.put(DESCRIPCION, "Renta añadida.");
         map.put("id", rentaActualizada.getRentaId());
+        log.info("Saliendo de addRenta");
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }
