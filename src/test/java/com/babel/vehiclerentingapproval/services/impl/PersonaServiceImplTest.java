@@ -4,6 +4,7 @@ import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,8 +14,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
@@ -28,7 +33,7 @@ class PersonaServiceImplTest {
     TelefonoMapper telefonoMapper;
 
     @BeforeEach
-    void setupAll ( ) {
+    void setupAll() {
         personaMapper = Mockito.mock(PersonaMapper.class);
         when(personaMapper.existePersona(100)).thenReturn(0); //No existe la persona
         when(personaMapper.existePersona(1)).thenReturn(1); //Existe la persona
@@ -48,8 +53,8 @@ class PersonaServiceImplTest {
     }
 
     @Test
-    void addPersona_should_throwRequiredMissingFieldException_when_nombreIsNull ( ) {
-        Assertions.assertThrows(Exception.class, ( ) -> {
+    void addPersona_should_throwRequiredMissingFieldException_when_nombreIsNull() {
+        assertThrows(Exception.class, () -> {
             Persona persona = new Persona();
 
             persona.setNombre(null);
@@ -58,19 +63,18 @@ class PersonaServiceImplTest {
     }
 
     @Test
-    void addPersona_should_throwWrongLenghtFieldException_when_nombreIsBiggerThan50 ( ) {
-        Assertions.assertThrows(WrongLenghtFieldException.class, ( ) -> {
-            Persona persona = new Persona();
-
-            persona.setNombre("nombre de persona muy largo de mas de cincuenta caracteres");
+    void addPersona_should_throwWrongLenghtFieldException_when_nombreIsBiggerThan50() {
+        Persona persona = new Persona();
+        persona.setNombre("nombre de persona muy largo de mas de cincuenta caracteres");
+        assertThrows(WrongLenghtFieldException.class, () -> {
             this.personaService.addPersona(persona);
         });
     }
 
 
     @Test
-    void addPersona_should_throwRequiredMissingFieldException_when_apellido1Null ( ) {
-        Assertions.assertThrows(Exception.class, ( ) -> {
+    void addPersona_should_throwRequiredMissingFieldException_when_apellido1Null() {
+        assertThrows(Exception.class, () -> {
             Persona persona = new Persona();
 
             persona.setApellido1(null);
@@ -79,8 +83,8 @@ class PersonaServiceImplTest {
     }
 
     @Test
-    void addPersona_should_throwRequiredMissingFieldException_when_nifNull ( ) {
-        Assertions.assertThrows(Exception.class, ( ) -> {
+    void addPersona_should_throwRequiredMissingFieldException_when_nifNull() {
+        assertThrows(Exception.class, () -> {
             Persona persona = new Persona();
 
             persona.setNif(null);
@@ -90,10 +94,10 @@ class PersonaServiceImplTest {
 
 
     @Test
-    void addPersona_should_not_anyExceptions_when_personaDataIsCorrect ( ) {
+    void addPersona_should_not_anyExceptions_when_personaDataIsCorrect() {
         when(paisMapper.getPais(anyString())).thenReturn(new Pais("ES", 1, "ES", "ESPAÑA", 1));
 
-        Assertions.assertDoesNotThrow(( ) -> {
+        assertDoesNotThrow(() -> {
             Persona persona = createPersona();
 
             this.personaService.addPersona(persona);
@@ -101,71 +105,81 @@ class PersonaServiceImplTest {
     }
 
     @Test
-    void modificarPersona_should_throwPersonaNotFoundException_when_personaNoExisteEnBaseDeDatos ( ) {
-        Assertions.assertThrows(PersonaNotFoundException.class, ( ) -> {
-            Persona persona = new Persona();
-            persona.setPersonaId(100); //Persona no existente
+    void modificarPersona_should_throwPersonaNotFoundException_when_personaNoExisteEnBaseDeDatos() {
+        Persona persona = new Persona();
+        persona.setPersonaId(100); //Persona no existente
+        assertThrows(PersonaNotFoundException.class, () -> {
             personaService.modificarPersona(persona);
         });
     }
 
     @Test
-    void modificarPersona_should_throwDireccionNotFoundException_when_direccionNoExisteEnBaseDeDatos ( ) {
-        Assertions.assertThrows(DireccionNotFoundException.class, ( ) -> {
-            Persona persona = new Persona();
+    void modificarPersona_should_throwDireccionNotFoundException_when_direccionNoExisteEnBaseDeDatos() {
+        Persona persona = new Persona();
 
-            Direccion direccion = new Direccion();
-            direccion.setDireccionId(1); //Direccion no existente
-
-            persona.setPersonaId(1); //Persona existente
-
-            persona.setDireccionDomicilio(direccion);
-            persona.setDireccionNotificacion(direccion);
-
+        Direccion direccion = new Direccion();
+        direccion.setDireccionId(1); //Direccion no existente
+        persona.setPersonaId(1); //Persona existente
+        persona.setDireccionDomicilio(direccion);
+        persona.setDireccionNotificacion(direccion);
+        assertThrows(DireccionNotFoundException.class, () -> {
             personaService.modificarPersona(persona);
         });
     }
 
     @Test
-    void modificarPersona_should_not_throwAnyException_when_DatosSonCorrectos ( ) {
+    void modificarPersona_should_not_throwAnyException_when_DatosSonCorrectos() {
         when(direccionMapper.updateDireccion(any())).thenReturn(1);
         when(direccionMapper.existeDireccion(anyInt())).thenReturn((1));
         when(personaMapper.existePersona(anyInt())).thenReturn(1);
 
-        Assertions.assertDoesNotThrow(( ) -> {
+        assertDoesNotThrow(() -> {
             Persona persona = createPersona();
 
             this.personaService.modificarPersona(persona);
         });
 
     }
-
+/*
     @Test
-    void modificarTelefono_should_throwPersonaNotFoundException_when_idPersonaNoExisteEnBaseDeDatos ( ) {
+    void modificarTelefono_should_throwPersonaNotFoundException_when_idPersonaNoExisteEnBaseDeDatos() {
 
         when(personaMapper.existePersona(anyInt())).thenReturn(0);
 
-        Assertions.assertThrows(PersonaNotFoundException.class, ( ) -> {
+        assertThrows(PersonaNotFoundException.class, () -> {
             personaService.modificarTelefono(createPersona());
         });
+    } */
+
+    @SneakyThrows
+    @Test
+    void modificarTelefono_should_throwPersonaNotFoundException_when_idPersonaNoExisteEnBaseDeDatos() {
+        int idPersona = 1;
+        when(personaMapper.existePersona(idPersona)).thenReturn(0);
+
+        Persona persona = createPersona();
+        PersonaNotFoundException exception = assertThrows(PersonaNotFoundException.class,
+                () -> personaService.modificarTelefono(persona),
+                "Expected PersonaNotFoundException to be thrown for persona: " + persona);
     }
 
+
     @Test
-    void modificarTelefono_should_not_throwAnyException_when_datosSonCorrectos ( ) {
+    void modificarTelefono_should_not_throwAnyException_when_datosSonCorrectos(){
 
         when(personaMapper.existePersona(anyInt())).thenReturn(1);
 
         List<TelefonoContacto> telefonoContactoList = new ArrayList<TelefonoContacto>();
         telefonoContactoList.add(new TelefonoContacto(1, "665453634"));
         when(telefonoMapper.listarTelefonos(anyInt())).thenReturn(telefonoContactoList);
-
-        Assertions.assertDoesNotThrow(( ) -> {
+        Assertions.assertDoesNotThrow(() -> {
             personaService.modificarTelefono(createPersona());
         });
     }
 
+
     @Test
-    void addPersonaDireccion_should_not_ThrowException_when_direccionDomicilioDistintaNotificacion ( ) throws ParseException {
+    void addPersonaDireccion_should_not_ThrowException_when_direccionDomicilioDistintaNotificacion() throws ParseException {
 
         when(personaMapper.existePersona(anyInt())).thenReturn(1);
         Persona persona = createPersona();
@@ -182,31 +196,31 @@ class PersonaServiceImplTest {
 
         persona.setDireccionNotificacion(notificacion);
 
-        Assertions.assertDoesNotThrow(( ) -> {
+        assertDoesNotThrow(() -> {
             personaService.addPersona(persona);
         });
     }
 
     @Test
-    void viewPersonaProducto_should_throwPersonaNotFoundException_when_personaNoExiste ( ) {
+    void viewPersonaProducto_should_throwPersonaNotFoundException_when_personaNoExiste() {
 
         when(personaMapper.existePersona(anyInt())).thenReturn(0);
-        Assertions.assertThrows(PersonaNotFoundException.class, ( ) -> {
+        assertThrows(PersonaNotFoundException.class, () -> {
             personaService.viewPersonaProducto(createPersona().getPersonaId());
         });
     }
 
     @Test
-    void viewPersonaProducto_should_not_throwThrowPersonaNotFoundException_when_personaExiste ( ) {
+    void viewPersonaProducto_should_not_throwThrowPersonaNotFoundException_when_personaExiste() {
 
         when(personaMapper.existePersona(anyInt())).thenReturn(1);
-        Assertions.assertDoesNotThrow(( ) -> {
+        assertDoesNotThrow(() -> {
             personaService.viewPersonaProducto(createPersona().getPersonaId());
         });
     }
 
     @Test
-    void updateEstadoPersonaProducto_should_setEstadoVigente_when_fechaBajaIsNull ( ) throws ParseException {
+    void updateEstadoPersonaProducto_should_setEstadoVigente_when_fechaBajaIsNull() throws ParseException {
 
         Persona persona = createPersona();
         persona.getProductosContratados().get(0).setFechaBaja(null);
@@ -217,7 +231,7 @@ class PersonaServiceImplTest {
     }
 
     @Test
-    void updateEstadoPersonaProducto_should_setEstadoVencido_when_fechaBajaIsNotNull ( ) throws ParseException {
+    void updateEstadoPersonaProducto_should_setEstadoVencido_when_fechaBajaIsNotNull() throws ParseException {
 
         Persona persona = createPersona();
         persona.getProductosContratados().get(0).setEstado(null);
@@ -228,19 +242,19 @@ class PersonaServiceImplTest {
     }
 
     @Test
-    void validateNif_should_throwDniFoundException_when_dniExiste ( ) {
+    void validateNif_should_throwDniFoundException_when_dniExiste() {
         when(personaMapper.existeNif(anyString())).thenReturn(1);
 
-        Assertions.assertThrows(DniFoundException.class, ( ) -> {
+        assertThrows(DniFoundException.class, () -> {
             personaService.validateNif("1234567");
         });
     }
 
     @Test
-    void existPerson_should_throwPersonaNotFoundException_when_idPersonaNegativo ( ) {
+    void existPerson_should_throwPersonaNotFoundException_when_idPersonaNegativo() {
 
 
-        Assertions.assertThrows(PersonaNotFoundException.class, ( ) -> {
+        assertThrows(PersonaNotFoundException.class, () -> {
 
             this.personaService.invalidPersonId(-1);
         });
@@ -248,16 +262,16 @@ class PersonaServiceImplTest {
     }
 
     @Test
-    void existPerson_should_returnNull_when_idPersonaPositivo ( ) throws RequestApiValidationException {
+    void existPerson_should_returnNull_when_idPersonaPositivo() throws RequestApiValidationException {
         Assertions.assertEquals(null, personaService.invalidPersonId(10));
 
     }
 
-    private boolean existePersonaMockFalse (Integer personaId) {
+    private boolean existePersonaMockFalse(Integer personaId) {
         return false;
     }
 
-    private Persona createPersona ( ) throws ParseException {
+    private Persona createPersona() throws ParseException {
         Persona persona = new Persona();
         persona.setNombre("Juan");
         persona.setApellido1("Francés");
@@ -295,6 +309,9 @@ class PersonaServiceImplTest {
         List<TelefonoContacto> telefonos = new ArrayList<TelefonoContacto>();
         telefonos.add(new TelefonoContacto(1, "677645552"));
         persona.setTelefonos(telefonos);
+        persona.setEmail("holahola@email.com");
+        persona.setNif("1111112F");
+        persona.setFechaScoring(new SimpleDateFormat("dd-MM-yyyy").parse("29-12-1980"));
 
 
         return persona;

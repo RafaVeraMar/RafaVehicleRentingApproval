@@ -1,7 +1,6 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
 import com.babel.vehiclerentingapproval.exceptions.EstadoSolicitudInvalidException;
-import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.TipoResultadoSolicitudMapper;
 import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
 import lombok.extern.log4j.Log4j2;

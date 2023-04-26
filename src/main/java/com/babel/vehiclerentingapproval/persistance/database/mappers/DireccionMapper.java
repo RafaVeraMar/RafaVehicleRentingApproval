@@ -17,7 +17,10 @@ public interface DireccionMapper {
      */
     @Insert("INSERT INTO DIRECCION (TIPO_VIA_ID, NOMBRE_CALLE, NUM, PISO, PUERTA, ESCALERA, OTRO_DATO, COD_POSTAL, MUNICIPIO, COD_PROVINCIA) VALUES (#{tipoViaId.tipoViaId}, #{nombreCalle}, #{numero}, #{piso, jdbcType=VARCHAR}, #{puerta, jdbcType=VARCHAR}, #{escalera, jdbcType=VARCHAR}, #{otroDato, jdbcType=VARCHAR}, #{codPostal}, #{municipio}, #{provincia.codProvincia})")
     @Options(useGeneratedKeys = true, keyProperty = "direccionId", keyColumn = "DIRECCION_ID")
+    @Result(property = "codProvincia", column = "COD_PROVINCIA")
     void insertDireccion(Direccion direccion);
+
+
     /**
      * Devuelve el numero de direcciones encontradas dada una ID. Se usa como comprobacion.
      *
