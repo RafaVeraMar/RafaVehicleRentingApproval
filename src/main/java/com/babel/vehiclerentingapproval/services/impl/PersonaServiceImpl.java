@@ -2,10 +2,7 @@ package com.babel.vehiclerentingapproval.services.impl;
 
 
 import com.babel.vehiclerentingapproval.exceptions.*;
-import com.babel.vehiclerentingapproval.models.EstadoProductoContratado;
-import com.babel.vehiclerentingapproval.models.Persona;
-import com.babel.vehiclerentingapproval.models.ProductoContratado;
-import com.babel.vehiclerentingapproval.models.TelefonoContacto;
+import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import lombok.extern.log4j.Log4j2;
