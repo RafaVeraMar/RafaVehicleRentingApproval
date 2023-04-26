@@ -19,7 +19,6 @@ public interface ProvinciaMapper {
      * @see Provincia
      */
     @Insert("INSERT INTO PROVINCIA (COD_PROVINCIA, NOMBRE) VALUES (#{codProvincia}, #{nombre})")
-    @Options(useGeneratedKeys = true, keyProperty = "codProvincia", keyColumn = "COD_PROVINCIA")
     void insertProvincia(Provincia provincia);
     /**
      * Consulta que recupera una provincia de la base de datos dado su codigo
