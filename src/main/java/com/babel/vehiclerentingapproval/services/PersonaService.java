@@ -21,7 +21,7 @@ public interface PersonaService {
      * @param persona La persona a insertar
      * @return la persona insertada
      */
-    Persona addPersona (Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException, DireccionNotFoundException, PersonaNotFoundException, DniFoundException;
+    Persona addPersona (Persona persona);
 
     /**
      * Consulta que comprueba si una persona existe en la base de datos
@@ -29,7 +29,7 @@ public interface PersonaService {
      * @param idPersona La persona a insertar
      * @return la persona a comprobar
      */
-    Persona invalidPersonId (int idPersona) throws RequestApiValidationException;
+    Persona invalidPersonId (int idPersona);
 
     /**
      * Consulta que devuelve una lista de productos que pertenecen a una persona
@@ -38,7 +38,7 @@ public interface PersonaService {
      * @return la lista de productos
      * @throws PersonaNotFoundException
      */
-    List<ProductoContratado> viewPersonaProducto (int id) throws PersonaNotFoundException;
+    List<ProductoContratado> viewPersonaProducto (int id);
 
     /**
      * Consulta que actualiza el estado de los productos de la persona
@@ -55,7 +55,7 @@ public interface PersonaService {
      * @throws RequiredMissingFieldException
      * @throws WrongLenghtFieldException
      */
-    public void validatePersonData (Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException;
+    public void validatePersonData (Persona persona);
 
     /**
      * Metodo que comprueba si el nombre tiene un formato correcto
@@ -65,7 +65,7 @@ public interface PersonaService {
      * @throws WrongLenghtFieldException
      */
 
-    public void validateNombre (Persona persona) throws RequiredMissingFieldException, WrongLenghtFieldException;
+    public void validateNombre (Persona persona);
 
     /**
      * Metodo que comprueba si la persona un formato correcto
@@ -74,7 +74,7 @@ public interface PersonaService {
      * @throws RequiredMissingFieldException
      * @throws WrongLenghtFieldException
      */
-    public void validatePersona (int personaId) throws PersonaNotFoundException;
+    public void validatePersona (int personaId);
 
     /**
      * metodo que comprueba si la persona existe o no en la base de datos
@@ -89,7 +89,7 @@ public interface PersonaService {
      *
      * @param persona la persona a modificar
      */
-    public void modificarTelefono (Persona persona) throws PersonaNotFoundException;
+    public void modificarTelefono (Persona persona);
 
     /**
      * metodo que modifica una persona en la base de datos

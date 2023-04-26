@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
  * no se encuentra una persona con el ID proporcionado. Esta excepción extiende la clase
  * RequestApiValidationException para proporcionar un mensaje específico y un código de estado HTTP.
  */
-public class PersonaNotFoundException extends RequestApiValidationException {
+public class PersonaNotFoundException extends ApplicationException {
     private static final String EXTERNAL_MESSAGE = "La persona con id: %s no existe.";
 
     /**

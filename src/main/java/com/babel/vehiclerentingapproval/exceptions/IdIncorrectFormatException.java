@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
  * @see RequestApiValidationException
  * @author javier.serrano@babelgroup.com
  */
-public class IdIncorrectFormatException extends RequestApiValidationException{
+public class IdIncorrectFormatException extends ApplicationException{
     private static final String EXTERNALMESSAGE = "Error: el formato de ID no es válido";
 
     public IdIncorrectFormatException(HttpStatus statusCode) {

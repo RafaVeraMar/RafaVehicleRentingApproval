@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
  * @author andres.guijarro@babelgroup.com
  * @see RuntimeException
  */
-public class DireccionNotFoundException extends RequestApiValidationException {
+public class DireccionNotFoundException extends ApplicationException {
     private static final String EXTERNAL_MESSAGE = "No se encuentra dirección buscada";
 
     public DireccionNotFoundException(HttpStatus statusCode) {

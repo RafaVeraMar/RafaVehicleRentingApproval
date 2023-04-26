@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
  * la clase RequestApiValidationException y contiene información adicional, como un mensaje
  * de error específico y un código de estado HTTP.
  */
-public class RequiredMissingFieldException extends RequestApiValidationException {
+public class RequiredMissingFieldException extends ApplicationException {
 
     private static final String EXTERNAL_MESSAGE = "El nombre de la persona no puede estar vacio";
 

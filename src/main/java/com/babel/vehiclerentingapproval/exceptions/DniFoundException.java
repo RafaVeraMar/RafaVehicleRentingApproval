@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
  *
  * @author andres.guijarro@babelgroup.com
  */
-public class DniFoundException extends RequestApiValidationException {
+public class DniFoundException extends ApplicationException {
     private static final String EXTERNAL_MESSAGE = "No se encuentra dni";
 
     public DniFoundException(HttpStatus statusCode) {

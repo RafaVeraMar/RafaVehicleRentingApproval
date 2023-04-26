@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 
-public class CodigoResolucionValidatorImplTest {
+class CodigoResolucionValidatorImplTest {
     TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper;
     CodigoResolucionValidator codigoResolucionValidator;
     @BeforeEach

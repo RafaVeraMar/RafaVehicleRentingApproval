@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
  * un valor de entrada es nulo o vacío. Esta excepción extiende la clase
  * RequestApiValidationException para proporcionar un mensaje específico y un código de estado HTTP.
  */
-public class InputIsNullOrIsEmpty extends RequestApiValidationException {
+public class InputIsNullOrIsEmpty extends ApplicationException {
 
     private static final String EXTERNAL_MESSAGE = "El campo %s no puede ser nulo o estar vacio.";
 

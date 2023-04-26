@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
  * de solicitudes de API. Esta excepción extiende la clase Exception y contiene información adicional
  * como un mensaje de error específico y un código de estado HTTP.
  */
-public class WrongLenghtFieldException extends RequestApiValidationException {
+public class WrongLenghtFieldException extends ApplicationException {
     /**
      * @param externalMessage el mensaje de error específico
      */

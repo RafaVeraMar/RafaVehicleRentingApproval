@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
  * una fecha es anterior a otra fecha en una solicitud. Esta excepción extiende la clase
  * RequestApiValidationException para proporcionar un mensaje específico y un código de estado HTTP.
  */
-public class DateIsBeforeException extends RequestApiValidationException {
+public class DateIsBeforeException extends ApplicationException {
     private static final String EXTERNAL_MESSAGE = "La %s no puede ser anterior a %s";
 
     /**

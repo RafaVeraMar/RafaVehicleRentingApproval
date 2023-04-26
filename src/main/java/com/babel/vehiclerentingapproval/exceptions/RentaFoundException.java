@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
  * @see RuntimeException
  * @author andres.guijarro@babelgroup.com
  */
-public class RentaFoundException extends RequestApiValidationException {
+public class RentaFoundException extends ApplicationException {
     private static final String EXTERNAL_MESSAGE = "No se encuentra la renta solicitada";
 
     public RentaFoundException(HttpStatus statusCode) {
