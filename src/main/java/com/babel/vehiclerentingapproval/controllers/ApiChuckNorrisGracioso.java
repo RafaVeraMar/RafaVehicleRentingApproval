@@ -8,9 +8,10 @@ import org.springframework.web.client.RestTemplate;
 public class ApiChuckNorrisGracioso {
     @GetMapping(value = "/apiExterna")
     private String getJokeRamdon(){
-        String uri = "https://api.chucknorris.io/jokes/random";
-        RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject(uri, String.class);
-        return result;
+        return new RestTemplate().getForObject("https://api.chucknorris.io/jokes/random",String.class);
+    }
+    @GetMapping(value= "/categoriasChistes")
+    private Object getJokeCategoryList(){
+        return new RestTemplate().getForObject("https://api.chucknorris.io/jokes/categories",String.class);
     }
 }
