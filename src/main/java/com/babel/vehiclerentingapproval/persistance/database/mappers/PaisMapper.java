@@ -1,10 +1,8 @@
 package com.babel.vehiclerentingapproval.persistance.database.mappers;
 
 import com.babel.vehiclerentingapproval.models.Pais;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
+
 /**
  * Esta interfaz proporciona metodos de manejo de paises en la base de datos
  *
@@ -19,7 +17,6 @@ public interface PaisMapper {
      * @see Pais
      */
     @Insert("INSERT INTO PAIS (ISO_ALFA_2, ISO_NUM_3, ISO_ALFA_3, NOMBRE, ORDEN) VALUES (#{isoAlfa2}, #{isoNum3}, #{isoAlfa3}, #{nombre}, #{orden, jdbcType=VARCHAR})")
-    @Options(useGeneratedKeys = true, keyProperty = "isoAlfa2", keyColumn = "ISO_ALFA_2")
     void insertPais(Pais pais);
     /**
      * Consulta que recupera un Pais en la base de datos
@@ -29,5 +26,8 @@ public interface PaisMapper {
      * @return Pais recuperado de la base de datos
      */
     @Select("SELECT ISO_ALFA_2, ISO_NUM_3, ISO_ALFA_3, NOMBRE, ORDEN FROM PAIS WHERE ISO_ALFA_2 = #{isoAlfa2}")
+    @Result(property = "isoAlfa2", column = "ISO_ALFA_2")
+    @Result(property = "isoNum3", column = "ISO_NUM_3")
+    @Result(property = "isoAlfa3", column = "ISO_ALFA_3")
     Pais getPais(String isoAlfa2);
 }
