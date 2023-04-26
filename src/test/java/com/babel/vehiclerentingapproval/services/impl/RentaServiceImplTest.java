@@ -11,6 +11,7 @@ import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.ProfesionService;
 import com.babel.vehiclerentingapproval.services.RentaService;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,49 +61,46 @@ class RentaServiceImplTest {
         rentaService = new RentaServiceImpl(rentaMapper, personaService, profesionService);
     }
 
+    @SneakyThrows
     @Test
     void addRenta_should_throwProfesionNotFoundException_when_profesionIdNoExiste ( ) {
+        Renta renta = createRenta();
+
+        Profesion profesion = createProfesion();
+        profesion.setProfesionId(100);
+        renta.setProfesion(profesion);
         Assertions.assertThrows(ProfesionNotFoundException.class, ( ) -> {
-            Renta renta = createRenta();
-
-            Profesion profesion = createProfesion();
-            profesion.setProfesionId(100);
-            renta.setProfesion(profesion);
-
-
             this.rentaService.addRenta(renta);
         });
     }
 
 
+    @SneakyThrows
     @Test
     void addRenta_should_throwPersonaNotFoundException_when_personaIdNoExiste ( ) {
+        Renta renta = createRenta();
+        Persona persona = createPersona();
+
+        Profesion profesion = createProfesion();
+        renta.setProfesion(profesion);
+        persona.setPersonaId(100);
         Assertions.assertThrows(PersonaNotFoundException.class, ( ) -> {
-            Renta renta = createRenta();
-            Persona persona = createPersona();
-
-            Profesion profesion = createProfesion();
-            renta.setProfesion(profesion);
-            persona.setPersonaId(100);
-
-
             this.rentaService.addRenta(renta);
         });
     }
 
+    @SneakyThrows
     @Test
     void addRenta_should_throwRentaFoundException_when_rentaIdExiste ( ) {
+        Renta renta = createRenta();
+        Persona persona = createPersona();
+        Profesion profesion = createProfesion();
+
+        renta.setProfesion(profesion);
+        persona.setPersonaId(1);
+        renta.setPersona(persona);
+        renta.setRentaId(1);
         Assertions.assertThrows(RentaFoundException.class, ( ) -> {
-            Renta renta = createRenta();
-            Persona persona = createPersona();
-            Profesion profesion = createProfesion();
-
-            renta.setProfesion(profesion);
-            persona.setPersonaId(1);
-            renta.setPersona(persona);
-            renta.setRentaId(1);
-
-
             this.rentaService.addRenta(renta);
         });
     }

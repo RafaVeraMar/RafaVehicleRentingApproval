@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
@@ -140,17 +141,6 @@ class PersonaServiceImplTest {
         });
 
     }
-/*
-    @Test
-    void modificarTelefono_should_throwPersonaNotFoundException_when_idPersonaNoExisteEnBaseDeDatos() {
-
-        when(personaMapper.existePersona(anyInt())).thenReturn(0);
-
-        assertThrows(PersonaNotFoundException.class, () -> {
-            personaService.modificarTelefono(createPersona());
-        });
-    } */
-
     @SneakyThrows
     @Test
     void modificarTelefono_should_throwPersonaNotFoundException_when_idPersonaNoExisteEnBaseDeDatos() {
@@ -210,15 +200,15 @@ class PersonaServiceImplTest {
         });
     }
 
+    @SneakyThrows
     @Test
     void viewPersonaProducto_should_not_throwThrowPersonaNotFoundException_when_personaExiste() {
-
+        int personaId = createPersona().getPersonaId();
         when(personaMapper.existePersona(anyInt())).thenReturn(1);
         assertDoesNotThrow(() -> {
-            personaService.viewPersonaProducto(createPersona().getPersonaId());
+            personaService.viewPersonaProducto(personaId);
         });
     }
-
     @Test
     void updateEstadoPersonaProducto_should_setEstadoVigente_when_fechaBajaIsNull() throws ParseException {
 
