@@ -1,10 +1,8 @@
 package com.babel.vehiclerentingapproval.persistance.database.mappers;
 
 import com.babel.vehiclerentingapproval.models.Provincia;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
+
 /**
  * Esta interfaz hace dos consultas referentes a las provincias
  *
@@ -28,5 +26,6 @@ public interface ProvinciaMapper {
      * @return Objeto Provincia
      */
     @Select("SELECT COD_PROVINCIA, NOMBRE FROM PROVINCIA WHERE COD_PROVINCIA = #{codProvincia}")
+    @Result(property = "codProvincia", column = "COD_PROVINCIA")
     Provincia getProvincia(String codProvincia);
 }
