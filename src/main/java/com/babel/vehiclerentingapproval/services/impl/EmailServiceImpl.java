@@ -2,7 +2,6 @@ package com.babel.vehiclerentingapproval.services.impl;
 
 
 import com.babel.vehiclerentingapproval.exceptions.EmailNotSentException;
-import com.babel.vehiclerentingapproval.exceptions.FailedSendingEmail;
 import com.babel.vehiclerentingapproval.services.EmailService;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;

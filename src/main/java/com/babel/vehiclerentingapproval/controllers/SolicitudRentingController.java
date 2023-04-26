@@ -1,7 +1,6 @@
 package com.babel.vehiclerentingapproval.controllers;
 
 
-import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.util.Collections;
-import java.util.HashMap;
+
 import java.util.Map;
 
 /**
@@ -33,8 +32,7 @@ import java.util.Map;
 @Log4j2
 public class SolicitudRentingController {
 
-    private static final String STATUS = "Status";
-    private static final String DESCRIPCION = "Descripcion";
+
     private final SolicitudRentingService solicitud;
 
 
