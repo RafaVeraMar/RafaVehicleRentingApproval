@@ -45,6 +45,7 @@ public class EmailNotSentException extends ApplicationNotificationException{
      *
      * @return el mensaje de error
      */
+    @Override
     public String getExternalMessage ( ) {
         return externalMessage;
     }
@@ -54,6 +55,7 @@ public class EmailNotSentException extends ApplicationNotificationException{
      *
      * @return el código de estado HTTP
      */
+    @Override
     public HttpStatus getStatusCode ( ) {
         return statusCode;
     }

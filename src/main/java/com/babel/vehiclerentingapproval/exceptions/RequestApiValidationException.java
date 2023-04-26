@@ -46,6 +46,7 @@ public class RequestApiValidationException extends ApplicationException {
      *
      * @return el mensaje de error
      */
+    @Override
     public String getExternalMessage ( ) {
         return externalMessage;
     }
@@ -55,6 +56,7 @@ public class RequestApiValidationException extends ApplicationException {
      *
      * @return el código de estado HTTP
      */
+    @Override
     public HttpStatus getStatusCode ( ) {
         return statusCode;
     }

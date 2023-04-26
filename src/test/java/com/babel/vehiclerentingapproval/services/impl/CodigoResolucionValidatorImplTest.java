@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 
@@ -23,6 +24,7 @@ public class CodigoResolucionValidatorImplTest {
         codigoResolucionValidator = new CodigoResolucionValidatorImpl(tipoResultadoSolicitudMapper);
     }
 
+    /*
     @Nested
     class TestsvalidarCodResolucion{
         @Test
@@ -31,7 +33,15 @@ public class CodigoResolucionValidatorImplTest {
             Assertions.assertThrows(EstadoSolicitudInvalidException.class,() ->{
                 codigoResolucionValidator.validarCodResolucion(anyString());
             });
-        }
+        } */
+    @Test
+    void verEstadoSolicitud_shouldThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid(){
+        Mockito.when(tipoResultadoSolicitudMapper.codigoValido(anyString())).thenReturn(0);
+        String codSolicitud = anyString();
+        assertThrows(EstadoSolicitudInvalidException.class,
+                () -> codigoResolucionValidator.validarCodResolucion(codSolicitud),
+                "Expected EstadoSolicitudInvalidException to be thrown for codSolicitud: " + codSolicitud);
+    }
         @Test
         void verEstadoSolicitud_shouldNotThrow_EstadoSolicitudInvalidException_when_codSolicitudNotValid(){
             Mockito.when(tipoResultadoSolicitudMapper.codigoValido(anyString())).thenReturn(1);
@@ -40,5 +50,5 @@ public class CodigoResolucionValidatorImplTest {
                 codigoResolucionValidator.validarCodResolucion(anyString());
             });
         }
-    }
 }
+

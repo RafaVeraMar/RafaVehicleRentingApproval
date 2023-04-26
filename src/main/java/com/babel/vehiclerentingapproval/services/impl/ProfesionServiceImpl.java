@@ -1,7 +1,6 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
 import com.babel.vehiclerentingapproval.exceptions.ProfesionNotFoundException;
-import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.ProfesionMapper;
 import com.babel.vehiclerentingapproval.services.ProfesionService;
 import lombok.extern.log4j.Log4j2;

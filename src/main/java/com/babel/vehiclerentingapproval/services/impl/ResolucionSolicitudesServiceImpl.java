@@ -1,6 +1,5 @@
 package com.babel.vehiclerentingapproval.services.impl;
 
-import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import com.babel.vehiclerentingapproval.exceptions.ResolucionSolicitudesNotFoundException;
 import com.babel.vehiclerentingapproval.models.ResolucionSolicitud;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.ResolucionSolicitudesMapper;
