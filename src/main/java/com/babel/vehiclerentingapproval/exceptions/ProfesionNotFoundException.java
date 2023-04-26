@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
  * no se encuentra una profesión con el ID proporcionado. Esta excepción extiende la clase
  * RequestApiValidationException para proporcionar un mensaje específico y un código de estado HTTP.
  */
-public class ProfesionNotFoundException extends RequestApiValidationException {
+public class ProfesionNotFoundException extends ApplicationException {
 
     private static final String EXTERNAL_MESSAGE = "La profesion %s no existe";
 

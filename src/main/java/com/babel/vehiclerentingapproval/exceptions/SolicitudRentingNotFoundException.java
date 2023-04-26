@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
  *
  * @author alvaro.aleman@babelgroup.com, ramon.vazquez@babelgroup.com
  */
-public class SolicitudRentingNotFoundException extends RequestApiValidationException {
+public class SolicitudRentingNotFoundException extends ApplicationException {
     private static final String EXTERNAL_MESSAGE = "ID de solicitud no encontrado";
 
     public SolicitudRentingNotFoundException(HttpStatus statusCode) {

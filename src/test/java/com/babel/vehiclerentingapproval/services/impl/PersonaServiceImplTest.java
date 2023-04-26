@@ -190,13 +190,14 @@ class PersonaServiceImplTest {
             personaService.addPersona(persona);
         });
     }
-
+    @SneakyThrows
     @Test
     void viewPersonaProducto_should_throwPersonaNotFoundException_when_personaNoExiste() {
-
+        var persona = createPersona();
+        int personaId = persona.getPersonaId();
         when(personaMapper.existePersona(anyInt())).thenReturn(0);
         assertThrows(PersonaNotFoundException.class, () -> {
-            personaService.viewPersonaProducto(createPersona().getPersonaId());
+            personaService.viewPersonaProducto(personaId);
         });
     }
 

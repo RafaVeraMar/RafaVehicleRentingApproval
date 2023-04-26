@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
  * {@link ApplicationNotificationException} para proporcionar un mensaje específico y un código de estado HTTP.
  * @see ApplicationNotificationException
  */
-public class EmailNotSentException extends ApplicationNotificationException{
+public class EmailNotSentException extends ApplicationException{
 
     private final String externalMessage;
     private final HttpStatus statusCode;

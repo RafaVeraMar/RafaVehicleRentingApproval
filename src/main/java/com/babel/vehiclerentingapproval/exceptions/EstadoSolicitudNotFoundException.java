@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
  * @see RequestApiValidationException
  * @author javier.serrano@babelgroup.com
  */
-public class EstadoSolicitudNotFoundException extends RequestApiValidationException{
+public class EstadoSolicitudNotFoundException extends ApplicationException{
     private static final String EXTERNALMESSAGE = "No se encuentra estado el asociado";
     public EstadoSolicitudNotFoundException(HttpStatus statusCode) {
         super(EXTERNALMESSAGE, statusCode);
