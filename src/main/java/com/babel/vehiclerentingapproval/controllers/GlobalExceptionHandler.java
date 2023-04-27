@@ -1,5 +1,8 @@
 package com.babel.vehiclerentingapproval.controllers;
 
+import com.babel.vehiclerentingapproval.exceptions.ApplicationException;
+import com.babel.vehiclerentingapproval.exceptions.ChuckExceptions.ChuckNorrisException;
+import com.babel.vehiclerentingapproval.exceptions.ChuckExceptions.CuckNorrisServerErrorException;
 import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -7,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestClientException;
 
 import java.util.Map;
 
@@ -48,6 +52,20 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleException (Exception e) {
         log.error("Mensaje de error: " + e.getMessage());
         return new ResponseEntity<>(Map.of(DESCRIPCION, "Error: Ha ocurrido un error. Contacte con el equipo ING BOOTCAMP."), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ApplicationException.class)
+    @ResponseBody
+    public ResponseEntity<Object> handleApplicationException(ApplicationException e) {
+        log.error("Mensaje de error: " + e.getMessage());
+
+        return new ResponseEntity<>(Map.of(DESCRIPCION, e.getExternalMessage()), e.getStatusCode());
+    }//TODO apl tests
+
+    @ExceptionHandler(ChuckNorrisException.class)
+    public ResponseEntity<String> handleRestClientException(ChuckNorrisException ex) {
+        // Manejar la excepción de la API externa
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
