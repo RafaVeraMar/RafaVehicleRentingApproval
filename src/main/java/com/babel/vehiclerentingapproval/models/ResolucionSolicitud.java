@@ -1,5 +1,8 @@
 package com.babel.vehiclerentingapproval.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -18,6 +21,7 @@ public class ResolucionSolicitud {
     @NotBlank
     @NotEmpty
     @Size(max=2)
+    @Getter    @Setter
     private String codigoResultado;
 
     /**
@@ -27,10 +31,12 @@ public class ResolucionSolicitud {
     @NotBlank
     @NotEmpty
     @Size(max=100)
+    @Getter    @Setter
     private String descripcion;
     /**
      * Este es el constructor de la clase {@link ResolucionSolicitud} vacia
      */
+
     public ResolucionSolicitud() {
     }
 
@@ -43,34 +49,7 @@ public class ResolucionSolicitud {
         this.codigoResultado = codigoResultado;
         this.descripcion = descripcion;
     }
-    /**
-     * Metodo público que se encarga de obtener el codigoResultado
-     * @return devuelve el codigoResultado
-     */
-    public String getCodigoResultado() {
-        return codigoResultado;
-    }
-    /**
-     * Metodo publico que se encarga de darle un valor al codigoResultado de la solicitud
-     * @param codigoResultado el codigoResultado de la solicitud
-     */
-    public void setCodigoResultado(String codigoResultado) {
-        this.codigoResultado = codigoResultado;
-    }
-    /**
-     * Metodo público que se encarga de obtener la descripcion
-     * @return devuelve la descripcion
-     */
-    public String getDescripcion() {
-        return descripcion;
-    }
-    /**
-     * Metodo publico que se encarga de darle un valor a la descripcion de la solicitud
-     * @param descripcion la descripcion de la solicitud
-     */
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
+
 
     @Override
     public String toString() {
