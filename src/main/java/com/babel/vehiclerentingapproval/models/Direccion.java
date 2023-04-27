@@ -1,5 +1,8 @@
 package com.babel.vehiclerentingapproval.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -13,6 +16,7 @@ public class Direccion {
      * Identificador de la direccion
      */
     @NotNull
+    @Getter @Setter
     private int direccionId;
     /**
      * Identificador del tipo de via
