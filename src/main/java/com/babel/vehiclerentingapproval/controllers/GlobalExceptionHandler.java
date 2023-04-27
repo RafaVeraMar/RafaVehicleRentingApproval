@@ -65,7 +65,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RestClientException.class)
     public ResponseEntity<String> handleRestClientException(RestClientException ex) {
         // Manejar la excepción de la API externa
-
         return new ResponseEntity<>(new CuckNorrisServerErrorException().getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
