@@ -32,7 +32,7 @@ class DireccionTest {
         direccion.setOtroDato("Fachada amarilla");
         direccion.setCodPostal("41001");
         direccion.setMunicipio("Sevilla");
-        direccion.setProvinciaCod(new Provincia("SE","Sevilla"));
+        direccion.setProvincia(new Provincia("SE","Sevilla"));
 
         return direccion;
     }

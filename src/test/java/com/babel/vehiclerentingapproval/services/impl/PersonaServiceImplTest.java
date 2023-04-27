@@ -182,7 +182,7 @@ class PersonaServiceImplTest {
         notificacion.setCodPostal("41002");
         notificacion.setMunicipio("SEVILLA");
         notificacion.setTipoViaId(new TipoVia(2, "Avenida"));
-        notificacion.setProvinciaCod(new Provincia("SVQ", "SEVILLA"));
+        notificacion.setProvincia(new Provincia("SVQ", "SEVILLA"));
 
         persona.setDireccionNotificacion(notificacion);
 
@@ -276,7 +276,7 @@ class PersonaServiceImplTest {
         domicilio.setCodPostal("36201");
         domicilio.setMunicipio("Pontevedra");
         domicilio.setTipoViaId(new TipoVia(1, "Calle"));
-        domicilio.setProvinciaCod(new Provincia("SVQ", "Sevilla"));
+        domicilio.setProvincia(new Provincia("SVQ", "Sevilla"));
 
         Direccion notificacion = new Direccion();
 
@@ -285,7 +285,7 @@ class PersonaServiceImplTest {
         notificacion.setCodPostal("41001");
         notificacion.setMunicipio("Sevilla");
         notificacion.setTipoViaId(new TipoVia(1, "Calle"));
-        notificacion.setProvinciaCod(new Provincia("SVQ", "Sevilla"));
+        notificacion.setProvincia(new Provincia("SVQ", "Sevilla"));
 
         persona.setDireccionDomicilio(domicilio);
         persona.setDireccionDomicilioSameAsNotificacion(true);
