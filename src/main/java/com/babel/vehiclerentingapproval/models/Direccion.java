@@ -74,24 +74,7 @@ public class Direccion {
     @Size(max=2)
     private Provincia provincia;
 
-    /**
-     * Metodo público que se encarga de recuperar el valor de la id de la direccion
-     * @return devuelve el id de la direccion
-     */
-    public int getDireccionId() {
-        return direccionId;
-    }
-    /**
-     * Metodo público que se encarga de establecer la ID de la direccion del domicilio
-     * @param direccionId id de la direccion
-     */
-    public void setDireccionId(int direccionId) {
-        this.direccionId = direccionId;
-    }
-    /**
-     * Metodo público que se encarga de recuperar el valor de la id del tipo de via
-     * @return devuelve el id del tipo de via
-     */
+ 
     public TipoVia getTipoViaId() {
         return tipoViaId;
     }
