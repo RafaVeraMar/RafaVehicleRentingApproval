@@ -82,7 +82,7 @@ class RentaControllerTest {
         direccionFicticia.setNumero("5");
         direccionFicticia.setCodPostal("21006");
         direccionFicticia.setMunicipio("Huelva");
-        direccionFicticia.setProvinciaCod(new Provincia("02", "Albacete"));
+        direccionFicticia.setProvincia(new Provincia("02", "Albacete"));
         personaFicticia.setPersonaId(1);
         personaFicticia.setNombre("Migue");
         personaFicticia.setApellido1("Estevez");

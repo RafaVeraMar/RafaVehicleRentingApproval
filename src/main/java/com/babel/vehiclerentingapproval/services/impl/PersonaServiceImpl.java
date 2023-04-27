@@ -170,13 +170,13 @@ public class PersonaServiceImpl implements PersonaService {
         var tipoVia = this.tipoViaMapper.getTipoVia(persona.getDireccionDomicilio().getTipoViaId().getTipoViaId());
         persona.getDireccionDomicilio().setTipoViaId(tipoVia);
         var provincia = this.provinciaMapper.getProvincia(persona.getDireccionDomicilio().getProvincia().getCodProvincia());
-        persona.getDireccionDomicilio().setProvinciaCod(provincia);
+        persona.getDireccionDomicilio().setProvincia(provincia);
         this.direccionMapper.insertDireccion(persona.getDireccionDomicilio());
         if (persona.isDireccionDomicilioSameAsNotificacion()) {
             persona.setDireccionNotificacion(persona.getDireccionDomicilio());
         } else {
             provincia = this.provinciaMapper.getProvincia(persona.getDireccionNotificacion().getProvincia().getCodProvincia());
-            persona.getDireccionNotificacion().setProvinciaCod(provincia);
+            persona.getDireccionNotificacion().setProvincia(provincia);
             tipoVia = this.tipoViaMapper.getTipoVia(persona.getDireccionNotificacion().getTipoViaId().getTipoViaId());
             persona.getDireccionNotificacion().setTipoViaId(tipoVia);
             this.direccionMapper.insertDireccion(persona.getDireccionNotificacion());
