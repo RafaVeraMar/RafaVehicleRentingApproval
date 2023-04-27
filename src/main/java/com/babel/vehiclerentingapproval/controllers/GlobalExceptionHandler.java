@@ -62,10 +62,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(Map.of(DESCRIPCION, e.getExternalMessage()), e.getStatusCode());
     }//TODO apl tests
 
-    @ExceptionHandler(ChuckNorrisException.class)
-    public ResponseEntity<String> handleRestClientException(ChuckNorrisException ex) {
+    @ExceptionHandler(RestClientException.class)
+    public ResponseEntity<String> handleRestClientException(RestClientException ex) {
         // Manejar la excepción de la API externa
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+
+        return new ResponseEntity<>(new CuckNorrisServerErrorException().getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
