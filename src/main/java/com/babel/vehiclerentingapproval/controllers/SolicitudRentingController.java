@@ -58,6 +58,7 @@ public class SolicitudRentingController {
     public ResponseEntity<Object> addSolicitudRenting (@RequestBody SolicitudRenting solicitudRenting) {
         log.info("Entrando en addSolicitudRenting en SolicitudRentingController");
         solicitud.addSolicitudRenting(solicitudRenting);
+
         log.info("Saliendo de addSolicitudRenting en SolicitudRentingController");
         return new ResponseEntity<>(Map.of("id",solicitudRenting.getSolicitudId()), HttpStatus.CREATED);
     }

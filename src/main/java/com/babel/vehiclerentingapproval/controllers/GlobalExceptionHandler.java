@@ -2,6 +2,7 @@ package com.babel.vehiclerentingapproval.controllers;
 
 import com.babel.vehiclerentingapproval.exceptions.ApplicationException;
 import com.babel.vehiclerentingapproval.exceptions.ChuckExceptions.ChuckNorrisException;
+import com.babel.vehiclerentingapproval.exceptions.ChuckExceptions.CuckNorrisResourceAccessException;
 import com.babel.vehiclerentingapproval.exceptions.ChuckExceptions.CuckNorrisServerErrorException;
 import com.babel.vehiclerentingapproval.exceptions.RequestApiValidationException;
 import lombok.extern.log4j.Log4j2;
@@ -65,7 +66,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RestClientException.class)
     public ResponseEntity<String> handleRestClientException(RestClientException ex) {
         // Manejar la excepción de la API externa
-        return new ResponseEntity<>(new CuckNorrisServerErrorException().getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        //System.out.println(ex.getCause());
+        if(ex.getCause().toString().contains("handshake_failure")){
+            return new ResponseEntity<>(new CuckNorrisResourceAccessException().getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }else{
+            return new ResponseEntity<>(new CuckNorrisServerErrorException().getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-
 }
+
