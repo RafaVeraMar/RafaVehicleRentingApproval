@@ -18,7 +18,7 @@ public class simpleExampleCron {
     }
 
     @Async
-    @Scheduled(cron = "0 0/1 * 1/1 * ?") //cada minuto
+    @Scheduled(cron = "0 * * * * ?") //cada minuto
     public void scheduleTaskUsingCronExpression() {
 
         long now = System.currentTimeMillis() / 1000;
