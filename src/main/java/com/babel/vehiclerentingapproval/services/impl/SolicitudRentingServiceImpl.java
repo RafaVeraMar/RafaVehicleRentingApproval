@@ -16,8 +16,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.List;
+
+
 
 /**
  * Esta clase es la implementación de los métodos CRUD (Crear, Ver, Modificar y Cancelar) de las Solicitudes de Renting.
@@ -36,6 +42,12 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private final PersonaMapper personaMapper;
     private final EmailService emailService;
 
+
+    // Archivo en el que se guardará el registro
+    private static final String FILE_NAME = "registroSolicitudRenting.txt";
+    // Variable para generar un valor autoincremental
+    private static int lastId = 0;
+
     public SolicitudRentingServiceImpl (SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaService personaService, CodigoResolucionValidator codigoResolucionValidator, PersonaMapper personaMapper, EmailService emailService) {
         this.solicitudRentingMapper = solicitudRentingMapper;
         this.tipoResultadoSolicitudMapper = tipoResultadoSolicitudMapper;
@@ -46,6 +58,21 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
     }
 
+    public void registrarSolicitudEnArchivo(SolicitudRenting solicitudRenting) {
+        // Incrementa el valor autoincremental
+        lastId++;
+
+        // Crea una nueva entrada en el registro con la fecha y hora actual
+        LocalDateTime fechaHoraActual = LocalDateTime.now();
+        String registro = String.format("%d,%s%n", lastId, fechaHoraActual.toString());
+
+        // Guarda la entrada en el archivo
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
+            writer.write(registro);
+        } catch (IOException e) {
+            log.error("Error al guardar registro de solicitud en archivo", e);
+        }
+    }
     /**
      * Agrega una nueva solicitud de renting, realizando varias validaciones antes de insertar la solicitud en la base de datos.
      *
@@ -94,6 +121,9 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         log.debug("Asociando la persona con ID: {} a la solicitud de renting", solicitudRenting.getPersona().getPersonaId());
         solicitudRenting.setPersona(personaService.invalidPersonId(solicitudRenting.getPersona().getPersonaId()));
         log.debug("Persona asociada correctamente a la solicitud de renting");
+
+        // Llama al nuevo método para registrar la solicitud en el archivo
+        registrarSolicitudEnArchivo(solicitudRenting);
 
         log.info("Finalizando el proceso para agregar una nueva solicitud de renting con éxito");
 
