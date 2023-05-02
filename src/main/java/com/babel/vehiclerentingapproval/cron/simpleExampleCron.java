@@ -10,12 +10,14 @@ import org.springframework.scheduling.annotation.Scheduled;
 @EnableScheduling
 @EnableAsync
 public class simpleExampleCron {
-    @Async
+   /* @Async
     @Scheduled(fixedRate = 5000)
     public void scheduleFixedRateTaskAsync()  {
         System.out.println(
                 "Fixed rate task async - " + System.currentTimeMillis() / 1000);
     }
+
+    */
 
     @Async
     @Scheduled(cron = "0 * * * * ?") //cada minuto

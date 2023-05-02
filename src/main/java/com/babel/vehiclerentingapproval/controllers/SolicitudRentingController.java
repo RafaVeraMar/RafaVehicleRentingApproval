@@ -16,6 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Collections;
 
 import java.util.Map;
@@ -34,6 +38,11 @@ public class SolicitudRentingController {
 
 
     private final SolicitudRentingService solicitud;
+
+    // Archivo en el que se guardará el registro
+    private static final String FILE_NAME = "registroSolicitudRenting.txt";
+    // Variable para generar un valor autoincremental
+    private static int lastId = 0;
 
 
     public SolicitudRentingController (SolicitudRentingService solicitud) {
@@ -57,6 +66,19 @@ public class SolicitudRentingController {
     })
     public ResponseEntity<Object> addSolicitudRenting (@RequestBody SolicitudRenting solicitudRenting) {
         log.info("Entrando en addSolicitudRenting en SolicitudRentingController");
+        // Incrementa el valor autoincremental
+        lastId++;
+
+        // Crea una nueva entrada en el registro
+        String registro = String.format("%d,%s%n", lastId, LocalDate.now());
+
+        // Guarda la entrada en el archivo
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
+            writer.write(registro);
+        } catch (IOException e) {
+            log.error("Error al guardar registro de solicitud en archivo", e);
+        }
+        log.info("Creando la solicitud de Renting");
         solicitud.addSolicitudRenting(solicitudRenting);
 
         log.info("Saliendo de addSolicitudRenting en SolicitudRentingController");

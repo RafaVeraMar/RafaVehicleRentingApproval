@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/*
 public class fileWriterSolicitudRenting {
 
     void createFileByDay() throws IOException {
@@ -33,3 +34,4 @@ public class fileWriterSolicitudRenting {
                 "\\main\\resources\\files\\"+date+".txt";
     }
 }
+*/
