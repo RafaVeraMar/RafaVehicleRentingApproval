@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestClientException;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -73,5 +74,6 @@ public class GlobalExceptionHandler {
             return new ResponseEntity<>(new CuckNorrisServerErrorException().getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }
 
