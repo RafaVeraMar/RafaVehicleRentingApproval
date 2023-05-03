@@ -16,6 +16,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 
 import java.util.Map;
@@ -34,7 +39,6 @@ public class SolicitudRentingController {
 
 
     private final SolicitudRentingService solicitud;
-
 
     public SolicitudRentingController (SolicitudRentingService solicitud) {
         this.solicitud = solicitud;
@@ -55,9 +59,13 @@ public class SolicitudRentingController {
             @ApiResponse(responseCode = "400", description = "La fecha de inicio de vigor, no puede ser anterior a la fecha de resolucion", content = @Content(mediaType = "application/json")),
             @ApiResponse(responseCode = "400", description = "Los datos de entrada tienen que ser mayor que 0", content = @Content(mediaType = "application/json")),
     })
-    public ResponseEntity<Object> addSolicitudRenting (@RequestBody SolicitudRenting solicitudRenting) {
+    public ResponseEntity<Object> addSolicitudRenting (@RequestBody SolicitudRenting solicitudRenting) throws IOException {
         log.info("Entrando en addSolicitudRenting en SolicitudRentingController");
+
+
+        log.info("Creando la solicitud de Renting");
         solicitud.addSolicitudRenting(solicitudRenting);
+
         log.info("Saliendo de addSolicitudRenting en SolicitudRentingController");
         return new ResponseEntity<>(Map.of("id",solicitudRenting.getSolicitudId()), HttpStatus.CREATED);
     }

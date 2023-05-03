@@ -8,6 +8,7 @@ import com.babel.vehiclerentingapproval.models.SolicitudRenting;
 import com.babel.vehiclerentingapproval.models.TipoResultadoSolicitud;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ public interface SolicitudRentingService {
      * @return SolicitudRenting agregada y actualizada con el ID generado en el sistema
      * @throws RequestApiValidationException si la solicitud no cumple con los criterios de validación
      */
-    int addSolicitudRenting (SolicitudRenting solicitudRenting);
+    int addSolicitudRenting (SolicitudRenting solicitudRenting) throws IOException;
 
     /**
      * Método que devuelve el estado de una solicitud

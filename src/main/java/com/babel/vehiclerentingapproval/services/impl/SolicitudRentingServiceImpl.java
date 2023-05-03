@@ -16,8 +16,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
+import java.io.*;
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.List;
+
+
 
 /**
  * Esta clase es la implementación de los métodos CRUD (Crear, Ver, Modificar y Cancelar) de las Solicitudes de Renting.
@@ -36,6 +40,10 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
     private final PersonaMapper personaMapper;
     private final EmailService emailService;
 
+    private static final String FILE_NAME = "registroSolicitudRenting.txt";
+
+    private static int lastId = 0;
+
     public SolicitudRentingServiceImpl (SolicitudRentingMapper solicitudRentingMapper, TipoResultadoSolicitudMapper tipoResultadoSolicitudMapper, PersonaService personaService, CodigoResolucionValidator codigoResolucionValidator, PersonaMapper personaMapper, EmailService emailService) {
         this.solicitudRentingMapper = solicitudRentingMapper;
         this.tipoResultadoSolicitudMapper = tipoResultadoSolicitudMapper;
@@ -46,21 +54,55 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
 
     }
 
-    /**
-     * Agrega una nueva solicitud de renting, realizando varias validaciones antes de insertar la solicitud en la base de datos.
-     *
-     * @param solicitudRenting La solicitud de renting a agregar.
-     * @return La solicitud de renting agregada, incluyendo la información de la persona asociada.
-     * @throws RequestApiValidationException Si alguna de las validaciones no se cumple.
-     * @see #validatePersona(int)
-     * @see #validateNumVehiculos(SolicitudRenting)
-     * @see #validateInversion(SolicitudRenting)
-     * @see #validateCuota(SolicitudRenting)
-     * @see #validatePlazo(SolicitudRenting)
-     * @see #validateFecha(SolicitudRenting)
-     */
+    public void registrarSolicitudEnArchivo(SolicitudRenting solicitudRenting) {
+
+
+        File file = new File(FILE_NAME);
+        if (file.exists()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+                String lastLine = null;
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    lastLine = line;
+                }
+                if (lastLine != null) {
+                    String[] parts = lastLine.split(",");
+                    if (parts.length == 2) {
+                        lastId = Integer.parseInt(parts[0]);
+                    }
+                }
+            } catch (IOException e) {
+                log.error("Error al leer el archivo de registro de solicitud", e);
+            }
+        }
+
+        lastId++;
+
+        LocalDateTime fechaHoraActual = LocalDateTime.now();
+        String registro = String.format("%d,%s%n", lastId, fechaHoraActual.toString() + " id_Solicitud: " + String.valueOf(solicitudRenting.getSolicitudId()));
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
+            writer.write(registro);
+        } catch (IOException e) {
+            log.error("Error al guardar registro de solicitud en archivo", e);
+        }
+    }
+
+        /**
+         * Agrega una nueva solicitud de renting, realizando varias validaciones antes de insertar la solicitud en la base de datos.
+         *
+         * @param solicitudRenting La solicitud de renting a agregar.
+         * @return La solicitud de renting agregada, incluyendo la información de la persona asociada.
+         * @throws RequestApiValidationException Si alguna de las validaciones no se cumple.
+         * @see #validatePersona(int)
+         * @see #validateNumVehiculos(SolicitudRenting)
+         * @see #validateInversion(SolicitudRenting)
+         * @see #validateCuota(SolicitudRenting)
+         * @see #validatePlazo(SolicitudRenting)
+         * @see #validateFecha(SolicitudRenting)
+         */
     @Override
-    public int addSolicitudRenting (SolicitudRenting solicitudRenting) {
+    public int addSolicitudRenting (SolicitudRenting solicitudRenting)  {
         log.info("Iniciando el proceso para agregar una nueva solicitud de renting");
 
         log.debug("Validando la persona con ID: {}", solicitudRenting.getPersona().getPersonaId());
@@ -94,6 +136,9 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         log.debug("Asociando la persona con ID: {} a la solicitud de renting", solicitudRenting.getPersona().getPersonaId());
         solicitudRenting.setPersona(personaService.invalidPersonId(solicitudRenting.getPersona().getPersonaId()));
         log.debug("Persona asociada correctamente a la solicitud de renting");
+
+        // Llama al nuevo método para registrar la solicitud en el archivo
+        registrarSolicitudEnArchivo(solicitudRenting);
 
         log.info("Finalizando el proceso para agregar una nueva solicitud de renting con éxito");
 
