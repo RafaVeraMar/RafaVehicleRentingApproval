@@ -13,7 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 
 
 /*
-Sería conveniente establecer la vida util del token en application.properties
+@TODO Sería conveniente establecer la vida util del token en application.properties
  */
 public class TokenUtils {
 
@@ -45,7 +45,7 @@ public class TokenUtils {
 
     public static UsernamePasswordAuthenticationToken getAuthentication(String token) {
      try{
-         Claims claims =Jwts.parserBuilder()
+         Claims claims = Jwts.parserBuilder()
                  .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
                  .build()
                  .parseClaimsJws(token)
