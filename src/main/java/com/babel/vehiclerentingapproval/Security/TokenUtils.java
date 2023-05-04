@@ -11,8 +11,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
-import static java.lang.VersionProps.build;
-
 
 /*
 Sería conveniente establecer la vida util del token en application.properties
@@ -50,11 +48,11 @@ public class TokenUtils {
          Claims claims =Jwts.parserBuilder()
                  .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
                  .build()
-                 .parseClaimsJws(toke)
+                 .parseClaimsJws(token)
                  .getBody();
 
          String email = claims.getSubject();
-         return new UsernamePasswordAuthenticationToken((email, null, Collections.emptyList()));
+         return new UsernamePasswordAuthenticationToken((email),null, Collections.emptyList());
      } catch(JwtException e) {
          return null;
      }
