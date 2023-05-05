@@ -1,5 +1,6 @@
 package com.babel.vehiclerentingapproval.Security.Service;
 
+import com.babel.vehiclerentingapproval.Security.models.Usuario;
 import com.babel.vehiclerentingapproval.models.Persona;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,42 +13,46 @@ import java.util.Collections;
 
 public class UserDetailsImpl implements UserDetails {
 
-    private final Persona persona;
+    private final Usuario usuario;
 
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return usuario.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return usuario.getEmail();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
+    }
+
+    public String getNombre(){
+        return usuario.getNombre();
     }
 }

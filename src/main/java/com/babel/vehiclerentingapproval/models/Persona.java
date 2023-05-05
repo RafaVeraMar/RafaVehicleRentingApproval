@@ -113,8 +113,7 @@ public class Persona {
      */
     @Getter    @Setter
     private String email;
-    @Getter @Setter
-    private String password;
+
 
 
     @Override
