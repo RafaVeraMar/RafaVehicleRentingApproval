@@ -81,10 +81,13 @@ public interface PersonaMapper {
     @Select("SELECT EMAIL FROM PERSONA WHERE PERSONA_ID=#{personaId}")
     String getEmail(int personaId);
 
-    @Select("SELECT PERSONA_ID FROM PERSONA WHERE EMAIL=#{email}")
-    int getPersonaId(String email);
-
-    @Select("SELECT PASSWORD FROM PERSONA WHERE PASSWORD=#{password}")
-    String getPassword(String password);
-
+    @Select("SELECT NOMBRE, EMAIL, PASSWORD FROM PERSONA WHERE EMAIL = #{email}")
+    @Results({
+           // @Result(property = "personaId", column = "PERSONA_ID"),
+            @Result(property = "nombre", column = "NOMBRE"),
+            @Result(property = "email", column = "EMAIL"),
+            @Result(property = "password", column = "PASSSWORD"),
+            // ... otros mapeos aquí ...
+    })
+    Persona getPersonaByEmail(String email);
 }

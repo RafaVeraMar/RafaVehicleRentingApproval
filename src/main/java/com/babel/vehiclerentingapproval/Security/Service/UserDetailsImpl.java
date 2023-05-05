@@ -1,35 +1,40 @@
 package com.babel.vehiclerentingapproval.Security.Service;
 
-import com.babel.vehiclerentingapproval.Security.models.Usuario;
-import com.babel.vehiclerentingapproval.models.Persona;
-import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
 
-@AllArgsConstructor
+
 
 public class UserDetailsImpl implements UserDetails {
 
-    private final Usuario usuario;
+    private final String email;
+    private final String password;
+    private final String nombre;
 
 
+    public UserDetailsImpl(String email, String password, String nombre) {
+        this.email = email;
+        this.password = password;
+        this.nombre = nombre;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
     public String getPassword() {
-        return usuario.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return usuario.getEmail();
+        return email;
     }
 
     @Override
@@ -53,6 +58,6 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     public String getNombre(){
-        return usuario.getNombre();
+        return nombre;
     }
 }

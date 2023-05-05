@@ -7,5 +7,6 @@ import lombok.Setter;
 public class AuthCredentials {
     @Getter @Setter
     private String email;
+    @Getter @Setter
     private String password;
 }
