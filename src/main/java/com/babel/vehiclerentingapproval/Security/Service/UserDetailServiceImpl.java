@@ -1,5 +1,8 @@
 package com.babel.vehiclerentingapproval.Security.Service;
 
+import com.babel.vehiclerentingapproval.exceptions.PersonByEmailNotFoundException;
+import com.babel.vehiclerentingapproval.models.Persona;
+import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,14 +13,12 @@ import org.springframework.stereotype.Service;
 public class UserDetailServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private PersonaMapper personaMapper;
 
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository
-                .findOneByEmail(email)
-                .orElseThrow(() -> new UsernameNotfoundException("El usuario con email" + email + "no existe"));
-        retunr
+    public UserDetails loadUserByUsername(String email) throws PersonByEmailNotFoundException {
+       Persona persona = personaMapper.getPersonaId(email);
+        return null;
     }
 }

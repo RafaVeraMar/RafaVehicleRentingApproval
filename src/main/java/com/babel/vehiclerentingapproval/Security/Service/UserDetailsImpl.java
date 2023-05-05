@@ -1,5 +1,6 @@
 package com.babel.vehiclerentingapproval.Security.Service;
 
+import com.babel.vehiclerentingapproval.models.Persona;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,15 +11,19 @@ import java.util.Collections;
 @AllArgsConstructor
 
 public class UserDetailsImpl implements UserDetails {
-    private final Usuario usuario;
+
+    private final Persona persona;
+
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        return null;
     }
 
     @Override
     public String getPassword() {
-        return usuario.getPassword();
+        return null;
     }
 
     @Override

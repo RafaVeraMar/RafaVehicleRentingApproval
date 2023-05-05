@@ -80,4 +80,8 @@ public interface PersonaMapper {
      */
     @Select("SELECT EMAIL FROM PERSONA WHERE PERSONA_ID=#{personaId}")
     String getEmail(int personaId);
+
+    @Select("SELECT PERSONA_ID FROM PERSONA WHERE EMAIL=#{email}")
+    Persona getPersonaId(String email);
+
 }
