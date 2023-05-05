@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import lombok.extern.log4j.Log4j2;
 
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
@@ -18,7 +19,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws PersonByEmailNotFoundException {
-       Persona persona = personaMapper.getPersonaId(email);
+       Persona persona = personaMapper.getPersonaId();
         return null;
+    }
+
+    public boolean existePersonaByEmail (int personaId) {
+        return this.personaMapper.getPersonaId() != 0;
     }
 }
