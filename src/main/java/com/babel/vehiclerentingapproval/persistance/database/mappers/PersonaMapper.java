@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import com.babel.vehiclerentingapproval.models.ProductoContratado;
 import org.apache.ibatis.annotations.*;
+import org.springframework.security.core.userdetails.User;
 
 import java.util.List;
 
@@ -81,13 +82,15 @@ public interface PersonaMapper {
     @Select("SELECT EMAIL FROM PERSONA WHERE PERSONA_ID=#{personaId}")
     String getEmail(int personaId);
 
-    @Select("SELECT NOMBRE, EMAIL, PASSWORD FROM PERSONA WHERE EMAIL = #{email}")
-    @Results({
-           // @Result(property = "personaId", column = "PERSONA_ID"),
-            @Result(property = "nombre", column = "NOMBRE"),
-            @Result(property = "email", column = "EMAIL"),
-            @Result(property = "password", column = "PASSSWORD"),
-            // ... otros mapeos aquí ...
-    })
-    Persona getPersonaByEmail(String email);
+    @Select("SELECT PERSONA.EMAIL,PERSONA.PASSWORD FROM PERSONA WHERE EMAIL=#{email}")
+    User findEmailByEmail(String email);
+
+    @Select("SELECT PASSWORD FROM persona WHERE EMAIL=#{email}")
+    String findPasswordByEmail(String email);
+
+
+
+
+
+
 }

@@ -3,6 +3,9 @@ package com.babel.vehiclerentingapproval.Security.Service;
 import com.babel.vehiclerentingapproval.Security.AuthCredentials;
 import com.babel.vehiclerentingapproval.Security.TokenUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -22,18 +25,20 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
-        AuthCredentials authCredentials = new AuthCredentials();
         try {
-            authCredentials = new ObjectMapper().readValue(request.getReader(), AuthCredentials.class);
-        }catch(IOException e){
-
+            AuthCredentials authCredentials = new ObjectMapper().readValue(request.getReader(), AuthCredentials.class);
+            if (StringUtils.isEmpty(authCredentials.getEmail()) || StringUtils.isEmpty(authCredentials.getPassword())) {
+                throw new BadCredentialsException("Email y contraseña son campos requeridos");
+            }
+            return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(
+                    authCredentials.getEmail(),
+                    authCredentials.getPassword(),
+                    Collections.emptyList()
+            ));
+        } catch (IOException e) {
+            throw new AuthenticationServiceException("Error al intentar leer el cuerpo de la solicitud HTTP", e);
         }
-        UsernamePasswordAuthenticationToken usernamePAT = new UsernamePasswordAuthenticationToken(
-                authCredentials.getEmail(),
-                authCredentials.getPassword(),
-                Collections.emptyList()
-        );
-        return getAuthenticationManager().authenticate(usernamePAT);
+
     }
 
     @Override

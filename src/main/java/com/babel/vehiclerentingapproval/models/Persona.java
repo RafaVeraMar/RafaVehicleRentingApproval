@@ -116,7 +116,7 @@ public class Persona {
     @Getter @Setter
     private String password;
 
-
+public Persona(int personaId, @Size @NotNull @NotEmpty @NotBlank String nombre, String email, String password){}
 
     @Override
     public String toString() {

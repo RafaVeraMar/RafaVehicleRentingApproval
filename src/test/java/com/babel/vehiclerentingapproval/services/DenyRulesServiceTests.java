@@ -36,7 +36,7 @@ class DenyRulesServiceTests {
 
     private SolicitudRenting createSolicitudMock() {
         SolicitudRenting solicitud = new SolicitudRenting();
-        Persona persona = new Persona();
+        Persona persona = new Persona(persona.getPersonaId(), persona.getNombre(), persona.getEmail(), persona.getPassword());
         persona.setPersonaId(104);
         persona.setNombre("John");
         persona.setApellido1("Doe");
@@ -56,7 +56,7 @@ class DenyRulesServiceTests {
 
     private Renta createRentaMock() throws ParseException {
         Renta renta = new Renta();
-        Persona persona = new Persona();
+        Persona persona = new Persona(persona.getPersonaId(), persona.getNombre(), persona.getEmail(), persona.getPassword());
         persona.setNombre("John");
         persona.setApellido1("Doe");
         persona.setApellido2("Doe");

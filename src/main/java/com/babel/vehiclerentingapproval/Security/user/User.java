@@ -1,18 +1,46 @@
 package com.babel.vehiclerentingapproval.Security.user;
+import com.babel.vehiclerentingapproval.models.Persona;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.persistence.Entity;
-import lombok.*;
+import java.util.Collection;
+import java.util.List;
 
-import javax.validation.constraints.*;
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Entity
-public class User {
+public class User extends Persona implements UserDetails {
+    private List<GrantedAuthority> authorities;
 
-    private int personaId;
-    private String nombre;
-    private String email;
-    private String password;
+    public User(Persona persona, List<GrantedAuthority> authorities) {
+        super(persona.getPersonaId(), persona.getNombre(), persona.getEmail(), persona.getPassword());
+        this.authorities = authorities;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return getEmail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

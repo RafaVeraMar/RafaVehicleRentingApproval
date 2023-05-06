@@ -2,7 +2,9 @@ package com.babel.vehiclerentingapproval.Security;
 
 import com.babel.vehiclerentingapproval.Security.Service.JWTAuthenticationFilter;
 import com.babel.vehiclerentingapproval.Security.Service.JWTAuthorizationFilter;
+import com.babel.vehiclerentingapproval.Security.Service.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,10 +21,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @AllArgsConstructor
 public class WebSecurityConfig{
 
-
-    private final UserDetailsService userDetailsService;
+@Autowired
+    private UserDetailsService userDetailsService;
+@Autowired
     private final JWTAuthorizationFilter jwtAuthorizationFilter;
 
+    public void SecurityConfig(UserDetailsServiceImpl userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService);
+    }
 
 
     @Bean

@@ -153,7 +153,7 @@ class RentaServiceImplTest {
     }
 
     private Persona createPersona ( ) throws ParseException {
-        Persona persona = new Persona();
+        Persona persona = new Persona(persona.getPersonaId(), persona.getNombre(), persona.getEmail(), persona.getPassword());
         persona.setNombre("Juan");
         persona.setApellido1("Francés");
         persona.setApellido2("Atúñez");
