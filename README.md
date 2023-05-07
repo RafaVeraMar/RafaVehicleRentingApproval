@@ -46,3 +46,8 @@ mvn spring:boot run
 ```
 http://localhost:8080/swagger-ui/index.html
 ```
+
+## Spring Security
++ __Autenticación en Memoria__ : user: admin | password: 1234
+> en Postman:
+Authorization > Basic Auth > username Password

@@ -60,7 +60,7 @@ class ApprovalRulesServiceTest {
     private SolicitudRenting createSolicitudMock() throws ParseException {
         SolicitudRenting solicitud = new SolicitudRenting();
         TipoResultadoSolicitud tipoResultadoSolicitud = new TipoResultadoSolicitud();
-        Persona persona = new Persona();
+        Persona persona = new Persona(persona.getPersonaId(), persona.getNombre(), persona.getEmail(), persona.getPassword());
         persona.setPersonaId(104);
         persona.setNombre("John");
         persona.setApellido1("Doe");
@@ -84,7 +84,7 @@ class ApprovalRulesServiceTest {
 
     private Renta createRentaMock() throws ParseException {
         Renta renta = new Renta();
-        Persona persona = new Persona();
+        Persona persona = new Persona(persona.getPersonaId(), persona.getNombre(), persona.getEmail(), persona.getPassword());
         persona.setNombre("John");
         persona.setApellido1("Doe");
         persona.setApellido2("Doe");

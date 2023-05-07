@@ -62,7 +62,7 @@ public class SolicitudRentingServiceImplTest {
 
     private SolicitudRenting creaSolicitudFicticia() throws ParseException {
         SolicitudRenting solicitudFicticia = new SolicitudRenting();
-        Persona personaFicticia = new Persona();
+        Persona personaFicticia = new Persona(persona.getPersonaId(), persona.getNombre(), persona.getEmail(), persona.getPassword());
         Direccion direccionFicticia = new Direccion();
         direccionFicticia.setDireccionId(1);
         direccionFicticia.setTipoViaId(new TipoVia(1, "Alameda"));

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import com.babel.vehiclerentingapproval.models.ProductoContratado;
 import org.apache.ibatis.annotations.*;
+import org.springframework.security.core.userdetails.User;
 
 import java.util.List;
 
@@ -80,4 +81,15 @@ public interface PersonaMapper {
      */
     @Select("SELECT EMAIL FROM PERSONA WHERE PERSONA_ID=#{personaId}")
     String getEmail(int personaId);
+
+    @Select("SELECT * FROM PERSONA WHERE EMAIL=#{email}")
+    Persona findEmailByEmail(String email);
+
+
+
+
+
+
+
+
 }

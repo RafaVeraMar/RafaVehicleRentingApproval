@@ -14,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -56,7 +55,7 @@ class PersonaServiceImplTest {
     @Test
     void addPersona_should_throwRequiredMissingFieldException_when_nombreIsNull() {
         assertThrows(Exception.class, () -> {
-            Persona persona = new Persona();
+            Persona persona = new Persona(persona.getPersonaId(), persona.getNombre(), persona.getEmail(), persona.getPassword());
 
             persona.setNombre(null);
             this.personaService.addPersona(persona);
@@ -65,7 +64,7 @@ class PersonaServiceImplTest {
 
     @Test
     void addPersona_should_throwWrongLenghtFieldException_when_nombreIsBiggerThan50() {
-        Persona persona = new Persona();
+        Persona persona = new Persona(persona.getPersonaId(), persona.getNombre(), persona.getEmail(), persona.getPassword());
         persona.setNombre("nombre de persona muy largo de mas de cincuenta caracteres");
         assertThrows(WrongLenghtFieldException.class, () -> {
             this.personaService.addPersona(persona);
@@ -76,7 +75,7 @@ class PersonaServiceImplTest {
     @Test
     void addPersona_should_throwRequiredMissingFieldException_when_apellido1Null() {
         assertThrows(Exception.class, () -> {
-            Persona persona = new Persona();
+            Persona persona = new Persona(persona.getPersonaId(), persona.getNombre(), persona.getEmail(), persona.getPassword());
 
             persona.setApellido1(null);
             this.personaService.addPersona(persona);
@@ -86,7 +85,7 @@ class PersonaServiceImplTest {
     @Test
     void addPersona_should_throwRequiredMissingFieldException_when_nifNull() {
         assertThrows(Exception.class, () -> {
-            Persona persona = new Persona();
+            Persona persona = new Persona(persona.getPersonaId(), persona.getNombre(), persona.getEmail(), persona.getPassword());
 
             persona.setNif(null);
             this.personaService.addPersona(persona);
@@ -107,7 +106,7 @@ class PersonaServiceImplTest {
 
     @Test
     void modificarPersona_should_throwPersonaNotFoundException_when_personaNoExisteEnBaseDeDatos() {
-        Persona persona = new Persona();
+        Persona persona = new Persona(persona.getPersonaId(), persona.getNombre(), persona.getEmail(), persona.getPassword());
         persona.setPersonaId(100); //Persona no existente
         assertThrows(PersonaNotFoundException.class, () -> {
             personaService.modificarPersona(persona);
@@ -116,7 +115,7 @@ class PersonaServiceImplTest {
 
     @Test
     void modificarPersona_should_throwDireccionNotFoundException_when_direccionNoExisteEnBaseDeDatos() {
-        Persona persona = new Persona();
+        Persona persona = new Persona(persona.getPersonaId(), persona.getNombre(), persona.getEmail(), persona.getPassword());
 
         Direccion direccion = new Direccion();
         direccion.setDireccionId(1); //Direccion no existente
@@ -263,7 +262,7 @@ class PersonaServiceImplTest {
     }
 
     private Persona createPersona() throws ParseException {
-        Persona persona = new Persona();
+        Persona persona = new Persona(persona.getPersonaId(), persona.getNombre(), persona.getEmail(), persona.getPassword());
         persona.setNombre("Juan");
         persona.setApellido1("Francés");
         persona.setApellido2("Atúñez");

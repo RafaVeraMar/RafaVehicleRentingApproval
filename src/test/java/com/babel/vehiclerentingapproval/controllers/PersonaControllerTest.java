@@ -40,7 +40,7 @@ class PersonaControllerTest {
     }
 
     private Persona personaficticia ( ) throws ParseException {
-        Persona personaFicticia = new Persona();
+        Persona personaFicticia = new Persona(persona.getPersonaId(), persona.getNombre(), persona.getEmail(), persona.getPassword());
         Direccion direccionFicticia = new Direccion();
         direccionFicticia.setDireccionId(1);
         direccionFicticia.setTipoViaId(new TipoVia(1, "Alameda"));

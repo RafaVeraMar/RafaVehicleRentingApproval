@@ -79,7 +79,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
         lastId++;
 
         LocalDateTime fechaHoraActual = LocalDateTime.now();
-        String registro = String.format("%d,%s%n", lastId, fechaHoraActual.toString() + " id_Solicitud: " + String.valueOf(solicitudRenting.getSolicitudId()));
+        String registro = String.format("%d,%s%n", lastId, fechaHoraActual.toString() + ", id_Solicitud: " + String.valueOf(solicitudRenting.getSolicitudId()));
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
             writer.write(registro);

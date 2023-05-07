@@ -113,7 +113,10 @@ public class Persona {
      */
     @Getter    @Setter
     private String email;
+    @Getter @Setter
+    private String password;
 
+public Persona(String email, String nombre, String password){}
 
     @Override
     public String toString() {

@@ -46,7 +46,7 @@ class SolicitudRentingControllerTest {
 
     private SolicitudRenting creaSolicitudFicticia() throws ParseException {
         SolicitudRenting solicitudFicticia = new SolicitudRenting();
-        Persona personaFicticia = new Persona();
+        Persona personaFicticia = new Persona(persona.getPersonaId(), persona.getNombre(), persona.getEmail(), persona.getPassword());
         Direccion direccionFicticia = new Direccion();
         TipoResultadoSolicitud tipoResultadoSolicitudFicticia = new TipoResultadoSolicitud();
         tipoResultadoSolicitudFicticia.setCodResultado("1");
