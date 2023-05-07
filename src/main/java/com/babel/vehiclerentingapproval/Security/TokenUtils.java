@@ -52,7 +52,7 @@ public class TokenUtils {
                  .getBody();
 
          String email = claims.getSubject();
-         return new UsernamePasswordAuthenticationToken((email),null, Collections.emptyList());
+         return new UsernamePasswordAuthenticationToken(email,null, Collections.emptyList());
      } catch(JwtException e) {
          return null;
      }

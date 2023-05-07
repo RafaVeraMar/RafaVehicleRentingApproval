@@ -24,6 +24,7 @@ public class WebSecurityConfig{
 @Autowired
     private final JWTAuthorizationFilter jwtAuthorizationFilter;
 
+
     public void SecurityConfig(UserDetailsServiceImpl userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
@@ -57,6 +58,8 @@ public class WebSecurityConfig{
                 .build();
 
     }
+
+
 /*
     @Bean
     UserDetailsService userDetailsservice(){
@@ -89,6 +92,8 @@ public class WebSecurityConfig{
     }
 
  */
+
+
 
 
 
