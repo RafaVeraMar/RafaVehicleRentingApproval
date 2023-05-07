@@ -1,4 +1,4 @@
-package com.babel.vehiclerentingapproval.Security.Service;
+package com.babel.vehiclerentingapproval.Security;
 
 import com.babel.vehiclerentingapproval.Security.TokenUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

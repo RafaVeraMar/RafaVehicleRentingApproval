@@ -82,8 +82,8 @@ public interface PersonaMapper {
     @Select("SELECT EMAIL FROM PERSONA WHERE PERSONA_ID=#{personaId}")
     String getEmail(int personaId);
 
-    @Select("SELECT PERSONA.EMAIL,PERSONA.PASSWORD FROM PERSONA WHERE EMAIL=#{email}")
-    User findEmailByEmail(String email);
+    @Select("SELECT * FROM PERSONA WHERE EMAIL=#{email}")
+    Persona findEmailByEmail(String email);
 
     @Select("SELECT PASSWORD FROM persona WHERE EMAIL=#{email}")
     String findPasswordByEmail(String email);

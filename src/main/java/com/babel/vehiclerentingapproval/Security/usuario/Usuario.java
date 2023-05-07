@@ -1,16 +1,17 @@
-package com.babel.vehiclerentingapproval.Security.user;
+package com.babel.vehiclerentingapproval.Security.usuario;
 import com.babel.vehiclerentingapproval.models.Persona;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
 
-public class User extends Persona implements UserDetails {
+public class Usuario extends Persona implements UserDetails {
     private List<GrantedAuthority> authorities;
 
-    public User(Persona persona, List<GrantedAuthority> authorities) {
-        super(persona.getPersonaId(), persona.getNombre(), persona.getEmail(), persona.getPassword());
+    public Usuario(Persona persona, List<GrantedAuthority> authorities) {
+        super(persona.getNombre(), persona.getEmail(), persona.getPassword());
         this.authorities = authorities;
     }
 

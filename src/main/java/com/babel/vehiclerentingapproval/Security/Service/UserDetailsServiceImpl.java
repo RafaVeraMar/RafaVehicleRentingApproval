@@ -1,4 +1,5 @@
 package com.babel.vehiclerentingapproval.Security.Service;
+import com.babel.vehiclerentingapproval.Security.usuario.Usuario;
 import com.babel.vehiclerentingapproval.models.Persona;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.PersonaMapper;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -24,13 +24,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User persona = personaMapper.findEmailByEmail(username);
+        Persona persona = personaMapper.findEmailByEmail(username);
         if (persona != null) {
             List<GrantedAuthority> roles = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
-            return new User(persona.getUsername(), persona.getPassword(), roles);
+            return new UserDetailsImpl(persona.getNombre(),persona.getPassword(), roles.toString());
         } else {
             throw new UsernameNotFoundException("User not found");
         }
     }
 }
-
