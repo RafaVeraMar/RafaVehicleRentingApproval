@@ -1,5 +1,6 @@
 package com.babel.vehiclerentingapproval.Security;
 
+import java.security.Key;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.Map;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
@@ -17,7 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
  */
 public class TokenUtils {
 
-    private final static String ACCESS_TOKEN_SECRET = "v8R9zMfB77EUQChNdKHuDcGWtg4i7m";
+    private final static Key ACCESS_TOKEN_SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final static Long ACCESS_TOKEN_VALIDITY_SECONDS = 2_592_000L;// validez del token por 30 dias
 
     /**
@@ -37,7 +39,7 @@ public class TokenUtils {
                 .setSubject(email)
                 .setExpiration(expirationDate)
                 .addClaims(extra)
-                .signWith(Keys.hmacShaKeyFor(ACCESS_TOKEN_SECRET.getBytes()))
+                .signWith(ACCESS_TOKEN_SECRET_KEY)
                 .compact();
 
 
@@ -46,7 +48,7 @@ public class TokenUtils {
     public static UsernamePasswordAuthenticationToken getAuthentication(String token) {
      try{
          Claims claims = Jwts.parserBuilder()
-                 .setSigningKey(ACCESS_TOKEN_SECRET.getBytes())
+                 .setSigningKey(ACCESS_TOKEN_SECRET_KEY)
                  .build()
                  .parseClaimsJws(token)
                  .getBody();

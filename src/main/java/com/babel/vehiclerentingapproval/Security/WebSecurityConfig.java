@@ -93,8 +93,16 @@ public class WebSecurityConfig{
 
  */
 
+    /*
+public static void main(String[] args) {
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    String encodedPassword = passwordEncoder.encode("Marte2025");
 
+    System.out.println(encodedPassword);
 
+}
+
+     */
 
 
 }
