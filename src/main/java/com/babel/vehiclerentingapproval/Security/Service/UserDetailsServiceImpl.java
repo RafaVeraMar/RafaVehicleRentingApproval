@@ -28,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Persona persona = personaMapper.findEmailByEmail(username);
         if (persona != null) {
             List<GrantedAuthority> roles = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
-            return new UserDetailsImpl(persona.getEmail(),persona.getPassword(), roles.toString());
+            return new UserDetailsImpl(persona.getEmail(), persona.getNombre(), persona.getPassword());
         } else {
             throw new UsernameNotFoundException("User not found");
         }
