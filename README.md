@@ -59,7 +59,7 @@ http://localhost:8080/login
 }
 ```
 + Enviar token recibido junto a llamada a endpoints:
-+ 
+
   ```
   via Postman. Ejemplo:
   http://localhost:8080/listarTiposResolucion
