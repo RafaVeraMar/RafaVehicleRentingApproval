@@ -48,6 +48,20 @@ http://localhost:8080/swagger-ui/index.html
 ```
 
 ## Spring Security
-+ __Autenticación en Memoria__ : user: admin | password: 1234
-> en Postman:
-Authorization > Basic Auth > username Password
++ Solicitar autenticación: recibir Bearer token
+> Debe existir una persona en la BD con email y password encryptada (Bcrypt)
+```
+via Postman
+http://localhost:8080/login
+{
+    "email": "rafael.vera@babelgroup.com",
+    "password": "Marte2025"
+}
+```
++ Enviar token recibido junto a llamada a endpoints:
++ 
+  ```
+  via Postman. Ejemplo:
+  http://localhost:8080/listarTiposResolucion
+    Authorization > Type: Bearer token > Token: (pegar token recibido anteriormente)
+```
