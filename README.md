@@ -60,8 +60,20 @@ http://localhost:8080/login
 ```
 + Enviar token recibido junto a llamada a endpoints:
 
-  ```
+```
   via Postman. Ejemplo:
   http://localhost:8080/listarTiposResolucion
     Authorization > Type: Bearer token > Token: (pegar token recibido anteriormente)
 ```
+
+## Jascrypt Encriptación
++ Encriptar: sustituir Password y value por tu contraseña de encriptación y el valor a encriptar
+```
+En la Terminal apuntando al directorio del proyecto:
+mvn jasypt:encrypt-value "-Djasypt.encryptor.password=Password"-Djasypt.plugin.value=Valor"
+```
++ En application properties sustituir la clave a encriptar por el resultado obtenido de encriptación
+```
+spring.datasource.password=ENC(5uyc6cFIFqQgka+Yx2txrbg+NS1z91HPYjMruBd8KkK0r6EeVMWWyhLuP8Yn/+lI)
+```
++ anotación @@EnableEncryptableProperties en el método MAIN
