@@ -77,3 +77,9 @@ mvn jasypt:encrypt-value "-Djasypt.encryptor.password=Password"-Djasypt.plugin.v
 spring.datasource.password=ENC(5uyc6cFIFqQgka+Yx2txrbg+NS1z91HPYjMruBd8KkK0r6EeVMWWyhLuP8Yn/+lI)
 ```
 + anotación @@EnableEncryptableProperties en el método MAIN
+
++ Run/debug Configuration (en el IDE Intellij)
+```
+Habilitar MV options y pegar en el campo corespondiente (sustituye pasword por la constraseña):
+-Djasypt.encryptor.password=Password
+```
