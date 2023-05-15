@@ -1,6 +1,6 @@
 # Vehicle Renting Approval
 
-API REST de Scoring con autoaprobación de solicitudes. Se pueden consultar sus endpoints actualizados después de instalarlo en la documentación de swagger pudiendo ser consultada [aquí](http://localhost:8080/swagger-ui/index.html). A continuación se muestra el estado de la documentación a dia 13/04/2023:
+API REST de Scoring con autoaprobación de solicitudes. Se pueden consultar sus endpoints actualizados después de instalarlo en la documentación de swagger pudiendo ser consultada [aquí](http://localhost:8080/swagger-ui/index.html). A continuación se muestra el estado de la documentación a dia 15/05/2023:
 
 ![plot](src/main/resources/images/documentacion.png)
 
