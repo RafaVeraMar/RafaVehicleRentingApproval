@@ -88,7 +88,7 @@ public class WebSecurityConfig{
 
 /*
     public static void main(String[] args) {
-        System.out.println("pass: " +  new BCryptPasswordEncoder().encode("Marte2025"));
+        System.out.println("pass: " +  new BCryptPasswordEncoder().encode("cONTRASEÑA"));
     }
 
  */
@@ -96,7 +96,7 @@ public class WebSecurityConfig{
     /*
 public static void main(String[] args) {
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    String encodedPassword = passwordEncoder.encode("Marte2025");
+    String encodedPassword = passwordEncoder.encode("CONTRASEÑA");
 
     System.out.println(encodedPassword);
 
