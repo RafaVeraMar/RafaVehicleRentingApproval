@@ -22,9 +22,19 @@ import java.io.IOException;
 import java.util.Collections;
 
 import static com.fasterxml.jackson.databind.type.LogicalType.Collection;
-
+/**
+ * Filtro de autenticación JWT que extiende UsernamePasswordAuthenticationFilter.
+ */
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
+    /**
+     * Intenta autenticar al usuario utilizando las credenciales proporcionadas en la solicitud HTTP.
+     *
+     * @param request  Objeto HttpServletRequest que representa la solicitud HTTP.
+     * @param response Objeto HttpServletResponse que representa la respuesta HTTP.
+     * @return Objeto Authentication que representa la autenticación exitosa.
+     * @throws AuthenticationException Si se produce un error durante la autenticación.
+     */
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 
@@ -44,6 +54,16 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     }
 
+    /**
+     * Se llama cuando la autenticación es exitosa. Genera un token JWT y lo agrega como encabezado de autorización en la respuesta HTTP.
+     *
+     * @param request     Objeto HttpServletRequest que representa la solicitud HTTP.
+     * @param response    Objeto HttpServletResponse que representa la respuesta HTTP.
+     * @param chain       Objeto FilterChain utilizado para continuar con la cadena de filtros.
+     * @param authResult  Objeto Authentication que representa la autenticación exitosa.
+     * @throws IOException      Si se produce un error de E/S durante la escritura de la respuesta.
+     * @throws ServletException Si se produce un error durante el procesamiento del servlet.
+     */
     @Override
     protected void successfulAuthentication(HttpServletRequest request,
                                             HttpServletResponse response,

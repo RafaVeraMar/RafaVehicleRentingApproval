@@ -13,16 +13,34 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+/**
+ * Implementación de la interfaz UserDetailsService que carga los detalles del usuario por nombre de usuario.
+ */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
+
+    /**
+     * Mapper utilizado para acceder a los datos de la entidad Persona.
+     */
     @Autowired
     private PersonaMapper personaMapper;
 
+    /**
+     * Crea una nueva instancia de UserDetailsServiceImpl con el mapper de Persona especificado.
+     *
+     * @param personaMapper Mapper de Persona utilizado para acceder a los datos de la entidad Persona.
+     */
     public UserDetailsServiceImpl(PersonaMapper personaMapper) {
         this.personaMapper = personaMapper;
     }
 
+    /**
+     * Carga los detalles del usuario por su nombre de usuario.
+     *
+     * @param username Nombre de usuario del usuario.
+     * @return Detalles del usuario como UserDetails.
+     * @throws UsernameNotFoundException Si no se encuentra al usuario.
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Persona persona = personaMapper.findEmailByEmail(username);
