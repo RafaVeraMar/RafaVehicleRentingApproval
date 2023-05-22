@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 @Configuration
 @AllArgsConstructor
-public class WebSecurityConfig {
+public class WebSecurityConfig  {
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -62,6 +62,7 @@ public class WebSecurityConfig {
         return http
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/actuator/prometheus", "/actuator/metrics").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
