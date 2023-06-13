@@ -352,6 +352,7 @@ public class PersonaServiceImpl implements PersonaService {
      * @return boolean
      * @see PersonaMapper
      */
+
     @Timed(value = "validacionIdPersona.time", description = "Time taken to return solicitudRenting")
     public boolean existePersona (int personaId) {
         log.info("Procesando la validación del id de una persona");
