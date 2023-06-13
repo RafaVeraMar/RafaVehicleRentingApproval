@@ -10,6 +10,7 @@ import com.babel.vehiclerentingapproval.services.CodigoResolucionValidator;
 import com.babel.vehiclerentingapproval.services.EmailService;
 import com.babel.vehiclerentingapproval.services.PersonaService;
 import com.babel.vehiclerentingapproval.services.SolicitudRentingService;
+import io.micrometer.core.annotation.Timed;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -235,6 +236,7 @@ public class SolicitudRentingServiceImpl implements SolicitudRentingService {
      * @return Devuelve un objeto Solicitud Renting
      * @throws RequestApiValidationException
      */
+
 
     public SolicitudRenting getSolicitudById (int id) {
         log.info("Buscando la solicitud de renting con ID: {}", id);

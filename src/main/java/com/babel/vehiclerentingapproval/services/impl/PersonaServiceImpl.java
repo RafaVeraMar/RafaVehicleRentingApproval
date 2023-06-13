@@ -5,6 +5,7 @@ import com.babel.vehiclerentingapproval.exceptions.*;
 import com.babel.vehiclerentingapproval.models.*;
 import com.babel.vehiclerentingapproval.persistance.database.mappers.*;
 import com.babel.vehiclerentingapproval.services.PersonaService;
+import io.micrometer.core.annotation.Timed;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -351,6 +352,7 @@ public class PersonaServiceImpl implements PersonaService {
      * @return boolean
      * @see PersonaMapper
      */
+    @Timed(value = "validacionIdPersona.time", description = "Time taken to return solicitudRenting")
     public boolean existePersona (int personaId) {
         log.info("Procesando la validación del id de una persona");
         return personaMapper.existePersona(personaId) != 0;

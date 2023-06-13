@@ -48,6 +48,7 @@ public class ResolucionSolicitudesController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Existen datos en la base de datos y se devuelven.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "204", description = "No existen tipos de solicitudes en la base de datos.", content = {@Content(mediaType = "application/json")})
     })
+    
     public ResponseEntity<Object> listarTiposResolucion() throws ResolucionSolicitudesNotFoundException {
         log.info("Entrando en listarTiposResolucionController");
         return ResponseEntity.ok(this.resolucionSolicitudesService.getTipoResolucionesSolicitudes());
