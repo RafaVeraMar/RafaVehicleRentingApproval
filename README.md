@@ -54,8 +54,8 @@ http://localhost:8080/swagger-ui/index.html
 via Postman
 http://localhost:8080/login
 {
-    "email": "rafael.vera@babelgroup.com",
-    "password": "Marte2025"
+    "email": "email",
+    "password": "password"
 }
 ```
 + Enviar token recibido junto a llamada a endpoints:
